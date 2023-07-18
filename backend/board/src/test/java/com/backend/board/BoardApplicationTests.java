@@ -1,10 +1,10 @@
-package com.example.back_idiots;
+package com.backend.board;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BackIdiotsApplicationTests {
+class BoardApplicationTests {
 
 	@Test
 	void contextLoads() {
