@@ -29,8 +29,8 @@ public class MemberController {
         return ResponseEntity.ok("User registered successfully!");
     }
 
-    @PostMapping("/api/login")
-    public ResponseEntity<String> loginUser(@RequestBody MemberDTO memberDTO) {
+    @PostMapping("/api/login") //@ModelAttribute와 @RequestBody 차이
+    public ResponseEntity<String> loginUser(@RequestBody MemberDTO memberDTO) { // HttpSession session
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             // 로그인 성공
