@@ -11,29 +11,28 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-@RequiredArgsConstructor
+@RequiredArgsConstructor // memberService 필드를 초기화하는 생성자를 자동으로 생성해 준다.
 public class MemberController {
     // 생성자 주입
     private final MemberService memberService;
 
-    // 회원가입 페이지 출력 요청
     @GetMapping("/member/save")
     public String saveForm() {
         return "save";
-    }
+    } // 회원가입 페이지로 이동
 
-    @PostMapping("/member/save")
-    public String save(@ModelAttribute MemberDTO memberDTO) {
+    @PostMapping("/member/save") // 회원가입 버튼 누를 시 MemberController - MemberService - MemberEntity 순으로 참고해서 실행
+    public String save(@ModelAttribute MemberDTO memberDTO) { // 이메일, 비밀번호, 이름이 memberDTO 에 담긴다.
         System.out.println("MemberController.save");
         System.out.println("memberDTO = " + memberDTO);
         memberService.save(memberDTO);
-        return "login";
+        return "login"; // 로그인 페이지로 이동 (이 때 주소는 /member/save 그대로이다.)
     }
 
     @GetMapping("/member/login")
     public String loginForm() {
         return "login";
-    }
+    } // 로그인 페이지로 이동
 
     @PostMapping("/member/login")
     public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
@@ -86,6 +85,7 @@ public class MemberController {
     @GetMapping("/member/logout")
     public String logout(HttpSession session) {
         session.invalidate();
+        System.out.println(session);
         return "index";
     }
 

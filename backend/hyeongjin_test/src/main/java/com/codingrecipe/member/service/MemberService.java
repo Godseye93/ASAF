@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-    public void save(MemberDTO memberDTO) {
+    public void save(MemberDTO memberDTO) { // 이메일, 비밀번호, 이름 등의 정보를 받아온다.
         // 1. dto -> entity 변환
         // 2. repository의 save 메서드 호출
         MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO);
