@@ -24,6 +24,8 @@ public class MemberEntity {
     @Column
     private String memberName;
 
+    // 회원가입 버튼 - MemberService의 save 메서드를 실행 - 이 때 MemberEntity 클래스의 인스턴스를 생성
+    // - 이 인스턴스의 toMemberEntity 메서드를 실행 한 후
     public static MemberEntity toMemberEntity(MemberDTO memberDTO) {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setMemberEmail(memberDTO.getMemberEmail());
