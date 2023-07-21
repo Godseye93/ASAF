@@ -1,0 +1,9 @@
+<resources>
+
+    <!-- 기본 폰트를 포함하는 스타일 정의 -->
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:fontFamily">@font/custom_font_family</item>
+        <!-- 기타 필요한 스타일 속성들 -->
+    </style>
+
+</resources>
