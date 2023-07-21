@@ -6,15 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-@RequiredArgsConstructor // memberService 필드를 초기화하는 생성자를 자동으로 생성해 준다.
-public class MemberController {
+@RequiredArgsConstructor
+public class ProController {
     // 생성자 주입
     private final MemberService memberService;
 
