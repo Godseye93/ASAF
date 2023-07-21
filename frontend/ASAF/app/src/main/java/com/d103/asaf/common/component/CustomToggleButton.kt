@@ -44,10 +44,21 @@ class CustomToggleButton @JvmOverloads constructor(
         }
     }
 
-    private fun moveViewToTarget(movingView: View, targetView: TextView) {
-        // 클릭을 불가능하게
-        targetView.isClickable = false
+    fun setFirstButtonClickListener(function: () -> Unit) {
+        function()
+        moveViewToTarget(cardViewFocus, seatText)
+    }
 
+    fun setSecondButtonClickListener(function: () -> Unit) {
+        function()
+        moveViewToTarget(cardViewFocus, lockerText)
+    }
+
+    fun setThirdButtonClickListener(function: () -> Unit) {
+        function()
+        moveViewToTarget(cardViewFocus, moneyText)
+    }
+    private fun moveViewToTarget(movingView: View, targetView: TextView) {
         // targetView의 좌표와 movingView의 좌표를 구함
         val targetX = targetView.x + 5f
         val movingX = movingView.x
@@ -61,9 +72,11 @@ class CustomToggleButton @JvmOverloads constructor(
 
         translateAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    targetView.isClickable = true
-                }, 100)
+                seatText.isClickable = true
+                lockerText.isClickable = true
+                moneyText.isClickable = true
+                // 선택된 뷰는 클릭 불가능하게
+                targetView.isClickable = false
             }
 
             override fun onAnimationEnd(animation: Animation) {
