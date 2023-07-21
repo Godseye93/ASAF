@@ -19,11 +19,11 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/member/save") // 회원가입 버튼 누를 시 MemberController - MemberService - MemberEntity 순으로 참고해서 실행
-    public ResponseEntity<Void> save(@ModelAttribute MemberDTO memberDTO) { // 이메일, 비밀번호, 이름이 memberDTO 에 담긴다.
+    public ResponseEntity<String> save(@ModelAttribute MemberDTO memberDTO) { // 이메일, 비밀번호, 이름이 memberDTO 에 담긴다.
         System.out.println("MemberController.save");
         System.out.println("memberDTO = " + memberDTO);
         memberService.save(memberDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return new ResponseEntity<>("회원가입 성공", HttpStatus.OK);
     }
 
     @PostMapping("/member/login")
@@ -58,22 +58,22 @@ public class MemberController {
 
 
     @PostMapping("/member/update")
-    public String update(@ModelAttribute MemberDTO memberDTO) {
+    public ResponseEntity<MemberDTO> update(@ModelAttribute MemberDTO memberDTO) {
         memberService.update(memberDTO);
-        return "redirect:/member/" + memberDTO.getId();
+        return new ResponseEntity<>(memberDTO, HttpStatus.OK);
     }
 
     @GetMapping("/member/delete/{id}")
-    public String deleteById(@PathVariable Long id) {
+    public ResponseEntity<String> deleteById(@PathVariable Long id) {
         memberService.deleteById(id);
-        return "redirect:/member/";
+        return new ResponseEntity<>("회원탈퇴 성공", HttpStatus.OK);
     }
 
     @GetMapping("/member/logout")
-    public String logout(HttpSession session) {
+    public ResponseEntity<String> logout(HttpSession session) {
         session.invalidate();
         System.out.println(session);
-        return "index";
+        return new ResponseEntity<>("로그아웃 성공",HttpStatus.OK);
     }
 
     @PostMapping("/member/email-check")
@@ -81,11 +81,6 @@ public class MemberController {
         System.out.println("memberEmail = " + memberEmail);
         String checkResult = memberService.emailCheck(memberEmail);
         return checkResult;
-//        if (checkResult != null) {
-//            return "ok";
-//        } else {
-//            return "no";
-//        }
     }
 
 }
