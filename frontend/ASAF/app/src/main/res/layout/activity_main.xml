@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <com.d103.asaf.ArcProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.d103.asaf.CustomToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
