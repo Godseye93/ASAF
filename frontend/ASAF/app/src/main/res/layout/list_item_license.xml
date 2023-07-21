@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/body_text"
+            android:id="@+id/list_item_license_tvTitle"
+            tools:text="CircleImageView for Android"
+            android:text="Circle Image for Android"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/explain_text"
+            android:id="@+id/list_item_license_tvLink"
+            android:layout_marginStart="16dp"
+            tools:text="https://github.com/hdodenhof/CircleImageView"
+            android:text="https://github.com/hdodenhof/CircleImageView"
+            android:autoLink="web" />
+
+        <TextView
+            style="@style/explain_text"
+            android:id="@+id/list_item_license_tvCopyright"
+            android:layout_marginStart="16dp"
+            android:text="(Copyright) 2012. hdodenhof"
+            tools:text="(Copyright) 2012. hdodenhof" />
+
+        <TextView
+            style="@style/explain_text"
+            android:id="@+id/list_item_license_tvLicense"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            tools:text="Apache License 2.0"
+            android:text="Apache License 2.0"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/body_text"
+            android:id="@+id/list_item_license_tvTitle2"
+            android:text="DonutProgressBar for Android"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/explain_text"
+            android:id="@+id/list_item_license_tvLink2"
+            android:layout_marginStart="16dp"
+            android:text="https://github.com/futuredapp/donut"
+            android:autoLink="web" />
+
+        <TextView
+            style="@style/explain_text"
+            android:id="@+id/list_item_license_tvCopyright2"
+            android:layout_marginStart="16dp"
+            android:text="Copyright (c) 2020 Futured apps s.r.o." />
+
+        <TextView
+            style="@style/explain_text"
+            android:id="@+id/list_item_license_tvLicense2"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="MIT License"/>
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
