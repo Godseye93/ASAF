@@ -3,6 +3,8 @@ package com.codingrecipe.member.controller;
 import com.codingrecipe.member.dto.MemberDTO;
 import com.codingrecipe.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,59 +18,44 @@ public class MemberController {
     // 생성자 주입
     private final MemberService memberService;
 
-    @GetMapping("/member/save")
-    public String saveForm() {
-        return "save";
-    } // 회원가입 페이지로 이동
-
     @PostMapping("/member/save") // 회원가입 버튼 누를 시 MemberController - MemberService - MemberEntity 순으로 참고해서 실행
-    public String save(@ModelAttribute MemberDTO memberDTO) { // 이메일, 비밀번호, 이름이 memberDTO 에 담긴다.
+    public ResponseEntity<Void> save(@ModelAttribute MemberDTO memberDTO) { // 이메일, 비밀번호, 이름이 memberDTO 에 담긴다.
         System.out.println("MemberController.save");
         System.out.println("memberDTO = " + memberDTO);
         memberService.save(memberDTO);
-        return "login"; // 로그인 페이지로 이동 (이 때 주소는 /member/save 그대로이다.)
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/member/login")
-    public String loginForm() {
-        return "login";
-    } // 로그인 페이지로 이동
-
     @PostMapping("/member/login")
-    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
+    public ResponseEntity<String> login(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             // login 성공
             session.setAttribute("loginEmail", loginResult.getMemberEmail());
-            return "main";
+            // ResponseEntity 상태코드 반환 추가 (HttpStatus.OK: 200)
+            return ResponseEntity.status(HttpStatus.OK).body("로그인 성공!");
         } else {
             // login 실패
-            return "login";
+            // ResponseEntity 상태코드 반환 추가 (HttpStatus.UNAUTHORIZED: 401)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패!");
         }
     }
 
+
     @GetMapping("/member/")
-    public String findAll(Model model) {
+    public ResponseEntity<List<MemberDTO>> findAll() {
         List<MemberDTO> memberDTOList = memberService.findAll();
-        // 어떠한 html로 가져갈 데이터가 있다면 model사용
-        model.addAttribute("memberList", memberDTOList);
-        return "list";
+
+        return new ResponseEntity<>(memberDTOList, HttpStatus.OK);
     }
 
     @GetMapping("/member/{id}")
-    public String findById(@PathVariable Long id, Model model) {
+    public ResponseEntity<MemberDTO> findById(@PathVariable Long id) {
         MemberDTO memberDTO = memberService.findById(id);
-        model.addAttribute("member", memberDTO);
-        return "detail";
+
+        return new ResponseEntity<>(memberDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/member/update")
-    public String updateForm(HttpSession session, Model model) {
-        String myEmail = (String) session.getAttribute("loginEmail");
-        MemberDTO memberDTO = memberService.updateForm(myEmail);
-        model.addAttribute("updateMember", memberDTO);
-        return "update";
-    }
 
     @PostMapping("/member/update")
     public String update(@ModelAttribute MemberDTO memberDTO) {

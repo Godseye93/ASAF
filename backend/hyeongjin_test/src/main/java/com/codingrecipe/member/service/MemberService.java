@@ -91,10 +91,10 @@ public class MemberService {
         Optional<MemberEntity> byMemberEmail = memberRepository.findByMemberEmail(memberEmail);
         if (byMemberEmail.isPresent()) {
             // 조회결과가 있다 -> 사용할 수 없다.
-            return null;
+            return "중복된 이메일이 존재합니다.";
         } else {
             // 조회결과가 없다 -> 사용할 수 있다.
-            return "ok";
+            return "사용가능 한 이메일입니다.";
         }
     }
 }
