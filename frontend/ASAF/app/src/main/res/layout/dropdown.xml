@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="140dp"
+        android:layout_height="70dp"
+        android:backgroundTint="#F5F4FB">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="15dp">
+
+            <TextView
+                android:id="@+id/dropdown_textview_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.45"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:textColor="#5533FF"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="1반"
+                tools:text="1반"/>
+
+            <ImageView
+                android:id="@+id/dropdown_imageview_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/dropdown_arrow"
+                android:layout_weight="0.55"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dropdown_recyclerview"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        tools:listitem="@layout/dropdown_item"
+        tools:itemCount="3"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
