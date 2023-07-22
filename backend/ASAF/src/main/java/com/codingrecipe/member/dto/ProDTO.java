@@ -35,6 +35,7 @@ public class ProDTO {
         proDTO.setProEmail(proEntity.getProEmail());
         proDTO.setPhone_number(proEntity.getPhone_number());
         proDTO.setProfile_image(proEntity.getProfile_image());
+        proDTO.setPassword(proEntity.getPassword());
         return proDTO;
     }
 }
