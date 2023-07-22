@@ -1,4 +1,4 @@
-package com.d103.asaf
+package com.d103.asaf.common.component.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import java.lang.Integer.min
+import com.d103.asaf.R
 
 class DropdownAdapter(private val dropdownList: MutableList<String>,
                       private val currentText: TextView, private val recycler: RecyclerView) : RecyclerView.Adapter<DropdownAdapter.ViewHolder>() {

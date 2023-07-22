@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.d103.asaf.CustomToggleButton
+    <com.d103.asaf.common.component.CustomToggleButton
         android:id="@+id/customToggleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,12 +14,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.d103.asaf.SearchBar
+    <com.d103.asaf.common.component.SearchBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView" />
 
-    <com.d103.asaf.Dropdown
+    <com.d103.asaf.common.component.Dropdown
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

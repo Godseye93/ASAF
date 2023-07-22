@@ -1,4 +1,4 @@
-package com.d103.asaf
+package com.d103.asaf.common.component
 
 import android.content.Context
 import android.util.AttributeSet
@@ -11,6 +11,8 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.d103.asaf.R
+import com.d103.asaf.common.component.adapter.DropdownAdapter
 
 class Dropdown @JvmOverloads constructor(
     context: Context,

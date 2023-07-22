@@ -1,9 +1,7 @@
-package com.d103.asaf
+package com.d103.asaf.common.component
 
 import android.content.Context
 import android.graphics.Color
-import android.os.Handler
-import android.os.Looper
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
@@ -11,6 +9,7 @@ import android.view.animation.TranslateAnimation
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import com.d103.asaf.R
 
 class CustomToggleButton @JvmOverloads constructor(
     context: Context,
