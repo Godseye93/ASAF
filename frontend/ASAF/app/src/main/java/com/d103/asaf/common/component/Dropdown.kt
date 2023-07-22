@@ -1,6 +1,7 @@
 package com.d103.asaf.common.component
 
 import android.content.Context
+import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.EditText
@@ -18,7 +19,7 @@ class Dropdown @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-    var isClicked: Boolean = true
+    var isClicked:Boolean = true
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     val dropdownText: TextView
@@ -36,7 +37,7 @@ class Dropdown @JvmOverloads constructor(
         dropdownText = findViewById(R.id.dropdown_textview_text)
         dropdownBtn = findViewById(R.id.dropdown_imageview_button)
         dropdownList = findViewById(R.id.dropdown_recyclerview)
-        adapter = DropdownAdapter(dataList, dropdownText, dropdownList)
+        adapter = DropdownAdapter(dataList, this)
         dropdownList.adapter = adapter
 
         dropdownBtn.setOnClickListener {
