@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import java.lang.Integer.min
 
 class DropdownAdapter(private val dropdownList: MutableList<String>,
                       private val currentText: TextView, private val recycler: RecyclerView) : RecyclerView.Adapter<DropdownAdapter.ViewHolder>() {

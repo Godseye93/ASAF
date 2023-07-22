@@ -22,9 +22,11 @@ class Dropdown @JvmOverloads constructor(
     val dropdownText: TextView
     val dropdownBtn: ImageView
     val dropdownList: RecyclerView
-    var dataList = mutableListOf("2반", "3반")
-
+    var dataList = mutableListOf("2반", "3반", "4반", "5반")
+    val adapter : DropdownAdapter
     init {
+        // 사이즈 2칸 고정
+
         // Inflate XML layout resource
         inflate(context, R.layout.dropdown, this)
 
@@ -32,14 +34,18 @@ class Dropdown @JvmOverloads constructor(
         dropdownText = findViewById(R.id.dropdown_textview_text)
         dropdownBtn = findViewById(R.id.dropdown_imageview_button)
         dropdownList = findViewById(R.id.dropdown_recyclerview)
-        dropdownList.adapter = DropdownAdapter(dataList, dropdownText, dropdownList)
+        adapter = DropdownAdapter(dataList, dropdownText, dropdownList)
+        dropdownList.adapter = adapter
 
         dropdownBtn.setOnClickListener {
             dropdownList.isVisible = !dropdownList.isVisible
             if(isClicked) dropdownBtn.setImageResource(R.drawable.dropdown_arrow_up)
             else dropdownBtn.setImageResource(R.drawable.dropdown_arrow)
             isClicked = !isClicked
-            Log.d("데이터리스트", "$dataList")
+            dataList.sort()
+            dropdownList.scrollToPosition(0)
+            adapter.notifyDataSetChanged()
+            false
         }
     }
 }
