@@ -1,7 +1,7 @@
 package com.codingrecipe.member.controller;
 
-import com.codingrecipe.member.dto.MemberDTO;
-import com.codingrecipe.member.service.MemberService;
+import com.codingrecipe.member.dto.ProDTO;
+import com.codingrecipe.member.service.ProService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,25 +12,25 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-@RequiredArgsConstructor
+@RequiredArgsConstructor // proService 필드를 초기화하는 생성자를 자동으로 생성해 준다.
 public class ProController {
     // 생성자 주입
-    private final MemberService memberService;
+    private final ProService proService;
 
-    @PostMapping("/member/save") // 회원가입 버튼 누를 시 MemberController - MemberService - MemberEntity 순으로 참고해서 실행
-    public ResponseEntity<String> save(@ModelAttribute MemberDTO memberDTO) { // 이메일, 비밀번호, 이름이 memberDTO 에 담긴다.
-        System.out.println("MemberController.save");
-        System.out.println("memberDTO = " + memberDTO);
-        memberService.save(memberDTO);
+    @PostMapping("/pro/save") // 회원가입 버튼 누를 시 ProController - ProService - ProEntity 순으로 참고해서 실행
+    public ResponseEntity<String> save(@ModelAttribute ProDTO proDTO) { // 이메일, 비밀번호, 이름이 proDTO 에 담긴다.
+        System.out.println("ProController.save");
+        System.out.println("proDTO = " + proDTO);
+        proService.save(proDTO);
         return new ResponseEntity<>("회원가입 성공", HttpStatus.OK);
     }
 
-    @PostMapping("/member/login")
-    public ResponseEntity<String> login(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
-        MemberDTO loginResult = memberService.login(memberDTO);
+    @PostMapping("/pro/login")
+    public ResponseEntity<String> login(@ModelAttribute ProDTO proDTO, HttpSession session) {
+        ProDTO loginResult = proService.login(proDTO);
         if (loginResult != null) {
             // login 성공
-            session.setAttribute("loginEmail", loginResult.getMemberEmail());
+            session.setAttribute("loginEmail", loginResult.getProEmail());
             // ResponseEntity 상태코드 반환 추가 (HttpStatus.OK: 200)
             return ResponseEntity.status(HttpStatus.OK).body("로그인 성공!");
         } else {
@@ -41,53 +41,44 @@ public class ProController {
     }
 
 
-    @GetMapping("/member/")
-    public ResponseEntity<List<MemberDTO>> findAll() {
-        List<MemberDTO> memberDTOList = memberService.findAll();
+    @GetMapping("/pro/")
+    public ResponseEntity<List<ProDTO>> findAll() {
+        List<ProDTO> proDTOList = proService.findAll();
 
-        return new ResponseEntity<>(memberDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(proDTOList, HttpStatus.OK);
     }
 
-    @GetMapping("/member/{id}")
-    public ResponseEntity<MemberDTO> findById(@PathVariable Long id) {
-        MemberDTO memberDTO = memberService.findById(id);
+    @GetMapping("/pro/{id}")
+    public ResponseEntity<ProDTO> findById(@PathVariable Long id) {
+        ProDTO proDTO = proService.findById(id);
 
-        return new ResponseEntity<>(memberDTO, HttpStatus.OK);
+        return new ResponseEntity<>(proDTO, HttpStatus.OK);
     }
 
 
-    @PostMapping("/member/update")
-    public ResponseEntity<MemberDTO> update(@ModelAttribute MemberDTO memberDTO) {
-        memberService.update(memberDTO);
-        return new ResponseEntity<>(memberDTO, HttpStatus.OK);
+    @PostMapping("/pro/update")
+    public ResponseEntity<ProDTO> update(@ModelAttribute ProDTO proDTO) {
+        proService.update(proDTO);
+        return new ResponseEntity<>(proDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/member/delete/{id}")
+    @GetMapping("/pro/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
-        memberService.deleteById(id);
+        proService.deleteById(id);
         return new ResponseEntity<>("회원탈퇴 성공", HttpStatus.OK);
     }
 
-    @GetMapping("/member/logout")
+    @GetMapping("/pro/logout")
     public ResponseEntity<String> logout(HttpSession session) {
         session.invalidate();
         System.out.println(session);
         return new ResponseEntity<>("로그아웃 성공",HttpStatus.OK);
     }
 
-    @PostMapping("/member/email-check")
-    public @ResponseBody String emailCheck(@RequestParam("memberEmail") String memberEmail) {
-        System.out.println("memberEmail = " + memberEmail);
-        String checkResult = memberService.emailCheck(memberEmail);
+    @PostMapping("/pro/email-check")
+    public @ResponseBody String emailCheck(@RequestParam("proEmail") String proEmail) {
+        System.out.println("proEmail = " + proEmail);
+        String checkResult = proService.emailCheck(proEmail);
         return checkResult;
     }
 }
-
-
-
-
-
-
-
-
-
