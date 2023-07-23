@@ -1,83 +1,98 @@
+// 이것은 패키지 선언이며, 현재 클래스가 com.codingrecipe.member.controller 패키지에 속함을 나타냅니다.
+// 패키지는 관련된 클래스들을 그룹화하고 캡슐화하는 데 도움이 됩니다.
 package com.codingrecipe.member.controller;
-
+// 프로젝트에서 정의한 ProDTO 클래스를 사용하기 위함입니다.
 import com.codingrecipe.member.dto.ProDTO;
+// 프로젝트에서 정의한 ProService 클래스를 사용하기 위함입니다.
 import com.codingrecipe.member.service.ProService;
+// Lombok 라이브러리를 사용하여 생성자를 자동화하기 위함입니다
 import lombok.RequiredArgsConstructor;
+// Spring 프레임워크에서 사용되는 클래스들입니다.
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+// HttpSession 클래스를 사용하기 위함입니다. 세션 관리와 관련된 기능을 제공합니다.
 import javax.servlet.http.HttpSession;
+// Java의 기본 List 인터페이스를 사용하기 위함입니다.
 import java.util.List;
 
+// @Controller 어노테이션은 이 클래스가 Spring 프레임워크 컨트롤러 컴포넌트임을 나타냅니다.
+// 이 어노테이션을 사용하면 Spring이 이 클래스를 관리하게 되고, 웹 요청을 처리하는 데 사용됩니다.
+// @RequiredArgsConstructor 어노테이션은 Lombok 라이브러리의 기능 중 하나입니다.
+// 이 어노테이션은 클래스에 final 필드나 @NonNull 필드에 대한 생성자를 자동으로 생성해줍니다.
+// 이를 통해 생성자 작성을 생략할 수 있어 코드를 더 간결하게 만들 수 있습니다.
 @Controller
-@RequiredArgsConstructor // proService 필드를 초기화하는 생성자를 자동으로 생성해 준다.
+@RequiredArgsConstructor
 public class ProController {
-    // 생성자 주입
+    // ProService 인스턴스를 final로 선언하며 생성자 주입을 이용해 주입받습니다.
     private final ProService proService;
 
-    @PostMapping("/pro/save") // 회원가입 버튼 누를 시 ProController - ProService - ProEntity 순으로 참고해서 실행
-    public ResponseEntity<String> save(@ModelAttribute ProDTO proDTO) { // 이메일, 비밀번호, 이름이 proDTO 에 담긴다.
-        System.out.println("ProController.save");
-        System.out.println("proDTO = " + proDTO);
+    // 회원가입 정보를 저장하기 위한 요청을 처리합니다. 클라이언트가 회원가입 정보를 전송할 때, 이 메서드가 호출됩니다.
+    // 전달받은 DTO 객체를 이용해 회원 정보를 저장하고, 회원가입 결과를 ResponseEntity 형태로 반환합니다.
+    @PostMapping("/pro/save")
+    public ResponseEntity<String> save(@ModelAttribute ProDTO proDTO) {
         proService.save(proDTO);
         return new ResponseEntity<>("회원가입 성공", HttpStatus.OK);
     }
 
+    // 사용자 로그인을 처리하는 요청을 처리합니다.
+    // 전달받은 DTO 객체를 이용해 로그인 결과를 확인하고, 해당 결과에 따라 세션 정보를 설정하거나 반환합니다.
     @PostMapping("/pro/login")
     public ResponseEntity<String> login(@ModelAttribute ProDTO proDTO, HttpSession session) {
         ProDTO loginResult = proService.login(proDTO);
         if (loginResult != null) {
-            // login 성공
             session.setAttribute("loginEmail", loginResult.getProEmail());
-            // ResponseEntity 상태코드 반환 추가 (HttpStatus.OK: 200)
             return ResponseEntity.status(HttpStatus.OK).body("로그인 성공!");
         } else {
-            // login 실패
-            // ResponseEntity 상태코드 반환 추가 (HttpStatus.UNAUTHORIZED: 401)
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패!");
         }
     }
 
-
+    // 모든 회원의 정보를 조회하는 요청을 처리합니다.
+    // 모든 회원의 정보를 조회하고, 그 결과를 ResponseEntity 형태로 반환합니다.
     @GetMapping("/pro/")
     public ResponseEntity<List<ProDTO>> findAll() {
         List<ProDTO> proDTOList = proService.findAll();
-
         return new ResponseEntity<>(proDTOList, HttpStatus.OK);
     }
 
+    // 특정 회원의 정보를 조회하는 요청을 처리합니다.
+    // 전달받은 id를 이용해 회원의 정보를 조회하고, 그 결과를 ResponseEntity 형태로 반환합니다.
     @GetMapping("/pro/{id}")
     public ResponseEntity<ProDTO> findById(@PathVariable Long id) {
         ProDTO proDTO = proService.findById(id);
-
         return new ResponseEntity<>(proDTO, HttpStatus.OK);
     }
 
-
+    // 회원 정보를 수정하는 요청을 처리합니다.
+    // 전달받은 DTO 객체를 이용해 회원 정보를 수정하고, 수정된 결과를 ResponseEntity 형태로 반환합니다.
     @PostMapping("/pro/update")
     public ResponseEntity<ProDTO> update(@ModelAttribute ProDTO proDTO) {
         proService.update(proDTO);
         return new ResponseEntity<>(proDTO, HttpStatus.OK);
     }
 
+    // 특정 회원의 정보를 삭제하는 요청을 처리합니다.
+    // 전달받은 id를 이용해 회원의 정보를 삭제하고, 결과를 ResponseEntity 형태로 반환합니다.
     @GetMapping("/pro/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         proService.deleteById(id);
         return new ResponseEntity<>("회원탈퇴 성공", HttpStatus.OK);
     }
 
+    // 로그아웃 요청을 처리합니다.
+    // 로그아웃 처리를 위해 세션을 무효화하고, 결과를 ResponseEntity 형태로 반환합니다.
     @GetMapping("/pro/logout")
     public ResponseEntity<String> logout(HttpSession session) {
         session.invalidate();
-        System.out.println(session);
         return new ResponseEntity<>("로그아웃 성공",HttpStatus.OK);
     }
 
+    // 이메일 중복 확인 요청을 처리합니다.
+    // 전달받은 이메일을 이용해 중복 확인을 진행하고, 그 결과를 문자열 형태로 반환합니다.
     @PostMapping("/pro/email-check")
     public @ResponseBody String emailCheck(@RequestParam("proEmail") String proEmail) {
-        System.out.println("proEmail = " + proEmail);
         String checkResult = proService.emailCheck(proEmail);
         return checkResult;
     }

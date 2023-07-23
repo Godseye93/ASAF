@@ -18,8 +18,8 @@ import javax.persistence.*;
 @Getter
 @Table(name = "pro_table")
 public class ProEntity {
-    @Id // pk 지정
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -28,7 +28,7 @@ public class ProEntity {
     @Column(unique = true)
     private Long pro_number;
 
-    @Column(unique = true) // unique 제약조건 추가
+    @Column(unique = true)
     private String proEmail;
 
     @Column
@@ -39,7 +39,6 @@ public class ProEntity {
 
     @Column
     private String profile_image;
-
 
     //  ProDTO 객체를 데이터베이스에 저장하거나 업데이트하기 위해 ProEntity로 변환해줍니다.
     public static ProEntity toProEntity(ProDTO proDTO) {
