@@ -31,12 +31,36 @@ public class MemberEntity {
     @Column
     private String memberName;
 
+    @Column(unique = true)
+    private String student_number;
+
+    @Column
+    private String birth_date;
+
+    @Column
+    private String phone_number;
+
+    @Column
+    private String profile_image;
+
+    @Column
+    private String electronic_student_id;
+
+    @Column
+    private String team_num;
+
     //  MemberDTO 객체를 데이터베이스에 저장하거나 업데이트하기 위해 MemberEntity로 변환해줍니다.
     public static MemberEntity toMemberEntity(MemberDTO memberDTO) {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setMemberEmail(memberDTO.getMemberEmail());
         memberEntity.setMemberPassword(memberDTO.getMemberPassword());
         memberEntity.setMemberName(memberDTO.getMemberName());
+        memberEntity.setStudent_number(memberDTO.getStudent_number());
+        memberEntity.setBirth_date(memberDTO.getBirth_date());
+        memberEntity.setPhone_number(memberDTO.getPhone_number());
+        memberEntity.setProfile_image(memberDTO.getProfile_image());
+        memberEntity.setElectronic_student_id(memberDTO.getElectronic_student_id());
+        memberEntity.setTeam_num(memberDTO.getTeam_num());
         return memberEntity;
     }
 
@@ -46,6 +70,12 @@ public class MemberEntity {
         memberEntity.setMemberEmail(memberDTO.getMemberEmail());
         memberEntity.setMemberPassword(memberDTO.getMemberPassword());
         memberEntity.setMemberName(memberDTO.getMemberName());
+        memberEntity.setStudent_number(memberDTO.getStudent_number());
+        memberEntity.setBirth_date(memberDTO.getBirth_date());
+        memberEntity.setPhone_number(memberDTO.getPhone_number());
+        memberEntity.setProfile_image(memberDTO.getProfile_image());
+        memberEntity.setElectronic_student_id(memberDTO.getElectronic_student_id());
+        memberEntity.setTeam_num(memberDTO.getTeam_num());
         return memberEntity;
     }
 
