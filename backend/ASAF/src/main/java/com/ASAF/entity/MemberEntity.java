@@ -18,6 +18,11 @@ import javax.persistence.*;
 @Getter
 @Table(name = "member_table")
 public class MemberEntity {
+
+    // mappedBy를 지정하여 양방향 관계를 매핑하고 @OneToOne 어노테이션에 cascade 옵션을 추가하여 연관 엔티티에서 변경이 있을 때 영향이 전파되도록 합니다.
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
+    private AttendanceEntity attendance;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -61,6 +66,11 @@ public class MemberEntity {
         memberEntity.setProfile_image(memberDTO.getProfile_image());
         memberEntity.setElectronic_student_id(memberDTO.getElectronic_student_id());
         memberEntity.setTeam_num(memberDTO.getTeam_num());
+        // 학생 생성 시 AttendanceEntity도 함께 생성합니다.
+        AttendanceEntity attendanceEntity = new AttendanceEntity();
+        // 참조필드 세팅 및 기타 필요한 초기화 진행
+        attendanceEntity.setMember(memberEntity);
+        memberEntity.setAttendance(attendanceEntity);
         return memberEntity;
     }
 

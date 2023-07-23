@@ -20,7 +20,7 @@ public class AttendanceEntity {
     private MemberEntity member;
 
     @Column(nullable = false)
-    private Boolean attended;
+    private Boolean attended = false;
 
     @Column
     private String entryTime;
