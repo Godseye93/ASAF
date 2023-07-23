@@ -11,7 +11,6 @@ import com.codingrecipe.member.entity.ProEntity;
 import com.codingrecipe.member.repository.ProRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
