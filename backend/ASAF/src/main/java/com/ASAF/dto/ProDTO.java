@@ -1,9 +1,9 @@
 // 현재 파일이 com.codingrecipe.member.dto 패키지에 포함되어 있음을 나타냅니다.
 // 이 패키지는 주로 데이터 전송 객체(Data Transfer Object, DTO)를 포함하며, 계층 간 데이터 전달을 처리합니다.
-package com.codingrecipe.member.dto;
+package com.ASAF.dto;
 // ProEntity 클래스를 현재 파일에서 사용하기 위해 com.codingrecipe.member.entity 패키지에서 가져옵니다.
 // 이 클래스는 데이터베이스의 한 테이블과 매핑되는 JPA 엔티티 클래스입니다.
-import com.codingrecipe.member.entity.ProEntity;
+import com.ASAF.entity.ProEntity;
 import lombok.*;
 
 // @Getter: 각 필드에 대한 getter 메서드를 자동 생성합니다.

@@ -1,4 +1,4 @@
-package com.codingrecipe.member.entity;
+package com.ASAF.entity;
 
 import javax.persistence.*;
 import lombok.Getter;

@@ -1,9 +1,9 @@
 // 이 코드는 현재 파일이 com.codingrecipe.member.entity 패키지에 속해 있다는 것을 나타냅니다.
 // 이 패키지는 주로 엔티티 클래스를 포함하며, 데이터베이스 테이블과 객체 간에 매핑을 담당합니다.
-package com.codingrecipe.member.entity;
+package com.ASAF.entity;
 // MemberDTO 클래스를 현재 파일에서 사용하기 위해 com.codingrecipe.member.dto 패키지에서 가져옵니다.
 // 이 클래스는 데이터 전송 객체(Data Transfer Object)의 역할을 합니다.
-import com.codingrecipe.member.dto.MemberDTO;
+import com.ASAF.dto.MemberDTO;
 // lombok.Getter와 lombok.Setter가 가져옵니다. Lombok 라이브러리는 Java의 보일러플레이트 코드를 줄이기 위하여 사용되며,
 // @Getter와 @Setter 어노테이션으로 getter와 setter 메서드를 자동 생성할 수 있습니다.
 import lombok.Getter;

@@ -1,7 +1,7 @@
 // 현재 파일이 com.codingrecipe.member.repository 패키지에 속함을 나타냅니다.
-package com.codingrecipe.member.repository;
+package com.ASAF.repository;
 // ProEntity 클래스를 현재 파일에서 사용하기 위해 com.codingrecipe.member.entity 패키지에서 가져옵니다.
-import com.codingrecipe.member.entity.ProEntity;
+import com.ASAF.entity.ProEntity;
 // Spring Data JPA의 JpaRepository 인터페이스를 가져옵니다. 이 인터페이스를 상속함으로써 기본적인 CRUD 연산을 제공받을 수 있습니다.
 import org.springframework.data.jpa.repository.JpaRepository;
 // java.util 패키지의 Optional 클래스를 가져옵니다. 이 클래스는 값을 포함하거나 포함하지 않을 수 있는 컨테이너 객체를 제공하며,
