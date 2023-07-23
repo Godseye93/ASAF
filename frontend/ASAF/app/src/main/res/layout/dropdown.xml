@@ -47,6 +47,6 @@
         android:visibility="invisible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="3"
-        tools:listitem="@layout/dropdown_item" />
+        tools:listitem="@layout/item_dropdown" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

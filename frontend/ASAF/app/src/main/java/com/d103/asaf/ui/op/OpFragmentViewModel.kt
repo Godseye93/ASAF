@@ -6,17 +6,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class OpFragmentViewModel: ViewModel() {
-//    private val _rooms: MutableStateFlow<List<Room>> = MutableStateFlow(emptyList())
-//    val rooms = _rooms
+//    private val _seat : MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
+//    val seat = _seat
 //
 //    init {
-//        loadRooms()
+//        loadSeats()
 //    }
 //
-//    private fun loadRooms() {
+//    private fun loadSeats() {
 //        viewModelScope.launch {
-//            ApplicationClass.fireStore.getRoom().collect() {
-//                _rooms.emit(it)
+//            ApplicationClass.fireStore.getSeat().collect() {
+//                _seat.emit(it)
 //            }
 //        }
 //    }
