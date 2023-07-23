@@ -1,14 +1,14 @@
 // 현재 파일이 com.codingrecipe.member.service 패키지에 포함되어 있음을 나타냅니다.
 // 이 패키지는 주로 Service 계층의 클래스들을 포함하며, 비즈니스 로직을 처리합니다.
-package com.codingrecipe.member.service;
+package com.ASAF.service;
 // 이 구문은 다른 패키지에 있는 클래스를 현재 파일에서 사용할 수 있도록 가져옵니다
 // MemberDTO 클래스를 가져옵니다.
 // MemberEntity 클래스를 가져옵니다.
 // MemberRepository 인터페이스를 가져옵니다.
 // Lombok 및 Spring에 관련된 클래스와 어노테이션도 가져옵니다.
-import com.codingrecipe.member.dto.MemberDTO;
-import com.codingrecipe.member.entity.MemberEntity;
-import com.codingrecipe.member.repository.MemberRepository;
+import com.ASAF.dto.MemberDTO;
+import com.ASAF.repository.MemberRepository;
+import com.ASAF.entity.MemberEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
