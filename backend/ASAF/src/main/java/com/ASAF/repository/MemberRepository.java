@@ -14,4 +14,5 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     // 이메일로 회원 정보를 조회합니다. (JPA 내부 메서드)
     Optional<MemberEntity> findByMemberEmail(String memberEmail);
+
 }
