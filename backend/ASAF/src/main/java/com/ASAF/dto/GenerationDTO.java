@@ -11,7 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class GenerationDTO {
-    private Long generation_code;
+    private int generation_code;
     private String generation_num;
 
     public static GenerationDTO toGenerationDTO(GenerationEntity generationEntity) {
