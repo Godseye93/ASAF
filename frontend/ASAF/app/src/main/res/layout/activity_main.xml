@@ -6,81 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.d103.asaf.ArcProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <com.d103.asaf.CustomToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/maplestory_bold"
-        android:text="안녕하세요"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.299" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="제목"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/maplestory_light"
-        android:text="안녕"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.538" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.651" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="안녕하세요"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.574" />
-
     <com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
-        android:id="@+id/bottomNavigationView"
+        android:id="@+id/bottom_navi_pro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        app:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/pro_menu_main_bottom"
-        app:backgroundTint="@color/white"
         app:morphCornerRadius="128dp"
         app:morphItemRadius="64dp"
         app:morphVerticalOffset="8dp"
+        tools:layout_editor_absoluteX="0dp" />
+    <com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
+        android:id="@+id/bottom_navi_student"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/student_menu_main_bottom"
+        app:morphCornerRadius="128dp"
+        app:morphItemRadius="64dp"
+        app:morphVerticalOffset="8dp"
+        tools:layout_editor_absoluteX="0dp" />
 
-        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
