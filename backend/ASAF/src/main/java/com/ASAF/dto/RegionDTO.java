@@ -18,9 +18,4 @@ public class RegionDTO {
         classDTO.setRegion_name(classEntity.getRegion_name());
         return classDTO;
     }
-
-
-
-
-
 }
