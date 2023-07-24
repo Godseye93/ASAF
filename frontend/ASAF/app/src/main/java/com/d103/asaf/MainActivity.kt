@@ -41,6 +41,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             "프로" -> {
                 binding.bottomNaviPro.visibility = View.VISIBLE
                 binding.bottomNaviStudent.visibility = View.GONE
+
+                val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+                val navController = navHostFragment.navController
+                val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+                val bottomNavigationView = findViewById<MorphBottomNavigationView>(R.id.bottom_navi_pro)
+                bottomNavigationView.setupWithNavController(navController)
+
 //                val bottomNavView = findViewById<MorphBottomNavigationView>(R.id.bottomNavigationView)
 //                navController = Navigation.findNavController(this, R.id.nav_graph)
 //

@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@+id/navigation_pro_home">
+    app:startDestination="@+id/ProhomeFragment">
 
     <fragment
-        android:id="@+id/navigation_pro_home"
+        android:id="@+id/ProhomeFragment"
         android:name="com.d103.asaf.ui.home.pro.ProHomeFragment"
         android:label="ProHome"
         tools:layout="@layout/fragment_pro_home"/>
@@ -17,12 +17,12 @@
         android:label="StudentHome"
         tools:layout="@layout/fragment_student_home"/>
     <fragment
-        android:id="@+id/navigation_bus"
+        android:id="@+id/busFragment"
         android:name="com.d103.asaf.ui.bus.BusFragment"
         android:label="Bus"
         tools:layout="@layout/fragment_bus"/>
     <fragment
-        android:id="@+id/navigation_library_management"
+        android:id="@+id/bookManageMentFragment"
         android:name="com.d103.asaf.ui.library.pro.LibraryManagementFragment"
         android:label="LibarayManagement"
         tools:layout="@layout/fragment_library_management"/>
@@ -42,12 +42,12 @@
         android:label="Noti"
         tools:layout="@layout/fragment_noti"/>
     <fragment
-        android:id="@+id/navigation_op"
+        android:id="@+id/operationFragment"
         android:name="com.d103.asaf.ui.op.OpFragment"
         android:label="Operation"
         tools:layout="@layout/fragment_op"/>
     <fragment
-        android:id="@+id/navigation_schedule"
+        android:id="@+id/scheduleFragment"
         android:name="com.d103.asaf.ui.schedule.ScheduleFragment"
         android:label="Schedule"
         tools:layout="@layout/fragment_schedule"/>
