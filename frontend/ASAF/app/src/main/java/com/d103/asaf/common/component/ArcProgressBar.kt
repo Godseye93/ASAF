@@ -1,4 +1,4 @@
-package com.d103.asaf
+package com.d103.asaf.common.component
 
 import android.content.Context
 import android.graphics.Color
@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.TextView
 import app.futured.donut.DonutProgressView
+import com.d103.asaf.R
 
 class ArcProgressBar @JvmOverloads constructor(
     context: Context,

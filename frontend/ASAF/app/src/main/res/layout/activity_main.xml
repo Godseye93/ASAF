@@ -18,6 +18,7 @@
         app:morphItemRadius="64dp"
         app:morphVerticalOffset="8dp"
         tools:layout_editor_absoluteX="0dp" />
+
     <com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
         android:id="@+id/bottom_navi_student"
         android:layout_width="match_parent"
@@ -30,8 +31,5 @@
         app:morphItemRadius="64dp"
         app:morphVerticalOffset="8dp"
         tools:layout_editor_absoluteX="0dp" />
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
