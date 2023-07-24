@@ -11,20 +11,19 @@ import com.d103.asaf.common.component.SeatView
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentSeatBinding
 
-class SeatFragment : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bind, R.layout.fragment_seat) {
+class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bind, R.layout.fragment_seat) {
     private lateinit var targetView: SeatView
     private var startX = 0
     private var startY = 0
     private var offsetX = 0
     private var offsetY = 0
+    private val num = 5
     private var targetViewIndex = 20
-    private var position : MutableList<Int> = mutableListOf()
+    private var position: MutableList<Int> = mutableListOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // 위치(index) - 그리드레이아웃(element) 리스트
-        for(i in 0 .. 15) position.add(i)
+        for(i in 0 until 5*5) position.add(i)
 
         val gridLayout = binding.gridLayout
         targetView = binding.item1 // 아무 아이템이나 같은 크기이므로 넣어주면 됨 사이즈 계산에만 사용
@@ -51,15 +50,15 @@ class SeatFragment : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bind
         val rowHeight = targetView.height
         val columnIndex = x / columnWidth
         val rowIndex = y / rowHeight
-        Log.d("스왑계산", "계산 : ${rowIndex * 4 + columnIndex}")
-        return rowIndex * 4 + columnIndex
+        Log.d("스왑계산", "계산 : ${rowIndex * num + columnIndex}")
+        return rowIndex * num + columnIndex
     }
 
     private fun moveImageViewToGridPosition(cur: SeatView, newIndex: Int) {
         val columnWidth = targetView.width
         val rowHeight = targetView.height
-        val columnIndex = newIndex % 4
-        val rowIndex = newIndex / 4
+        val columnIndex = newIndex % num
+        val rowIndex = newIndex / num
         val newX = columnIndex * columnWidth
         val newY = rowIndex * rowHeight
         moveImageViewToPosition(cur, newX, newY)

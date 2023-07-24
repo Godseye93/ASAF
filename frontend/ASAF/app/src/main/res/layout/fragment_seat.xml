@@ -3,176 +3,247 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
 
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:columnCount="4"
-        android:rowCount="4"
+        android:columnCount="5"
+        android:rowCount="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/seat_add"
         tools:context=".ui.home.SeatFragment">
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:id="@+id/item1"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_row="0"
             android:layout_rowWeight="1"
-            android:layout_column="0"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="0" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_row="0"
-            android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="1" />
-
-        <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="2" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="3" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="4" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="5" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="6" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="7" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="8" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="9" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="10" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="11" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="12" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="13" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:tag="14" />
+            android:layout_gravity="fill"/>
 
         <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_gravity="fill"
-            android:src="@drawable/ic_launcher_foreground"
-            android:tag="15" />
+            android:layout_gravity="fill"/>
+
+        <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <com.d103.asaf.common.component.SeatView
+            android:padding="1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
     </GridLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/outlinedButton"
+        android:id="@+id/seat_add"
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:text="자리추가"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/outlinedButton2"
+        app:layout_constraintEnd_toStartOf="@+id/seat_complete"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/outlinedButton2"
+        android:id="@+id/seat_complete"
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="랜덤배치"
+        android:layout_margin="5dp"
+        android:text="배치완료"
         android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/seat_add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/outlinedButton"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
