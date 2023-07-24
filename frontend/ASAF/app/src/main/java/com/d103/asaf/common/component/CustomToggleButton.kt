@@ -44,18 +44,24 @@ class CustomToggleButton @JvmOverloads constructor(
     }
 
     fun setFirstButtonClickListener(function: () -> Unit) {
-        function()
-        moveViewToTarget(cardViewFocus, seatText)
+        seatText.setOnClickListener {
+            function()
+            moveViewToTarget(cardViewFocus, seatText)
+        }
     }
 
     fun setSecondButtonClickListener(function: () -> Unit) {
-        function()
-        moveViewToTarget(cardViewFocus, lockerText)
+        lockerText.setOnClickListener {
+            function()
+            moveViewToTarget(cardViewFocus, lockerText)
+        }
     }
 
     fun setThirdButtonClickListener(function: () -> Unit) {
-        function()
-        moveViewToTarget(cardViewFocus, moneyText)
+        moneyText.setOnClickListener {
+            function()
+            moveViewToTarget(cardViewFocus, moneyText)
+        }
     }
     private fun moveViewToTarget(movingView: View, targetView: TextView) {
         // targetView의 좌표와 movingView의 좌표를 구함

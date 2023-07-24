@@ -21,9 +21,27 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
     private var targetViewIndex = 20
     private var position: MutableList<Int> = mutableListOf()
 
+    companion object {
+        private const val POSITION = "position"
+
+        // Factory method to create an instance of SeatFragment with position list.
+        fun instance(position: MutableList<Int>): SeatFragment {
+            val fragment = SeatFragment()
+            val args = Bundle()
+            args.putIntegerArrayList(POSITION, ArrayList(position))
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // arguments로부터 position 리스트를 가져와서 변수에 할당합니다.
+        position = requireArguments().getIntegerArrayList(POSITION) ?: mutableListOf()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        for(i in 0 until 5*5) position.add(i)
 
         val gridLayout = binding.gridLayout
         targetView = binding.item1 // 아무 아이템이나 같은 크기이므로 넣어주면 됨 사이즈 계산에만 사용
