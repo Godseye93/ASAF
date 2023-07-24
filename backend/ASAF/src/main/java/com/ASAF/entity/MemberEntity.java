@@ -55,6 +55,9 @@ public class MemberEntity {
     @Column
     private String team_num;
 
+    @Column
+    private String authority;
+
     //  MemberDTO 객체를 데이터베이스에 저장하거나 업데이트하기 위해 MemberEntity로 변환해줍니다.
     public static MemberEntity toMemberEntity(MemberDTO memberDTO) {
         MemberEntity memberEntity = new MemberEntity();
@@ -67,6 +70,7 @@ public class MemberEntity {
         memberEntity.setProfile_image(memberDTO.getProfile_image());
         memberEntity.setElectronic_student_id(memberDTO.getElectronic_student_id());
         memberEntity.setTeam_num(memberDTO.getTeam_num());
+        memberEntity.setAuthority(memberDTO.getAuthority());
         // 학생 생성 시 AttendanceEntity도 함께 생성합니다.
         AttendanceEntity attendanceEntity = new AttendanceEntity();
         // 참조필드 세팅 및 기타 필요한 초기화 진행
@@ -87,6 +91,7 @@ public class MemberEntity {
         memberEntity.setProfile_image(memberDTO.getProfile_image());
         memberEntity.setElectronic_student_id(memberDTO.getElectronic_student_id());
         memberEntity.setTeam_num(memberDTO.getTeam_num());
+        memberEntity.setAuthority(memberDTO.getAuthority());
         return memberEntity;
     }
 
