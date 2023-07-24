@@ -1,15 +1,10 @@
 package com.d103.asaf.common.component
 
 import android.content.Context
-import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
-import android.util.Log
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.d103.asaf.R
@@ -21,7 +16,6 @@ class Dropdown @JvmOverloads constructor(
     defStyleAttr: Int = 0,
     var isClicked:Boolean = true
 ) : LinearLayout(context, attrs, defStyleAttr) {
-
     val dropdownText: TextView
     val dropdownBtn: ImageView
     val dropdownList: RecyclerView
