@@ -24,6 +24,9 @@ public class MemberEntity {
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private AttendanceEntity attendance;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private ClassInfoEntity classInfo;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -71,11 +74,17 @@ public class MemberEntity {
         memberEntity.setElectronic_student_id(memberDTO.getElectronic_student_id());
         memberEntity.setTeam_num(memberDTO.getTeam_num());
         memberEntity.setAuthority(memberDTO.getAuthority());
+
         // 학생 생성 시 AttendanceEntity도 함께 생성합니다.
         AttendanceEntity attendanceEntity = new AttendanceEntity();
         // 참조필드 세팅 및 기타 필요한 초기화 진행
         attendanceEntity.setMember(memberEntity);
         memberEntity.setAttendance(attendanceEntity);
+
+        ClassInfoEntity classInfoEntity = new ClassInfoEntity();
+        classInfoEntity.setUser_id(memberEntity);
+//        memberEntity.setClassInfo(classInfoEntity);
+
         return memberEntity;
     }
 
