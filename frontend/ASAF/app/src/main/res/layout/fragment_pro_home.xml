@@ -14,16 +14,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.d103.asaf.ArcProgressBar
+        <com.d103.asaf.common.component.ArcProgressBar
             android:id="@+id/fragment_pro_home_arcProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.d103.asaf.CustomToggleButton
-            android:layout_marginLeft="24dp"
+        <com.d103.asaf.common.component.CustomToggleButton
             android:layout_marginTop="250dp"
             android:id="@+id/fragment_pro_home_CustoomtoggleButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     </FrameLayout>

@@ -6,30 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <fragment
+        android:id="@+id/nav_host_fragment_activity_main"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/nav_graph" />
+
     <com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
         android:id="@+id/bottom_navi_pro"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         app:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/pro_menu_main_bottom"
         app:morphCornerRadius="128dp"
         app:morphItemRadius="64dp"
-        app:morphVerticalOffset="8dp"
-        tools:layout_editor_absoluteX="0dp" />
+        app:morphVerticalOffset="8dp" />
 
     <com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
         android:id="@+id/bottom_navi_student"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         app:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/student_menu_main_bottom"
         app:morphCornerRadius="128dp"
         app:morphItemRadius="64dp"
-        app:morphVerticalOffset="8dp"
-        tools:layout_editor_absoluteX="0dp" />
+        app:morphVerticalOffset="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

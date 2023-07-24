@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@+id/navigation_pro_home">
+
+    <fragment
+        android:id="@+id/navigation_pro_home"
+        android:name="com.d103.asaf.ui.home.pro.ProHomeFragment"
+        android:label="ProHome"
+        tools:layout="@layout/fragment_pro_home"/>
+
+    <fragment
+        android:id="@+id/navigation_student_home"
+        android:name="com.d103.asaf.ui.home.student.StudentHomeFragment"
+        android:label="StudentHome"
+        tools:layout="@layout/fragment_student_home"/>
+    <fragment
+        android:id="@+id/navigation_bus"
+        android:name="com.d103.asaf.ui.bus.BusFragment"
+        android:label="Bus"
+        tools:layout="@layout/fragment_bus"/>
+    <fragment
+        android:id="@+id/navigation_library_management"
+        android:name="com.d103.asaf.ui.library.pro.LibraryManagementFragment"
+        android:label="LibarayManagement"
+        tools:layout="@layout/fragment_library_management"/>
+    <fragment
+        android:id="@+id/navigation_library_use"
+        android:name="com.d103.asaf.ui.library.student.LibraryUseFragment"
+        android:label="LibarayUse"
+        tools:layout="@layout/fragment_library_use"/>
+    <fragment
+        android:id="@+id/navigation_market"
+        android:name="com.d103.asaf.ui.market.MarketFragment"
+        android:label="Market"
+        tools:layout="@layout/fragment_market"/>
+    <fragment
+        android:id="@+id/navigation_noti"
+        android:name="com.d103.asaf.ui.noti.NotiFragment"
+        android:label="Noti"
+        tools:layout="@layout/fragment_noti"/>
+    <fragment
+        android:id="@+id/navigation_op"
+        android:name="com.d103.asaf.ui.op.OpFragment"
+        android:label="Operation"
+        tools:layout="@layout/fragment_op"/>
+    <fragment
+        android:id="@+id/navigation_schedule"
+        android:name="com.d103.asaf.ui.schedule.ScheduleFragment"
+        android:label="Schedule"
+        tools:layout="@layout/fragment_schedule"/>
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="com.d103.asaf.ui.setting.SettingFragment"
+        android:label="Setting"
+        tools:layout="@layout/fragment_setting"/>
+
+
 
 </navigation>
