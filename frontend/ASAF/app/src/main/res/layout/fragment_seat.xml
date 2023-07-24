@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <GridLayout
-        android:id="@+id/gridLayout2"
+        android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:columnCount="4"
@@ -14,20 +14,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".ui.op.SeatFragment">
+        tools:context=".ui.home.SeatFragment">
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:id="@+id/item1"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_row="0"
             android:layout_rowWeight="1"
+            android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:src="@drawable/ic_launcher_background"
-            android:tag="0"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="0" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="0"
@@ -35,146 +35,121 @@
             android:layout_column="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="1"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="1" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="2"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="2" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="3"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="3" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="4"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="4" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="5"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="5" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="6"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="6" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="7"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="7" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="8"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="8" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="9"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="9" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="10"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="10" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="11"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="11" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="12"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="12" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="13"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="13" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="14"
-            tools:src="@drawable/ic_launcher_background" />
+            android:tag="14" />
 
-        <ImageView
+        <com.d103.asaf.common.component.SeatView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:tag="15"
-            tools:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/ic_launcher_foreground"
+            android:tag="15" />
     </GridLayout>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_launcher_background"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout2"
-        tools:src="@drawable/ic_launcher_background" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/outlinedButton"
@@ -183,10 +158,10 @@
         android:layout_height="wrap_content"
         android:text="자리추가"
         android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/outlinedButton2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintStart_toEndOf="@+id/outlinedButton2"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/outlinedButton2"
@@ -198,6 +173,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/outlinedButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,7 +17,7 @@
         tools:src="@drawable/student_card" />
 
     <com.d103.asaf.common.component.CustomToggleButton
-        android:id="@+id/customToggleButton2"
+        android:id="@+id/customToggleButton"
         android:layout_marginHorizontal="10dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -25,6 +25,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatImageView" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginVertical="10dp"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customToggleButton" />
 
     <com.d103.asaf.common.component.Dropdown
         android:id="@+id/dropdown"
@@ -34,7 +44,7 @@
         android:layout_marginRight="10dp"
         android:elevation="10dp"
         app:layout_constraintEnd_toStartOf="@+id/dropdown2"
-        app:layout_constraintTop_toBottomOf="@+id/customToggleButton2" />
+        app:layout_constraintTop_toBottomOf="@+id/customToggleButton" />
 
     <com.d103.asaf.common.component.Dropdown
         android:id="@+id/dropdown2"
@@ -45,17 +55,18 @@
         android:visibility="gone"
         android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customToggleButton2" />
+        app:layout_constraintTop_toBottomOf="@+id/customToggleButton" />
 
 
     <FrameLayout
-        android:layout_marginTop="60dp"
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customToggleButton2" />
+        app:layout_constraintTop_toBottomOf="@+id/customToggleButton" />
 
 
     <com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
