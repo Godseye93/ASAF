@@ -13,7 +13,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class AttendanceDTO {
-    private Long attendanceId;
+    private int attendanceId;
     private MemberDTO memberDTO;
     private String attended;
     private String entryTime;
