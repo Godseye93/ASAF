@@ -15,7 +15,7 @@ import lombok.ToString;
 public class AttendanceDTO {
     private Long attendanceId;
     private MemberDTO memberDTO;
-    private Boolean attended;
+    private String attended;
     private String entryTime;
     private String exitTime;
 
