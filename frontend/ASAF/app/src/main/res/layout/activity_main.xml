@@ -30,7 +30,8 @@
         app:menu="@menu/pro_menu_main_bottom"
         app:morphCornerRadius="128dp"
         app:morphItemRadius="64dp"
-        app:morphVerticalOffset="8dp" />
+        app:morphVerticalOffset="8dp"
+        />
 
     <com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
         android:id="@+id/bottom_navi_student"

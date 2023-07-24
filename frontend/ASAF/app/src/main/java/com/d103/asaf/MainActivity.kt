@@ -3,9 +3,13 @@ package com.d103.asaf
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.d103.asaf.common.config.BaseActivity
@@ -17,6 +21,8 @@ import java.sql.Date
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate){
 
     private lateinit var user : Accounts_user
+    private lateinit var navHostFragment: NavHostFragment
+    private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?)  {
         super.onCreate(savedInstanceState)
         setSupportActionBar(findViewById(com.airbnb.lottie.R.id.action_bar));
@@ -35,6 +41,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             "프로" -> {
                 binding.bottomNaviPro.visibility = View.VISIBLE
                 binding.bottomNaviStudent.visibility = View.GONE
+//                val bottomNavView = findViewById<MorphBottomNavigationView>(R.id.bottomNavigationView)
+//                navController = Navigation.findNavController(this, R.id.nav_graph)
+//
+//                NavigationUI.setupWithNavController(bottomNavView, navController)
+
 
 
 
