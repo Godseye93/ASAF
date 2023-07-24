@@ -30,8 +30,8 @@ public class ClassInfoEntity {
     @ManyToOne
     private GenerationEntity generation_code;
 
-    @OneToMany(mappedBy = "classInfo", cascade = CascadeType.ALL)
-    private List<MemberEntity> user_id = new ArrayList<>();
+    @ManyToOne
+    private MemberEntity id;
 
     public static ClassInfoEntity toClassInfoEntity(ClassInfoDTO classInfoDTO) {
         ClassInfoEntity classInfoEntity = new ClassInfoEntity();

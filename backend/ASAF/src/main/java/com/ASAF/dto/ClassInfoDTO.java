@@ -15,7 +15,7 @@ public class ClassInfoDTO {
     // 이 메서드의 목적은 ClassInfoEntity 객체의 정보를 가져와 ClassInfoDTO 객체로 변환하는 것입니다.
     public static ClassInfoDTO toClassInfoDTO(ClassInfoEntity classInfoEntity) {
         ClassInfoDTO classInfoDTO = new ClassInfoDTO();
-        classInfoDTO.setMemberDTO(MemberDTO.toMemberDTO(classInfoEntity.getUser_id()));
+        classInfoDTO.setMemberDTO(MemberDTO.toMemberDTO(classInfoEntity.getId()));
         return classInfoDTO;
     }
 }
