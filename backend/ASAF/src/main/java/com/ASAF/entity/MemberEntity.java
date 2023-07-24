@@ -29,6 +29,9 @@ public class MemberEntity {
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<ClassInfoEntity> classInfoEntityList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "generation_code", cascade = CascadeType.ALL)
+    private List<GenerationEntity> generationEntityList = new ArrayList<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
