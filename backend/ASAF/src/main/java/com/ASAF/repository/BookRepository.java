@@ -1,4 +1,7 @@
 package com.ASAF.repository;
 
-public interface BookRepository {
+import com.ASAF.entity.BookEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BookRepository extends JpaRepository<BookEntity, Integer> {
 }
