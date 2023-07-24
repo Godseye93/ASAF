@@ -6,6 +6,8 @@ package com.ASAF.dto;
 import com.ASAF.entity.MemberEntity;
 import lombok.*;
 
+import java.util.Date;
+
 // @Getter: 각 필드에 대한 getter 메서드를 자동 생성합니다.
 // @Setter: 각 필드에 대한 setter 메서드를 자동 생성합니다.
 // @NoArgsConstructor: 매개변수가 없는 기본 생성자를 자동 생성합니다.
@@ -17,12 +19,12 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class MemberDTO {
-    private Long id;
+    private int id;
     private String memberEmail;
     private String memberPassword;
     private String memberName;
     private String student_number;
-    private String birth_date;
+    private Date birth_date;
     private String phone_number;
     private String profile_image;
     private String electronic_student_id;

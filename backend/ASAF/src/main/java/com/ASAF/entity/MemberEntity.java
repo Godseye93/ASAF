@@ -11,6 +11,7 @@ import lombok.Setter;
 // javax.persistence 패키지의 모든 클래스를 가져옵니다.
 // 이 패키지는 단순 및 포괄적인 객체 관리를 위한 JPA(Java Persistence API) 구현을 제공하며, Java 객체와 관계형 데이터베이스의 테이블 간의 매핑이 가능하도록 돕습니다.
 import javax.persistence.*;
+import java.util.Date;
 
 // @Entity : 클래스가 엔티티임을 나타냅니다. 엔티티 클래스는 데이터베이스의 한 테이블에 해당하는 객체를 나타내며, JPA를 통해 자동으로 테이블과 매핑됩니다.
 @Entity
@@ -25,7 +26,7 @@ public class MemberEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(unique = true)
     private String memberEmail;
@@ -40,7 +41,7 @@ public class MemberEntity {
     private String student_number;
 
     @Column
-    private String birth_date;
+    private Date birth_date;
 
     @Column
     private String phone_number;
