@@ -29,6 +29,7 @@ public class MemberDTO {
     private String profile_image;
     private String electronic_student_id;
     private String team_num;
+    private String authority;
 
     // MemberEntity 타입의 하나의 매개변수 memberEntity를 입력으로 받고 MemberDTO 객체를 반환합니다.
     // 이 메서드의 목적은 MemberEntity 객체의 정보를 가져와 MemberDTO 객체로 변환하는 것입니다.
@@ -44,6 +45,7 @@ public class MemberDTO {
         memberDTO.setProfile_image(memberEntity.getProfile_image());
         memberDTO.setElectronic_student_id(memberEntity.getElectronic_student_id());
         memberDTO.setTeam_num(memberEntity.getTeam_num());
+        memberDTO.setAuthority(memberEntity.getAuthority());
         return memberDTO;
     }
 }
