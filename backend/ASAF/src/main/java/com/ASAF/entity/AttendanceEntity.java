@@ -13,10 +13,9 @@ import lombok.Setter;
 public class AttendanceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long attendanceId;
+    private int attendanceId;
 
     @OneToOne
-    @JoinColumn(name = "student_number", referencedColumnName = "student_number")
     private MemberEntity member;
 
     @Column(nullable = false)
