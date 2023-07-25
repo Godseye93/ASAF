@@ -34,7 +34,10 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
         super.onViewCreated(view, savedInstanceState)
         adapter = LockerAdapter(lockers)
         binding.fragmentLockerRecyclerview.adapter = adapter
-
+        binding.lockerRandom.setOnClickListener {
+            lockers.shuffle()
+            adapter.notifyDataSetChanged()
+        }
     }
 
 
