@@ -13,14 +13,14 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.d103.asaf.common.config.BaseActivity
-import com.d103.asaf.common.model.dto.Accounts_user
+import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.databinding.ActivityMainBinding
 import com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
 import java.sql.Date
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate){
 
-    private lateinit var user : Accounts_user
+    private lateinit var user : Member
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?)  {
@@ -28,9 +28,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         setSupportActionBar(findViewById(com.airbnb.lottie.R.id.action_bar));
         // user 정보 가지고 오기
         // 임시 데이터
-        user = Accounts_user(2, "Test", "Test@test.com", "test",
-            Date(System.currentTimeMillis()) ,
-            "010-1234-5678", "test", "123", "1","프로")
+        var user = Member(1, 123, "Test", "test@test.com",
+            "test",
+            Date(System.currentTimeMillis()),123, "010-1234-5478","123" ,2, "프로")
         // user 정보 가지고 오고 난 후 activity 나누기
 
         when(user.authority){
