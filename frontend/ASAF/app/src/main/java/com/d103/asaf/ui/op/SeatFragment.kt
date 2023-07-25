@@ -130,10 +130,10 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
 
                     // Log.d("이동", "${newX}, ${newY}, ${maxX}, ${maxY} " )
                 }
-                // 시작위치가 좌측상단이므로 중간좌표에서 시작한 것처럼 width/2 , height/2 보정
+                // 시작위치가 좌측상단이므로 중간좌표에서 시작한 것처럼 width/2 -1 , height/2 -1 보정
                 MotionEvent.ACTION_UP -> {
-                    val newIndex = calculateNewIndex(target.x.toInt() + target.width / 2
-                        , target.y.toInt() + target.height / 2)
+                    val newIndex = calculateNewIndex(target.x.toInt() + target.width / 2 - 1
+                        , target.y.toInt() + target.height / 2 - 1)
                     Log.d("스왑전", "$targetViewIndex, $newIndex")
                     swapImageViewPosition(target, newIndex)
                 }
