@@ -35,6 +35,8 @@ class LoginFragment : Fragment() {
             val email = binding.fragmentLoginEditTvId.text.toString()
             val password = binding.fragmentLoginEditTvPass.text.toString()
             viewModel.login(email, password)
+
+            findNavController().navigate(R.id.ProhomeFragment)
         }
 
         binding.fragmentLoginButtonJoin.setOnClickListener {
