@@ -9,23 +9,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/attendance")
+@RequestMapping("/attendance")
 public class AttendanceController {
 
     @Autowired
     private AttendanceService attendanceService;
 
+    @PostMapping("/checkin/{id}")
+    public AttendanceDTO checkIn(@PathVariable int id) {
+        return attendanceService.CheckIn(id);
+    }
 
-
-//    @PostMapping("/checkin/{id}")
-//    public AttendanceDTO checkIn(@PathVariable int id) {
-//        return attendanceService.updateAttendanceByMemberId(id);
-//    }
-//
-//    @PostMapping("/checkout/{memberId}")
-//    public AttendanceDTO checkOut(@PathVariable int memberId) {
-//        return AttendanceDTO.toAttendanceDTO(attendanceService.attendanceCheckOut(memberId));
-//    }
+    @PostMapping("/checkout/{id}")
+    public AttendanceDTO checkOut(@PathVariable int id) {
+        return attendanceService.CheckOut(id);
+    }
 
     @GetMapping
     public List<AttendanceDTO> getAllAttendances() {

@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 
+import java.sql.Time;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,8 +18,8 @@ public class AttendanceDTO {
     private int attendanceId;
     private MemberDTO memberDTO;
     private String attended;
-    private String entryTime;
-    private String exitTime;
+    private Time entryTime;
+    private Time exitTime;
 
     // AttendanceEntity 타입의 하나의 매개변수 attendanceEntity를 입력으로 받고 AttendanceDTO 객체를 반환합니다.
     // 이 메서드의 목적은 AttendanceEntity 객체의 정보를 가져와 AttendanceDTO 객체로 변환하는 것입니다.
