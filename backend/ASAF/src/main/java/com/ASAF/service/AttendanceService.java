@@ -47,31 +47,7 @@ public class AttendanceService {
     }
 
 
-    public AttendanceDTO ssafyCheckIn(int id) {
-        Optional<AttendanceEntity> attendanceEntityOptional = attendanceRepository.findByMemberId(id);
-        LocalTime currentTime = LocalTime.now();
-        if (currentTime.getHour() == 8 && currentTime.getMinute() >=30 || currentTime.getHour() == 9 && currentTime.getMinute() <= 59 && attendanceEntityOptional.isPresent()) {
-            AttendanceEntity attendanceEntity = attendanceEntityOptional.get();
-            attendanceEntity.setEntryTime(Time.valueOf(currentTime));
-            attendanceEntity.setAttended("1");
-            AttendanceEntity updatedssafyCheckIn = attendanceRepository.save(attendanceEntity);
-            return AttendanceDTO.toAttendanceDTO(updatedssafyCheckIn);
-        }
-        return null;
-    }
 
-
-//
-//    public AttendanceEntity attendanceCheckOut(int memberId) {
-//        LocalDateTime currentTime = LocalDateTime.now();
-//        if (currentTime.getHour() == 18 && currentTime.getMinute() >= 0 || currentTime.getHour() == 18 && currentTime.getMinute() <= 30) {
-//            AttendanceEntity attendance = attendanceRepository.findByMemberId(memberId);
-//            attendance.setCheckOut(currentTime);
-//            attendance.setAttended(2);
-//            return attendanceRepository.save(attendance);
-//        }
-//        return null;
-//    }
 
     public List<AttendanceDTO> findAll() {
         List<AttendanceEntity> attendances = attendanceRepository.findAll();
@@ -79,4 +55,28 @@ public class AttendanceService {
     }
 
 
+    public AttendanceDTO findById(int id) {
+        Optional<AttendanceEntity> optionalAttendanceEntity = attendanceRepository.findByMemberId(id);
+        if (optionalAttendanceEntity.isPresent()) {
+            AttendanceEntity attendanceEntity = optionalAttendanceEntity.get();
+            return AttendanceDTO.toAttendanceDTO(attendanceEntity);
+        } else {
+            return null;
+        }
+    }
 }
+
+
+
+// public AttendanceDTO ssafyCheckIn(int id) {
+//        Optional<AttendanceEntity> attendanceEntityOptional = attendanceRepository.findByMemberId(id);
+//        LocalTime currentTime = LocalTime.now();
+//        if (currentTime.getHour() == 8 && currentTime.getMinute() >=30 || currentTime.getHour() == 9 && currentTime.getMinute() <= 59 && attendanceEntityOptional.isPresent()) {
+//            AttendanceEntity attendanceEntity = attendanceEntityOptional.get();
+//            attendanceEntity.setEntryTime(Time.valueOf(currentTime));
+//            attendanceEntity.setAttended("1");
+//            AttendanceEntity updatedssafyCheckIn = attendanceRepository.save(attendanceEntity);
+//            return AttendanceDTO.toAttendanceDTO(updatedssafyCheckIn);
+//        }
+//        return null;
+//    }

@@ -29,4 +29,9 @@ public class AttendanceController {
     public List<AttendanceDTO> getAllAttendances() {
         return attendanceService.findAll();
     }
+
+    @GetMapping("/{id}")
+    public AttendanceDTO getAttendance(@PathVariable int id) {
+        return attendanceService.findById(id);
+    }
 }
