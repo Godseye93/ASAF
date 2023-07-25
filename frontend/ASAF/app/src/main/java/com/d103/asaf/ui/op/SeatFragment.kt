@@ -18,7 +18,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
     private var offsetX = 0
     private var offsetY = 0
     private val num = 5
-    private var targetViewIndex = 20
+    private var targetViewIndex = 20 // 초기화 될 거라 의미 없음
     private var position: MutableList<Int> = mutableListOf()
 
     companion object {
