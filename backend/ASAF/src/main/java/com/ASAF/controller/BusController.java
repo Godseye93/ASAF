@@ -1,6 +1,8 @@
 package com.ASAF.controller;
 
 import com.ASAF.dto.BusDTO;
+import com.ASAF.dto.BusDTO;
+import com.ASAF.dto.BusDTO;
 import com.ASAF.entity.RegionEntity;
 import com.ASAF.service.BusService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,15 @@ public class BusController {
         return busService.findAll();
     }
 
-    // 2. 특정 지역 버스들을 조회
-    @GetMapping("/{region_code}")
-    public BusDTO getBusByRegion(@PathVariable("region_code") int region_code) {
-        return busService.findByRegion(region_code);
+    @PostMapping("/save")
+    public ResponseEntity<String> save(@ModelAttribute BusDTO busDTO) {
+        busService.save(busDTO);
+        return new ResponseEntity<>("버스 등록 성공", HttpStatus.OK);
+    }
+
+    @PostMapping("/{busNum}/{location}")
+    public BusDTO update(@PathVariable int busNum, @PathVariable String location) {
+        return busService.update(busNum, location);
     }
 
 

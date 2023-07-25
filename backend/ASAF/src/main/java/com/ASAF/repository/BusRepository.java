@@ -13,5 +13,6 @@ import java.util.Optional;
 // MemberEntity: 데이터베이스에서 다루는 엔티티 클래스를 나타냅니다. 이 클래스에 명시된 필드는 엔티티와 관련된 데이터를 표현하며, 자동으로 데이터베이스의 테이블과 매핑됩니다.
 // Long: MemberEntity의 ID 필드 타입입니다. 이 ID는 엔티티를 고유하게 식별하는 값으로 사용됩니다.
 public interface BusRepository extends JpaRepository<BusEntity, Integer> {
-    Optional<BusEntity> findByRegion_code(int region_code);
+    Optional<BusEntity> findByBusNum(int busNum);
+//    Optional<BusEntity> findByRegionId(int regionId);
 }

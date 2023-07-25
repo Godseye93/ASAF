@@ -1,12 +1,10 @@
 package com.ASAF.entity;
 
 import com.ASAF.dto.BusDTO;
+import javax.persistence.*;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Setter
@@ -15,26 +13,29 @@ import java.util.List;
 public class BusEntity {
 
     @ManyToOne
-    @JoinColumn(name = "region_code")
-    private RegionEntity region_code;
+    @JoinColumn(name = "regionId")
+    private RegionEntity region;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int bus_num;
+    private int busNum;
 
+    @Column
     private String location;
 
+    @Column
     private String bus_route;
 
     public static BusEntity toBusEntity(BusDTO busDTO) {
         BusEntity busEntity = new BusEntity();
         busEntity.setLocation(busDTO.getLocation());
+        busEntity.setBus_route(busDTO.getBus_route());
         return busEntity;
     }
 
     public static BusEntity toUpdateBusEntity(BusDTO classDTO) {
         BusEntity classEntity = new BusEntity();
-        classEntity.setBus_num(classDTO.getBus_num());
+        classEntity.setBusNum(classDTO.getBusNum());
         classEntity.setLocation(classDTO.getLocation());
         classEntity.setBus_route(classDTO.getBus_route());
         return classEntity;

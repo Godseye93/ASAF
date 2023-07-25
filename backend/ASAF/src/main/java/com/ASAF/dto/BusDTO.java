@@ -9,15 +9,15 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class BusDTO {
-    private int bus_num;
+    private int busNum;
     private String location;
     private String bus_route;
 
-    public static BusDTO toBusDTO(BusEntity classEntity) {
-        BusDTO classDTO = new BusDTO();
-        classDTO.setBus_num(classEntity.getBus_num());
-        classDTO.setLocation(classEntity.getLocation());
-        classDTO.setBus_route(classEntity.getBus_route());
-        return classDTO;
+    public static BusDTO toBusDTO(BusEntity busEntity) {
+        BusDTO busDTO = new BusDTO();
+        busDTO.setBusNum(busEntity.getBusNum());
+        busDTO.setLocation(busEntity.getLocation());
+        busDTO.setBus_route(busEntity.getBus_route());
+        return busDTO;
     }
 }
