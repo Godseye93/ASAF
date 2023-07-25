@@ -15,4 +15,8 @@ data class Member(
     @SerializedName("profile_image") val profileImage: String,
     @SerializedName("team_num") val teamNum: Int,
     val authority: String,
-)
+){
+    constructor():this("","","")
+    constructor(memberName: String, memberEmail: String, memberPassword: String)
+            :this(0,0, memberName, memberEmail, memberPassword, Date(), 0, "", "", 0, "")
+}

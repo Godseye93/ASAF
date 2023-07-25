@@ -17,7 +17,9 @@ class ApplicationClass : Application() {
 
     companion object {
        // 서버 주소
-        val API_URL ="http://12312313"
+//        val API_URL ="http://192.168.100.158:8080/"     // 진욱님
+        val API_URL ="http://192.168.100.62:8080/"     // 민재님
+        
 
         lateinit var sharedPreferences: SharedPreferencesUtil
 
@@ -38,7 +40,7 @@ class ApplicationClass : Application() {
         sharedPreferences = SharedPreferencesUtil(applicationContext)
 
         // 레트로핏 인스턴스 생성
-//        initRetrofitInstance()
+        initRetrofitInstance()
     }
 
     private fun initRetrofitInstance() {

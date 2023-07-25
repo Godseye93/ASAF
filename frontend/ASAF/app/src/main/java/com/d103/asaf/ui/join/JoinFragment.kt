@@ -1,6 +1,7 @@
 package com.d103.asaf.ui.join
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.R
 import com.d103.asaf.databinding.FragmentJoinBinding
+import com.d103.asaf.ui.login.LoginFragment
 import com.google.android.material.textfield.TextInputEditText
 import java.util.Calendar
 
@@ -17,6 +19,12 @@ class JoinFragment : Fragment() {
 
     private lateinit var binding: FragmentJoinBinding
     private val viewModel: JoinFragmentViewModel by viewModels()
+//    private lateinit var loginFragment: LoginFragment
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+//        loginFragment = context as LoginFragment
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +59,8 @@ class JoinFragment : Fragment() {
 
             if (validateInputs(name, email, password, confirmPassword, birth, information)) {
                 // 모든 입력 값이 유효할 경우, 뷰모델의 회원가입 메서드를 호출합니다.
-                viewModel.signup(name, email, password, birth, information)
+//                viewModel.signup(name, email, password, birth, information)
+                viewModel.signup(name, email, password, "", "")
                 // 서버 혹은 db에 유저 정보 저장
                 
                 // login fragment로 이동.
