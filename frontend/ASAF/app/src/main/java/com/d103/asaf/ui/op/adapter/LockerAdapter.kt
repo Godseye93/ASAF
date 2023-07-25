@@ -5,7 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.d103.asaf.databinding.ItemLockerBinding
 
-class LockerAdapter(private val lockerList: MutableList<String>) : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
+// int 형을 Locker DTO로 변경하기
+class LockerAdapter(private val lockerList: MutableList<Int>) : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemLockerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -13,8 +14,8 @@ class LockerAdapter(private val lockerList: MutableList<String>) : RecyclerView.
     }
 
     inner class ViewHolder(private val binding: ItemLockerBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: String) {
-            // 아이템의 내용을 설정합니다.
+        fun bind(data: Int) {
+            binding.itemLockerImageviewText.text = data.toString()
         }
     }
 

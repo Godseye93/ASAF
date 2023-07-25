@@ -31,7 +31,7 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
     private fun initSeat() {
         handler.postDelayed({
             childFragmentManager.beginTransaction()
-                .replace(binding.fragmentOpFramelayoutSeat.id,SeatFragment.instance(viewModel.position))
+                .replace(binding.fragmentOpFramelayoutSeat.id,SeatFragment.instance(viewModel.position.value))
                 .commit()
         }, 100)
     }
@@ -42,7 +42,7 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
         }
         binding.fragmentOpTogglebuttonToggle.setSecondButtonClickListener {
             childFragmentManager.beginTransaction()
-                .replace(binding.fragmentOpFramelayoutSeat.id,LockerFragment.instance(viewModel.locker))
+                .replace(binding.fragmentOpFramelayoutSeat.id,LockerFragment.instance(viewModel.lockers.value))
                 .commit()
         }
         binding.fragmentOpTogglebuttonToggle.setThirdButtonClickListener {
@@ -60,8 +60,8 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
         binding.fragmentOpDropdownMonth.dropdownText.text = "월"
 
         // 객체가 바뀌면 안됨.. 요소를 변경해줘야 변화 인식됨
-        binding.fragmentOpDropdownClass.dataList.addAll(viewModel.months.value)
-        binding.fragmentOpDropdownClass.dataList.removeAt(calendar.get(Calendar.MONTH))
+        binding.fragmentOpDropdownMonth.dataList.addAll(viewModel.months.value)
+        binding.fragmentOpDropdownMonth.dataList.removeAt(calendar.get(Calendar.MONTH))
 
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.months.collect {
