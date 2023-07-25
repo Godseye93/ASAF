@@ -16,19 +16,24 @@ public class DocumentEntity {
 
     // ClassInfoEntity를 참조하는 컬럼들
     @ManyToOne
+    @JoinColumn(name = "class_num")
     private ClassInfoEntity class_num;
 
     @ManyToOne
+    @JoinColumn(name = "class_code")
     private ClassInfoEntity class_code;
 
     @ManyToOne
+    @JoinColumn(name = "region_code")
     private ClassInfoEntity region_code;
 
     @ManyToOne
+    @JoinColumn(name = "generation_code")
     private ClassInfoEntity generation_code;
 
     @ManyToOne
-    private ClassInfoEntity user_id;
+    @JoinColumn(name = "user_id")
+    private ClassInfoEntity id;
 
     @Column
     private String doc_style;
@@ -36,12 +41,13 @@ public class DocumentEntity {
     public static DocumentEntity toDocumentEntity(DocumentDTO documentDTO) {
         DocumentEntity documentEntity = new DocumentEntity();
         documentEntity.setDoc_id(documentDTO.getDoc_id());
-        // ClassInfoDTO를 ClassInfoEntity로 매핑
-        documentEntity.setClass_num(ClassInfoEntity.toClassInfoEntity(documentDTO.getClassInfoDTO()));
-        documentEntity.setClass_code(ClassInfoEntity.toClassInfoEntity(documentDTO.getClassInfoDTO()));
-        documentEntity.setRegion_code(ClassInfoEntity.toClassInfoEntity(documentDTO.getClassInfoDTO()));
-        documentEntity.setGeneration_code(ClassInfoEntity.toClassInfoEntity(documentDTO.getClassInfoDTO()));
-        documentEntity.setUser_id(ClassInfoEntity.toClassInfoEntity(documentDTO.getClassInfoDTO()));
+        documentEntity.setDoc_style(documentDTO.getDoc_style());
+        return documentEntity;
+    }
+
+    public static DocumentEntity toUpdateDocumentEntity(DocumentDTO documentDTO) {
+        DocumentEntity documentEntity = new DocumentEntity();
+        documentEntity.setDoc_id(documentDTO.getDoc_id());
         documentEntity.setDoc_style(documentDTO.getDoc_style());
         return documentEntity;
     }
