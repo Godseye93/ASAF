@@ -82,4 +82,10 @@
         app:popUpTo="@id/login_fragment"
         app:popUpToInclusive="true" />
 
+    <action
+        android:id="@+id/action_loginFragment_to_ProhomeFragment"
+        app:destination="@+id/ProhomeFragment"
+        app:popUpTo="@id/login_fragment"
+        app:popUpToInclusive="true" />
+
 </navigation>
