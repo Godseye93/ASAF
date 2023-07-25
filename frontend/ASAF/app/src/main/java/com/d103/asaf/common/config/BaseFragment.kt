@@ -34,5 +34,9 @@ abstract class BaseFragment<B : ViewBinding>(
         super.onDestroyView()
     }
 
+    fun showToast(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+    }
+
 
 }

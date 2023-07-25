@@ -15,6 +15,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.d103.asaf.common.config.BaseActivity
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
 import java.sql.Date
 
@@ -60,8 +61,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
     private fun setupNavHost() {
         // NavHostFragment를 가져와서 설정합니다.
+        hideBottomNavBar()
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
+    }
 
+    private fun hideBottomNavBar() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navi_pro)
+        bottomNavigationView.visibility = View.GONE
+    }
+    fun showBottomNavigationBar() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navi_pro)
+        bottomNavigationView.visibility = View.VISIBLE
     }
 }
