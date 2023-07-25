@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@+id/ProhomeFragment">
+    app:startDestination="@+id/login_fragment">
 
     <fragment
         android:id="@+id/ProhomeFragment"
@@ -58,5 +58,28 @@
         tools:layout="@layout/fragment_setting"/>
 
 
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.d103.asaf.ui.login.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/join_fragment"
+        android:name="com.d103.asaf.ui.join.JoinFragment"
+        android:label="Join"
+        tools:layout="@layout/fragment_join" />
+
+    <action
+        android:id="@+id/action_joinFragment_to_loginFragment"
+        app:destination="@id/login_fragment"
+        app:popUpTo="@id/join_fragment"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_loginFragment_to_joinFragment"
+        app:destination="@id/join_fragment"
+        app:popUpTo="@id/login_fragment"
+        app:popUpToInclusive="true" />
 
 </navigation>
