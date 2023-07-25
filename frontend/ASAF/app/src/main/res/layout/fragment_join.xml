@@ -113,24 +113,41 @@
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/fragment_join_layout_birth"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:hint="생년월일"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_pass_confirm">
+        app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_pass_confirm"
+        >
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:hint="생년월일">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_join_editTV_birth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/fragment_join_editTV_birth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <ImageView
+            android:id="@+id/fragment_join_button_calendar"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_calendar_month_24"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:baselineAlignBottom="true"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/fragment_join_layout_information"
