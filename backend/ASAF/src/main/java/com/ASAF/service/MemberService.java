@@ -66,7 +66,7 @@ public class MemberService {
 
     // 이 메서드는 주어진 ID를 사용하여 데이터베이스에서 MemberEntity 객체를 조회하고, 이를 MemberDTO 객체로 변환한 후 반환합니다.
     // optionalMemberEntity.get()을 사용하여 MemberEntity를 추출한 다음, MemberDTO.toMemberDTO(optionalMemberEntity.get())를 사용해 변환합니다.
-    public MemberDTO findById(Long id) {
+    public MemberDTO findById(int id) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(id);
         if (optionalMemberEntity.isPresent()) {
             return MemberDTO.toMemberDTO(optionalMemberEntity.get());
@@ -92,7 +92,7 @@ public class MemberService {
     }
 
     // 이 메서드는 주어진 ID를 사용하여 MemberEntity 객체를 데이터베이스에서 삭제합니다. memberRepository.deleteById(id)를 호출하여 삭제합니다.
-    public void deleteById(Long id) {
+    public void deleteById(int id) {
         memberRepository.deleteById(id);
     }
 

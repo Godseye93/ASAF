@@ -11,7 +11,7 @@ import java.util.Optional;
 // MemberRepository 인터페이스는 Spring Data JPA의 JpaRepository 인터페이스를 상속하여 구현하고 있습니다.
 // MemberEntity: 데이터베이스에서 다루는 엔티티 클래스를 나타냅니다. 이 클래스에 명시된 필드는 엔티티와 관련된 데이터를 표현하며, 자동으로 데이터베이스의 테이블과 매핑됩니다.
 // Long: MemberEntity의 ID 필드 타입입니다. 이 ID는 엔티티를 고유하게 식별하는 값으로 사용됩니다.
-public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
+public interface MemberRepository extends JpaRepository<MemberEntity, Integer> {
     // 이메일로 회원 정보를 조회합니다. (JPA 내부 메서드)
     Optional<MemberEntity> findByMemberEmail(String memberEmail);
 

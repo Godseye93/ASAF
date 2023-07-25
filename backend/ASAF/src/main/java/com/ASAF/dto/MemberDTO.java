@@ -21,15 +21,15 @@ import java.util.Date;
 @ToString
 public class MemberDTO {
     private int id;
+    private int electronic_student_id;
+    private int team_num;
+    private Date birth_date;
     private String memberEmail;
     private String memberPassword;
     private String memberName;
     private String student_number;
-    private Date birth_date;
     private String phone_number;
     private String profile_image;
-    private String electronic_student_id;
-    private String team_num;
     private String authority;
 
     // MemberEntity 타입의 하나의 매개변수 memberEntity를 입력으로 받고 MemberDTO 객체를 반환합니다.

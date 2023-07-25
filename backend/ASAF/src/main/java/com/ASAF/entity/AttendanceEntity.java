@@ -6,6 +6,8 @@ import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Time;
+
 @Getter
 @Setter
 @Entity
@@ -16,16 +18,17 @@ public class AttendanceEntity {
     private int attendanceId;
 
     @OneToOne
+    @JoinColumn(name = "memberId")
     private MemberEntity member;
 
     @Column(nullable = false)
-    private String attended = "0";
+    private String attended = "미출석";
 
     @Column
-    private String entryTime;
+    private Time entryTime;
 
     @Column
-    private String exitTime;
+    private Time exitTime;
 
     public static AttendanceEntity toAttendanceEntity(AttendanceDTO attendanceDTO) {
         AttendanceEntity attendanceEntity = new AttendanceEntity();

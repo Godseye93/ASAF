@@ -60,8 +60,9 @@ public class MemberController {
     // 특정 회원의 정보를 조회하는 요청을 처리합니다.
     // 전달받은 id를 이용해 회원의 정보를 조회하고, 그 결과를 ResponseEntity 형태로 반환합니다.
     @GetMapping("/member/{id}")
-    public ResponseEntity<MemberDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<MemberDTO> findById(@PathVariable int id) {
         MemberDTO memberDTO = memberService.findById(id);
+        System.out.println(memberDTO);
         return new ResponseEntity<>(memberDTO, HttpStatus.OK);
     }
 
@@ -76,7 +77,7 @@ public class MemberController {
     // 특정 회원의 정보를 삭제하는 요청을 처리합니다.
     // 전달받은 id를 이용해 회원의 정보를 삭제하고, 결과를 ResponseEntity 형태로 반환합니다.
     @GetMapping("/member/delete/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Long id) {
+    public ResponseEntity<String> deleteById(@PathVariable int id) {
         memberService.deleteById(id);
         return new ResponseEntity<>("회원탈퇴 성공", HttpStatus.OK);
     }

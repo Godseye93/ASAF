@@ -36,8 +36,20 @@ public class MemberEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column
+    private int electronic_student_id;
+
+    @Column
+    private int team_num;
+
+    @Column
+    private Date birth_date;
+
     @Column(unique = true)
     private String memberEmail;
+
+    @Column
+    private String student_number;
 
     @Column
     private String memberPassword;
@@ -45,23 +57,11 @@ public class MemberEntity {
     @Column
     private String memberName;
 
-    @Column(unique = true)
-    private String student_number;
-
-    @Column
-    private Date birth_date;
-
     @Column
     private String phone_number;
 
     @Column
     private String profile_image;
-
-    @Column
-    private String electronic_student_id;
-
-    @Column
-    private String team_num;
 
     @Column
     private String authority;
