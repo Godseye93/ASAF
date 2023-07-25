@@ -18,8 +18,13 @@ class OpFragmentViewModel: ViewModel() {
     private val _classes = MutableStateFlow<List<Int>>(listOf(2, 3, 4))
     val classes = _classes
 
-    // 고정 값 5x5
-    private val _position = MutableStateFlow(mutableListOf<Int>())
+    // 진짜 자리정보 get으로 가져옴
+    // 5x5보다 적을 수 있음
+    private val _seat = mutableListOf(1,22,3,4,15,6,17,8)
+    val seat = _seat
+
+    // 고정 값 5x5 (이미지뷰 25개)
+    private val _position = MutableStateFlow((0..24).toMutableList())
     val position = _position
 
     // <!---------------------------- 사물함 배치 함수 ------------------------------->
@@ -33,8 +38,14 @@ class OpFragmentViewModel: ViewModel() {
     }
 
     // <!---------------------------- 자리 배치 함수 ------------------------------->
+    // 외부에서 가져온 리스트 값을 5x5 이미지뷰에 차례로 넣어준다
     private fun loadSeats() {
-        for(i in 0 until 5*5) _position.value.add(i)
+        val fin = _seat.size
+        val remainingNumbers = _position.value.filterNot { it in _seat }
+        // 차례대로 불러온 자리 채워넣기
+        for(i in 0 until fin) _position.value[i] = _seat[i]
+        // 나머지 자리 (0~24중) 들어가지 않은 숫자를 이미지 뷰에 넣기
+        for(i in fin until 25) _position.value[i] = remainingNumbers[i-fin]
     }
 
     // <!---------------------------- 사물함 배치 함수 ------------------------------->

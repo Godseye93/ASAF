@@ -31,7 +31,7 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
     private fun initSeat() {
         handler.postDelayed({
             childFragmentManager.beginTransaction()
-                .replace(binding.fragmentOpFramelayoutSeat.id,SeatFragment.instance(viewModel.position.value))
+                .replace(binding.fragmentOpFramelayoutSeat.id,SeatFragment.instance(viewModel.position.value, viewModel.seat))
                 .commit()
         }, 100)
     }

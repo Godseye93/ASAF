@@ -233,6 +233,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
 
+    <EditText
+        android:id="@+id/seat_number_input"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:hint="숫자입력"
+        android:inputType="number"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/seat_add"
+        app:layout_constraintEnd_toEndOf="@+id/seat_add"
+        app:layout_constraintStart_toStartOf="@+id/seat_add"
+        app:layout_constraintTop_toTopOf="@+id/seat_add" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/seat_complete"
         style="@style/Widget.Material3.Button.OutlinedButton"
