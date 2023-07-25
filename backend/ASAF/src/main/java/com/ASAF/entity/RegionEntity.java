@@ -17,6 +17,9 @@ public class RegionEntity {
     @OneToMany(mappedBy = "region_code", cascade = CascadeType.ALL)
     private List<ClassInfoEntity> classInfoEntityList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "region_code", cascade = CascadeType.ALL)
+    private List<BusEntity> busEntityList = new ArrayList<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int region_code;
