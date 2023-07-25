@@ -4,6 +4,7 @@ package com.ASAF.dto;
 // MemberEntity 클래스를 현재 파일에서 사용하기 위해 com.codingrecipe.member.entity 패키지에서 가져옵니다.
 // 이 클래스는 데이터베이스의 한 테이블과 매핑되는 JPA 엔티티 클래스입니다.
 import com.ASAF.entity.MemberEntity;
+import com.ASAF.repository.AttendanceRepository;
 import lombok.*;
 
 import java.util.Date;

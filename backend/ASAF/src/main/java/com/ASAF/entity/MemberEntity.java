@@ -11,7 +11,9 @@ import lombok.Setter;
 // javax.persistence 패키지의 모든 클래스를 가져옵니다.
 // 이 패키지는 단순 및 포괄적인 객체 관리를 위한 JPA(Java Persistence API) 구현을 제공하며, Java 객체와 관계형 데이터베이스의 테이블 간의 매핑이 가능하도록 돕습니다.
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 // @Entity : 클래스가 엔티티임을 나타냅니다. 엔티티 클래스는 데이터베이스의 한 테이블에 해당하는 객체를 나타내며, JPA를 통해 자동으로 테이블과 매핑됩니다.
 @Entity
@@ -23,6 +25,12 @@ public class MemberEntity {
     // mappedBy를 지정하여 양방향 관계를 매핑하고 @OneToOne 어노테이션에 cascade 옵션을 추가하여 연관 엔티티에서 변경이 있을 때 영향이 전파되도록 합니다.
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private AttendanceEntity attendance;
+
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    private List<ClassInfoEntity> classInfoEntityList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "generation_code", cascade = CascadeType.ALL)
+    private List<GenerationEntity> generationEntityList = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,11 +79,17 @@ public class MemberEntity {
         memberEntity.setElectronic_student_id(memberDTO.getElectronic_student_id());
         memberEntity.setTeam_num(memberDTO.getTeam_num());
         memberEntity.setAuthority(memberDTO.getAuthority());
+
         // 학생 생성 시 AttendanceEntity도 함께 생성합니다.
         AttendanceEntity attendanceEntity = new AttendanceEntity();
         // 참조필드 세팅 및 기타 필요한 초기화 진행
         attendanceEntity.setMember(memberEntity);
         memberEntity.setAttendance(attendanceEntity);
+
+        ClassInfoEntity classInfoEntity = new ClassInfoEntity();
+        classInfoEntity.setId(memberEntity);
+        memberEntity.getClassInfoEntityList().add(classInfoEntity);
+
         return memberEntity;
     }
 

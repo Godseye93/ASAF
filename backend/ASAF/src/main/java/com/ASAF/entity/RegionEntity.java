@@ -5,12 +5,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Setter
 @Getter
 @Table(name = "region")
 public class RegionEntity {
+
+    @OneToMany(mappedBy = "region_code", cascade = CascadeType.ALL)
+    private List<ClassInfoEntity> classInfoEntityList = new ArrayList<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int region_code;
