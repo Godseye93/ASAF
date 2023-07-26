@@ -1,17 +1,8 @@
 package com.ASAF.config;
 
-import com.ASAF.dto.ClassDTO;
-import com.ASAF.dto.GenerationDTO;
-import com.ASAF.dto.MemberDTO;
-import com.ASAF.dto.RegionDTO;
-import com.ASAF.entity.ClassEntity;
-import com.ASAF.entity.GenerationEntity;
-import com.ASAF.entity.MemberEntity;
-import com.ASAF.entity.RegionEntity;
-import com.ASAF.repository.ClassRepository;
-import com.ASAF.repository.GenerationRepository;
-import com.ASAF.repository.MemberRepository;
-import com.ASAF.repository.RegionRepository;
+import com.ASAF.dto.*;
+import com.ASAF.entity.*;
+import com.ASAF.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -22,20 +13,23 @@ public class DataLoader implements CommandLineRunner {
     private final RegionRepository regionRepository;
     private final GenerationRepository generationRepository;
     private final ClassRepository classRepository;
+    private final BusRepository busRepository;
 
 
-    public DataLoader(MemberRepository memberRepository, RegionRepository regionRepository, GenerationRepository generationRepository, ClassRepository classRepository) {
+    public DataLoader(MemberRepository memberRepository, RegionRepository regionRepository, GenerationRepository generationRepository, ClassRepository classRepository, BusRepository busRepository) {
         this.memberRepository = memberRepository;
         this.regionRepository = regionRepository;
         this.generationRepository = generationRepository;
         this.classRepository = classRepository;
+        this.busRepository = busRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
         String[] regionNames = {"서울", "구미", "대전", "부울경", "광주"};
         String[] generationNames = {"9기","10기"};
-        
+        String[] bus_route = {"구미역 (파리바게트 앞)","오성예식장 앞 (버스 정류장)","구미상공회의소 건너 승강장","형곡동 파이바게트 앞","사곡 보성1차 (쪽쪽갈비 앞)","우방신세계2차 (상모우방2단지 정류장)","코오롱하늘채(정류장 지나 건널목)"};
+
         // 멤버 더미데이터
         for (int i = 1; i <= 9; i++) {
             // 더미 데이터 생성을 위한 MemberDTO 객체 설정
@@ -86,6 +80,15 @@ public class DataLoader implements CommandLineRunner {
             generationDTO.setGeneration_num(generationNames[i - 1]);
             GenerationEntity generationEntity = GenerationEntity.toGenerationEntity(generationDTO);
             generationRepository.save(generationEntity);
+        }
+
+        // 버스 더미데이터
+        for (int i = 1; i <= bus_route.length; i++) {
+            BusDTO busDTO = new BusDTO();
+            busDTO.setBusNum(i);
+            busDTO.setBus_route(bus_route[i - 1]);
+            BusEntity busEntity = BusEntity.toBusEntity(busDTO);
+            busRepository.save(busEntity);
         }
     }
 }
