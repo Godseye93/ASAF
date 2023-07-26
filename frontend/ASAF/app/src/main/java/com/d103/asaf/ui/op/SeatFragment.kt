@@ -1,15 +1,31 @@
 package com.d103.asaf.ui.op
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.GridLayout
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.d103.asaf.R
 import com.d103.asaf.common.component.SeatView
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentSeatBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bind, R.layout.fragment_seat) {
     private lateinit var targetView: SeatView
@@ -17,18 +33,25 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
     private var startY = 0
     private var offsetX = 0
     private var offsetY = 0
+    private lateinit var imm: InputMethodManager
     private val num = 5
     private var targetViewIndex = 20 // 초기화 될 거라 의미 없음
-    private var position: MutableList<Int> = mutableListOf()
+    private var position: MutableList<Int> = mutableListOf() // 초기화 될 거라 의미 없음
+    private var seat: MutableList<Int> = mutableListOf() // 초기화 될 거라 의미 없음
+    private var reversePosition = (0..24).toMutableList()
+    private lateinit var gridLayout: GridLayout
+    private var seatNum = 0;
+    private val viewModel: OpFragmentViewModel by viewModels()
 
     companion object {
         private const val POSITION = "position"
-
+        private const val SEAT = "seat"
         // Factory method to create an instance of SeatFragment with position list.
-        fun instance(position: MutableList<Int>): SeatFragment {
+        fun instance(position: MutableList<Int>,seat: MutableList<Int>): SeatFragment {
             val fragment = SeatFragment()
             val args = Bundle()
             args.putIntegerArrayList(POSITION, ArrayList(position))
+            args.putIntegerArrayList(SEAT, ArrayList(seat))
             fragment.arguments = args
             return fragment
         }
@@ -38,21 +61,112 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
         super.onCreate(savedInstanceState)
         // arguments로부터 position 리스트를 가져와서 변수에 할당합니다.
         position = requireArguments().getIntegerArrayList(POSITION) ?: mutableListOf()
+        seat = requireArguments().getIntegerArrayList(SEAT) ?: mutableListOf()
+        imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        // 데이터 변화 감지
+//        lifecycleScope.launchWhenStarted {
+//            viewModel.curClass.collect { newClass ->
+//                // 선택된 반에 해당하는 위치 정보를 가져와서 seat()내용을 변경해줌
+//                // seat =  GET 위치리스트
+//                loadSeat() // 업데이트
+//            }
+//        }
+        lifecycleScope.launchWhenStarted  {
+            viewModel.seat.collect { newSeat ->
+                loadSeat() // 업데이트
+            }
+        }
 
-        val gridLayout = binding.gridLayout
+        gridLayout = binding.gridLayout
         targetView = binding.item1 // 아무 아이템이나 같은 크기이므로 넣어주면 됨 사이즈 계산에만 사용
+        seatNum = seat.size
 
+        binding.apply {
+            seatAdd.setOnClickListener {
+                seatNumberInput.visibility = View.VISIBLE
+                seatAdd.visibility = View.INVISIBLE
+                gridLayout.visibility = View.INVISIBLE
+                switchToEditText()
+            }
+            // position 정보를 seatNum 크기 만큼만 보내기 서버에서 n건을 수정해야함
+            seatComplete.setOnClickListener {
+                // position.subList(0,seatNum)
+            }
+
+            seatNumberInput.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(s: Editable?) {
+                    val text = s.toString()
+                    seatNum = try {
+                        text.toInt()
+                    } catch (e: NumberFormatException) {
+                        0
+                    }
+                    if(seatNum >= 25) seatNum = 25
+                }
+            })
+        }
+        // ViewTreeObserver를 이용하여 targetView의 크기를 측정
+        targetView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                targetView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                setSeat()
+                Log.d("포지션", "$position")
+                Log.d("리버스포지션", "$reversePosition")
+            }
+        })
+    }
+
+    fun setSeat() {
+        // targetView의 크기가 측정된 후에 다른 작업 수행
+        val occupy = ResourcesCompat.getDrawable(resources, R.drawable.chair, null)
+        val vacant = ResourcesCompat.getDrawable(resources, R.drawable.ssafy_logo, null)
         for (i in 0 until gridLayout.childCount) {
             val childView = gridLayout.getChildAt(i)
             if (childView is SeatView) {
                 childView.seatText.text = i.toString()
                 setTouchListener(childView)
+                if (i < seatNum) childView.seatImage.setImageDrawable(occupy)
+                else childView.seatImage.setImageDrawable(vacant)
+                setViewPosition(childView, position[i])
+                reversePosition[position[i]] = i
             }
         }
+    }
+
+    fun clearSeat() {
+        reversePosition = (0..24).toMutableList()
+        position = (0..24).toMutableList()
+        seat = (0 until seatNum).toMutableList()
+        setSeat()
+    }
+
+    private fun loadSeat() {
+        val fin = seat.size
+        val remainingNumbers = position.filterNot { it in seat }
+        // 차례대로 불러온 자리 채워넣기
+        for(i in 0 until fin) position[i] = seat[i]
+        // 나머지 자리 (0~24중) 들어가지 않은 숫자를 이미지 뷰에 넣기
+        for(i in fin until 25) position[i] = remainingNumbers[i-fin]
+        setSeat()
+    }
+
+    private fun setViewPosition(curView:SeatView, newIndex: Int) {
+        val columnWidth = targetView.width
+        val rowHeight = targetView.height
+        val columnIndex = newIndex % num
+        val rowIndex = newIndex / num
+        val newX = columnIndex * columnWidth
+        val newY = rowIndex * rowHeight
+        curView.x = newX.toFloat()
+        curView.y = newY.toFloat()
     }
 
     private fun moveImageViewToPosition(cur: SeatView, newX: Int, newY: Int) {
@@ -87,13 +201,13 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
         val curIndex = targetViewIndex // 15 현재위치
         val nxtIndex = nextIndex // 0 나중위치
 
-        val org = parentView.getChildAt(position[curIndex]) as SeatView // 0번 이미지뷰
-        val next = parentView.getChildAt(position[nxtIndex]) as SeatView // 15번 이미지뷰
+        val org = parentView.getChildAt(reversePosition[curIndex]) as SeatView // 0번 이미지뷰
+        val next = parentView.getChildAt(reversePosition[nxtIndex]) as SeatView // 15번 이미지뷰
 
         moveImageViewToGridPosition(org, nxtIndex)
         moveImageViewToGridPosition(next, curIndex)
         // 위치정보 변경
-        position.swap(curIndex, nextIndex)
+        reversePosition.swap(curIndex, nextIndex)
     }
 
     private fun <T> MutableList<T>.swap(index1: Int, index2: Int) {
@@ -130,10 +244,10 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
 
                     // Log.d("이동", "${newX}, ${newY}, ${maxX}, ${maxY} " )
                 }
-                // 시작위치가 좌측상단이므로 중간좌표에서 시작한 것처럼 width/2 -1 , height/2 -1 보정
+                // 시작위치가 좌측상단이므로 중간좌표에서 시작한 것처럼 width/2 -5 , height/2 -5 보정
                 MotionEvent.ACTION_UP -> {
-                    val newIndex = calculateNewIndex(target.x.toInt() + target.width / 2 - 1
-                        , target.y.toInt() + target.height / 2 - 1)
+                    val newIndex = calculateNewIndex(target.x.toInt() + target.width / 2 - 5
+                        , target.y.toInt() + target.height / 2 - 5)
                     Log.d("스왑전", "$targetViewIndex, $newIndex")
                     swapImageViewPosition(target, newIndex)
                 }
@@ -141,4 +255,39 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
             true
         }
     }
+
+    private fun switchToEditText() {
+        binding.apply {
+            seatAdd.visibility = View.INVISIBLE
+            seatNumberInput.visibility = View.VISIBLE
+            seatNumberInput.requestFocus()
+            imm.showSoftInput(seatNumberInput, InputMethodManager.SHOW_IMPLICIT)
+            seatNumberInput.setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    hideKeyboard()
+                    clearSeat()
+                    setSeat()
+                }
+                false
+            }
+
+            seatNumberInput.setOnFocusChangeListener { v, hasFocus ->
+                if (!hasFocus) {
+                    hideKeyboard()
+                    clearSeat()
+                    setSeat()
+                }
+            }
+        }
+    }
+
+    private fun hideKeyboard() {
+        imm.hideSoftInputFromWindow(binding.seatNumberInput.windowToken, 0)
+        binding.apply {
+            seatAdd.visibility = View.VISIBLE
+            seatNumberInput.visibility = View.INVISIBLE
+            gridLayout.visibility = View.VISIBLE
+        }
+    }
+
 }
