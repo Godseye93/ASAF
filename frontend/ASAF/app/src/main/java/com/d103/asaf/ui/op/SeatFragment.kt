@@ -27,6 +27,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
     private var startY = 0
     private var offsetX = 0
     private var offsetY = 0
+    private lateinit var imm: InputMethodManager
     private val num = 5
     private var targetViewIndex = 20 // 초기화 될 거라 의미 없음
     private var position: MutableList<Int> = mutableListOf() // 초기화 될 거라 의미 없음
@@ -53,6 +54,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
         // arguments로부터 position 리스트를 가져와서 변수에 할당합니다.
         position = requireArguments().getIntegerArrayList(POSITION) ?: mutableListOf()
         seat = requireArguments().getIntegerArrayList(SEAT) ?: mutableListOf()
+        imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,6 +68,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
             seatAdd.setOnClickListener {
                 seatNumberInput.visibility = View.VISIBLE
                 seatAdd.visibility = View.INVISIBLE
+                gridLayout.visibility = View.INVISIBLE
                 switchToEditText()
             }
             // position 정보를 seatNum 크기 만큼만 보내기 서버에서 n건을 수정해야함
@@ -102,13 +105,15 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
 
     fun setSeat() {
         // targetView의 크기가 측정된 후에 다른 작업 수행
-        val drawable = ResourcesCompat.getDrawable(resources, R.drawable.chair, null)
+        val occupy = ResourcesCompat.getDrawable(resources, R.drawable.chair, null)
+        val vacant = ResourcesCompat.getDrawable(resources, R.drawable.ssafy_logo, null)
         for (i in 0 until gridLayout.childCount) {
             val childView = gridLayout.getChildAt(i)
             if (childView is SeatView) {
                 childView.seatText.text = i.toString()
                 setTouchListener(childView)
-                if (i < seatNum) childView.seatImage.setImageDrawable(drawable)
+                if (i < seatNum) childView.seatImage.setImageDrawable(occupy)
+                else childView.seatImage.setImageDrawable(vacant)
                 setViewPosition(childView, position[i])
                 reversePosition[position[i]] = i
             }
@@ -225,6 +230,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
             seatAdd.visibility = View.INVISIBLE
             seatNumberInput.visibility = View.VISIBLE
             seatNumberInput.requestFocus()
+            imm.showSoftInput(seatNumberInput, InputMethodManager.SHOW_IMPLICIT)
             seatNumberInput.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     hideKeyboard()
@@ -245,10 +251,12 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
     }
 
     private fun hideKeyboard() {
-        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.seatNumberInput.windowToken, 0)
-        binding.seatAdd.visibility = View.VISIBLE
-        binding.seatNumberInput.visibility = View.INVISIBLE
+        binding.apply {
+            seatAdd.visibility = View.VISIBLE
+            seatNumberInput.visibility = View.INVISIBLE
+            gridLayout.visibility = View.VISIBLE
+        }
     }
 
 }
