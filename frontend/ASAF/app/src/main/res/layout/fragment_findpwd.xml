@@ -8,61 +8,62 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/fragment_join_button_back"
+            android:id="@+id/fragment_findpwd_button_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:layout_marginEnd="48dp"
             android:src="@drawable/baseline_arrow_back_24"
-            app:layout_constraintEnd_toStartOf="@+id/fragment_join_textview_signup"
+            app:layout_constraintEnd_toStartOf="@+id/fragment_findpwd_textview_signup"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/fragment_join_textview_signup"
+            android:id="@+id/fragment_findpwd_textview_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16sp"
-            android:text="회원가입"
+            android:text="비밀번호 찾기"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/fragment_join_imageview_profile"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/rounded_image_listview"
-            app:layout_constraintEnd_toEndOf="parent"
+        <TextView
+            android:id="@+id/fragment_findpwd_textview_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="가입 시 입력한 회원 정보를 입력하세요."
+            android:textSize="16sp"
+            android:layout_marginTop="48dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_join_textview_signup" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_findpwd_textview_signup"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_join_layout_name"
+            android:id="@+id/fragment_findpwd_layout_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
             android:hint="이름"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_join_imageview_profile">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_findpwd_textview_text1">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_join_editTV_name"
+                android:id="@+id/fragment_findpwd_editTV_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_join_layout_email"
+            android:id="@+id/fragment_findpwd_layout_email"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,60 +73,22 @@
             android:hint="E-mail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_name">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_findpwd_layout_name">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_join_editTV_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_join_layout_pass"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:hint="비밀번호"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_email">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_join_editTV_pass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_join_layout_pass_confirm"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:hint="비밀번호 확인"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_pass">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragment_join_editTV_pass_confirm"
+                android:id="@+id/fragment_findpwd_editTV_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/fragment_join_layout_birth"
+            android:id="@+id/fragment_findpwd_layout_birth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_pass_confirm"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_findpwd_layout_email"
             >
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -137,13 +100,13 @@
                 android:layout_marginEnd="32dp"
                 android:hint="생년월일">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/fragment_join_editTV_birth"
+                    android:id="@+id/fragment_findpwd_editTV_birth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
-                android:id="@+id/fragment_join_button_calendar"
+                android:id="@+id/fragment_findpwd_button_calendar"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -154,27 +117,27 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/fragment_join_layout_information"-->
-<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="32dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_marginEnd="32dp"-->
-<!--            android:hint="지역 / 기수 / 반"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_birth">-->
+        <!--        <com.google.android.material.textfield.TextInputLayout-->
+        <!--            android:id="@+id/fragment_join_layout_information"-->
+        <!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="32dp"-->
+        <!--            android:layout_marginTop="16dp"-->
+        <!--            android:layout_marginEnd="32dp"-->
+        <!--            android:hint="지역 / 기수 / 반"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_birth">-->
 
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:id="@+id/fragment_join_editTV_information"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
+        <!--            <com.google.android.material.textfield.TextInputEditText-->
+        <!--                android:id="@+id/fragment_join_editTV_information"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content" />-->
+        <!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <LinearLayout
-            android:id="@+id/fragment_join_layout_information"
+            android:id="@+id/fragment_findpwd_layout_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -183,7 +146,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_birth">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_findpwd_layout_birth">
 
             <TextView
                 android:id="@+id/textViewNth"
@@ -225,17 +188,17 @@
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/fragment_join_button_signup"
+            android:id="@+id/fragment_findpwd_button_findpwd"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:backgroundTint="@color/defaultMainColor"
-            android:text="      회원가입         →"
+            android:text="   비밀번호 찾기   →"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_information" />
+            app:layout_constraintTop_toBottomOf="@+id/fragment_findpwd_layout_information" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

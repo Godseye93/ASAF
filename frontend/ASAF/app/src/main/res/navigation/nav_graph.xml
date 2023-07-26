@@ -70,6 +70,12 @@
         android:label="Join"
         tools:layout="@layout/fragment_join" />
 
+    <fragment
+        android:id="@+id/findpwd_fragment"
+        android:name="com.d103.asaf.ui.login.FindpwdFragment"
+        android:label="Findpwd"
+        tools:layout="@layout/fragment_findpwd" />
+
     <action
         android:id="@+id/action_joinFragment_to_loginFragment"
         app:destination="@id/login_fragment"
@@ -87,5 +93,6 @@
         app:destination="@+id/ProhomeFragment"
         app:popUpTo="@id/login_fragment"
         app:popUpToInclusive="true" />
+
 
 </navigation>

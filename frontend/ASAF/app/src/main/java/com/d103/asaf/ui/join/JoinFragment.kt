@@ -1,7 +1,9 @@
 package com.d103.asaf.ui.join
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
@@ -9,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -29,6 +32,15 @@ class JoinFragment : Fragment() {
     private val viewModel: JoinFragmentViewModel by viewModels()
 //    private lateinit var loginFragment: LoginFragment
     private lateinit var tempDate: String
+    // 이미지 선택을 위한 ActivityResultLauncher 선언
+    private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let { uri ->
+                // 선택한 이미지 URI를 사용하여 이미지뷰에 설정합니다.
+                binding.fragmentJoinImageviewProfile.setImageURI(uri)
+            }
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -109,6 +121,11 @@ class JoinFragment : Fragment() {
                 // 입력 값이 유효하지 않을 경우, 필요한 에러 메시지를 표시하거나 처리해줍니다.
             }
         }
+
+        // 프로필 이미지 변경.
+        binding.fragmentJoinImageviewProfile.setOnClickListener {
+            openGalleryForImage()
+        }
     }
 
     // information spinner adapter
@@ -137,9 +154,9 @@ class JoinFragment : Fragment() {
         }
     }
     private fun setSpinnerAdapters() {
-        val nthOptions = listOf("8", "9", "10") // 기수 옵션들을 리스트로 설정해주세요
-        val regionOptions = listOf("광주", "구미", "대전", "부울경", "서울") // 지역 옵션들을 리스트로 설정해주세요
-        val classNumOptions = listOf("1", "2", "3", "4", "5", "6", "7", "8","9","10") // 반 옵션들을 리스트로 설정해주세요
+        val nthOptions = listOf("-", "8", "9", "10") // 기수 옵션들을 리스트로 설정해주세요
+        val regionOptions = listOf("-", "광주", "구미", "대전", "부울경", "서울") // 지역 옵션들을 리스트로 설정해주세요
+        val classNumOptions = listOf("-", "1", "2", "3", "4", "5", "6", "7", "8","9","10") // 반 옵션들을 리스트로 설정해주세요
 
         val nthAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, nthOptions)
         val regionAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, regionOptions)
@@ -223,5 +240,13 @@ class JoinFragment : Fragment() {
         if (activity is MainActivity) {
             (activity as MainActivity).hideBottomNavigationBarFromFragment()
         }
+    }
+
+    private fun openGalleryForImage() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+
+        // 이미지를 선택하는 요청을 `ActivityResultLauncher`로 보냅니다.
+        imagePickerLauncher.launch(intent)
     }
 }
