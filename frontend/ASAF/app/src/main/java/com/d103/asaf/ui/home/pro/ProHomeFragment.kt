@@ -125,36 +125,36 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
         studentInfoList.clear()
         //해당 반 학생 출석 불러오기
         var user1 = Member(1, 123, "Test1", "test@test.com",
-            "test",
-            Date(System.currentTimeMillis()),123, "010-1234-5478", testUrl,2, "교육생")
+            "test","test",
+            Date(System.currentTimeMillis()).toString(),123, "010-1234-5478", testUrl,2, "교육생")
 
         var user2 = Member(1, 123, "Test2", "test@test.com",
-            "test",
-            Date(System.currentTimeMillis()),123, "010-1234-5478", "https://i.ytimg.com/vi/5z_Qw5IsJok/maxresdefault.jpg",2, "교육생")
+            "test","test",
+            Date(System.currentTimeMillis()).toString(),123, "010-1234-5478", "https://i.ytimg.com/vi/5z_Qw5IsJok/maxresdefault.jpg",2, "교육생")
         var user3 = Member(3, 123, "Test3", "test@test.com",
-            "test",
-            Date(System.currentTimeMillis()),123, "010-1234-5478", "https://i.namu.wiki/i/gWhK4SHoCDMtxOXunUt29hdDrfTjQU7rfPkgO15xg2WxS75qOQj1oXbk4WZ22O84tLrSA6IrzEIssv_mEIKwuw.webp",2, "교육생")
+            "test","test",
+            Date(System.currentTimeMillis()).toString(),123, "010-1234-5478", "https://i.namu.wiki/i/gWhK4SHoCDMtxOXunUt29hdDrfTjQU7rfPkgO15xg2WxS75qOQj1oXbk4WZ22O84tLrSA6IrzEIssv_mEIKwuw.webp",2, "교육생")
 
         var user4 = Member(4, 123, "Test4", "test@test.com",
-            "test",
-            Date(System.currentTimeMillis()),123, "010-1234-5478", "https://mblogthumb-phinf.pstatic.net/MjAxODA1MDNfMjQ0/MDAxNTI1MzA5NTYwMDc1.zjtNIKShHMyj7pSbrl9iiGCCVNKpkX3sdmXz0hAEVlIg.ygl01UhsaCHIm3az4GsW7eomkFV2vWqlUl9vlAFz52Qg.JPEG.cookierun_35/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%94%84%EB%A0%8C%EC%A6%88%EC%BA%90%EB%A6%AD%ED%84%B0.jpg?type=w800",2, "교육생")
+            "test","test",
+            Date(System.currentTimeMillis()).toString(),123, "010-1234-5478", "https://mblogthumb-phinf.pstatic.net/MjAxODA1MDNfMjQ0/MDAxNTI1MzA5NTYwMDc1.zjtNIKShHMyj7pSbrl9iiGCCVNKpkX3sdmXz0hAEVlIg.ygl01UhsaCHIm3az4GsW7eomkFV2vWqlUl9vlAFz52Qg.JPEG.cookierun_35/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%94%84%EB%A0%8C%EC%A6%88%EC%BA%90%EB%A6%AD%ED%84%B0.jpg?type=w800",2, "교육생")
 
         var user5 = Member(5, 123, "Test5", "test@test.com",
-            "test",
-            Date(System.currentTimeMillis()),123, "010-1234-5478", "https://photo.coolenjoy.co.kr/data/editor/2203/thumb-b6d6ac28e1a05fa6c43fadae6d3bff3ba5c8e1d4.jpg",2, "교육생")
+            "test","test",
+            Date(System.currentTimeMillis()).toString(),123, "010-1234-5478", "https://photo.coolenjoy.co.kr/data/editor/2203/thumb-b6d6ac28e1a05fa6c43fadae6d3bff3ba5c8e1d4.jpg",2, "교육생")
 
         var user6 = Member(1, 123, "Test6", "test@test.com",
-            "test",
-            Date(System.currentTimeMillis()),123, "010-1234-5478", testUrl,2, "교육생")
+            "test","test",
+            Date(System.currentTimeMillis()).toString(),123, "010-1234-5478", testUrl,2, "교육생")
         var user7 = Member(1, 123, "Test7", "test@test.com",
-            "test",
-            Date(System.currentTimeMillis()),123, "010-1234-5478", testUrl,2, "교육생")
+            "test","test",
+            Date(System.currentTimeMillis()).toString(),123, "010-1234-5478", testUrl,2, "교육생")
         var user8 = Member(1, 123, "Test8", "test@test.com",
-            "test",
-            Date(System.currentTimeMillis()),123, "010-1234-5478", testUrl,2, "교육생")
+            "test","test",
+            Date(System.currentTimeMillis()).toString(),123, "010-1234-5478", testUrl,2, "교육생")
         var user9 = Member(1, 123, "Test9", "test@test.com",
-            "test",
-            Date(System.currentTimeMillis()),123, "010-1234-5478", testUrl,2, "교육생")
+            "test","test",
+            Date(System.currentTimeMillis()).toString(),123, "010-1234-5478", testUrl,2, "교육생")
 
 
 

@@ -1,5 +1,6 @@
 package com.d103.asaf.ui.join
 
+import android.os.Build.VERSION_CODES.P
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -34,19 +35,19 @@ class JoinFragmentViewModel : ViewModel() {
                 showToast(if (isIdDuplicated) "중복되는 아이디입니다." else "사용 가능한 아이디입니다.")
             } catch (e: Exception) {
                 showToast("오류가 발생했습니다.")
+                Log.d(TAG, "checkIdDuplication: ${e.printStackTrace()}")
             }
         }
     }
 
 
-    fun signup(
-        name: String, email: String, password: String, birth: String, information: String
-    ) {
+    fun signup( member: Member ) {
         // 회원가입 로직을 처리하는 메서드입니다.
         // 이 부분에서는 보통 서버와의 통신을 통해 사용자 정보를 등록하는 처리를 수행합니다.
         // 예시로, 사용자 정보를 출력하기만 하도록 했습니다.
-        val userInfo = "이름: $name, 이메일: $email, 비밀번호: $password, 생년월일: $birth, 추가정보: $information"
-        val member = Member(name, email, password) // 수정된 생성자 호출
+        val userInfo = "이름: ${member.memberName}, 이메일: ${member.memberEmail}, 비밀번호: ${member.memberPassword}, " +
+                "생년월일: ${member.birthDate}, 추가정보: ${member.memberInfo}"
+//        val member = Member(name, email, password, Date(birth)) // 수정된 생성자 호출
         Log.d(TAG, "signup: $userInfo")
 
         viewModelScope.launch {

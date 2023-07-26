@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import com.d103.asaf.R
 import com.d103.asaf.databinding.FragmentLoginBinding
 import androidx.navigation.fragment.findNavController
+import com.d103.asaf.MainActivity
 
 class LoginFragment : Fragment() {
 
@@ -24,8 +25,14 @@ class LoginFragment : Fragment() {
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
 
+        // Bottom Navigation Bar를 숨김
+//        hideBottomBar()
+
         setupViews()
         observeViewModel()
+
+        // MainActivity의 hideBottomNavigationBarFromFragment() 메서드를 호출하여 바텀 네비게이션 바를 숨김
+//        (activity as? MainActivity)?.hideBottomNavigationBarFromFragment()
 
         return binding.root
     }
@@ -57,4 +64,12 @@ class LoginFragment : Fragment() {
             }
         })
     }
+
+    private fun hideBottomBar() {
+        // MainActivity의 hideBottomNavigationBar() 메서드를 호출하여 사용합니다.
+        if (activity is MainActivity) {
+            (activity as MainActivity).hideBottomNavigationBarFromFragment()
+        }
+    }
+
 }
