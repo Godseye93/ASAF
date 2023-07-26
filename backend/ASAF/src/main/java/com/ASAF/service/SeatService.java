@@ -19,16 +19,18 @@ public class SeatService {
     public SeatDTO completeSeat(SeatDTO seatDTO) {
         SeatEntity seatEntity = new SeatEntity();
         seatEntity.setSeat_id(seatDTO.getSeat_id());
-        seatEntity.setSeat_assign(seatDTO.getSeat_assign());
-        SeatEntity saveSeatEntity = seatRepository.save(seatEntity);
-        seatDTO.setSeat_id(saveSeatEntity.getSeat_id());
+        seatEntity.setSeat_num(seatDTO.getSeat_num());
+        seatEntity.setName(seatDTO.getName());
+        // SeatEntity를 데이터베이스에 저장
+        SeatEntity savedSeatEntity = seatRepository.save(seatEntity);
+        seatDTO.setSeat_id(savedSeatEntity.getSeat_id());
         return seatDTO;
     }
 
-    // 반 별 배치 정보 가져오기
-    public List<SeatDTO> getSeatsByClass(int classCode) {
-        List<SeatEntity> seatsByClass = seatRepository.findByClassCode(classCode);
-        return seatsByClass.stream()
+    // 자리 정보
+    public List<SeatDTO> getAllSeats() {
+        List<SeatEntity> seatEntities = seatRepository.findAll();
+        return seatEntities.stream()
                 .map(seatEntity -> new SeatDTO(seatEntity))
                 .collect(Collectors.toList());
     }

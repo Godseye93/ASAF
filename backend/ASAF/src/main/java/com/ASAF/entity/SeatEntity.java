@@ -1,6 +1,8 @@
 package com.ASAF.entity;
 
 import com.ASAF.dto.SeatDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -38,20 +40,25 @@ public class SeatEntity {
     @JoinColumn(name = "user_id")
     private DocumentEntity id;
 
-    @Column(columnDefinition = "json")
-    private String seat_assign;
+    @Column
+    private int seat_num;
+
+    @Column
+    private String name;
 
     public static SeatEntity toSeatEntity(SeatDTO seatDTO) {
         SeatEntity seatEntity = new SeatEntity();
         seatEntity.setSeat_id(seatDTO.getSeat_id());
-        seatEntity.setSeat_assign(seatDTO.getSeat_assign());
+        seatEntity.setSeat_num(seatDTO.getSeat_num());
+        seatEntity.setName(seatDTO.getName());
         return seatEntity;
     }
 
     public static SeatEntity toUpdateSeatEntity(SeatDTO seatDTO) {
         SeatEntity seatEntity = new SeatEntity();
         seatEntity.setSeat_id(seatDTO.getSeat_id());
-        seatEntity.setSeat_assign(seatDTO.getSeat_assign());
+        seatEntity.setSeat_num(seatDTO.getSeat_num());
+        seatEntity.setName(seatDTO.getName());
         return seatEntity;
     }
 }

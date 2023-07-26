@@ -1,10 +1,15 @@
 package com.ASAF.dto;
 
 import com.ASAF.entity.SeatEntity;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -18,17 +23,22 @@ public class SeatDTO {
     private int region_code;
     private int generation_code;
     private String user_id;
-    private String seat_assign;
+    private int seat_num;
+    private String name;
 
     public SeatDTO(SeatEntity seatEntity) {
         this.seat_id = seatEntity.getSeat_id();
-        this.seat_assign = seatEntity.getSeat_assign();
+        this.seat_num = seatEntity.getSeat_num();
+        this.name = seatEntity.getName();
     }
 
     public static SeatDTO toSeatDTO(SeatEntity seatEntity) {
         SeatDTO seatDTO = new SeatDTO();
         seatDTO.setSeat_id(seatEntity.getSeat_id());
-        seatDTO.setSeat_assign(seatEntity.getSeat_assign());
+        seatDTO.setSeat_num(seatEntity.getSeat_num());
+        seatDTO.setName(seatEntity.getName());
         return seatDTO;
     }
+
+
 }
