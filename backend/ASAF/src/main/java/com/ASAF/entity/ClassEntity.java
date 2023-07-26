@@ -19,7 +19,7 @@ public class ClassEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int class_code;
 
-    @Column(nullable = false)
+    @Column
     private String classname;
 
     @OneToMany(mappedBy = "class_code", cascade = CascadeType.ALL)
