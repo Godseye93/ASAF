@@ -9,10 +9,11 @@ import lombok.*;
 @ToString
 public class ClassInfoDTO {
     private int class_num;
+    private int class_code;
+    private int region_code;
+    private int generation_code;
     private MemberDTO memberDTO;
 
-    // ClassInfoEntity 타입의 하나의 매개변수 classInfoEntity를 입력으로 받고 ClassInfoDTO 객체를 반환합니다.
-    // 이 메서드의 목적은 ClassInfoEntity 객체의 정보를 가져와 ClassInfoDTO 객체로 변환하는 것입니다.
     public static ClassInfoDTO toClassInfoDTO(ClassInfoEntity classInfoEntity) {
         ClassInfoDTO classInfoDTO = new ClassInfoDTO();
         classInfoDTO.setMemberDTO(MemberDTO.toMemberDTO(classInfoEntity.getId()));
