@@ -31,7 +31,7 @@ public class MemberController {
     // 회원가입 정보를 저장하기 위한 요청을 처리합니다. 클라이언트가 회원가입 정보를 전송할 때, 이 메서드가 호출됩니다.
     // 전달받은 DTO 객체를 이용해 회원 정보를 저장하고, 회원가입 결과를 ResponseEntity 형태로 반환합니다.
     @PostMapping("/member/save")
-    public ResponseEntity<String> save(@ModelAttribute MemberDTO memberDTO) {
+    public ResponseEntity<String> save(@RequestBody MemberDTO memberDTO) {
         memberService.save(memberDTO);
         return new ResponseEntity<>("회원가입 성공", HttpStatus.OK);
     }
@@ -39,7 +39,7 @@ public class MemberController {
     // 사용자 로그인을 처리하는 요청을 처리합니다.
     // 전달받은 DTO 객체를 이용해 로그인 결과를 확인하고, 해당 결과에 따라 세션 정보를 설정하거나 반환합니다.
     @PostMapping("/member/login")
-    public ResponseEntity<String> login(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
+    public ResponseEntity<String> login(@RequestBody MemberDTO memberDTO, HttpSession session) {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             session.setAttribute("loginEmail", loginResult.getMemberEmail());
@@ -69,7 +69,7 @@ public class MemberController {
     // 회원 정보를 수정하는 요청을 처리합니다.
     // 전달받은 DTO 객체를 이용해 회원 정보를 수정하고, 수정된 결과를 ResponseEntity 형태로 반환합니다.
     @PostMapping("/member/update")
-    public ResponseEntity<MemberDTO> update(@ModelAttribute MemberDTO memberDTO) {
+    public ResponseEntity<MemberDTO> update(@RequestBody MemberDTO memberDTO) {
         memberService.update(memberDTO);
         return new ResponseEntity<>(memberDTO, HttpStatus.OK);
     }
