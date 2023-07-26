@@ -239,6 +239,7 @@
         android:layout_height="0dp"
         android:layout_margin="5dp"
         android:hint="숫자입력"
+        android:textSize="16sp"
         android:textColorHint="@color/grey"
         android:inputType="number"
         android:visibility="invisible"

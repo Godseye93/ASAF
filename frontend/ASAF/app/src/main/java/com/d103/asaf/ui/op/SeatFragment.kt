@@ -84,6 +84,8 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
         gridLayout = binding.gridLayout
         targetView = binding.item1 // 아무 아이템이나 같은 크기이므로 넣어주면 됨 사이즈 계산에만 사용
         seatNum = seat.size
+        //배치 완료 버튼 기능 넣어주기
+        completeRemote()
 
         binding.apply {
             seatAdd.setOnClickListener {
@@ -91,6 +93,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
                 seatAdd.visibility = View.INVISIBLE
                 gridLayout.visibility = View.INVISIBLE
                 switchToEditText()
+                completeLocal()
             }
             // position 정보를 seatNum 크기 만큼만 보내기 서버에서 n건을 수정해야함
             seatComplete.setOnClickListener {
@@ -267,6 +270,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
                     hideKeyboard()
                     clearSeat()
                     setSeat()
+                    completeRemote()
                 }
                 false
             }
@@ -276,6 +280,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
                     hideKeyboard()
                     clearSeat()
                     setSeat()
+                    completeRemote()
                 }
             }
         }
@@ -290,4 +295,19 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
         }
     }
 
+    private fun completeLocal() {
+        binding.seatComplete.setOnClickListener {
+            hideKeyboard()
+            clearSeat()
+            setSeat()
+        }
+    }
+
+    private fun completeRemote() {
+        binding.seatComplete.setOnClickListener {
+            hideKeyboard()
+            clearSeat()
+            setSeat()
+        }
+    }
 }

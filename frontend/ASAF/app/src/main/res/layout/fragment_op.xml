@@ -66,19 +66,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/morphBottomNavigationView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_op_togglebutton_toggle" />
-
-    <com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
-        android:id="@+id/morphBottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
