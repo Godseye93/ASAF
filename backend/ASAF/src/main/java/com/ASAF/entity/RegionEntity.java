@@ -1,16 +1,14 @@
 package com.ASAF.entity;
 
 import com.ASAF.dto.RegionDTO;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Setter
-@Getter
+@Data
 @Table(name = "region")
 public class RegionEntity {
 
