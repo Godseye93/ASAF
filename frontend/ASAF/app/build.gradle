@@ -96,8 +96,5 @@ dependencies {
     implementation 'com.tbuonomo:morph-bottom-navigation:1.0.1'
 
     //캘린더
-
     implementation 'com.github.prolificinteractive:material-calendarview:1.4.3'
-
-
 }

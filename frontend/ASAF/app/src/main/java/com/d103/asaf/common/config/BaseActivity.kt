@@ -40,4 +40,10 @@ abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflate
         bottomNavigationViewPro.visibility = View.GONE
         bottomNavgiationViewStu.visibility = View.GONE
     }
+    fun showBottomNavigationBar() {
+        val bottomNavigationViewPro = findViewById<BottomNavigationView>(R.id.bottom_navi_pro)
+        val bottomNavgiationViewStu = findViewById<BottomNavigationView>(R.id.bottom_navi_student)
+        bottomNavigationViewPro.visibility = View.VISIBLE
+        bottomNavgiationViewStu.visibility = View.VISIBLE
+    }
 }

@@ -71,4 +71,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     fun hideBottomNavigationBarFromFragment() {
         hideBottomNavigationBar()
     }
+    fun showBottomNavigationBarFromFragment() {
+        showBottomNavigationBar()
+    }
 }

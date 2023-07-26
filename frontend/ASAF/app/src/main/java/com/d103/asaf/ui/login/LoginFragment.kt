@@ -1,10 +1,13 @@
 package com.d103.asaf.ui.login
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -12,6 +15,7 @@ import com.d103.asaf.R
 import com.d103.asaf.databinding.FragmentLoginBinding
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.MainActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class LoginFragment : Fragment() {
 
@@ -31,11 +35,18 @@ class LoginFragment : Fragment() {
         setupViews()
         observeViewModel()
 
-        // MainActivity의 hideBottomNavigationBarFromFragment() 메서드를 호출하여 바텀 네비게이션 바를 숨김
-//        (activity as? MainActivity)?.hideBottomNavigationBarFromFragment()
-
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // MainActivity의 hideBottomNavigationBarFromFragment() 메서드를 호출하여 바텀 네비게이션 바를 숨김
+//        (activity as? MainActivity)?.hideBottomNavigationBarFromFragment()
+//        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navi_student).visibility = View.GONE
+//        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navi_pro).visibility = View.GONE
+    }
+
 
     private fun setupViews() {
         binding.fragmentLoginButtonLogin.setOnClickListener {
@@ -44,10 +55,20 @@ class LoginFragment : Fragment() {
             viewModel.login(email, password)
 
             findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
+
+            // MainActivity의 hideBottomNavigationBarFromFragment() 메서드를 호출하여 바텀 네비게이션 바를 숨김
+//            (activity as? MainActivity)?.showBottomNavigationBarFromFragment()
         }
 
+        // 비밀번호 찾기 클릭 시
+        binding.fragmentLoginTextviewForgetpass.setOnClickListener {
+            // 화면 이동
+            findNavController().navigate(R.id.findpwd_fragment)
+        }
+
+        // 회원가입 버튼 클릭 시
         binding.fragmentLoginButtonJoin.setOnClickListener {
-            // 회원가입 버튼 클릭 시 화면 전환 처리 (Navigation Component 사용)
+            // 화면 전환 처리 (Navigation Component 사용)
             findNavController().navigate(R.id.join_fragment)
         }
     }
@@ -65,11 +86,5 @@ class LoginFragment : Fragment() {
         })
     }
 
-    private fun hideBottomBar() {
-        // MainActivity의 hideBottomNavigationBar() 메서드를 호출하여 사용합니다.
-        if (activity is MainActivity) {
-            (activity as MainActivity).hideBottomNavigationBarFromFragment()
-        }
-    }
 
 }
