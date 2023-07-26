@@ -16,6 +16,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.GridLayout
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.d103.asaf.R
 import com.d103.asaf.common.component.SeatView
 import com.d103.asaf.common.config.BaseFragment
@@ -35,6 +37,8 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
     private var reversePosition = (0..24).toMutableList()
     private lateinit var gridLayout: GridLayout
     private var seatNum = 0;
+    private val viewModel: OpFragmentViewModel by viewModels()
+
     companion object {
         private const val POSITION = "position"
         private const val SEAT = "seat"
@@ -59,6 +63,14 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // 데이터 변화 감지
+        lifecycleScope.launchWhenStarted {
+            viewModel.curClass.collect { newClass ->
+                // 선택된 반에 해당하는 위치 정보를 가져와서 seat()내용을 변경해줌
+                // seat =  GET 위치리스트
+                loadSeat() // 업데이트
+            }
+        }
 
         gridLayout = binding.gridLayout
         targetView = binding.item1 // 아무 아이템이나 같은 크기이므로 넣어주면 됨 사이즈 계산에만 사용
@@ -124,6 +136,16 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
         reversePosition = (0..24).toMutableList()
         position = (0..24).toMutableList()
         seat = (0 until seatNum).toMutableList()
+        setSeat()
+    }
+
+    private fun loadSeat() {
+        val fin = seat.size
+        val remainingNumbers = position.filterNot { it in seat }
+        // 차례대로 불러온 자리 채워넣기
+        for(i in 0 until fin) position[i] = seat[i]
+        // 나머지 자리 (0~24중) 들어가지 않은 숫자를 이미지 뷰에 넣기
+        for(i in fin until 25) position[i] = remainingNumbers[i-fin]
         setSeat()
     }
 

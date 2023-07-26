@@ -36,7 +36,6 @@ class DropdownAdapter(private val dropdownList: MutableList<Int>,
             dropdownList.remove(dropdown.dropdownText.text.toString().toInt())
         }
     }
-
     override fun getItemCount(): Int {
         return dropdownList.size
     }

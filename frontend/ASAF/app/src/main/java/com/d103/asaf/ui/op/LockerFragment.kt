@@ -39,8 +39,4 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
             adapter.notifyDataSetChanged()
         }
     }
-
-
-
-
 }

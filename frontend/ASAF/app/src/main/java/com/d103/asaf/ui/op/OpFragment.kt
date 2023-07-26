@@ -4,9 +4,12 @@ import MoneyFragment
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentOpBinding
@@ -38,6 +41,7 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
 
     private fun initClickListener() {
         binding.fragmentOpTogglebuttonToggle.setFirstButtonClickListener {
+
             initSeat()
         }
         binding.fragmentOpTogglebuttonToggle.setSecondButtonClickListener {
@@ -56,12 +60,15 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
     // LiveData 는 외부에서 값을 할당받을때 MutableLiveData는 내부에서 값을 post로 할당할 때 사용
     private fun initMonth() {
         val calendar = Calendar.getInstance()
-        binding.fragmentOpDropdownMonth.dropdownText.text = viewModel.months.value[calendar.get(Calendar.MONTH)].toString()
-        binding.fragmentOpDropdownMonth.dropdownText.text = "월"
+        binding.apply {
+            fragmentOpDropdownMonth.dropdownText.addTextChangedListener(monthWatcher)
+            fragmentOpDropdownMonth.dropdownText.text = viewModel.months.value[calendar.get(Calendar.MONTH)].toString()
+            fragmentOpDropdownMonth.dropdownTextPost.text = "월"
 
-        // 객체가 바뀌면 안됨.. 요소를 변경해줘야 변화 인식됨
-        binding.fragmentOpDropdownMonth.dataList.addAll(viewModel.months.value)
-        binding.fragmentOpDropdownMonth.dataList.removeAt(calendar.get(Calendar.MONTH))
+            // 객체가 바뀌면 안됨.. 요소를 변경해줘야 변화 인식됨
+            fragmentOpDropdownMonth.dataList.addAll(viewModel.months.value)
+            fragmentOpDropdownMonth.dataList.removeAt(calendar.get(Calendar.MONTH))
+        }
 
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.months.collect {
@@ -71,16 +78,49 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
     }
 
     private fun initClass() {
-        binding.fragmentOpDropdownClass.dropdownText.text = viewModel.classes.value[0].toString()
-        binding.fragmentOpDropdownClass.dropdownText.text = "반"
-        // 객체가 바뀌면 안됨.. 요소를 변경해줘야 변화 인식됨
-        binding.fragmentOpDropdownClass.dataList.addAll(viewModel.classes.value)
-        binding.fragmentOpDropdownClass.dataList.removeAt(0)
+        binding.apply {
+            fragmentOpDropdownClass.dropdownText.addTextChangedListener(classWatcher)
+            fragmentOpDropdownClass.dropdownText.text = viewModel.classes.value[0].toString()
+            fragmentOpDropdownClass.dropdownTextPost.text = "반"
+            // 객체가 바뀌면 안됨.. 요소를 변경해줘야 변화 인식됨
+            fragmentOpDropdownClass.dataList.addAll(viewModel.classes.value)
+            fragmentOpDropdownClass.dataList.removeAt(0)
+        }
 
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.classes.collect {
                 binding.fragmentOpDropdownClass.dropdownText.text = it[0].toString()
             }
+        }
+    }
+
+    private val monthWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            // 텍스트가 변경되기 전에 호출됩니다.
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            // 텍스트가 변경될 때 호출됩니다.
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            // 텍스트가 변경된 후에 호출됩니다.
+            viewModel.curMonth.value = s.toString().toInt()
+        }
+    }
+
+    private val classWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            // 텍스트가 변경되기 전에 호출됩니다.
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            // 텍스트가 변경될 때 호출됩니다.
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            // 텍스트가 변경된 후에 호출됩니다.
+            viewModel.curClass.value = s.toString().toInt()
         }
     }
 }
