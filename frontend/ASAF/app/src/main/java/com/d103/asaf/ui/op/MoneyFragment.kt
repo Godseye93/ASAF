@@ -29,13 +29,16 @@ class MoneyFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = MoneyAdapter()
-        binding.fragmentMoneyRecyclerview.adapter = adapter
 
         lifecycleScope.launchWhenStarted {
             viewModel.moneys.collect { newList ->
                 adapter.submitList(newList)
             }
         }
+
+        adapter = MoneyAdapter()
+        binding.fragmentMoneyRecyclerview.adapter = adapter
+
+
     }
 }

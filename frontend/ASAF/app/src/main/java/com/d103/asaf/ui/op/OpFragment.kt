@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.d103.asaf.R
@@ -32,24 +33,31 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
     }
 
     private fun initSeat() {
+        binding.fragmentOpDropdownMonth.visibility = View.GONE
         handler.postDelayed({
+            binding.fragmentOpImageviewFront.visibility = View.VISIBLE
             childFragmentManager.beginTransaction()
-                .replace(binding.fragmentOpFramelayoutSeat.id,SeatFragment.instance(viewModel.position.value, viewModel.seat))
+                .replace(binding.fragmentOpFramelayoutSeat.id,SeatFragment.instance(viewModel.position.value, viewModel.seat.value))
                 .commit()
         }, 100)
     }
 
     private fun initClickListener() {
         binding.fragmentOpTogglebuttonToggle.setFirstButtonClickListener {
-
             initSeat()
         }
         binding.fragmentOpTogglebuttonToggle.setSecondButtonClickListener {
+            binding.fragmentOpImageviewFront.visibility = View.INVISIBLE
+            binding.fragmentOpDropdownMonth.visibility = View.GONE
+
             childFragmentManager.beginTransaction()
                 .replace(binding.fragmentOpFramelayoutSeat.id,LockerFragment.instance(viewModel.lockers.value))
                 .commit()
         }
         binding.fragmentOpTogglebuttonToggle.setThirdButtonClickListener {
+            binding.fragmentOpImageviewFront.visibility = View.INVISIBLE
+            binding.fragmentOpDropdownMonth.visibility = View.VISIBLE
+
             childFragmentManager.beginTransaction()
                 .replace(binding.fragmentOpFramelayoutSeat.id, MoneyFragment())
                 .commit()
@@ -69,12 +77,6 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
             fragmentOpDropdownMonth.dataList.addAll(viewModel.months.value)
             fragmentOpDropdownMonth.dataList.removeAt(calendar.get(Calendar.MONTH))
         }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.months.collect {
-                binding.fragmentOpDropdownMonth.dropdownText.text = it[0].toString()
-            }
-        }
     }
 
     private fun initClass() {
@@ -85,12 +87,6 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
             // 객체가 바뀌면 안됨.. 요소를 변경해줘야 변화 인식됨
             fragmentOpDropdownClass.dataList.addAll(viewModel.classes.value)
             fragmentOpDropdownClass.dataList.removeAt(0)
-        }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.classes.collect {
-                binding.fragmentOpDropdownClass.dropdownText.text = it[0].toString()
-            }
         }
     }
 

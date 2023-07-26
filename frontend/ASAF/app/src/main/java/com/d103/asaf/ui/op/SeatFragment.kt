@@ -22,6 +22,10 @@ import com.d103.asaf.R
 import com.d103.asaf.common.component.SeatView
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentSeatBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bind, R.layout.fragment_seat) {
     private lateinit var targetView: SeatView
@@ -63,11 +67,16 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // 데이터 변화 감지
-        lifecycleScope.launchWhenStarted {
-            viewModel.curClass.collect { newClass ->
-                // 선택된 반에 해당하는 위치 정보를 가져와서 seat()내용을 변경해줌
-                // seat =  GET 위치리스트
+//        // 데이터 변화 감지
+//        lifecycleScope.launchWhenStarted {
+//            viewModel.curClass.collect { newClass ->
+//                // 선택된 반에 해당하는 위치 정보를 가져와서 seat()내용을 변경해줌
+//                // seat =  GET 위치리스트
+//                loadSeat() // 업데이트
+//            }
+//        }
+        lifecycleScope.launchWhenStarted  {
+            viewModel.seat.collect { newSeat ->
                 loadSeat() // 업데이트
             }
         }

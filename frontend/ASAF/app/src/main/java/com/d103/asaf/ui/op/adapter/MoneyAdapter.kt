@@ -26,10 +26,9 @@ class MoneyAdapter : androidx.recyclerview.widget.ListAdapter<String, MoneyAdapt
             // 이미지 누르면 확대되는 기능 set
             // 이미지를 money리스트 정보에서 가져오기
             binding.apply {
-//                Glide.with(binding.root)
-//                    .load(money)
-//                    .placeholder(binding.itemMoneyImageviewImage)
-//                    .into(view)
+                Glide.with(binding.root)
+                    .load(money)
+                    .into(binding.itemMoneyImageviewImage)
             }
         }
     }
