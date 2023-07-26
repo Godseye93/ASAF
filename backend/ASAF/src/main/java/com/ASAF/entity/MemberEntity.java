@@ -11,6 +11,7 @@ import lombok.Setter;
 // javax.persistence 패키지의 모든 클래스를 가져옵니다.
 // 이 패키지는 단순 및 포괄적인 객체 관리를 위한 JPA(Java Persistence API) 구현을 제공하며, Java 객체와 관계형 데이터베이스의 테이블 간의 매핑이 가능하도록 돕습니다.
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,10 +41,10 @@ public class MemberEntity {
     private int electronic_student_id;
 
     @Column
-    private int team_num;
+    private String member_info;
 
     @Column
-    private Date birth_date;
+    private String birth_date;
 
     @Column(unique = true)
     private String memberEmail;
@@ -77,7 +78,7 @@ public class MemberEntity {
         memberEntity.setPhone_number(memberDTO.getPhone_number());
         memberEntity.setProfile_image(memberDTO.getProfile_image());
         memberEntity.setElectronic_student_id(memberDTO.getElectronic_student_id());
-        memberEntity.setTeam_num(memberDTO.getTeam_num());
+        memberEntity.setMember_info(memberDTO.getMember_info());
         memberEntity.setAuthority(memberDTO.getAuthority());
 
         // 학생 생성 시 AttendanceEntity도 함께 생성합니다.
@@ -104,7 +105,7 @@ public class MemberEntity {
         memberEntity.setPhone_number(memberDTO.getPhone_number());
         memberEntity.setProfile_image(memberDTO.getProfile_image());
         memberEntity.setElectronic_student_id(memberDTO.getElectronic_student_id());
-        memberEntity.setTeam_num(memberDTO.getTeam_num());
+        memberEntity.setMember_info(memberDTO.getMember_info());
         memberEntity.setAuthority(memberDTO.getAuthority());
         return memberEntity;
     }

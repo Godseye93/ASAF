@@ -22,8 +22,8 @@ import java.util.Date;
 public class MemberDTO {
     private int id;
     private int electronic_student_id;
-    private int team_num;
-    private Date birth_date;
+    private String member_info;
+    private String birth_date;
     private String memberEmail;
     private String memberPassword;
     private String memberName;
@@ -45,7 +45,7 @@ public class MemberDTO {
         memberDTO.setPhone_number(memberEntity.getPhone_number());
         memberDTO.setProfile_image(memberEntity.getProfile_image());
         memberDTO.setElectronic_student_id(memberEntity.getElectronic_student_id());
-        memberDTO.setTeam_num(memberEntity.getTeam_num());
+        memberDTO.setMember_info(memberEntity.getMember_info());
         memberDTO.setAuthority(memberEntity.getAuthority());
         return memberDTO;
     }

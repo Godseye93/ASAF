@@ -26,7 +26,7 @@ public class BusController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> save(@ModelAttribute BusDTO busDTO) {
+    public ResponseEntity<String> save(@RequestBody BusDTO busDTO) {
         busService.save(busDTO);
         return new ResponseEntity<>("버스 등록 성공", HttpStatus.OK);
     }
