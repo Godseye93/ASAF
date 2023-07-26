@@ -134,9 +134,11 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
         for (i in 0 until gridLayout.childCount) {
             val childView = gridLayout.getChildAt(i)
             if (childView is SeatView) {
-                childView.seatText.text = i.toString()
                 setTouchListener(childView)
-                if (i < seatNum) childView.seatImage.setImageDrawable(occupy)
+                if (i < seatNum) {
+                    childView.seatImage.setImageDrawable(occupy)
+                    childView.seatText.text = i.toString()
+                }
                 else childView.seatImage.setImageDrawable(vacant)
                 setViewPosition(childView, position[i])
                 reversePosition[position[i]] = i
