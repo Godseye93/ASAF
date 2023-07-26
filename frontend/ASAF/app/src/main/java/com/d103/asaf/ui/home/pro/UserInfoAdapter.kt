@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.d103.asaf.common.model.dto.AttendanceInfo
 import com.d103.asaf.common.model.dto.Member
+import com.d103.asaf.common.util.AdapterUtil
 import com.d103.asaf.databinding.ItemStudentAttendanceBinding
 
-class UserInfoAdapter(var context : Context) : ListAdapter<AttendanceInfo, UserInfoAdapter.ItemViewHolder>(diffUtil) {
+class UserInfoAdapter(var context : Context) : ListAdapter<AttendanceInfo, UserInfoAdapter.ItemViewHolder>(
+    AdapterUtil.diffUtilUserInfo) {
 
 
     inner class ItemViewHolder(var binding : ItemStudentAttendanceBinding) :  RecyclerView.ViewHolder(binding.root) {
@@ -33,18 +35,7 @@ class UserInfoAdapter(var context : Context) : ListAdapter<AttendanceInfo, UserI
         }
     }
 
-    companion object {
-        // diffUtil: currentList에 있는 각 아이템들을 비교하여 최신 상태를 유지하도록 한다.
-        val diffUtil = object : DiffUtil.ItemCallback<AttendanceInfo>() {
-            override fun areItemsTheSame(oldItem: AttendanceInfo, newItem: AttendanceInfo): Boolean {
-                return oldItem.attendanceId == newItem.attendanceId
-            }
 
-            override fun areContentsTheSame(oldItem: AttendanceInfo, newItem: AttendanceInfo): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
@@ -65,14 +56,4 @@ class UserInfoAdapter(var context : Context) : ListAdapter<AttendanceInfo, UserI
     }
 
 
-}
-
-class ItemDiffCallback : DiffUtil.ItemCallback<AttendanceInfo>() {
-    override fun areItemsTheSame(oldItem: AttendanceInfo, newItem: AttendanceInfo): Boolean {
-        return oldItem.attendanceId == newItem.attendanceId
-    }
-
-    override fun areContentsTheSame(oldItem: AttendanceInfo, newItem: AttendanceInfo): Boolean {
-        return oldItem == newItem
-    }
 }
