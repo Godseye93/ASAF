@@ -30,6 +30,7 @@ public class BusEntity {
         BusEntity busEntity = new BusEntity();
         busEntity.setLocation(busDTO.getLocation());
         busEntity.setBus_route(busDTO.getBus_route());
+//        busEntity.setRegion(region);
         return busEntity;
     }
 
@@ -38,6 +39,7 @@ public class BusEntity {
         classEntity.setBusNum(classDTO.getBusNum());
         classEntity.setLocation(classDTO.getLocation());
         classEntity.setBus_route(classDTO.getBus_route());
+//        busEntity.setRegion(region);
         return classEntity;
     }
 }
