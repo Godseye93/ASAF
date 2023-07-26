@@ -26,14 +26,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setupNavHost()
         setSupportActionBar(findViewById(com.airbnb.lottie.R.id.action_bar));
         // user 정보 가지고 오기
         // 임시 데이터
         var user = Member(
-            1, 123, "Test", "test@test.com",
-            "test",
-            Date(System.currentTimeMillis()), 123, "010-1234-5478", "123", 2, "프로"
+            1, 123, "testName", "test@test.com",
+            "testPass", "testInfo",
+            Date(System.currentTimeMillis()).toString(), 123, "010-1234-5478", "123", 2, "프로"
         )
         // user 정보 가지고 오고 난 후 activity 나누기
 
@@ -61,17 +62,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
     private fun setupNavHost() {
         // NavHostFragment를 가져와서 설정합니다.
-        hideBottomNavBar()
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
     }
 
-    private fun hideBottomNavBar() {
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navi_pro)
-        bottomNavigationView.visibility = View.GONE
-    }
-    fun showBottomNavigationBar() {
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navi_pro)
-        bottomNavigationView.visibility = View.VISIBLE
+
+    // Create a public method to hide the bottom navigation bar.
+    fun hideBottomNavigationBarFromFragment() {
+        hideBottomNavigationBar()
     }
 }

@@ -9,14 +9,26 @@ data class Member(
     val memberName: String,
     val memberEmail: String,
     val memberPassword: String,
-    @SerializedName("birth_date") val birthDate: Date,
+//    val memberDate: String,
+    @SerializedName("member_info") val memberInfo: String,
+    @SerializedName("birth_date") val birthDate: String,
     @SerializedName("electronic_student_id") val electronicStudentId: Int,
     @SerializedName("phone_number") val phoneNumber: String,
     @SerializedName("profile_image") val profileImage: String,
     @SerializedName("team_num") val teamNum: Int,
     val authority: String,
 ){
-    constructor():this("","","")
-    constructor(memberName: String, memberEmail: String, memberPassword: String)
-            :this(0,0, memberName, memberEmail, memberPassword, Date(), 0, "", "", 0, "")
+    // 기본 생성자
+    constructor() : this(0, 0, "", "", "", "", "",
+        0, "", "", 0, "")
+
+    // 추가 생성자 추가
+    constructor(
+        memberName: String,
+        memberEmail: String,
+        memberPassword: String,
+        birthDate: String,
+        memberInfo: String
+    ) : this(0, 0, memberName, memberEmail,
+        memberPassword, memberInfo, birthDate, 0, "", "", 0, "")
 }
