@@ -16,7 +16,7 @@ public class GenerationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int generation_code;
 
-    @Column(nullable = false)
+    @Column
     private String generation_num;
 
     @OneToMany(mappedBy = "generation_code", cascade = CascadeType.ALL)

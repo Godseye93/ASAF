@@ -75,6 +75,15 @@ public class MemberService {
         }
     }
 
+    public MemberDTO findByMemberEmail(String memberEmail) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(memberEmail);
+        if (optionalMemberEntity.isPresent()) {
+            return MemberDTO.toMemberDTO(optionalMemberEntity.get());
+        } else {
+            return null;
+        }
+    }
+
     // 이 메서드는 주어진 이메일을 사용하여 데이터베이스에서 MemberEntity 객체를 조회하고, 이를 MemberDTO 객체로 변환한 후 반환합니다.
     public MemberDTO updateForm(String myEmail) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(myEmail);

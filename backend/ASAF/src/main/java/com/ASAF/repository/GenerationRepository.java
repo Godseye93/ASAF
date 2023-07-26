@@ -1,4 +1,7 @@
 package com.ASAF.repository;
 
-public interface GenerationRepository {
+import com.ASAF.entity.GenerationEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface GenerationRepository extends JpaRepository<GenerationEntity, Integer> {
 }

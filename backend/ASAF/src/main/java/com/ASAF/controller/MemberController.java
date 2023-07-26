@@ -66,6 +66,12 @@ public class MemberController {
         return new ResponseEntity<>(memberDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/member/email/{memberEmail}")
+    public ResponseEntity<MemberDTO> findByMemberEmail(@PathVariable String memberEmail) {
+        MemberDTO memberDTO = memberService.findByMemberEmail(memberEmail);
+        return new ResponseEntity<>(memberDTO, HttpStatus.OK);
+    }
+
     // 회원 정보를 수정하는 요청을 처리합니다.
     // 전달받은 DTO 객체를 이용해 회원 정보를 수정하고, 수정된 결과를 ResponseEntity 형태로 반환합니다.
     @PostMapping("/member/update")

@@ -6,7 +6,9 @@ package com.ASAF.entity;
 import com.ASAF.dto.MemberDTO;
 // lombok.Getter와 lombok.Setter가 가져옵니다. Lombok 라이브러리는 Java의 보일러플레이트 코드를 줄이기 위하여 사용되며,
 // @Getter와 @Setter 어노테이션으로 getter와 setter 메서드를 자동 생성할 수 있습니다.
+import com.sun.istack.NotNull;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 // javax.persistence 패키지의 모든 클래스를 가져옵니다.
 // 이 패키지는 단순 및 포괄적인 객체 관리를 위한 JPA(Java Persistence API) 구현을 제공하며, Java 객체와 관계형 데이터베이스의 테이블 간의 매핑이 가능하도록 돕습니다.
@@ -47,6 +49,7 @@ public class MemberEntity {
     private String birth_date;
 
     @Column(unique = true)
+    @NotNull
     private String memberEmail;
 
     @Column
