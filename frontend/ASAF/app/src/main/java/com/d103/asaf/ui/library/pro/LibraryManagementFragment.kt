@@ -16,6 +16,9 @@ import com.d103.asaf.ui.library.LibraryFragmentViewModel
 import com.d103.asaf.ui.library.adapter.BookAdapter
 import com.d103.asaf.ui.op.OpFragmentViewModel
 import com.d103.asaf.ui.op.adapter.LockerAdapter
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 // String -> BookDto로 변경 필요
 class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>(FragmentLibraryManagementBinding::bind, R.layout.fragment_library_management) {
@@ -44,13 +47,21 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
             bookToggleButton.moneyText.visibility = View.GONE
 
             bookToggleButton.setFirstButtonClickListener {
+                fragmentLibraryTextviewSecond.text = "대출자"
+                fragmentLibraryTextviewThird.text = "반납일"
                 books = viewModel.myBooks.value
                 adapter.submitList(books)
             }
 
             bookToggleButton.setSecondButtonClickListener {
+                fragmentLibraryTextviewSecond.text = "저자"
+                fragmentLibraryTextviewThird.text = "수량"
                 books = viewModel.books.value
                 adapter.submitList(books)
+            }
+
+            fragmentLibrarySearchBar.setSearchClickListener {
+                fragmentLibrarySearchBar.searchEditText.text.clear()
             }
 
             fragmentLibrarySearchBar.searchEditText.addTextChangedListener(searchWatcher)
@@ -94,7 +105,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
             bookSearch(s.toString())
         }
 
-        override fun afterTextChanged(s: Editable?)
+        override fun afterTextChanged(s: Editable?){
 
         }
     }
@@ -102,5 +113,12 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
     private fun bookSearch(title: String) {
         val filteredBooks = books.filter { book -> book.contains(title) }
         adapter.submitList(filteredBooks)
+    }
+
+    private fun setDate(loanPeriod: Int): String {
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.KOREA)
+        val currentDate = Calendar.getInstance()
+        currentDate.add(Calendar.DAY_OF_MONTH, loanPeriod)
+        return dateFormat.format(currentDate.time)
     }
 }

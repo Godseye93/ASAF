@@ -46,6 +46,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/fragment_library_search_bar" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/libraryTop"
+        app:tint="#009702"
+        app:srcCompat="@drawable/baseline_bookmark_add_24"
+        app:maxImageSize="36dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_library_recyclerview"
         android:layout_width="match_parent"
@@ -99,6 +111,7 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/fragment_library_textview_second"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -120,6 +133,7 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/fragment_library_textview_third"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

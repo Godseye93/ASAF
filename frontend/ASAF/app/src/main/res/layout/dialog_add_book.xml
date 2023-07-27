@@ -1,0 +1,122 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/dialog_add_book_linearlayout_top"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_add_book_linearlayout_mid"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="도서 제목"
+            android:textSize="36sp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_margin="5dp"
+            android:id="@+id/dialog_add_book_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:strokeColor="#e6e6e6"
+            app:strokeWidth="10dp"
+            app:cardCornerRadius="30dp">
+
+            <EditText
+                android:id="@+id/dialog_add_book_edittext_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/dialog_add_book_linearlayout_mid"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_add_book_linearlayout_bot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_add_book_linearlayout_top">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="저자"
+            android:textSize="36sp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/dialog_add_book_author"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            app:strokeColor="#e6e6e6"
+            app:strokeWidth="10dp"
+            android:background="@drawable/cardview_stroke"
+            app:cardCornerRadius="30dp">
+
+            <EditText
+                android:id="@+id/dialog_add_book_edittext_author"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/dialog_add_book_linearlayout_bot"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_add_book_linearlayout_mid">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="출판사"
+            android:textSize="36sp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/dialog_add_book_publisher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            app:strokeColor="#e6e6e6"
+            app:strokeWidth="10dp"
+            android:background="@drawable/cardview_stroke"
+            app:cardCornerRadius="30dp">
+
+            <EditText
+                android:id="@+id/dialog_add_book_edittext_publisher"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
