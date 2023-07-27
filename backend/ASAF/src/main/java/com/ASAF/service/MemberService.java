@@ -112,13 +112,13 @@ public class MemberService {
     }
 
     // 이 메서드는 주어진 이메일이 데이터베이스에 존재하는지 확인합니다.
-    // 이메일이 이미 존재하면 "중복된 이메일이 존재합니다."를 반환하고, 그렇지 않으면 "사용 가능한 이메일입니다."를 반환합니다.
-    public String emailCheck(String memberEmail) {
+    // 이메일이 이미 존재하면 false를 반환하고, 그렇지 않으면 true를 반환합니다.
+    public boolean emailCheck(String memberEmail) {
         Optional<MemberEntity> byMemberEmail = memberRepository.findByMemberEmail(memberEmail);
         if (byMemberEmail.isPresent()) {
-            return "중복된 이메일이 존재합니다.";
+            return false;
         } else {
-            return "사용가능 한 이메일입니다.";
+            return true;
         }
     }
 
@@ -135,6 +135,14 @@ public class MemberService {
         memberEntity.setProfile_image(filePath);
         memberRepository.save(memberEntity);
     }
+    
+    // 이메일로 프로필 사진 주소 가져오는 메소드
+    public String getProfileImagePath(String memberEmail) throws ChangeSetPersister.NotFoundException {
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(memberEmail)
+                .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+        return memberEntity.getProfile_image();
+    }
+
 
 }
 
