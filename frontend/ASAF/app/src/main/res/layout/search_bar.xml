@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/search_bar_imageview_search"
-            android:layout_width="76dp"
-            android:layout_height="76dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginVertical="4dp"
             android:elevation="10dp"
             android:src="@drawable/search_icon"
@@ -24,7 +24,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/search_bar_cardview_search"
             android:layout_width="match_parent"
-            android:layout_height="76dp"
+            android:layout_height="0dp"
             android:layout_margin="4dp"
             android:visibility="invisible"
             app:cardBackgroundColor="#E7E6FD"
