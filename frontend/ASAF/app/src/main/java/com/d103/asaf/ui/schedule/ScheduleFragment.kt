@@ -1,12 +1,10 @@
 package com.d103.asaf.ui.schedule
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
@@ -35,12 +33,13 @@ private const val ARG_PARAM2 = "param2"
 
 
 
-class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::bind, R.layout.fragment_schedule) {
+class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::bind, R.layout.fragment_schedule){
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var selectedDate: CalendarDay = CalendarDay.today()
     private var notiList  =  mutableListOf<Noti>()
+    private lateinit var itemTouchHelper: ItemTouchHelper
     private lateinit var adapter : NotiInfoAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,10 +116,15 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         binding.calendarView.setHeaderTextAppearance(R.style.AppTheme)
 
 
+
+
         adapter = NotiInfoAdapter(requireContext())
         binding.fragmentScheduleRecyclerview.adapter = adapter
         binding.fragmentScheduleRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-
+        // 스와이프
+        val itemTouchHelperCallback = ItemTouchHelperCallback(adapter)
+        itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(binding.fragmentScheduleRecyclerview)
 
         adapter.submitList(notiList)
 
@@ -143,5 +147,6 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
 
 
     }
+
 
 }

@@ -9,4 +9,12 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+
+
+    <style name="CustomDialogStyle" parent="Theme.Material3.DayNight.Dialog">
+        <!-- Set the desired width and height for the dialog window -->
+        <item name="android:layout_width">400dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 </resources>
