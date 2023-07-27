@@ -35,6 +35,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 }
 
+bootJar {
+	archiveFileName = "${rootProject.name}-${version}.jar"
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
