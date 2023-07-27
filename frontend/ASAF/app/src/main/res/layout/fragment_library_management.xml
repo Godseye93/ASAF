@@ -47,6 +47,7 @@
         app:layout_constraintTop_toTopOf="@+id/fragment_library_search_bar" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fragment_library_fab_addbook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/libraryTop"

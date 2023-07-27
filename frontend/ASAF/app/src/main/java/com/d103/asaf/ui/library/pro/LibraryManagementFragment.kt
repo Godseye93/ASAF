@@ -1,21 +1,24 @@
 package com.d103.asaf.ui.library.pro
 
+import android.app.AlertDialog
+import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowInsets
+import android.view.WindowManager
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
+import com.d103.asaf.databinding.DialogAddBookBinding
 import com.d103.asaf.databinding.FragmentLibraryManagementBinding
 import com.d103.asaf.ui.library.LibraryFragmentViewModel
 import com.d103.asaf.ui.library.adapter.BookAdapter
-import com.d103.asaf.ui.op.OpFragmentViewModel
-import com.d103.asaf.ui.op.adapter.LockerAdapter
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -67,6 +70,10 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
             fragmentLibrarySearchBar.searchEditText.addTextChangedListener(searchWatcher)
 
             fragmentLibraryRecyclerview.isVisible = true
+
+            fragmentLibraryFabAddbook.setOnClickListener {
+                addBookDialog()
+            }
         }
     }
 
@@ -120,5 +127,49 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
         val currentDate = Calendar.getInstance()
         currentDate.add(Calendar.DAY_OF_MONTH, loanPeriod)
         return dateFormat.format(currentDate.time)
+    }
+
+
+    fun addBookDialog() {
+        val dialogView = DialogAddBookBinding.inflate(layoutInflater,binding.root,false)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView.root)
+            .create()
+
+        // 도서 등록 기능 POST
+        dialogView.bookAdd.setOnClickListener {
+            //POST & dismiss()
+        }
+        dialogView.bookCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        // 다이얼로그 키보드 띄워지면 resizing 하는 코드
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                // Set the dialog's window to not fit system windows
+                dialog.window?.setDecorFitsSystemWindows(false)
+
+                // Set the dialog's window to listen for window insets
+                ViewCompat.setOnApplyWindowInsetsListener(dialogView.root) { v, insets ->
+                    // Get the bottom inset of the system bar
+                    val bottomInset = insets.getInsets(WindowInsets.Type.ime()).bottom
+
+                    // Set the dialog's padding to the bottom inset
+                    v.setPadding(0, 0, 0, bottomInset)
+
+                    insets
+                }
+            } else {
+                dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+            }
+        }
+
+        dialog.show()
+        dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics).toInt()
     }
 }
