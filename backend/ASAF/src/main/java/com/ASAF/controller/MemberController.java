@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 // HttpSession 클래스를 사용하기 위함입니다. 세션 관리와 관련된 기능을 제공합니다.
 import javax.servlet.http.HttpSession;
 // Java의 기본 List 인터페이스를 사용하기 위함입니다.
@@ -97,27 +98,29 @@ public class MemberController {
         return new ResponseEntity<>("로그아웃 성공",HttpStatus.OK);
     }
 
-    // 이메일 중복 확인 요청을 처리합니다.
-    // 전달받은 이메일을 이용해 중복 확인을 진행하고, 그 결과를 문자열 형태로 반환합니다.
-//    @PostMapping("/member/email-check/")
-//    public @ResponseBody String emailCheck(@RequestParam("memberEmail") String memberEmail) {
-//        String checkResult = memberService.emailCheck(memberEmail);
-//        return checkResult;
-//    }
 
-    @PostMapping("/member/email-check/")
+    @PostMapping("/member/email-check")
     public @ResponseBody String emailCheck(@RequestBody Map<String, String> params) {
         String checkResult = memberService.emailCheck(params.get("memberEmail"));
         return checkResult;
     }
 
+    @PostMapping("/member/upload-image")
+    public ResponseEntity<?> uploadImage(@RequestParam("memberEmail") String memberEmail,
+                                         @RequestParam("file") MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is required");
+        }
+        try {
+            memberService.saveProfileImage(memberEmail, file);
+            return ResponseEntity.ok("Image uploaded successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image");
+        }
+    }
 
 
-    // @PostMapping("/member/email-check")
-    //    public @ResponseBody String emailCheck(@RequestParam("memberEmail") String memberEmail) {
-    //        String checkResult = memberService.emailCheck(memberEmail);
-    //        return checkResult;
-    //    }
 }
 
 

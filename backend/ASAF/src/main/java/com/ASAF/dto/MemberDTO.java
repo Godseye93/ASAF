@@ -31,6 +31,7 @@ public class MemberDTO {
     private String phone_number;
     private String profile_image;
     private String authority;
+    private String token;
 
     // MemberEntity 타입의 하나의 매개변수 memberEntity를 입력으로 받고 MemberDTO 객체를 반환합니다.
     // 이 메서드의 목적은 MemberEntity 객체의 정보를 가져와 MemberDTO 객체로 변환하는 것입니다.
@@ -47,6 +48,7 @@ public class MemberDTO {
         memberDTO.setElectronic_student_id(memberEntity.getElectronic_student_id());
         memberDTO.setMember_info(memberEntity.getMember_info());
         memberDTO.setAuthority(memberEntity.getAuthority());
+        memberDTO.setToken(memberEntity.getToken());
         return memberDTO;
     }
 }
