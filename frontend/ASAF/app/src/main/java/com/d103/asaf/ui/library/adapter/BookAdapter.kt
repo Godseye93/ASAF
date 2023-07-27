@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.d103.asaf.databinding.ItemBookBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 // String  -> BookDto로 변경 필요
-class BookAdapter : androidx.recyclerview.widget.ListAdapter<String, BookAdapter.BookViewHolder>(
-    BookAdapter.BookDiffCallback()
-) {
-
+class BookAdapter : androidx.recyclerview.widget.ListAdapter<String, BookAdapter.BookViewHolder>(BookDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemBookBinding.inflate(inflater, parent, false)
@@ -23,8 +23,13 @@ class BookAdapter : androidx.recyclerview.widget.ListAdapter<String, BookAdapter
     }
 
     inner class BookViewHolder(private val binding: ItemBookBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(Book: String) {
-
+        fun bind(book: String) {
+            binding.apply {
+                bookItemTitle.text = book
+                bookItemTitle.isSelected = true
+                bookItemDrawer.text = "괴도 키드"
+                bookItemReturn.text = getDate(3)
+            }
         }
     }
 
@@ -37,5 +42,12 @@ class BookAdapter : androidx.recyclerview.widget.ListAdapter<String, BookAdapter
         override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem
         }
+    }
+
+    private fun getDate(loanPeriod: Int): String {
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.KOREA)
+        val currentDate = Calendar.getInstance()
+        currentDate.add(Calendar.DAY_OF_MONTH, loanPeriod)
+        return dateFormat.format(currentDate.time)
     }
 }
