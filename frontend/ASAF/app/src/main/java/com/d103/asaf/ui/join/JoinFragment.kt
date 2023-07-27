@@ -11,18 +11,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.MainActivity
 import com.d103.asaf.R
+import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.dto.Member
+import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentJoinBinding
 import com.d103.asaf.ui.login.LoginFragment
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.selects.select
 import java.util.Calendar
 import java.util.Date
@@ -43,6 +51,8 @@ class JoinFragment : Fragment() {
             }
         }
     }
+    // email 중복 확인
+    private var checkedEmail = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -110,31 +120,35 @@ class JoinFragment : Fragment() {
                 classNum = info.third
             }
 
-            // 이메일 중복 확인
-            ///////////////////// bool 값으로 처리 추가하기.
-            viewModel.checkEmailDuplication(email)
-            // LiveData를 관찰하여 중복 여부를 처리합니다.
-            viewModel.isEmailDuplicated.observe(viewLifecycleOwner, Observer { isDuplicated ->
-                if (isDuplicated) {
-                    // 이메일이 중복되는 경우
-                    Log.d(TAG, "setupViews: 중복된 이메일이 존재합니다.")
-                } else {
-                    // 이메일이 중복되지 않는 경우
-                    // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
-                    // viewModel.signup(name, email, password, birth, information)
-                    Log.d(TAG, "setupViews: 회원가입을 진행합니다.")
-                }
-            })
-
             val member = Member(name, email, password, birth, information)
             if (viewModel.validateInputs(member, confirmPassword)) {
-                // 뷰모델의 회원가입 메서드를 호출합니다.
-                viewModel.signup(member)
-                // login fragment로 이동.
-                findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
+
+                // 이메일 중복 확인
+                lifecycleScope.launch {
+                    val isEmailDuplicated = async { checkDuplicateEmail(email) }.await()
+
+                    if (!isEmailDuplicated) {
+                        // 이메일이 중복되는 경우
+                        Log.d(TAG, "onSignupButtonClick: 중복된 이메일이 존재합니다.")
+                        Toast.makeText(requireContext(), "이미 등록된 이메일입니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // 이메일이 중복되지 않는 경우
+                        // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
+                        // viewModel.signup(name, email, password, birth, information)
+                        Log.d(TAG, "onSignupButtonClick: 사용 가능한 이메일입니다.")
+
+                        // 뷰모델의 회원가입 메서드를 호출합니다.
+                        viewModel.signup(member)
+                        Toast.makeText(requireContext(), "회원가입 되었습니다.", Toast.LENGTH_SHORT).show()
+                        // login fragment로 이동.
+                        findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
+                    }
+                }
             } else {
                 // 입력 값이 유효하지 않을 경우, 필요한 에러 메시지를 표시하거나 처리해줍니다.
                 Log.d(TAG, "setupViews: 똑바로 다 입력하세요 ~~")
+                Toast.makeText(requireContext(), "모든 항목을 입력하세요.", Toast.LENGTH_SHORT).show()
+
             }
         }
 
@@ -244,4 +258,19 @@ class JoinFragment : Fragment() {
         // 이미지를 선택하는 요청을 `ActivityResultLauncher`로 보냅니다.
         imagePickerLauncher.launch(intent)
     }
+
+    // Modify checkDuplicateNickname to checkDuplicateEmail
+    private suspend fun checkDuplicateEmail(email: String): Boolean {
+        try {
+            // RetrofitUtil을 사용하여 서버에 이메일 중복 확인 요청
+            return RetrofitUtil.memberService.emailCheck(email)
+        } catch (e: Exception) {
+            // 예외 처리 로직
+            Log.d(TAG, "checkDuplicateEmail: 오류 발생")
+            Log.d(TAG, "checkDuplicateEmail: $e")
+            // 예외 발생 시에도 false 값을 반환하여 이메일 중복으로 처리
+            return false
+        }
+    }
+
 }

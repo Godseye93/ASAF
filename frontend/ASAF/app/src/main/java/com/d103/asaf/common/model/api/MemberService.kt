@@ -16,7 +16,7 @@ interface MemberService {
 
     // 중복 확인
     @GET("member/email-check/{memberEmail}")
-    suspend fun emailCheck(@Path("memberEmail") email: String): String
+    suspend fun emailCheck(@Path("memberEmail") memberEmail: String): Boolean
 
     @GET("member/email/{memberEmail}")
     suspend fun getUserInfo(@Path("memberEmail") memberEmail: String): Response<Member>
