@@ -12,8 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.MainActivity
 import com.d103.asaf.R
@@ -108,17 +110,31 @@ class JoinFragment : Fragment() {
                 classNum = info.third
             }
 
+            // 이메일 중복 확인
+            ///////////////////// bool 값으로 처리 추가하기.
+            viewModel.checkEmailDuplication(email)
+            // LiveData를 관찰하여 중복 여부를 처리합니다.
+            viewModel.isEmailDuplicated.observe(viewLifecycleOwner, Observer { isDuplicated ->
+                if (isDuplicated) {
+                    // 이메일이 중복되는 경우
+                    Log.d(TAG, "setupViews: 중복된 이메일이 존재합니다.")
+                } else {
+                    // 이메일이 중복되지 않는 경우
+                    // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
+                    // viewModel.signup(name, email, password, birth, information)
+                    Log.d(TAG, "setupViews: 회원가입을 진행합니다.")
+                }
+            })
+
             val member = Member(name, email, password, birth, information)
-            if (validateInputs(name, email, password, confirmPassword, birth, information)) {
-                // 모든 입력 값이 유효할 경우, 뷰모델의 회원가입 메서드를 호출합니다.
-//                viewModel.signup(name, email, password, birth, information)
-//                Log.d(TAG, "setupViews: ${tempDate}")
-                viewModel.signup( member )
-                
+            if (viewModel.validateInputs(member, confirmPassword)) {
+                // 뷰모델의 회원가입 메서드를 호출합니다.
+                viewModel.signup(member)
                 // login fragment로 이동.
                 findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
             } else {
                 // 입력 값이 유효하지 않을 경우, 필요한 에러 메시지를 표시하거나 처리해줍니다.
+                Log.d(TAG, "setupViews: 똑바로 다 입력하세요 ~~")
             }
         }
 
@@ -186,19 +202,6 @@ class JoinFragment : Fragment() {
         return Triple(Nth, region, classNum)
     }
 
-    private fun validateInputs(
-        name: String,
-        email: String,
-        password: String,
-        confirmPassword: String,
-        birth: String,
-        information: String
-    ): Boolean {
-        // 입력 값의 유효성을 검사하는 로직을 구현합니다.
-        // 여기서는 예시로 항상 true를 반환하도록 처리했습니다.
-        // 실제 앱에서는 입력 값의 유효성을 적절히 확인하여 true 또는 false를 반환해야 합니다.
-        return true
-    }
 
     // 생년월일을 선택하는 달력 다이얼로그를 보여주는 메서드입니다.
     private fun showDatePickerDialog(){
@@ -223,14 +226,6 @@ class JoinFragment : Fragment() {
             month,
             day
         )
-
-        // fragment_join_editTV_birth를 비활성화합니다.
-//        binding.fragmentJoinEditTVBirth.isEnabled = false
-
-//        datePickerDialog.setOnDismissListener {
-//            // 달력이 닫힐 때 다시 EditText를 활성화합니다.
-//            binding.fragmentJoinEditTVBirth.isEnabled = true
-//        }
 
         datePickerDialog.show()
     }
