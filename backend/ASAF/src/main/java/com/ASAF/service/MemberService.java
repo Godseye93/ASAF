@@ -10,7 +10,13 @@ import com.ASAF.dto.MemberDTO;
 import com.ASAF.repository.MemberRepository;
 import com.ASAF.entity.MemberEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -115,6 +121,21 @@ public class MemberService {
             return "사용가능 한 이메일입니다.";
         }
     }
+
+    public void saveProfileImage(String memberEmail, MultipartFile file) throws IOException, ChangeSetPersister.NotFoundException {
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(memberEmail)
+                .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+
+        String UPLOAD_DIR = "src/main/resources/static/images/profile_images/";
+        String fileName = file.getOriginalFilename();
+        String filePath = UPLOAD_DIR + memberEmail + "_" + fileName;
+        File dest = new File(filePath);
+        FileCopyUtils.copy(file.getBytes(), dest);
+
+        memberEntity.setProfile_image(filePath);
+        memberRepository.save(memberEntity);
+    }
+
 }
 
 
