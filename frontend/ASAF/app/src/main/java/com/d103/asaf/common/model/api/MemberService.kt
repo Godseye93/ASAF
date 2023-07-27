@@ -14,6 +14,10 @@ interface MemberService {
     @POST("member/save")
     suspend fun insert(@Body body: Member): Boolean
 
+    // 중복 확인
+    @GET("member/email-check/{memberEmail}")
+    suspend fun emailCheck(@Path("memberEmail") email: String): String
+
     @GET("member/email/{memberEmail}")
     suspend fun getUserInfo(@Path("memberEmail") memberEmail: String): Response<Member>
 

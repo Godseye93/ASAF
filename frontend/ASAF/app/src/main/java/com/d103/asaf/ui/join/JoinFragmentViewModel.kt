@@ -8,15 +8,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
 
 private const val TAG = "JoinFragmentViewModel_cjw"
 class JoinFragmentViewModel : ViewModel() {
 
-    // 아이디 중복 체크 여부를 담는 MutableLiveData
-    private val _isIdChecked = MutableLiveData(false)
-    val isIdChecked: LiveData<Boolean> get() = _isIdChecked
+    // email 중복 체크 여부를 담는 MutableLiveData
+    private val _isEmailDuplicated = MutableLiveData(false)
+    val isEmailDuplicated: LiveData<Boolean> get() = _isEmailDuplicated
+
 
     // 회원가입 성공 여부를 담는 MutableLiveData
     private val _isJoinSuccessful = MutableLiveData(false)
@@ -24,18 +26,21 @@ class JoinFragmentViewModel : ViewModel() {
 
 
     // 아이디 중복 체크 함수
-    fun checkIdDuplication(id: String, showToast: (String) -> Unit) {
+    // 이메일 중복 확인을 위한 함수
+    // 이메일 중복 확인을 위한 함수
+    fun checkEmailDuplication(email: String) {
         viewModelScope.launch {
             try {
-                // RetrofitUtil을 사용하여 서버에 아이디 중복 체크 요청
-                val isIdDuplicated = RetrofitUtil.memberService.isUsedId(id)
-                if(!isIdDuplicated) {
-                    _isIdChecked.value = true
-                }
-                showToast(if (isIdDuplicated) "중복되는 아이디입니다." else "사용 가능한 아이디입니다.")
+                // RetrofitUtil을 사용하여 서버에 이메일 중복 확인 요청
+                val response = RetrofitUtil.memberService.emailCheck(email)
+                // 이메일 중복 확인 결과를 LiveData에 설정
+                _isEmailDuplicated.value = response == "중복된 이메일이 존재합니다."
             } catch (e: Exception) {
-                showToast("오류가 발생했습니다.")
-                Log.d(TAG, "checkIdDuplication: ${e.printStackTrace()}")
+                // 예외 처리 로직
+                Log.d(TAG, "checkEmailDuplication: 오류 발생")
+                Log.d(TAG, "checkEmailDuplication: $e")
+                // 예외 발생 시에도 false 값을 LiveData에 설정하여 이메일 중복으로 처리
+                _isEmailDuplicated.value = false
             }
         }
     }
@@ -60,6 +65,34 @@ class JoinFragmentViewModel : ViewModel() {
                 Log.d(TAG, "signup: $e")
             }
         }
+    }
+
+    fun validateInputs(
+        member: Member,
+        confirmPassword: String
+//        name: String,
+//        email: String,
+//        password: String,
+//        confirmPassword: String,
+//        birth: String,
+//        information: String
+    ): Boolean {
+        // 입력 값의 유효성을 검사합니다.
+        if (member.memberName.isBlank() || member.memberEmail.isBlank() ||
+            member.memberPassword.isBlank() || confirmPassword.isBlank() ||
+            member.birthDate.isBlank() || member.memberInfo.isBlank()) {
+            // 입력값 중 하나라도 비어있을 경우 false를 반환합니다.
+            return false
+        }
+
+        // 비밀번호와 확인 비밀번호가 일치하는지 확인합니다.
+        if (member.memberPassword != confirmPassword) {
+            // 비밀번호와 확인 비밀번호가 일치하지 않을 경우 false를 반환합니다.
+            return false
+        }
+
+        // 모든 유효성 검사를 통과한 경우 true를 반환합니다.
+        return true
     }
 
 }
