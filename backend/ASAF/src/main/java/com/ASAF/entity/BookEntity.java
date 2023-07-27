@@ -23,28 +23,27 @@ public class BookEntity {
 
     @ManyToOne
     @JoinColumn(name = "class_num")
-    private ClassInfoEntity classInfo;
+    private ClassInfoEntity class_num;
 
     @ManyToOne
     @JoinColumn(name = "class_code")
-    private ClassEntity classCode;
+    private ClassEntity class_code;
 
     @ManyToOne
     @JoinColumn(name = "region_code")
-    private RegionEntity regionCode;
+    private RegionEntity region_code;
 
     @ManyToOne
     @JoinColumn(name = "generation_code")
-    private GenerationEntity generationCode;
+    private GenerationEntity generation_code;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private MemberEntity userId;
+    @JoinColumn(name = "id")
+    private MemberEntity id;
 
 
     public static BookEntity toBookEntity(BookDTO bookDTO){
         BookEntity bookEntity = new BookEntity();
-//        bookEntity.setBook_number(bookDTO.getBook_number());
         bookEntity.setBook_name(bookDTO.getBook_name());
         bookEntity.setAuthor(bookDTO.getAuthor());
         bookEntity.setPublisher(bookDTO.getPublisher());
@@ -58,5 +57,19 @@ public class BookEntity {
         bookEntity.setAuthor(bookDTO.getAuthor());
         bookEntity.setPublisher(bookDTO.getPublisher());
         return bookEntity;
+    }
+
+    public ClassInfoEntity getClassInfoEntity() {
+        return class_num;
+    }
+
+    public ClassEntity getClassEntity() {
+        return class_code;
+    }
+    public RegionEntity getRegionEntity() {
+        return region_code;
+    }
+    public GenerationEntity getGenerationEntity() {
+        return generation_code;
     }
 }
