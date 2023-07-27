@@ -8,14 +8,20 @@ import com.ASAF.service.MemberService;
 // Lombok 라이브러리를 사용하여 생성자를 자동화하기 위함입니다
 import lombok.RequiredArgsConstructor;
 // Spring 프레임워크에서 사용되는 클래스들입니다.
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 // HttpSession 클래스를 사용하기 위함입니다. 세션 관리와 관련된 기능을 제공합니다.
 import javax.servlet.http.HttpSession;
 // Java의 기본 List 인터페이스를 사용하기 위함입니다.
+import java.io.File;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -98,12 +104,12 @@ public class MemberController {
         return new ResponseEntity<>("로그아웃 성공",HttpStatus.OK);
     }
 
-
-    @PostMapping("/member/email-check")
-    public @ResponseBody String emailCheck(@RequestBody Map<String, String> params) {
-        String checkResult = memberService.emailCheck(params.get("memberEmail"));
+    @GetMapping("/member/email-check/{memberEmail}")
+    public @ResponseBody boolean emailCheck(@PathVariable("memberEmail") String memberEmail) {
+        boolean checkResult = memberService.emailCheck(memberEmail);
         return checkResult;
     }
+
 
     @PostMapping("/member/upload-image")
     public ResponseEntity<?> uploadImage(@RequestParam("memberEmail") String memberEmail,
@@ -119,6 +125,29 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image");
         }
     }
+
+    @GetMapping("/member/{memberEmail}/profile-image")
+    public ResponseEntity<Resource> getProfileImage(@PathVariable String memberEmail) {
+        try {
+            String imagePath = memberService.getProfileImagePath(memberEmail);
+            Resource image = new UrlResource(Paths.get(imagePath).toUri());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+            headers.setContentDisposition(ContentDisposition.builder("inline")
+                    .filename(image.getFilename())
+                    .build());
+            return new ResponseEntity<>(image, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+
+
+
+
 
 
 }

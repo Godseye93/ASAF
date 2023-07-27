@@ -40,9 +40,10 @@ public class DataLoader implements CommandLineRunner {
             memberDTO.setStudent_number("11111" + i);
             memberDTO.setBirth_date("199" + i + "-01-01");
             memberDTO.setPhone_number("010-1234-000" + i);
-            memberDTO.setProfile_image("image" + i + ".jpg");
+            memberDTO.setProfile_image("src/main/resources/static/images/profile_images/ssafy" + i + "@email.com.png");
             memberDTO.setElectronic_student_id(10000 + i);
             memberDTO.setMember_info("D10" + i);
+            memberDTO.setToken("token" + i);
             if (i == 1){
                 memberDTO.setAuthority("프로");
             }else{
