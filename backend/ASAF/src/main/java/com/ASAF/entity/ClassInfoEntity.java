@@ -34,6 +34,7 @@ public class ClassInfoEntity {
     private GenerationEntity generation_code;
 
     @ManyToOne
+//    @JoinColumn(name = "memberId")
     private MemberEntity id;
 
 

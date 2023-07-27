@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClassInfoController {
     private final ClassInfoService classInfoService;
 
+
+
     @GetMapping("/{id}")
     public ClassInfoDTO getClassInfoById(@PathVariable("id") int id) {
         return classInfoService.getClassInfoById(id);

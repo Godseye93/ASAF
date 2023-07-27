@@ -2,10 +2,13 @@ package com.ASAF.service;
 
 import com.ASAF.dto.ClassInfoDTO;
 import com.ASAF.entity.ClassInfoEntity;
+import com.ASAF.entity.MemberEntity;
 import com.ASAF.repository.ClassInfoRepository;
+import com.ASAF.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ClassInfoService {
     private final ClassInfoRepository classInfoRepository;
+    private final MemberRepository memberRepository;
 
     public ClassInfoDTO getClassInfo(int class_code) {
         return classInfoRepository.findByClass_codeClass_code(class_code)
@@ -27,10 +31,9 @@ public class ClassInfoService {
                 .map(ClassInfoEntity::toDTO)
                 .collect(Collectors.toList());
     }
-
-    public ClassInfoDTO getClassInfoById(int id) {
-        return classInfoRepository.findById(id)
+    public ClassInfoDTO getClassInfoByMemberId(int id) {
+        return classInfoRepository.findByMemberId(id)
                 .map(ClassInfoEntity::toDTO)
-                .orElseThrow(() -> new RuntimeException("ClassInfo not found for id: " + id));
+                .orElseThrow(() -> new RuntimeException("ClassInfo not found for the given member ID"));
     }
 }
