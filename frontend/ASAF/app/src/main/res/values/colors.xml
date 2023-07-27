@@ -3,4 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="defaultMainColor">#3D50DF</color>
+    <color name="libraryTop">#C4FAED</color>
 </resources>

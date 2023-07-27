@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginVertical="10dp"
-        android:src="@drawable/professor"
+        android:src="@drawable/whiteboard"
         app:layout_constraintBottom_toTopOf="@+id/fragment_op_framelayout_seat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,6 +70,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_op_togglebutton_toggle" />
-
-
+    
 </androidx.constraintlayout.widget.ConstraintLayout>
