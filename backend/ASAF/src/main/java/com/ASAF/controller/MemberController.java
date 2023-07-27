@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 // Java의 기본 List 인터페이스를 사용하기 위함입니다.
 import java.util.List;
+import java.util.Map;
 
 // @Controller 어노테이션은 이 클래스가 Spring 프레임워크 컨트롤러 컴포넌트임을 나타냅니다.
 // 이 어노테이션을 사용하면 Spring이 이 클래스를 관리하게 되고, 웹 요청을 처리하는 데 사용됩니다.
@@ -98,11 +99,25 @@ public class MemberController {
 
     // 이메일 중복 확인 요청을 처리합니다.
     // 전달받은 이메일을 이용해 중복 확인을 진행하고, 그 결과를 문자열 형태로 반환합니다.
-    @PostMapping("/member/email-check")
-    public @ResponseBody String emailCheck(@RequestParam("memberEmail") String memberEmail) {
-        String checkResult = memberService.emailCheck(memberEmail);
+//    @PostMapping("/member/email-check/")
+//    public @ResponseBody String emailCheck(@RequestParam("memberEmail") String memberEmail) {
+//        String checkResult = memberService.emailCheck(memberEmail);
+//        return checkResult;
+//    }
+
+    @PostMapping("/member/email-check/")
+    public @ResponseBody String emailCheck(@RequestBody Map<String, String> params) {
+        String checkResult = memberService.emailCheck(params.get("memberEmail"));
         return checkResult;
     }
+
+
+
+    // @PostMapping("/member/email-check")
+    //    public @ResponseBody String emailCheck(@RequestParam("memberEmail") String memberEmail) {
+    //        String checkResult = memberService.emailCheck(memberEmail);
+    //        return checkResult;
+    //    }
 }
 
 

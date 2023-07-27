@@ -12,6 +12,14 @@ public class BusDTO {
     private int busNum;
     private String location;
     private String bus_route;
+//    private int regionId;
+
+    public static BusDTO BusDTO(BusEntity busEntity) {
+        BusDTO busDTO = new BusDTO();
+        busDTO.setLocation(busEntity.getLocation());
+        busDTO.setBus_route(busEntity.getBus_route());
+        return busDTO;
+    }
 
     public static BusDTO toBusDTO(BusEntity busEntity) {
         BusDTO busDTO = new BusDTO();
