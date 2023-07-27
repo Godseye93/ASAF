@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Id;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,9 @@ public class ClassInfoService {
                 .collect(Collectors.toList());
     }
     public ClassInfoDTO getClassInfoByMemberId(int id) {
-        return classInfoRepository.findByMemberId(id)
+        MemberEntity member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Member not found for ID: " + id));
+        return classInfoRepository.findByMember(member)
                 .map(ClassInfoEntity::toDTO)
                 .orElseThrow(() -> new RuntimeException("ClassInfo not found for the given member ID"));
     }
