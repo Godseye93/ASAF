@@ -15,12 +15,10 @@ public class BookDTO {
     private String book_name;
     private String author;
     private String publisher;
-
-    private int class_num;
-    private int class_code;
-    private int region_code;
-    private int generation_code;
-    private String user_id;
+    private ClassInfoDTO classInfoDTO;
+    private ClassDTO classDTO;
+    private RegionDTO regionDTO;
+    private GenerationDTO generationDTO;
 
 
     public BookDTO(BookEntity bookEntity) {
@@ -28,6 +26,10 @@ public class BookDTO {
         this.book_name = bookEntity.getBook_name();
         this.author = bookEntity.getAuthor();
         this.publisher = bookEntity.getPublisher();
+        this.classInfoDTO = ClassInfoDTO.toClassInfoDTO(bookEntity.getClassInfoEntity());
+        this.classDTO = ClassDTO.toClassDTO(bookEntity.getClassEntity());
+        this.regionDTO = RegionDTO.toRegionDTO(bookEntity.getRegionEntity());
+        this.generationDTO = GenerationDTO.toGenerationDTO(bookEntity.getGenerationEntity());
     }
     public static BookDTO toBookDTO(BookEntity bookEntity) {
         BookDTO bookDto = new BookDTO();
@@ -35,6 +37,10 @@ public class BookDTO {
         bookDto.setBook_name(bookEntity.getBook_name());
         bookDto.setAuthor(bookEntity.getAuthor());
         bookDto.setPublisher(bookEntity.getPublisher());
+        bookDto.setClassInfoDTO(ClassInfoDTO.toClassInfoDTO(bookEntity.getClassInfoEntity()));
+        bookDto.setClassDTO(ClassDTO.toClassDTO(bookEntity.getClassEntity()));
+        bookDto.setRegionDTO(RegionDTO.toRegionDTO(bookEntity.getRegionEntity()));
+        bookDto.setGenerationDTO(GenerationDTO.toGenerationDTO(bookEntity.getGenerationEntity()));
         return bookDto;
     }
 }

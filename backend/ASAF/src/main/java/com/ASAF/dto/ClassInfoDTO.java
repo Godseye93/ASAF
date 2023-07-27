@@ -19,4 +19,5 @@ public class ClassInfoDTO {
         classInfoDTO.setMemberDTO(MemberDTO.toMemberDTO(classInfoEntity.getId()));
         return classInfoDTO;
     }
+
 }
