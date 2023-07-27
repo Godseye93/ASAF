@@ -74,6 +74,13 @@ public class MemberController {
         return new ResponseEntity<>(memberDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/member/name/{id}")
+    public ResponseEntity<String> findById_name(@PathVariable int id) {
+        MemberDTO memberDTO = memberService.findById(id);
+        System.out.println(memberDTO);
+        return new ResponseEntity<>(memberDTO.getMemberName(), HttpStatus.OK);
+    }
+
     @GetMapping("/member/email/{memberEmail}")
     public ResponseEntity<MemberDTO> findByMemberEmail(@PathVariable String memberEmail) {
         MemberDTO memberDTO = memberService.findByMemberEmail(memberEmail);
@@ -115,14 +122,14 @@ public class MemberController {
     public ResponseEntity<?> uploadImage(@RequestParam("memberEmail") String memberEmail,
                                          @RequestParam("file") MultipartFile file) {
         if (file == null || file.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is required");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
         }
         try {
             memberService.saveProfileImage(memberEmail, file);
-            return ResponseEntity.ok("Image uploaded successfully");
+            return ResponseEntity.ok(true);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
         }
     }
 

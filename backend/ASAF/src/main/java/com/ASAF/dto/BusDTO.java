@@ -12,7 +12,7 @@ public class BusDTO {
     private int busNum;
     private String location;
     private String bus_route;
-//    private int regionId;
+    private int region_code;
 
     public static BusDTO BusDTO(BusEntity busEntity) {
         BusDTO busDTO = new BusDTO();

@@ -88,6 +88,7 @@ public class DataLoader implements CommandLineRunner {
             BusDTO busDTO = new BusDTO();
             busDTO.setBusNum(i);
             busDTO.setBus_route(bus_route[i - 1]);
+            busDTO.setRegion_code(1);
             BusEntity busEntity = BusEntity.toBusEntity(busDTO);
             busRepository.save(busEntity);
         }
