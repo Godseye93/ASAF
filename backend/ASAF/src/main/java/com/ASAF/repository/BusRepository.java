@@ -3,6 +3,7 @@ package com.ASAF.repository;
 // Spring Data JPA의 JpaRepository 인터페이스를 가져옵니다. 이 인터페이스를 상속함으로써 기본적인 CRUD 연산을 제공받을 수 있습니다.
 import com.ASAF.entity.BusEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 // java.util 패키지의 Optional 클래스를 가져옵니다. 이 클래스는 값을 포함하거나 포함하지 않을 수 있는 컨테이너 객체를 제공하며,
@@ -14,5 +15,5 @@ import java.util.Optional;
 // Long: MemberEntity의 ID 필드 타입입니다. 이 ID는 엔티티를 고유하게 식별하는 값으로 사용됩니다.
 public interface BusRepository extends JpaRepository<BusEntity, Integer> {
     Optional<BusEntity> findByBusNum(int busNum);
-//    Optional<BusEntity> findByRegionId(int regionId);
+
 }
