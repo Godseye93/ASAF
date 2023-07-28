@@ -1,10 +1,13 @@
 package com.d103.asaf.ui.library.pro
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +16,22 @@ import android.view.WindowManager
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import co.nedim.maildroidx.MaildroidX
+import co.nedim.maildroidx.MaildroidXType
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.DialogAddBookBinding
 import com.d103.asaf.databinding.FragmentLibraryManagementBinding
 import com.d103.asaf.ui.library.LibraryFragmentViewModel
 import com.d103.asaf.ui.library.adapter.BookAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
-
+private const val PATH = "/data/data/com.d103.asaf/"
 // String -> BookDto로 변경 필요
 class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>(FragmentLibraryManagementBinding::bind, R.layout.fragment_library_management) {
     private val viewModel: LibraryFragmentViewModel by viewModels()
@@ -139,7 +148,15 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
 
         // 도서 등록 기능 POST
         dialogView.bookAdd.setOnClickListener {
-            //POST & dismiss()
+            // 입력받은 정보 DTO로 조립 & POST & dismiss() & createQR % send email
+            // val bookDto = ~
+            CoroutineScope(Dispatchers.IO).launch {
+                val qr = viewModel.generateQRCode("이거 어디까지 올라가는거에요?","괴도 키드","싸피 출판")
+                val qrImg = PATH +"${getFileName()}.png"
+                viewModel.saveQRCode(qr, qrImg)
+                sendEmail(qrImg)
+                dialog.dismiss()
+            }
         }
         dialogView.bookCancel.setOnClickListener {
             dialog.dismiss()
@@ -169,7 +186,27 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
         dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    private fun dpToPx(dp: Int): Int {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics).toInt()
+    private fun getFileName(): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
+        return sdf.format(Date())
     }
+
+    private fun sendEmail(path: String) {
+        MaildroidX.Builder()
+            .smtp("live.smtp.mailtrap.io")
+            .smtpUsername("api")
+            .smtpPassword("0647ceab68282d673bdd53a351635833")
+            .port("2525")
+            .type(MaildroidXType.HTML)
+            .to("kieanupark@gmail.com")
+            .from("mailtrap@asaf.live")
+            .subject("hello")
+            .body("body")
+            .attachment(path)
+            .isStartTLSEnabled(true)
+            .mail()
+
+        Log.d("메일", "sendEmail: 보냄")
+    }
+
 }
