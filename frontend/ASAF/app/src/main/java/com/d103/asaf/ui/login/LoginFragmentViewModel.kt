@@ -22,6 +22,9 @@ class LoginFragmentViewModel : ViewModel() {
     private val _loginResult = MutableLiveData<Boolean>()
     val loginResult: LiveData<Boolean> get() = _loginResult
 
+    private val _toastMessage = MutableLiveData<String>()
+    val toastMessage: LiveData<String> get() = _toastMessage
+
     // 실제로는 서버와 통신하여 로그인 처리를 해야하지만, 예시를 위해 가상의 로그인 메서드를 구현합니다.
     fun login(email: String, password: String) {
         // 여기서 실제 로그인 처리 로직을 구현하고 로그인 결과를 _loginResult에 값을 설정합니다.
@@ -51,12 +54,15 @@ class LoginFragmentViewModel : ViewModel() {
             if (response.isSuccessful) {
                 val member = response.body()
                 // 서버로부터 받아온 회원 정보와 입력한 정보 비교
-                if (member?.memberName == name && member.memberEmail == email && member.birthDate == birth && member.memberInfo == information) {
+                if (member?.memberName == name && member.memberEmail == email
+                    && member.birthDate == birth && member.memberInfo == information) {
                     // 일치하는 회원 정보가 있으면 이메일로 비밀번호 전송 성공
                     val passwordResetSubject = "비밀번호 재설정 요청"
                     val passwordResetBody = "안녕하세요, 비밀번호 재설정을 위한 링크가 아래에 있습니다.\n\nhttps://example.com/reset_password?email=$email"
 //                    sendEmail(email, passwordResetSubject, passwordResetBody)
 //                    Toast.makeText(context, "비밀번호를 이메일로 전송했습니다.", Toast.LENGTH_LONG).show()
+                    _toastMessage.postValue("비밀번호를 이메일로 전송했습니다.") // Toast 메시지 설정
+                    // sendEmail(email, passwordResetSubject, passwordResetBody)
                     _passwordFindResult.postValue(true)
                     Log.d(TAG, "findPassword: 기존에 있던 회원입니다 !!!! ${email} ${name} ${member.memberPassword}")
                 } else {
@@ -70,23 +76,4 @@ class LoginFragmentViewModel : ViewModel() {
             }
         }
     }
-
-    // 이메일 보내는 함수
-//    private fun sendEmail(toEmail: String, subject: String, body: String) {
-//        val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
-//            data = Uri.parse("mailto:")
-//            putExtra(Intent.EXTRA_EMAIL, arrayOf(toEmail))
-//            putExtra(Intent.EXTRA_SUBJECT, subject)
-//            putExtra(Intent.EXTRA_TEXT, body)
-//        }
-//
-//        // Check if there's an email app available to handle the intent
-//        if (emailIntent.resolveActivity(context.packageManager) != null) {
-//            // Start the email activity
-//            context.startActivity(emailIntent)
-//            _passwordFindResult.postValue(true) // 이메일 전송 성공
-//        } else {
-//            _passwordFindResult.postValue(false) // 이메일 전송 실패
-//        }
-//    }
 }

@@ -1,29 +1,48 @@
 package com.d103.asaf.ui.join
 
+import android.Manifest
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.MainActivity
 import com.d103.asaf.R
+import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.dto.Member
+import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentJoinBinding
 import com.d103.asaf.ui.login.LoginFragment
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.selects.select
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileInputStream
+import java.io.InputStream
 import java.util.Calendar
 import java.util.Date
 
@@ -34,12 +53,15 @@ class JoinFragment : Fragment() {
     private val viewModel: JoinFragmentViewModel by viewModels()
 //    private lateinit var loginFragment: LoginFragment
     private lateinit var tempDate: String
+    private lateinit var tempUri : Uri
+    private val STORAGE_PERMISSION_CODE = 1 // 원하는 값으로 변경 가능
     // 이미지 선택을 위한 ActivityResultLauncher 선언
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
                 // 선택한 이미지 URI를 사용하여 이미지뷰에 설정합니다.
                 binding.fragmentJoinImageviewProfile.setImageURI(uri)
+                tempUri = uri
             }
         }
     }
@@ -61,9 +83,6 @@ class JoinFragment : Fragment() {
         // Spinner default 값을 설정하는 메서드를 호출
         setSpinnerDefaultValues()
 
-        // MainActivity의 hideBottomNavigationBarFromFragment() 메서드를 호출하여 바텀 네비게이션 바를 숨김
-//        (activity as? MainActivity)?.hideBottomNavigationBarFromFragment()
-
         return binding.root
     }
 
@@ -79,14 +98,10 @@ class JoinFragment : Fragment() {
         // 생년월일 클릭 시 달력 표시
         binding.fragmentJoinEditTVBirth.setOnClickListener {
             showDatePickerDialog()
-//            val tempDate = showDatePickerDialog()
-//            Log.d(TAG, "setupViews: $tempDate")
         }
 
         binding.fragmentJoinLayoutBirth.setOnClickListener{
             showDatePickerDialog()
-//            val tempDate = showDatePickerDialog()
-//            Log.d(TAG, "setupViews: $tempDate")
         }
 
         binding.fragmentJoinButtonSignup.setOnClickListener {
@@ -110,37 +125,47 @@ class JoinFragment : Fragment() {
                 classNum = info.third
             }
 
-            // 이메일 중복 확인
-            ///////////////////// bool 값으로 처리 추가하기.
-            viewModel.checkEmailDuplication(email)
-            // LiveData를 관찰하여 중복 여부를 처리합니다.
-            viewModel.isEmailDuplicated.observe(viewLifecycleOwner, Observer { isDuplicated ->
-                if (isDuplicated) {
-                    // 이메일이 중복되는 경우
-                    Log.d(TAG, "setupViews: 중복된 이메일이 존재합니다.")
-                } else {
-                    // 이메일이 중복되지 않는 경우
-                    // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
-                    // viewModel.signup(name, email, password, birth, information)
-                    Log.d(TAG, "setupViews: 회원가입을 진행합니다.")
-                }
-            })
-
             val member = Member(name, email, password, birth, information)
             if (viewModel.validateInputs(member, confirmPassword)) {
-                // 뷰모델의 회원가입 메서드를 호출합니다.
-                viewModel.signup(member)
-                // login fragment로 이동.
-                findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
+
+                // 이메일 중복 확인
+                lifecycleScope.launch {
+                    val isEmailDuplicated = async { checkDuplicateEmail(email) }.await()
+
+                    if (!isEmailDuplicated) {
+                        // 이메일이 중복되는 경우
+                        Log.d(TAG, "onSignupButtonClick: 중복된 이메일이 존재합니다.")
+                        Toast.makeText(requireContext(), "이미 등록된 이메일입니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // 이메일이 중복되지 않는 경우
+                        // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
+                        // viewModel.signup(name, email, password, birth, information)
+                        Log.d(TAG, "onSignupButtonClick: 사용 가능한 이메일입니다.")
+
+                        // 뷰모델의 회원가입 메서드를 호출합니다.
+                        viewModel.signup(member)
+
+                        // 이미지를 서버로 업로드하는 로직 호출
+                        val email = binding.fragmentJoinEditTVEmail.text.toString()
+                        uploadProfileImage(email, tempUri)
+
+                        Toast.makeText(requireContext(), "회원가입 되었습니다.", Toast.LENGTH_SHORT).show()
+                        // login fragment로 이동.
+                        findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
+                    }
+                }
             } else {
                 // 입력 값이 유효하지 않을 경우, 필요한 에러 메시지를 표시하거나 처리해줍니다.
                 Log.d(TAG, "setupViews: 똑바로 다 입력하세요 ~~")
+                Toast.makeText(requireContext(), "모든 항목을 입력하세요.", Toast.LENGTH_SHORT).show()
+
             }
         }
 
         // 프로필 이미지 변경.
         binding.fragmentJoinImageviewProfile.setOnClickListener {
-            openGalleryForImage()
+//            openGalleryForImage()
+            checkAndRequestStoragePermission()
         }
     }
 
@@ -243,5 +268,113 @@ class JoinFragment : Fragment() {
 
         // 이미지를 선택하는 요청을 `ActivityResultLauncher`로 보냅니다.
         imagePickerLauncher.launch(intent)
+    }
+
+    // Modify checkDuplicateNickname to checkDuplicateEmail
+    private suspend fun checkDuplicateEmail(email: String): Boolean {
+        try {
+            // RetrofitUtil을 사용하여 서버에 이메일 중복 확인 요청
+            return RetrofitUtil.memberService.emailCheck(email)
+        } catch (e: Exception) {
+            // 예외 처리 로직
+            Log.d(TAG, "checkDuplicateEmail: 오류 발생")
+            Log.d(TAG, "checkDuplicateEmail: $e")
+            // 예외 발생 시에도 false 값을 반환하여 이메일 중복으로 처리
+            return false
+        }
+    }
+
+    fun createMultipartFromUri(context: Context, uri: Uri): MultipartBody.Part? {
+        val file: File? = getFileFromUri(context, uri)
+        if (file == null) {
+            // 파일을 가져오지 못한 경우 처리할 로직을 작성하세요.
+            return null
+        }
+        val requestFile: RequestBody = createRequestBodyFromFile(file)
+        return MultipartBody.Part.createFormData("file", file.name, requestFile)
+    }
+
+    private fun getFileFromUri(context: Context, uri: Uri): File? {
+        val filePath = uriToFilePath(context, uri)
+        return if (filePath != null) File(filePath) else null
+    }
+
+    private fun uriToFilePath(context: Context, uri: Uri): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = context.contentResolver.query(uri, projection, null, null, null)
+        val columnIndex = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor?.moveToFirst()
+        val filePath = cursor?.getString(columnIndex!!)
+        cursor?.close()
+        return filePath
+    }
+
+    private fun createRequestBodyFromFile(file: File): RequestBody {
+        val MEDIA_TYPE_IMAGE = "image/png".toMediaTypeOrNull()
+        val inputStream: InputStream = FileInputStream(file)
+        val byteArray = inputStream.readBytes()
+        return RequestBody.create(MEDIA_TYPE_IMAGE, byteArray)
+    }
+
+    private fun uploadProfileImage(email: String, imageUri: Uri) {
+        val file = File(imageUri.path)
+        val profileImagePart = createMultipartFromUri(requireContext(), imageUri)
+        val emailRequestBody = RequestBody.create(okhttp3.MultipartBody.FORM, email)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                Log.d(TAG, "uploadProfileImage: 이미지 확인--------")
+                Log.d(TAG, "uploadProfileImage: $email 로 $profileImagePart 보낸다")
+
+                // 서버에 프로필 이미지 업로드 요청
+                val response = RetrofitUtil.memberService.uploadProfileImage(emailRequestBody, profileImagePart!!)
+                Log.d(TAG, "uploadProfileImage: ${response.errorBody()?.string()}")
+                Log.d(TAG, "uploadProfileImage: ${response.body()}")
+                if (response.isSuccessful && response.body() != null && response.body() == true) {
+                    // 이미지 업로드 성공 처리
+                    Log.d(TAG, "uploadProfileImage: 이미지 업로드 성공")
+                } else {
+                    // 이미지 업로드 실패 처리
+                    Log.e(TAG, "uploadProfileImage: 이미지 업로드 실패")
+                }
+            } catch (e: Exception) {
+                // 예외 처리 로직
+                Log.e(TAG, "uploadProfileImage: Error", e)
+            }
+        }
+    }
+
+    private fun checkAndRequestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            // 이미 퍼미션을 가지고 있는 경우
+            openGalleryForImage()
+        } else {
+            // 퍼미션을 요청합니다.
+            requestPermissions(
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                STORAGE_PERMISSION_CODE
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 퍼미션이 승인된 경우
+                openGalleryForImage()
+            } else {
+                // 퍼미션이 거부된 경우
+                Toast.makeText(requireContext(), "갤러리 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

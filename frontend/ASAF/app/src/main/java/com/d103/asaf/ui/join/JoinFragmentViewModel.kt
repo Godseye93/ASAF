@@ -25,27 +25,6 @@ class JoinFragmentViewModel : ViewModel() {
     val isJoinSuccessful: LiveData<Boolean> get() = _isJoinSuccessful
 
 
-    // 아이디 중복 체크 함수
-    // 이메일 중복 확인을 위한 함수
-    // 이메일 중복 확인을 위한 함수
-    fun checkEmailDuplication(email: String) {
-        viewModelScope.launch {
-            try {
-                // RetrofitUtil을 사용하여 서버에 이메일 중복 확인 요청
-                val response = RetrofitUtil.memberService.emailCheck(email)
-                // 이메일 중복 확인 결과를 LiveData에 설정
-                _isEmailDuplicated.value = response == "중복된 이메일이 존재합니다."
-            } catch (e: Exception) {
-                // 예외 처리 로직
-                Log.d(TAG, "checkEmailDuplication: 오류 발생")
-                Log.d(TAG, "checkEmailDuplication: $e")
-                // 예외 발생 시에도 false 값을 LiveData에 설정하여 이메일 중복으로 처리
-                _isEmailDuplicated.value = false
-            }
-        }
-    }
-
-
     fun signup( member: Member ) {
         // 회원가입 로직을 처리하는 메서드입니다.
         // 이 부분에서는 보통 서버와의 통신을 통해 사용자 정보를 등록하는 처리를 수행합니다.

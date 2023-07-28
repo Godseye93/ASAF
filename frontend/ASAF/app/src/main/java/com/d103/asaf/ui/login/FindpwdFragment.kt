@@ -1,6 +1,5 @@
 package com.d103.asaf.ui.login
 
-import android.R
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
@@ -13,6 +12,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.d103.asaf.R
 import com.d103.asaf.databinding.FragmentFindpwdBinding
 import java.util.Calendar
 
@@ -44,8 +45,6 @@ class FindpwdFragment : Fragment() {
         }
         binding.fragmentFindpwdLayoutBirth.setOnClickListener{
             showDatePickerDialog()
-//            val tempDate = showDatePickerDialog()
-//            Log.d(TAG, "setupViews: $tempDate")
         }
 
         binding.fragmentFindpwdButtonFindpwd.setOnClickListener {
@@ -57,6 +56,10 @@ class FindpwdFragment : Fragment() {
 
             // ViewModel에 비밀번호 찾기 요청 보내기
             viewModel.findPassword(name, email, birth, information)
+        }
+
+        binding.fragmentFindpwdButtonBack.setOnClickListener {
+            findNavController().navigate(R.id.action_findpwdFragment_to_loginFragment)
         }
     }
 
@@ -100,9 +103,9 @@ class FindpwdFragment : Fragment() {
         val regionOptions = listOf("-", "광주", "구미", "대전", "부울경", "서울") // 지역 옵션들을 리스트로 설정해주세요
         val classNumOptions = listOf("-", "1", "2", "3", "4", "5", "6", "7", "8","9","10") // 반 옵션들을 리스트로 설정해주세요
 
-        val nthAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, nthOptions)
-        val regionAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, regionOptions)
-        val classNumAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, classNumOptions)
+        val nthAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, nthOptions)
+        val regionAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, regionOptions)
+        val classNumAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, classNumOptions)
 
         binding.spinnerNth.adapter = nthAdapter
         binding.spinnerRegion.adapter = regionAdapter
