@@ -4,9 +4,15 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.d103.asaf.MainActivity
 import com.d103.asaf.R
+import com.d103.asaf.SharedViewModel
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.Noti
 import com.d103.asaf.databinding.FragmentScheduleBinding
@@ -30,13 +36,14 @@ private const val ARG_PARAM2 = "param2"
  */
 
 
-
+private const val TAG = "ScheduleFragment"
 
 
 class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::bind, R.layout.fragment_schedule){
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private val sharedViewModel : SharedViewModel  by activityViewModels()
     private var selectedDate: CalendarDay = CalendarDay.today()
     private var notiList  =  mutableListOf<Noti>()
     private lateinit var itemTouchHelper: ItemTouchHelper
@@ -54,6 +61,21 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        binding.notiRegisterButton.setOnClickListener {
+
+
+//            val action = ScheduleFragmentDirections.actionScheduleFragmentToNotiRegisterFragment(selectedDate)
+            if(selectedDate != null){
+                Log.d(TAG, "onViewCreated selectedDate: $selectedDate ")
+                findNavController().navigate(R.id.action_scheduleFragment_to_notiRegisterFragment)
+                (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
+            }
+            else{
+                Log.d(TAG, "onViewCreated: ????")
+            }
+
+        }
 
         // 캘린더 초기화
         initCalendar()
@@ -105,6 +127,8 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         notiList.add(noti1)
         // 오늘 날짜로 초기 선택
         binding.calendarView.setSelectedDate(CalendarDay.today())
+        binding.fragmentScheduleDateView.text = "${selectedDate.year}년 ${selectedDate.month} 월 ${selectedDate.day} 일"
+        sharedViewModel.selectedDate = "${selectedDate.year}년 ${selectedDate.month} 월 ${selectedDate.day} 일"
 
         // 달력에 주간 요일 및 월간 형식 설정 (월, 화, 수, 목... / 1월,2월, 3월 ...)
         binding.calendarView.setTitleFormatter(MonthArrayTitleFormatter(resources.getTextArray(R.array.custom_months)))
@@ -114,6 +138,9 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         binding.calendarView.setDateTextAppearance(R.style.AppTheme)
         binding.calendarView.setWeekDayTextAppearance(R.style.AppTheme)
         binding.calendarView.setHeaderTextAppearance(R.style.AppTheme)
+
+
+
 
 
 
@@ -137,6 +164,7 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
             ) {
                 selectedDate = binding.calendarView.selectedDate
                 Log.d("selectedDate", selectedDate.year.toString())
+                sharedViewModel.selectedDate = "${selectedDate.year}년 ${selectedDate.month} 월 ${selectedDate.day} 일"
                 binding.fragmentScheduleDateView.text = "${selectedDate.year}년 ${selectedDate.month} 월 ${selectedDate.day} 일"
                 adapter.submitList(notiList)
             }

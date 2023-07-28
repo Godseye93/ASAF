@@ -50,7 +50,19 @@
         android:id="@+id/scheduleFragment"
         android:name="com.d103.asaf.ui.schedule.ScheduleFragment"
         android:label="Schedule"
-        tools:layout="@layout/fragment_schedule"/>
+        tools:layout="@layout/fragment_schedule">
+
+        <action
+            android:id="@+id/action_scheduleFragment_to_notiRegisterFragment"
+            app:destination="@+id/noti_register_fragment">
+
+            <argument
+                android:name="date"
+                app:argType="string"
+                />
+
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/navigation_setting"
         android:name="com.d103.asaf.ui.setting.SettingFragment"
@@ -93,6 +105,12 @@
             android:id="@+id/action_findpwd_fragment_to_login_fragment"
             app:destination="@id/login_fragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/noti_register_fragment"
+        android:name="com.d103.asaf.ui.schedule.NotiRegisterFragment"
+        android:label="NotiRegister"
+        tools:layout="@layout/fragment_noti_register"/>
 
     <action
         android:id="@+id/action_joinFragment_to_loginFragment"

@@ -102,9 +102,13 @@ dependencies {
     //캘린더
     implementation 'com.github.prolificinteractive:material-calendarview:1.4.3'
 
+
     // QR 코드
     implementation("com.google.zxing:core:3.5.1")
 
     // SMTP PROTOCOL
     implementation 'com.github.nedimf:maildroid:v0.1.1-release'
+
+    //firebase
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 }

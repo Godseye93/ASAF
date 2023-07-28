@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "583803645584",
+    "project_id": "ssafy-common-proj",
+    "storage_bucket": "ssafy-common-proj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583803645584:android:29d7a0487914c6404db215",
+        "android_client_info": {
+          "package_name": "com.d103.asaf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583803645584-3rtmutqo3879d3bgg52hphoqtk64gihg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2XWdW5H6mD-YamYspcAyU5xFCSpoQ_pY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583803645584-3rtmutqo3879d3bgg52hphoqtk64gihg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

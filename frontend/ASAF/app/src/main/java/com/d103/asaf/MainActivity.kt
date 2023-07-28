@@ -3,9 +3,14 @@ package com.d103.asaf
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+<<<<<<< HEAD
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+=======
+import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
+>>>>>>> home_pro
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
@@ -19,6 +24,8 @@ import com.d103.asaf.common.config.BaseActivity
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.databinding.ActivityMainBinding
 import com.d103.asaf.ui.login.LoginFragmentViewModel
+import com.d103.asaf.ui.home.pro.ProHomeFragment
+import com.d103.asaf.ui.schedule.NotiRegisterFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
 import java.sql.Date
@@ -28,15 +35,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private lateinit var user : Member
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
-    private val viewModel: LoginFragmentViewModel by viewModels()
-
+    private val viewModel : SharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel.toastMessage.observe(this, Observer { message ->
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        })
-
         setupNavHost()
         setSupportActionBar(findViewById(com.airbnb.lottie.R.id.action_bar));
         // user 정보 가지고 오기
@@ -84,4 +85,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     fun showBottomNavigationBarFromFragment() {
         showBottomNavigationBar()
     }
+
+
+
+
+
 }
