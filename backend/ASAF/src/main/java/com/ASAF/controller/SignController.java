@@ -15,21 +15,23 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class SignController {
 
-//    private final SignService signService;
-//
-//    @PostMapping("/upload-image")
-//    public ResponseEntity<?> uploadImage(@RequestParam("name") String name,
-//                                         @RequestParam("month") String month,
-//                                         @RequestParam("file") MultipartFile file) {
-//        if (file == null || file.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-//        }
-//        try {
-//            signService.saveImageUrl(name, month, file);
-//            return ResponseEntity.ok(true);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
-//        }
-//    }
+    private final SignService signService;
+
+    @PostMapping("/upload-image")
+    public ResponseEntity<?> uploadImage(@RequestParam("name") String name,
+                                         @RequestParam("month") String month,
+                                         @RequestParam("file") MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+        }
+        try {
+            signService.saveImageUrl(name, month, file);
+            return ResponseEntity.ok(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+        }
+    }
+
+
 }

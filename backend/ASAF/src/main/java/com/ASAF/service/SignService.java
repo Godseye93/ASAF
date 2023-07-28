@@ -15,22 +15,36 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class SignService {
 
-//    private final SignRepository signRepository;
-//
-//    public void saveImageUrl(String name, String month, MultipartFile file) throws IOException, ChangeSetPersister.NotFoundException {
-//        SignEntity signEntity = signRepository.findByName(name)
-//                .orElseThrow(ChangeSetPersister.NotFoundException::new);
-//
-//        // 이미지 저장 및 엔티티 업데이트 등의 작업을 수행합니다
-//
-//        String UPLOAD_DIR = "src/main/resources/static/images/sign_images/";
-//        String fileName = file.getOriginalFilename();
-//        String filePath = UPLOAD_DIR + name + "_" + fileName;
-//        File dest = new File(filePath);
-//        FileCopyUtils.copy(file.getBytes(), dest);
-//
-//        signEntity.setMonth(month);
-//        signEntity.setImage_url(filePath);
-//        signRepository.save(signEntity);
-//    }
+    private final SignRepository signRepository;
+
+    // post 정보 받아서 DB에 저장하기
+    public void saveImageUrl(String name, String month, MultipartFile file) throws IOException {
+        SignEntity signEntity = signRepository.findByName(name).orElse(null);
+
+        // 이미지 저장 및 엔티티 업데이트 등의 작업을 수행합니다
+        String UPLOAD_DIR = "src/main/resources/static/images/sign_images/";
+        String fileName = file.getOriginalFilename();
+        String filePath = UPLOAD_DIR + name + "_" + fileName;
+        File dest = new File(filePath);
+        FileCopyUtils.copy(file.getBytes(), dest);
+
+        if (signEntity == null) {
+            // 새로운 엔티티를 생성하여 저장합니다
+            signEntity = new SignEntity();
+            signEntity.setName(name);
+            signEntity.setMonth(month);
+        } else {
+            signEntity.setMonth(month);
+        }
+
+        signEntity.setImage_url(filePath);
+        signRepository.save(signEntity);
+    }
+
+    // get 으로 클라이언트한테 보내기
+    public String getImageUrlPath(String name) throws ChangeSetPersister.NotFoundException {
+        SignEntity signEntity = signRepository.findByName(name)
+                .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+        return signEntity.getImage_url();
+    }
 }
