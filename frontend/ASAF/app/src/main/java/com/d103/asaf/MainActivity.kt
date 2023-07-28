@@ -3,14 +3,11 @@ package com.d103.asaf
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-<<<<<<< HEAD
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-=======
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
->>>>>>> home_pro
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
