@@ -42,7 +42,7 @@
                 android:layout_marginRight="80dp"
                 android:background="@android:color/transparent"
                 android:singleLine="true"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 android:visibility="invisible"
                 tools:text="검색" />
 

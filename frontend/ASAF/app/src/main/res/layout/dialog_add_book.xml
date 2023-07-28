@@ -1,0 +1,166 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/dialog_add_book_linearlayout_top"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/dialog_add_book_linearlayout_mid"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="도서 제목"
+                android:textSize="30sp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/dialog_add_book_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="30dp"
+                app:strokeColor="@color/bookColor"
+                app:strokeWidth="10dp">
+
+                <EditText
+                    android:id="@+id/dialog_add_book_edittext_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dialog_add_book_linearlayout_mid"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/dialog_add_book_linearlayout_bot"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_add_book_linearlayout_top">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="저자"
+                android:textSize="30sp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/dialog_add_book_author"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="30dp"
+                app:strokeColor="@color/bookColor"
+                app:strokeWidth="10dp">
+
+                <EditText
+                    android:id="@+id/dialog_add_book_edittext_author"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dialog_add_book_linearlayout_bot"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_add_book_linearlayout_mid">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="출판사"
+                android:textSize="30sp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/dialog_add_book_publisher"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="30dp"
+                app:strokeColor="@color/bookColor"
+                app:strokeWidth="10dp">
+
+                <EditText
+                    android:id="@+id/dialog_add_book_edittext_publisher"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_add_book_linearlayout_bot">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/book_add"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:text="도서등록"
+                android:textColor="@color/bookReturn"
+                android:textSize="24sp"
+                app:strokeColor="@color/bookReturn" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/book_cancel"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:text="등록취소"
+                android:textColor="@color/bookReturn"
+                android:textSize="24sp"
+                app:strokeColor="@color/bookReturn" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+
+
+
+

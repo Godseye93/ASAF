@@ -40,13 +40,24 @@ class SearchBar @JvmOverloads constructor(
             }
         }
         searchImage.setOnClickListener {
-            searchBackground.isVisible = !searchBackground.isVisible
-            searchEditText.isVisible = !searchEditText.isVisible
+            hideSearch()
         }
     }
     private fun hideSoftKeyboard(view: View) {
         val inputMethodManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    private fun hideSearch() {
+        searchBackground.isVisible = !searchBackground.isVisible
+        searchEditText.isVisible = !searchEditText.isVisible
+    }
+
+    fun setSearchClickListener(function: () -> Unit) {
+        searchImage.setOnClickListener {
+            hideSearch()
+            function()
+        }
     }
 }
