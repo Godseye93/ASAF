@@ -1,6 +1,7 @@
 package com.ASAF.dto;
 
 import com.ASAF.entity.BusEntity;
+import com.ASAF.entity.RegionEntity;
 import lombok.*;
 
 @Getter
@@ -12,7 +13,7 @@ public class BusDTO {
     private int busNum;
     private String location;
     private String bus_route;
-    private int region_code;
+    private RegionEntity region_code;
 
     public static BusDTO BusDTO(BusEntity busEntity) {
         BusDTO busDTO = new BusDTO();

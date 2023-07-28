@@ -28,7 +28,7 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         String[] regionNames = {"서울", "구미", "대전", "부울경", "광주"};
         String[] generationNames = {"9기","10기"};
-        String[] bus_route = {"구미역 (파리바게트 앞)","오성예식장 앞 (버스 정류장)","구미상공회의소 건너 승강장","형곡동 파이바게트 앞","사곡 보성1차 (쪽쪽갈비 앞)","우방신세계2차 (상모우방2단지 정류장)","코오롱하늘채(정류장 지나 건널목)"};
+        String[] bus_route = {"구미역 (파리바게트 앞)","오성예식장 앞 (버스 정류장)","구미상공회의소 건너 승강장","형곡동 파리바게트 앞","사곡 보성1차 (쪽쪽갈비 앞)","우방신세계2차 (상모우방2단지 정류장)","코오롱하늘채(정류장 지나 건널목)"};
 
         // 멤버 더미데이터
         for (int i = 1; i <= 9; i++) {
@@ -88,7 +88,8 @@ public class DataLoader implements CommandLineRunner {
             BusDTO busDTO = new BusDTO();
             busDTO.setBusNum(i);
             busDTO.setBus_route(bus_route[i - 1]);
-            busDTO.setRegion_code(1);
+            busDTO.setLocation("미출발");
+//            busDTO.setRegion_code();
             BusEntity busEntity = BusEntity.toBusEntity(busDTO);
             busRepository.save(busEntity);
         }
