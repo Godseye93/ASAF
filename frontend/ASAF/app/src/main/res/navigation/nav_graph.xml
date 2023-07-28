@@ -118,4 +118,28 @@
         app:popUpTo="@id/findpwd_fragment"
         app:popUpToInclusive="true" />
 
+
+    <fragment
+        android:id="@+id/fragment_setting_app_setting"
+        android:name="com.d103.asaf.ui.setting.AppSettingFragment"
+        android:label="AppSetting"
+        tools:layout="@layout/fragment_setting_app_setting" />
+
+    <fragment
+        android:id="@+id/fragment_setting_userinfo"
+        android:name="com.d103.asaf.ui.setting.UserInfoFragment"
+        android:label="UserInfo"
+        tools:layout="@layout/fragment_setting_userinfo" />
+
+    <fragment
+        android:id="@+id/fragment_setting_privacy_policy"
+        android:name="com.d103.asaf.ui.setting.PrivacyPolicyFragment"
+        android:label="PrivacyPolicy"
+        tools:layout="@layout/fragment_setting_privacy_policy" />
+
+    <fragment
+        android:id="@+id/fragment_setting_developers"
+        android:name="com.d103.asaf.ui.setting.DevelopersFragment"
+        android:label="Developers"
+        tools:layout="@layout/fragment_setting_developers" />
 </navigation>

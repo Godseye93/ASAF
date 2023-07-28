@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import app.futured.donut.DonutSection
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
@@ -61,6 +62,9 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
             }
         }
 
+        binding.fragmentProHomeSettingButton.setOnClickListener{
+            findNavController().navigate(R.id.navigation_setting)
+        }
     }
 
 
