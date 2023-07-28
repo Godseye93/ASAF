@@ -1,10 +1,14 @@
 package com.d103.asaf.common.model.api
 
 import com.d103.asaf.common.model.dto.Member
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -21,8 +25,12 @@ interface MemberService {
     @GET("member/email/{memberEmail}")
     suspend fun getUserInfo(@Path("memberEmail") memberEmail: String): Response<Member>
 
-    // request parameter로 전달된 id가 이미 사용중인지 반환한다.
-    @GET("rest/user/isUsed")
-    suspend fun isUsedId(@Query("id") id: String): Boolean
 
+    // 이미지 업로드 메서드
+    @Multipart
+    @POST("member/upload-image")
+    suspend fun uploadProfileImage(
+        @Part("memberEmail") memberEmail: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Response<Boolean>
 }

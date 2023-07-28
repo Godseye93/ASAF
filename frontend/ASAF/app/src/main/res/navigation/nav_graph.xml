@@ -62,19 +62,37 @@
         android:id="@+id/login_fragment"
         android:name="com.d103.asaf.ui.login.LoginFragment"
         android:label="Login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_fragment_to_findpwd_fragment"
+            app:destination="@id/findpwd_fragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_joinFragment"
+            app:destination="@id/join_fragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_ProhomeFragment"
+            app:destination="@id/ProhomeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/join_fragment"
         android:name="com.d103.asaf.ui.join.JoinFragment"
         android:label="Join"
-        tools:layout="@layout/fragment_join" />
+        tools:layout="@layout/fragment_join" >
+        <action
+            android:id="@+id/action_joinFragment_to_loginFragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/findpwd_fragment"
         android:name="com.d103.asaf.ui.login.FindpwdFragment"
         android:label="Findpwd"
-        tools:layout="@layout/fragment_findpwd" />
+        tools:layout="@layout/fragment_findpwd" >
+        <action
+            android:id="@+id/action_findpwd_fragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
 
     <action
         android:id="@+id/action_joinFragment_to_loginFragment"
@@ -94,5 +112,10 @@
         app:popUpTo="@id/login_fragment"
         app:popUpToInclusive="true" />
 
+    <action
+        android:id="@+id/action_findpwdFragment_to_loginFragment"
+        app:destination="@+id/LoginFragment"
+        app:popUpTo="@id/findpwd_fragment"
+        app:popUpToInclusive="true" />
 
 </navigation>
