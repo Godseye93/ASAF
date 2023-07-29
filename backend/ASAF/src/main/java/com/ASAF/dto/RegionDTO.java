@@ -12,10 +12,10 @@ public class RegionDTO {
     private int region_code;
     private String region_name;
 
-    public static RegionDTO toRegionDTO(RegionEntity classEntity) {
-        RegionDTO classDTO = new RegionDTO();
-        classDTO.setRegion_code(classEntity.getRegion_code());
-        classDTO.setRegion_name(classEntity.getRegion_name());
-        return classDTO;
+    public static RegionDTO toRegionDTO(RegionEntity regionEntity) {
+        RegionDTO regionDTO = new RegionDTO();
+        regionDTO.setRegion_code(regionEntity.getRegion_code());
+        regionDTO.setRegion_name(regionEntity.getRegion_name());
+        return regionDTO;
     }
 }

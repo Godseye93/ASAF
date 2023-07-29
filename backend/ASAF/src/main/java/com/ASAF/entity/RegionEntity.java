@@ -31,9 +31,9 @@ public class RegionEntity {
     }
 
     public static RegionEntity toUpdateRegionEntity(RegionDTO classDTO) {
-        RegionEntity classEntity = new RegionEntity();
-        classEntity.setRegion_code(classDTO.getRegion_code());
-        classEntity.setRegion_name(classDTO.getRegion_name());
-        return classEntity;
+        RegionEntity regionEntity = new RegionEntity();
+        regionEntity.setRegion_code(classDTO.getRegion_code());
+        regionEntity.setRegion_name(classDTO.getRegion_name());
+        return regionEntity;
     }
 }
