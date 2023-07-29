@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.internal.wait
 
 private const val TAG = "운영뷰모델"
 // 외부 저장소에서 받아오는 리스트는 MutableStateFlow로 받아온다
@@ -68,8 +69,8 @@ class OpFragmentViewModel: ViewModel() {
 
     init{
         // 동기로 가져오기 (withContext)
-        initCollect() // loadRemote 포함
-        loadCommon()
+        initCollect() // loadRemote, loadCommon 포함
+
         // 진짜 정보를 받아서 일부만 사용하는 클래스는 받아온 뒤 mapping 필요
         loadSeats()
         loadClasses()
@@ -166,6 +167,8 @@ class OpFragmentViewModel: ViewModel() {
                 // loadRemote()
             }
         }
+
+        loadCommon()
     }
 
     // <!---------------------------- 자리 배치 함수 ------------------------------->
