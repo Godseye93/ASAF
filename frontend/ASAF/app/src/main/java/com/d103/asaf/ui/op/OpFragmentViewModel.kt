@@ -100,7 +100,7 @@ class OpFragmentViewModel: ViewModel() {
                     RetrofitUtil.opService.getLockers(curClass.value)
                 }
                 if (response.isSuccessful) {
-                    _lockers.value = response.body() ?: mutableListOf<DocLocker>()
+                    _docLockers = response.body() ?: mutableListOf<DocLocker>()
                 } else {
                     Log.d(TAG, "사물함 가져오기 네트워크 오류")
                 }
@@ -128,7 +128,7 @@ class OpFragmentViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
-                    // RetrofitUtil.opService.getClasses(sharedPrefernce 유저 id)
+                    RetrofitUtil.opService.getClasses(0) // sharedPrefernce 유저 id
                 }
                 if (response.isSuccessful) {
                     _classInfoes = response.body() ?: mutableListOf<Classinfo>()
