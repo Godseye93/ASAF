@@ -78,7 +78,6 @@ public class DataLoader implements CommandLineRunner {
             // 구미 지역 강조
             if (regionNames[i - 1].equals("구미")) {
                 gumiRegionEntity = regionEntity;
-                System.out.println(gumiRegionEntity);
             }
         }
         
@@ -97,7 +96,7 @@ public class DataLoader implements CommandLineRunner {
             busDTO.setBusNum(i);
             busDTO.setBus_route(bus_route[i - 1]);
             busDTO.setLocation("미출발");
-            busDTO.setRegion_code(gumiRegionEntity);
+            busDTO.setRegion_name("구미");
             BusEntity busEntity = BusEntity.toBusEntity(busDTO);
             busRepository.save(busEntity);
         }
