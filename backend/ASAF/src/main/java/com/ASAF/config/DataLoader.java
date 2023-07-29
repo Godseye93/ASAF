@@ -61,8 +61,10 @@ public class DataLoader implements CommandLineRunner {
             ClassEntity classEntity = ClassEntity.toClassEntity(classDTO);
             classRepository.save(classEntity);
         }
-        
+
+
         // 지역 더미데이터
+        RegionEntity gumiRegionEntity = null;
         for (int i = 1; i <= regionNames.length; i++) {
             // 더미 데이터 생성을 위한 RegionDTO 객체 설정
             RegionDTO regionDTO = new RegionDTO();
@@ -72,6 +74,12 @@ public class DataLoader implements CommandLineRunner {
             // RegionDTO를 RegionEntity로 변환해서 저장
             RegionEntity regionEntity = RegionEntity.toRegionEntity(regionDTO);
             regionRepository.save(regionEntity);
+
+            // 구미 지역 강조
+            if (regionNames[i - 1].equals("구미")) {
+                gumiRegionEntity = regionEntity;
+                System.out.println(gumiRegionEntity);
+            }
         }
         
         // 기수 더미데이터
@@ -89,7 +97,7 @@ public class DataLoader implements CommandLineRunner {
             busDTO.setBusNum(i);
             busDTO.setBus_route(bus_route[i - 1]);
             busDTO.setLocation("미출발");
-//            busDTO.setRegion_code();
+            busDTO.setRegion_code(gumiRegionEntity);
             BusEntity busEntity = BusEntity.toBusEntity(busDTO);
             busRepository.save(busEntity);
         }

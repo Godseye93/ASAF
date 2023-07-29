@@ -15,18 +15,12 @@ public class BusDTO {
     private String bus_route;
     private RegionEntity region_code;
 
-    public static BusDTO BusDTO(BusEntity busEntity) {
-        BusDTO busDTO = new BusDTO();
-        busDTO.setLocation(busEntity.getLocation());
-        busDTO.setBus_route(busEntity.getBus_route());
-        return busDTO;
-    }
-
     public static BusDTO toBusDTO(BusEntity busEntity) {
         BusDTO busDTO = new BusDTO();
         busDTO.setBusNum(busEntity.getBusNum());
         busDTO.setLocation(busEntity.getLocation());
         busDTO.setBus_route(busEntity.getBus_route());
+        busDTO.setRegion_code(busEntity.getRegion());
         return busDTO;
     }
 }
