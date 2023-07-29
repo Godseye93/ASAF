@@ -2,7 +2,6 @@ package com.d103.asaf.ui.op
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,18 +13,21 @@ import android.view.ViewTreeObserver
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.GridLayout
-import androidx.core.content.ContextCompat.getSystemService
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.d103.asaf.R
 import com.d103.asaf.common.component.SeatView
 import com.d103.asaf.common.config.BaseFragment
+import com.d103.asaf.common.model.dto.DocSign
+import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentSeatBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bind, R.layout.fragment_seat) {
     private lateinit var targetView: SeatView
@@ -67,14 +69,6 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        // 데이터 변화 감지
-//        lifecycleScope.launchWhenStarted {
-//            viewModel.curClass.collect { newClass ->
-//                // 선택된 반에 해당하는 위치 정보를 가져와서 seat()내용을 변경해줌
-//                // seat =  GET 위치리스트
-//                loadSeat() // 업데이트
-//            }
-//        }
         lifecycleScope.launchWhenStarted  {
             viewModel.seat.collect { newSeat ->
                 loadSeat() // 업데이트
@@ -310,10 +304,18 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
             hideKeyboard()
             clearSeat()
             setSeat()
+            // 변경된 정보를 POST 해준다.
+            postSeats()
         }
     }
 
-    private fun postPositions() {
-        
+    // 서버에서 유저 id로 조회하여 최초로 자리 정보가 들어가 있는 상태라면 update로 처리해야함
+    private fun postSeats() {
+        for(i in 0 until seatNum) viewModel.docSeat[i].seatNum = seat[i]
+        // POST List<docSeat>
+        CoroutineScope(Dispatchers.IO).launch {
+            if(!RetrofitUtil.opService.postSeats(viewModel.docSeat))
+                Toast.makeText(context,"자리 업데이트 네트워크 오류", Toast.LENGTH_SHORT).show()
+        }
     }
 }

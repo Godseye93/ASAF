@@ -63,8 +63,8 @@ class OpFragmentViewModel: ViewModel() {
     // <!---------------------------- 서명 함수 ------------------------------->
 //    val testSrc = "https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd"
 //    private val _moneys = MutableStateFlow(MutableList(25) { testSrc })
-    private val _moneys = MutableStateFlow(mutableListOf<DocSign>())
-    val moneys = _moneys
+    private val _signs = MutableStateFlow(mutableListOf<DocSign>())
+    val signs = _signs
 
     init{
         // 동기로 가져오기 (withContext)
@@ -115,7 +115,7 @@ class OpFragmentViewModel: ViewModel() {
                     RetrofitUtil.opService.getSigns(curClass.value)
                 }
                 if (response.isSuccessful) {
-                    _moneys.value = response.body() ?: mutableListOf<DocSign>()
+                    _signs.value = response.body() ?: mutableListOf<DocSign>()
                 } else {
                     Log.d(TAG, "사인 가져오기 네트워크 오류")
                 }

@@ -23,13 +23,14 @@ class MoneyAdapter : androidx.recyclerview.widget.ListAdapter<DocSign, MoneyAdap
     }
 
     inner class MoneyViewHolder(private val binding: ItemMoneyBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(money: DocSign) {
+        fun bind(sign: DocSign) {
             // 이미지 누르면 확대되는 기능 set
             // 이미지를 money리스트 정보에서 가져오기
             binding.apply {
                 Glide.with(binding.root)
-                    .load(money)
+                    .load(sign.imageUrl)
                     .into(binding.itemMoneyImageviewImage)
+                itemMoneyTextviewText.text = sign.name
             }
         }
     }
