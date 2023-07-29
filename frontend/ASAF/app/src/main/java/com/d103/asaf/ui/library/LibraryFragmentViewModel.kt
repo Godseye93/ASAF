@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.d103.asaf.common.model.dto.Book
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
@@ -25,11 +26,11 @@ class LibraryFragmentViewModel: ViewModel() {
     val classes = _classes
 
     // <!---------------------------- 전체리스트 ------------------------------->
-    private val _books = MutableStateFlow(MutableList(25) { "이거어디까지흘러가는거에요오오?" })
+    private val _books = MutableStateFlow(MutableList(25) { Book(bookName = "이거 어디까지 올라가는 거에요?")})
     val books = _books
 
     // <!---------------------------- 대출한 리스트 ------------------------------->
-    private val _myBooks = MutableStateFlow(mutableListOf("find this","what the"))
+    private val _myBooks = MutableStateFlow(mutableListOf(Book(bookName = "find this"),Book(bookName = "what this")))
     val myBooks = _myBooks
 
     private fun loadCommon() {
@@ -49,7 +50,7 @@ class LibraryFragmentViewModel: ViewModel() {
         val height = 500
 
         // Set the barcode content
-        val content = "$title|$author|$publisher"
+        val content = "$title $author $publisher"
 
         // Set the barcode hints
         val hints = Hashtable<EncodeHintType, Any>()

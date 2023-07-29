@@ -20,6 +20,7 @@ import co.nedim.maildroidx.MaildroidX
 import co.nedim.maildroidx.MaildroidXType
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
+import com.d103.asaf.common.model.dto.Book
 import com.d103.asaf.databinding.DialogAddBookBinding
 import com.d103.asaf.databinding.FragmentLibraryManagementBinding
 import com.d103.asaf.ui.library.LibraryFragmentViewModel
@@ -35,7 +36,7 @@ private const val PATH = "/data/data/com.d103.asaf/"
 // String -> BookDto로 변경 필요
 class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>(FragmentLibraryManagementBinding::bind, R.layout.fragment_library_management) {
     private val viewModel: LibraryFragmentViewModel by viewModels()
-    private var books: MutableList<String> = mutableListOf()
+    private var books: MutableList<Book> = mutableListOf()
     private lateinit var adapter: BookAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -127,10 +128,18 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
     }
 
     private fun bookSearch(title: String) {
-        val filteredBooks = books.filter { book -> book.contains(title) }
+        val filteredBooks = books.filter { book -> book.bookName.contains(title) }
         adapter.submitList(filteredBooks)
     }
 
+    // DB에 저장할 때 Date 타입
+    private fun getDate(): Date {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DATE, 3)
+        return calendar.time
+    }
+
+    // 텍스트에 사용할 때 String 타입
     private fun setDate(loanPeriod: Int): String {
         val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.KOREA)
         val currentDate = Calendar.getInstance()
@@ -139,7 +148,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
     }
 
 
-    fun addBookDialog() {
+    private fun addBookDialog() {
         val dialogView = DialogAddBookBinding.inflate(layoutInflater,binding.root,false)
 
         val dialog = AlertDialog.Builder(requireContext())
@@ -150,9 +159,12 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
         dialogView.bookAdd.setOnClickListener {
             // 입력받은 정보 DTO로 조립 & POST & dismiss() & createQR % send email
             // val bookDto = ~
+            val book = Book(bookName = dialogView.dialogAddBookEdittextTitle.text.toString(),
+                            author = dialogView.dialogAddBookEdittextAuthor.text.toString(),
+                            publisher = dialogView.dialogAddBookEdittextPublisher.text.toString())
             CoroutineScope(Dispatchers.IO).launch {
-                val qr = viewModel.generateQRCode("이거 어디까지 올라가는거에요?","괴도 키드","싸피 출판")
-                val qrImg = PATH +"${getFileName()}.png"
+                val qr = viewModel.generateQRCode(book.bookName,book.author,book.publisher)
+                val qrImg = PATH +"${getFileName(book.bookName)}.png"
                 viewModel.saveQRCode(qr, qrImg)
                 sendEmail(qrImg)
                 dialog.dismiss()
@@ -186,9 +198,9 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
         dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    private fun getFileName(): String {
+    private fun getFileName(title: String): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
-        return sdf.format(Date())
+        return "$title ${sdf.format(Date())}"
     }
 
     private fun sendEmail(path: String) {

@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.d103.asaf.common.model.dto.DocSign
 import com.d103.asaf.databinding.ItemMoneyBinding
 
 // String -> MoneyDto 로 교체 (주소 String / 이름 String / 유저ID / MONTH 정보 가짐) - Userid로 본인의 제출 여부 확인
-class MoneyAdapter : androidx.recyclerview.widget.ListAdapter<String, MoneyAdapter.MoneyViewHolder>(MoneyDiffCallback()) {
+class MoneyAdapter : androidx.recyclerview.widget.ListAdapter<DocSign, MoneyAdapter.MoneyViewHolder>(MoneyDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoneyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -22,7 +23,7 @@ class MoneyAdapter : androidx.recyclerview.widget.ListAdapter<String, MoneyAdapt
     }
 
     inner class MoneyViewHolder(private val binding: ItemMoneyBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(money: String) {
+        fun bind(money: DocSign) {
             // 이미지 누르면 확대되는 기능 set
             // 이미지를 money리스트 정보에서 가져오기
             binding.apply {
@@ -33,13 +34,13 @@ class MoneyAdapter : androidx.recyclerview.widget.ListAdapter<String, MoneyAdapt
         }
     }
 
-    class MoneyDiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+    class MoneyDiffCallback : DiffUtil.ItemCallback<DocSign>() {
+        override fun areItemsTheSame(oldItem: DocSign, newItem: DocSign): Boolean {
             // 식별자 요소를 비교하는게 맞다
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+        override fun areContentsTheSame(oldItem: DocSign, newItem: DocSign): Boolean {
             return oldItem == newItem
         }
     }

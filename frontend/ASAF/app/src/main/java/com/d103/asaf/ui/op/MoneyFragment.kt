@@ -4,6 +4,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
+import com.d103.asaf.common.model.dto.DocSign
 import com.d103.asaf.databinding.FragmentMoneyBinding
 import com.d103.asaf.ui.op.LockerFragment
 import com.d103.asaf.ui.op.OpFragmentViewModel
@@ -15,10 +16,10 @@ class MoneyFragment :
     companion object {
         private const val MONEY = "money"
 
-        fun instance(money: MutableList<Int>): MoneyFragment {
+        fun instance(money: MutableList<DocSign>): MoneyFragment {
             val fragment = MoneyFragment()
             val args = Bundle()
-            args.putIntegerArrayList(MoneyFragment.MONEY, ArrayList(money))
+            args.putParcelableArrayList(MONEY, ArrayList(money))
             fragment.arguments = args
             return fragment
         }

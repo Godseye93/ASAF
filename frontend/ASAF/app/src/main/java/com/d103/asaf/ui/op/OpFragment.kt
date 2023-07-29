@@ -6,18 +6,11 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentOpBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.util.Calendar
 
 

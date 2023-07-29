@@ -41,7 +41,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
 
         lifecycleScope.launchWhenStarted  {
             viewModel.lockers.collect { newLocker ->
-                adapter.submitList(newLocker)// 업데이트
+                adapter.submitList(viewModel.setLockers(newLocker))// 업데이트
             }
         }
 
@@ -50,7 +50,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
 
         binding.lockerRandom.setOnClickListener {
             lockers.shuffle()
-            adapter.submitList(lockers.toMutableList())
+            adapter.submitList(viewModel.setLockers(lockers))
         }
     }
 }

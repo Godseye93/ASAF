@@ -312,4 +312,8 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
             setSeat()
         }
     }
+
+    private fun postPositions() {
+        
+    }
 }
