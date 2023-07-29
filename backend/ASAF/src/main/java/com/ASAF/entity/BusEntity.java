@@ -12,9 +12,7 @@ import lombok.Setter;
 @Table(name = "bus")
 public class BusEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "region_code")
-    private RegionEntity region;
+    private String region_name;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +28,7 @@ public class BusEntity {
         BusEntity busEntity = new BusEntity();
         busEntity.setLocation(busDTO.getLocation());
         busEntity.setBus_route(busDTO.getBus_route());
-        busEntity.setRegion(busDTO.getRegion_code());
-
+        busEntity.setRegion_name(busDTO.getRegion_name());
         return busEntity;
     }
 
@@ -40,6 +37,7 @@ public class BusEntity {
         busEntity.setBusNum(busDTO.getBusNum());
         busEntity.setLocation(busDTO.getLocation());
         busEntity.setBus_route(busDTO.getBus_route());
+        busEntity.setRegion_name(busDTO.getRegion_name());
 
 
         return busEntity;
