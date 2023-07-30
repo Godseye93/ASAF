@@ -15,8 +15,6 @@ class SharedPreferencesUtil(context: Context) {
         editor.apply()
     }
 
-
-
     fun getUserCookie(): MutableSet<String>? {
         return preferences.getStringSet(ApplicationClass.COOKIES_KEY_NAME, HashSet())
     }
@@ -24,4 +22,19 @@ class SharedPreferencesUtil(context: Context) {
     fun getString(key:String): String? {
         return preferences.getString(key, null)
     }
+
+    fun addUserByEmailAndPwd(email : String, password : String){
+        val editor = preferences.edit()
+        editor.putString("email", email)
+        editor.putString("password", password)
+        editor.apply()
+    }
+
+    fun deleteUser() {
+        val editor = preferences.edit()
+        editor.clear()
+        editor.apply()
+    }
+
+
 }
