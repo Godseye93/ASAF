@@ -39,12 +39,12 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fragment_library_user_fab_returnbook"
+        android:id="@+id/fragment_library_user_fab_drawbook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/libraryTop"
         app:tint="#009702"
-        app:srcCompat="@drawable/baseline_bookmark_add_24"
+        app:srcCompat="@drawable/qrcode"
         app:maxImageSize="36dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="15dp"

@@ -15,6 +15,7 @@ import com.d103.asaf.common.model.dto.Book
 import com.d103.asaf.databinding.FragmentLibraryManagementBinding
 import com.d103.asaf.databinding.FragmentLibraryUseBinding
 import com.d103.asaf.ui.library.LibraryFragmentViewModel
+import com.d103.asaf.ui.library.QRCodeScannerDialog
 import com.d103.asaf.ui.library.adapter.BookAdapter
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -67,8 +68,9 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
 
             fragmentLibraryUserRecyclerview.isVisible = true
 
-            fragmentLibraryUserFabReturnbook.setOnClickListener {
+            fragmentLibraryUserFabDrawbook.setOnClickListener {
                 // 카메라 찍는 fragment로 이동
+                showQRCodeScannerDialog()
             }
         }
     }
@@ -105,5 +107,11 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
         val currentDate = Calendar.getInstance()
         currentDate.add(Calendar.DAY_OF_MONTH, loanPeriod)
         return dateFormat.format(currentDate.time)
+    }
+
+    // 바코드 스캐너 호출
+    private fun showQRCodeScannerDialog() {
+        val dialogFragment = QRCodeScannerDialog.newInstance()
+        dialogFragment.show(childFragmentManager, "QRCodeScannerDialog")
     }
 }

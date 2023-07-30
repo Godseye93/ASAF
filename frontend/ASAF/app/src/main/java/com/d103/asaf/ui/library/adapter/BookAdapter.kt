@@ -74,7 +74,13 @@ class BookAdapter : androidx.recyclerview.widget.ListAdapter<Book, BookAdapter.B
 
     private fun sendReturn(book: Book) {
         // 반납요청하기
+        // fragment를 이동 (반납)
         // RetrofitUtil.libraryService.postReturn(book)
+    }
+
+    private fun sendDraw() {
+        // dialog에서 카메라를 띄워서 qr 정보가 읽히면 frgment 이동
+        // fragment를 이동 (대출)
     }
 
     private fun isDatePassed(sdate: Date): Boolean {
