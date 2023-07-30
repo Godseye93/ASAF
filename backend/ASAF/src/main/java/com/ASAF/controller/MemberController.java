@@ -4,6 +4,7 @@ package com.ASAF.controller;
 // 프로젝트에서 정의한 MemberDTO 클래스를 사용하기 위함입니다.
 import com.ASAF.dto.MemberDTO;
 // 프로젝트에서 정의한 MemberService 클래스를 사용하기 위함입니다.
+//import com.ASAF.service.AuthenticationService;
 import com.ASAF.service.MemberService;
 // Lombok 라이브러리를 사용하여 생성자를 자동화하기 위함입니다
 import lombok.RequiredArgsConstructor;
@@ -25,20 +26,35 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+//import com.ASAF.config.JwtTokenProvider;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+//import springfox.documentation.spring.web.json.Json;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Base64;
+import java.util.List;
+
 // @Controller 어노테이션은 이 클래스가 Spring 프레임워크 컨트롤러 컴포넌트임을 나타냅니다.
 // 이 어노테이션을 사용하면 Spring이 이 클래스를 관리하게 되고, 웹 요청을 처리하는 데 사용됩니다.
 // @RequiredArgsConstructor 어노테이션은 Lombok 라이브러리의 기능 중 하나입니다.
 // 이 어노테이션은 클래스에 final 필드나 @NonNull 필드에 대한 생성자를 자동으로 생성해줍니다.
 // 이를 통해 생성자 작성을 생략할 수 있어 코드를 더 간결하게 만들 수 있습니다.
-@Controller
+@RestController
 @RequiredArgsConstructor
+@RequestMapping("/member")
 public class MemberController {
     // MemberService 인스턴스를 final로 선언하며 생성자 주입을 이용해 주입받습니다.
     private final MemberService memberService;
 
+//    private final JwtTokenProvider jwtTokenProvider;
+//
+//    private final AuthenticationService authenticationService;
+
     // 회원가입 정보를 저장하기 위한 요청을 처리합니다. 클라이언트가 회원가입 정보를 전송할 때, 이 메서드가 호출됩니다.
     // 전달받은 DTO 객체를 이용해 회원 정보를 저장하고, 회원가입 결과를 ResponseEntity 형태로 반환합니다.
-    @PostMapping("/member/save")
+    @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody MemberDTO memberDTO) {
         memberService.save(memberDTO);
         return new ResponseEntity<>("회원가입 성공", HttpStatus.OK);
@@ -46,7 +62,7 @@ public class MemberController {
 
     // 사용자 로그인을 처리하는 요청을 처리합니다.
     // 전달받은 DTO 객체를 이용해 로그인 결과를 확인하고, 해당 결과에 따라 세션 정보를 설정하거나 반환합니다.
-    @PostMapping("/member/login")
+    @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody MemberDTO memberDTO, HttpSession session) {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
@@ -56,10 +72,29 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패!");
         }
     }
+    //JWT
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@RequestBody MemberDTO memberDTO, HttpServletResponse response) {
+//        try {
+//            // 이메일과 비밀번호로 인증 및 토큰 생성
+//            String token = authenticationService.authenticateAndGetToken(memberDTO);
+//
+//            // JWT 토큰을 응답 헤더에 추가
+//            response.addHeader("Authorization", "Bearer " + token);
+//            response.addHeader("Access-Control-Expose-Headers", "Authorization");
+//
+//            // 인증 성공 응답
+//            return ResponseEntity.status(HttpStatus.OK).body("로그인 성공!");
+//        } catch (Exception e) {
+//            // 인증 실패 응답
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패!");
+//        }
+//    }
+
 
     // 모든 회원의 정보를 조회하는 요청을 처리합니다.
     // 모든 회원의 정보를 조회하고, 그 결과를 ResponseEntity 형태로 반환합니다.
-    @GetMapping("/member/")
+    @GetMapping
     public ResponseEntity<List<MemberDTO>> findAll() {
         List<MemberDTO> memberDTOList = memberService.findAll();
         return new ResponseEntity<>(memberDTOList, HttpStatus.OK);
@@ -67,21 +102,21 @@ public class MemberController {
 
     // 특정 회원의 정보를 조회하는 요청을 처리합니다.
     // 전달받은 id를 이용해 회원의 정보를 조회하고, 그 결과를 ResponseEntity 형태로 반환합니다.
-    @GetMapping("/member/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<MemberDTO> findById(@PathVariable int id) {
         MemberDTO memberDTO = memberService.findById(id);
         System.out.println(memberDTO);
         return new ResponseEntity<>(memberDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/member/name/{id}")
+    @GetMapping("/name/{id}")
     public ResponseEntity<String> findById_name(@PathVariable int id) {
         MemberDTO memberDTO = memberService.findById(id);
         System.out.println(memberDTO);
         return new ResponseEntity<>(memberDTO.getMemberName(), HttpStatus.OK);
     }
 
-    @GetMapping("/member/email/{memberEmail}")
+    @GetMapping("/email/{memberEmail}")
     public ResponseEntity<MemberDTO> findByMemberEmail(@PathVariable String memberEmail) {
         MemberDTO memberDTO = memberService.findByMemberEmail(memberEmail);
         return new ResponseEntity<>(memberDTO, HttpStatus.OK);
@@ -89,7 +124,7 @@ public class MemberController {
 
     // 회원 정보를 수정하는 요청을 처리합니다.
     // 전달받은 DTO 객체를 이용해 회원 정보를 수정하고, 수정된 결과를 ResponseEntity 형태로 반환합니다.
-    @PostMapping("/member/update")
+    @PostMapping("/update")
     public ResponseEntity<MemberDTO> update(@RequestBody MemberDTO memberDTO) {
         memberService.update(memberDTO);
         return new ResponseEntity<>(memberDTO, HttpStatus.OK);
@@ -97,7 +132,7 @@ public class MemberController {
 
     // 특정 회원의 정보를 삭제하는 요청을 처리합니다.
     // 전달받은 id를 이용해 회원의 정보를 삭제하고, 결과를 ResponseEntity 형태로 반환합니다.
-    @GetMapping("/member/delete/{id}")
+    @GetMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable int id) {
         memberService.deleteById(id);
         return new ResponseEntity<>("회원탈퇴 성공", HttpStatus.OK);
@@ -105,20 +140,20 @@ public class MemberController {
 
     // 로그아웃 요청을 처리합니다.
     // 로그아웃 처리를 위해 세션을 무효화하고, 결과를 ResponseEntity 형태로 반환합니다.
-    @GetMapping("/member/logout")
+    @GetMapping("/logout")
     public ResponseEntity<String> logout(HttpSession session) {
         session.invalidate();
         return new ResponseEntity<>("로그아웃 성공",HttpStatus.OK);
     }
 
-    @GetMapping("/member/email-check/{memberEmail}")
+    @GetMapping("/email-check/{memberEmail}")
     public @ResponseBody boolean emailCheck(@PathVariable("memberEmail") String memberEmail) {
         boolean checkResult = memberService.emailCheck(memberEmail);
         return checkResult;
     }
 
 
-    @PostMapping("/member/upload-image")
+    @PostMapping("/upload-image")
     public ResponseEntity<?> uploadImage(@RequestParam("memberEmail") String memberEmail,
                                          @RequestParam("file") MultipartFile file) {
         if (file == null || file.isEmpty()) {
@@ -133,7 +168,7 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/member/{memberEmail}/profile-image")
+    @GetMapping("/{memberEmail}/profile-image")
     public ResponseEntity<Resource> getProfileImage(@PathVariable String memberEmail) {
         try {
             String imagePath = memberService.getProfileImagePath(memberEmail);
@@ -149,21 +184,4 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-

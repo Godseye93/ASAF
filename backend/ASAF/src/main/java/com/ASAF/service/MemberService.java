@@ -10,7 +10,9 @@ import com.ASAF.dto.MemberDTO;
 import com.ASAF.repository.MemberRepository;
 import com.ASAF.entity.MemberEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.crossstore.ChangeSetPersister;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +23,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+//import com.ASAF.config.JwtTokenProvider;
+//import org.springframework.security.authentication.AuthenticationManager;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import springfox.documentation.spring.web.json.Json;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
+
 // @Service 어노테이션:
 //이 어노테이션은 클래스가 Spring Framework의 Service 계층
 // (Component 어노테이션을 사용하는 경우도 있지만, 보통 Service 계층의 클래스에는 명시적으로 Service 어노테이션을 사용합니다)
@@ -29,11 +51,29 @@ import java.util.Optional;
 // 이 어노테이션은 Lombok 라이브러리의 일부입니다. 주로 클래스에 선언된 final 필드들 중 매개변수가 있는 생성자를 자동으로 생성합니다.
 // 여기서는 MemberRepository를 주입(inject) 받기 위해 사용됩니다.
 @Service
-@RequiredArgsConstructor
-public class MemberService {
-    // 클래스의 멤버 변수로서 MemberRepository의 인스턴스를 가리킵니다.
-    // 이 변수는 클래스 생성자를 통해 주입됩니다 (이 경우 Lombok의 @RequiredArgsConstructor 어노테이션이 사용됩니다).
+@Scope("prototype")
+//public class MemberService implements UserDetailsService {
+public class MemberService{
     private final MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+    //JWT
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        MemberDTO memberDTO = findByMemberEmail(username);
+//        if (memberDTO == null) {
+//            throw new UsernameNotFoundException("User not found for this username: " + username);
+//        }
+//
+//        /* 여기에서 필요에 따라 role 정보를 설정하세요. */
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+//
+//        /* UserDetails 객체를 반환합니다. */
+//        return new User(memberDTO.getMemberEmail(), memberDTO.getMemberPassword(), authorities);
+//    }
 
     // 이 메서드는 MemberDTO 객체를 받아서 데이터베이스에 저장합니다.
     // 먼저 MemberEntity.toMemberEntity(memberDTO)를 호출해 MemberDTO 객체를 MemberEntity 객체로 변환한 후, memberRepository.save(memberEntity)를 호출하여 데이터베이스에 저장합니다.
@@ -58,6 +98,7 @@ public class MemberService {
             return null;
         }
     }
+
 
     // 이 메서드는 모든 MemberEntity 객체를 데이터베이스에서 조회한 후, 이를 MemberDTO 객체의 목록으로 변환하여 반환합니다.
     // memberRepository.findAll()을 호출한 다음, 반복문을 사용하여 각각의 MemberEntity 객체를 MemberDTO.toMemberDTO(memberEntity)를 사용해 MemberDTO 객체로 변환합니다.
@@ -145,16 +186,3 @@ public class MemberService {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
