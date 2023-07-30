@@ -4,37 +4,21 @@ package com.ASAF.controller;
 // 프로젝트에서 정의한 MemberDTO 클래스를 사용하기 위함입니다.
 import com.ASAF.dto.MemberDTO;
 // 프로젝트에서 정의한 MemberService 클래스를 사용하기 위함입니다.
-//import com.ASAF.service.AuthenticationService;
 import com.ASAF.service.MemberService;
 // Lombok 라이브러리를 사용하여 생성자를 자동화하기 위함입니다
 import lombok.RequiredArgsConstructor;
 // Spring 프레임워크에서 사용되는 클래스들입니다.
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.*;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 // HttpSession 클래스를 사용하기 위함입니다. 세션 관리와 관련된 기능을 제공합니다.
 import javax.servlet.http.HttpSession;
 // Java의 기본 List 인터페이스를 사용하기 위함입니다.
-import java.io.File;
-import java.net.URI;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 
-//import com.ASAF.config.JwtTokenProvider;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-//import springfox.documentation.spring.web.json.Json;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Base64;
-import java.util.List;
 
 // @Controller 어노테이션은 이 클래스가 Spring 프레임워크 컨트롤러 컴포넌트임을 나타냅니다.
 // 이 어노테이션을 사용하면 Spring이 이 클래스를 관리하게 되고, 웹 요청을 처리하는 데 사용됩니다.
@@ -47,10 +31,6 @@ import java.util.List;
 public class MemberController {
     // MemberService 인스턴스를 final로 선언하며 생성자 주입을 이용해 주입받습니다.
     private final MemberService memberService;
-
-//    private final JwtTokenProvider jwtTokenProvider;
-//
-//    private final AuthenticationService authenticationService;
 
     // 회원가입 정보를 저장하기 위한 요청을 처리합니다. 클라이언트가 회원가입 정보를 전송할 때, 이 메서드가 호출됩니다.
     // 전달받은 DTO 객체를 이용해 회원 정보를 저장하고, 회원가입 결과를 ResponseEntity 형태로 반환합니다.
@@ -72,25 +52,6 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패!");
         }
     }
-    //JWT
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody MemberDTO memberDTO, HttpServletResponse response) {
-//        try {
-//            // 이메일과 비밀번호로 인증 및 토큰 생성
-//            String token = authenticationService.authenticateAndGetToken(memberDTO);
-//
-//            // JWT 토큰을 응답 헤더에 추가
-//            response.addHeader("Authorization", "Bearer " + token);
-//            response.addHeader("Access-Control-Expose-Headers", "Authorization");
-//
-//            // 인증 성공 응답
-//            return ResponseEntity.status(HttpStatus.OK).body("로그인 성공!");
-//        } catch (Exception e) {
-//            // 인증 실패 응답
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패!");
-//        }
-//    }
-
 
     // 모든 회원의 정보를 조회하는 요청을 처리합니다.
     // 모든 회원의 정보를 조회하고, 그 결과를 ResponseEntity 형태로 반환합니다.
