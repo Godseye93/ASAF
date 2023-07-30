@@ -25,10 +25,6 @@ interface OpService {
     @GET("/op/sign/{classCode}")
     suspend fun getSigns(@Path("classCode") classCode : Int) : Response<MutableList<DocSign>>
 
-    // 반정보 가져오기
-    @GET("{/op/{userId}")
-    suspend fun getClasses(@Path("userId") userId : Int) : Response<MutableList<Classinfo>>
-
     // 자리 정보 보내기
     @POST("/op/seat")
     suspend fun postSeats(@Body seats: List<DocSeat>) : Boolean

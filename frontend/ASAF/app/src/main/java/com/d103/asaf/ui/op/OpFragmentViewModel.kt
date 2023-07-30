@@ -68,16 +68,37 @@ class OpFragmentViewModel: ViewModel() {
     val signs = _signs
 
     init{
-        // 동기로 가져오기 (withContext)
-        initCollect() // loadRemote, loadCommon 포함
+        // 반 정보를 가장먼저 세팅해야함
+        loadFirst() // loadCollect, loadRemote, loadCommon 등 초기화 함수 모두 포함
 
-        // 진짜 정보를 받아서 일부만 사용하는 클래스는 받아온 뒤 mapping 필요
+        // 진짜 정보를 받아서 일부만 사용하는 클래스는 받아온 뒤 mapping
         loadSeats()
-        loadClasses()
         loadLockers()
     }
 
     // <!---------------------------- 공통 배치 함수 ------------------------------->
+    // 관리하는 반 정보를 가장 먼저 가져와야함
+    private fun loadFirst() {
+        // 프로가 관리하는 반 정보
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitUtil.attendenceService.getClassInfo(0) // sharedPrefernce 유저 id
+                }
+                if (response.isSuccessful) {
+                    _classInfoes = response.body() ?: mutableListOf<Classinfo>()
+                } else {
+                    Log.d(TAG, " 반 정보 가져오기 네트워크 오류")
+                }
+            } catch (e: Exception) {
+                Log.d(TAG, " 반 정보 가져오기 네트워크 오류")
+            }
+        }
+
+        // 첫번째 반을 최초 반으로 설정
+        loadCommon()
+    }
+
     private fun loadRemote() {
         // 자리 정보
         viewModelScope.launch {
@@ -124,36 +145,22 @@ class OpFragmentViewModel: ViewModel() {
                 Log.d(TAG, "사인 가져오기 네트워크 오류")
             }
         }
-
-        // 프로가 관리하는 반 정보
-        viewModelScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) {
-                    RetrofitUtil.opService.getClasses(0) // sharedPrefernce 유저 id
-                }
-                if (response.isSuccessful) {
-                    _classInfoes = response.body() ?: mutableListOf<Classinfo>()
-                } else {
-                    Log.d(TAG, " 반 정보 가져오기 네트워크 오류")
-                }
-            } catch (e: Exception) {
-                Log.d(TAG, " 반 정보 가져오기 네트워크 오류")
-            }
-        }
     }
 
     private fun loadCommon() {
+        // classinfoes 를 classes로 가공
+        loadClasses()
         curClass.value = _classes.value[0]
         curMonth.value = _months.value[0]
+
+        // 현재 반설정이 완료되면 collect 리스너를 달아준다.
+        initCollect()
     }
 
     private fun initCollect() {
         CoroutineScope(Dispatchers.IO).launch {
             curClass.collect { newClass ->
                 // GET해서 가져온 정보 업데이트 (자리 / 사물함 / 서명)
-                // _seat = GETBY(NEWCLASS)
-                // _lockers = GETBY(NEWCLASS)
-                // _moneys = GETBY(NEWCLASS, NEWMONTH)
                 // loadRemote()
             }
         }
@@ -161,14 +168,9 @@ class OpFragmentViewModel: ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             curMonth.collect { newMonth ->
                 // GET해서 가져온 정보 업데이트 (자리 / 사물함 / 서명)
-                // _seat.value = GETBY(NEWCLASS)
-                // _lockers = GETBY(NEWCLASS)
-                // _moneys = GETBY(NEWCLASS, NEWMONTH)
                 // loadRemote()
             }
         }
-
-        loadCommon()
     }
 
     // <!---------------------------- 자리 배치 함수 ------------------------------->

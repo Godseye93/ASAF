@@ -32,11 +32,16 @@ class BookAdapter : androidx.recyclerview.widget.ListAdapter<Book, BookAdapter.B
     inner class BookViewHolder(private val binding: ItemBookBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(book: Book) {
             binding.apply {
+                // SharedPreference user가 학생이라면 버튼 글자를 변경
+                // bookItemReturnSend.text = "반납"
                 bookItemTitle.text = book.bookName
                 bookItemTitle.isSelected = true
                 bookItemDrawer.text = book.borrower
                 bookItemReturn.text = dateToString(book.returnDate)
                 bookItemReturnSend.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.bookReturn))
+                // SharedPreference user가 학생이라면 버튼 글자를 변경
+                // bookItemReturnSend.setOnclickListenr 반납으로 변경한다. 
+                // bookItemReturnSend.setOnClickListener{sendReturn(book) // 반납요청후 요청성공하면 해당 항목 리스트에서 지우기 기능 추가 필요}
                 bookItemReturnSend.setOnClickListener {
                     // 알림을 해당 학생에게 보내기
                     sendNotification(binding)
@@ -63,7 +68,13 @@ class BookAdapter : androidx.recyclerview.widget.ListAdapter<Book, BookAdapter.B
 
     // 애플리케이션 icon이 자동으로 삽입됨 -> 아이콘을 변경하자
     private fun sendNotification(binding: ItemBookBinding) {
+        // FCM 메시지 보내기 함수
         Toast.makeText(binding.root.context, "알림을 보냈습니다.", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun sendReturn(book: Book) {
+        // 반납요청하기
+        // RetrofitUtil.libraryService.postReturn(book)
     }
 
     private fun isDatePassed(sdate: Date): Boolean {

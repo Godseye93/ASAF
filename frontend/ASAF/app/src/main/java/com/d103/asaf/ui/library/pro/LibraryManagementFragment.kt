@@ -21,6 +21,7 @@ import co.nedim.maildroidx.MaildroidXType
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.Book
+import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.DialogAddBookBinding
 import com.d103.asaf.databinding.FragmentLibraryManagementBinding
 import com.d103.asaf.ui.library.LibraryFragmentViewModel
@@ -47,7 +48,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
     }
 
     private fun initList() {
-        books = viewModel.myBooks.value
+        books = viewModel.returns.value
         adapter = BookAdapter()
         binding.fragmentLibraryRecyclerview.adapter = adapter
         adapter.submitList(books)
@@ -62,7 +63,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
             bookToggleButton.setFirstButtonClickListener {
                 fragmentLibraryTextviewSecond.text = "대출자"
                 fragmentLibraryTextviewThird.text = "반납일"
-                books = viewModel.myBooks.value
+                books = viewModel.returns.value
                 adapter.submitList(books)
             }
 
@@ -167,6 +168,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
                 val qrImg = PATH +"${getFileName(book.bookName)}.png"
                 viewModel.saveQRCode(qr, qrImg)
                 sendEmail(qrImg)
+                postBook(book)
                 dialog.dismiss()
             }
         }
@@ -221,4 +223,11 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
         Log.d("메일", "sendEmail: 보냄")
     }
 
+
+    // 책 등록
+    private fun postBook(book: Book) {
+        CoroutineScope(Dispatchers.IO).launch {
+            RetrofitUtil.libraryService.postBook(book)
+        }
+    }
 }
