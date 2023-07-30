@@ -5,15 +5,13 @@ import android.view.View
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentLibraryUseDrawBinding
-import com.d103.asaf.ui.op.LockerFragment
 
 class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(FragmentLibraryUseDrawBinding::bind, R.layout.fragment_library_use_draw) {
     companion object {
         private const val DRAW = "draw"
 
-        // Int를 LockerDto로 변경 필요
-        fun instance(drawInfo: List<String>): LockerFragment {
-            val fragment = LockerFragment()
+        fun instance(drawInfo: List<String>): LibraryUseDrawFragment {
+            val fragment = LibraryUseDrawFragment()
             val args = Bundle()
             args.putStringArrayList(DRAW, ArrayList(drawInfo))
             fragment.arguments = args

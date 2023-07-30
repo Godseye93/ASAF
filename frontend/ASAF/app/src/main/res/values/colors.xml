@@ -8,4 +8,5 @@
     <color name="bookReturn">#FFB129</color>
     <color name="isClicked">#D3D3D3</color>
     <color name="bookColor">#e6e6e6</color>
+    <color name="bookDraw">#00A6FF</color>
 </resources>

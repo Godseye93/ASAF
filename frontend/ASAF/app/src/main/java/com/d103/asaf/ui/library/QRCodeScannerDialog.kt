@@ -75,7 +75,7 @@ class QRCodeScannerDialog : DialogFragment() {
             val qrCodeResult = result.text
             // 예를 들어, 다음과 같이 QR 코드 결과를 다른 곳으로 전달할 수 있습니다.
             val fragment = LibraryUseDrawFragment.instance(qrCodeResult.split(" "))
-
+            // framelayout으로 바꿔야하나? dismiss는 없애야 하나? << 고려하기
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(binding.barcodeScanner.id, fragment)
                 .addToBackStack(null)

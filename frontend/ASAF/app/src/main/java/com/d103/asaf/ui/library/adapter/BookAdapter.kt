@@ -40,6 +40,7 @@ class BookAdapter : androidx.recyclerview.widget.ListAdapter<Book, BookAdapter.B
                 bookItemReturn.text = dateToString(book.returnDate)
                 bookItemReturnSend.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.bookReturn))
                 // SharedPreference user가 학생이라면 버튼 글자를 변경
+                // 비콘 거리 안에 있을 때 버튼 visible 활성화
                 // bookItemReturnSend.setOnclickListenr 반납으로 변경한다. 
                 // bookItemReturnSend.setOnClickListener{sendReturn(book) // 반납요청후 요청성공하면 해당 항목 리스트에서 지우기 기능 추가 필요}
                 bookItemReturnSend.setOnClickListener {
