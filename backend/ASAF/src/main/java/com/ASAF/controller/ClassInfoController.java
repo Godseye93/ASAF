@@ -18,10 +18,10 @@ import java.lang.reflect.Member;
 public class ClassInfoController {
     private final ClassInfoService classInfoService;
 
-
-    @GetMapping("/{id}")
-    public ClassInfoDTO getClassInfoById(@PathVariable("id") int memberId) {
-        return classInfoService.getClassInfoByMemberId(memberId);
+    // id 값으로 class_num, class_code, region_code, generation_code 조회
+    @GetMapping("/{Id}")
+    public ClassInfoDTO getClassInfoByMemberId(@PathVariable int Id) {
+        return classInfoService.getClassInfoById(Id);
     }
 }
 

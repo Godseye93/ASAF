@@ -3,15 +3,7 @@ package com.ASAF.entity;
 import com.ASAF.dto.ClassInfoDTO;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.ASAF.dto.MemberDTO;
 import lombok.Data;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -34,7 +26,6 @@ public class ClassInfoEntity {
     private GenerationEntity generation_code;
 
     @ManyToOne
-    @JoinColumn(name = "memberId")
     private MemberEntity id;
 
 
@@ -48,15 +39,4 @@ public class ClassInfoEntity {
         classInfoEntity.setClass_num(classInfoDTO.getClass_num());
         return classInfoEntity;
     }
-
-    public ClassInfoDTO toDTO() {
-        ClassInfoDTO classInfoDTO = new ClassInfoDTO();
-        classInfoDTO.setClass_num(getClass_num());
-        classInfoDTO.setClass_code(getClass_code().getClass_code());
-        classInfoDTO.setRegion_code(getRegion_code().getRegion_code());
-        classInfoDTO.setGeneration_code(getGeneration_code().getGeneration_code());
-        classInfoDTO.setMemberDTO(MemberDTO.toMemberDTO(getId()));
-        return classInfoDTO;
-    }
-
 }
