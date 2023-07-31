@@ -12,4 +12,8 @@ class LibraryUseFragmentViewModel: ViewModel() {
     // <!---------------------------- 내가 대출한 리스트 ------------------------------->
     private var _myDraws = MutableStateFlow(mutableListOf(Book(bookName = "find this"), Book(bookName = "what this")))
     val myDraws = _myDraws
+
+    // 대출기간
+    private var _days = MutableStateFlow(listOf(1,2,3,4,5,6,7));
+    val days = _days
 }
