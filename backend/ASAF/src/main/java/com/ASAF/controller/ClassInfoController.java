@@ -1,16 +1,14 @@
 package com.ASAF.controller;
 
 import com.ASAF.dto.ClassInfoDTO;
-import com.ASAF.entity.ClassInfoEntity;
-import com.ASAF.entity.MemberEntity;
+import com.ASAF.entity.ClassEntity;
+import com.ASAF.entity.GenerationEntity;
+import com.ASAF.entity.RegionEntity;
 import com.ASAF.service.ClassInfoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.lang.reflect.Member;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 
 @RequestMapping("/classinfo")
@@ -23,7 +21,10 @@ public class ClassInfoController {
     public List<ClassInfoDTO> getClassInfoListByMemberId(@PathVariable int memberId) {
         return classInfoService.getClassInfoByMemberId(memberId);
     }
+    @GetMapping("/memberIds")
+    public List<Long> findMemberIdsByClassRegionAndGeneration(@RequestParam int class_code,
+                                                              @RequestParam int region_code,
+                                                              @RequestParam int generation_code) {
+        return classInfoService.findMemberIdsByClassRegionAndGeneration(class_code, region_code, generation_code);
+    }
 }
-
-
-

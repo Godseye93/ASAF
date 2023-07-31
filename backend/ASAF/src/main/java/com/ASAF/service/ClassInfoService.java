@@ -1,7 +1,7 @@
 package com.ASAF.service;
 
 import com.ASAF.dto.*;
-import com.ASAF.entity.ClassInfoEntity;
+import com.ASAF.entity.*;
 import com.ASAF.repository.ClassInfoRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +12,17 @@ import java.util.stream.Collectors;
 public class ClassInfoService {
     private final ClassInfoRepository classInfoRepository;
 
+    public ClassInfoService(ClassInfoRepository classInfoRepository) {
+        this.classInfoRepository = classInfoRepository;
+    }
+
     public List<ClassInfoDTO> getClassInfoByMemberId(int memberId) {
         List<ClassInfoEntity> classInfoEntities = classInfoRepository.findById_id(memberId);
         return classInfoEntities.stream()
                 .map(ClassInfoDTO::toClassInfoDTO)
                 .collect(Collectors.toList());
     }
-
-    public ClassInfoService(ClassInfoRepository classInfoRepository) {
-        this.classInfoRepository = classInfoRepository;
+    public List<Long> findMemberIdsByClassRegionAndGeneration(int class_code, int region_code, int generation_code) {
+        return classInfoRepository.findMemberIdsByClassRegionAndGeneration(class_code, region_code, generation_code);
     }
 }
