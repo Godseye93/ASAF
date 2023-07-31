@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.d103.asaf.common.model.dto.DocLocker
 import com.d103.asaf.databinding.ItemLockerBinding
 
 // int 형을 Locker DTO로 변경하기
-class LockerAdapter : androidx.recyclerview.widget.ListAdapter<Int, LockerAdapter.LockerViewHolder>(LockerDiffCallback()) {
+class LockerAdapter : androidx.recyclerview.widget.ListAdapter<DocLocker, LockerAdapter.LockerViewHolder>(LockerDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LockerViewHolder {
         val binding = ItemLockerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -15,23 +16,23 @@ class LockerAdapter : androidx.recyclerview.widget.ListAdapter<Int, LockerAdapte
     }
 
     override fun onBindViewHolder(holder: LockerViewHolder, position: Int) {
-        val room = getItem(position)
-        holder.bind(room)
+        val locker = getItem(position)
+        holder.bind(locker)
     }
 
     inner class LockerViewHolder(private val binding: ItemLockerBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(Locker: Int) {
-            binding.itemLockerImageviewText.text = Locker.toString()
+        fun bind(locker: DocLocker) {
+            binding.itemLockerImageviewText.text = locker.name
         }
     }
 
-    class LockerDiffCallback : DiffUtil.ItemCallback<Int>() {
-        override fun areItemsTheSame(oldItem: Int, newItem: Int): Boolean {
+    class LockerDiffCallback : DiffUtil.ItemCallback<DocLocker>() {
+        override fun areItemsTheSame(oldItem: DocLocker, newItem: DocLocker): Boolean {
             // 식별자 요소를 비교하는게 맞다
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Int, newItem: Int): Boolean {
+        override fun areContentsTheSame(oldItem: DocLocker, newItem: DocLocker): Boolean {
             return oldItem == newItem
         }
     }

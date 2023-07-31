@@ -20,4 +20,18 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_money" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/defaultMainColor"
+        app:tint="#FFFFFF"
+        app:srcCompat="@drawable/mix_sign"
+        app:maxImageSize="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
