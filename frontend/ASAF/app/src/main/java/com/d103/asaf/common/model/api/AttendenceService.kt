@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 interface AttendenceService {
 
-    @GET("{userid}")
+    @GET("classinfo/member/{userid}")
     suspend fun getClassInfo(@Path("userid") userid : Int) : Response<MutableList<Classinfo>>
 
     @GET("{classId}")
