@@ -26,6 +26,7 @@ class SharedPreferencesUtil(context: Context) {
 
     fun addUserByEmailAndPwd(member : Member){
         val editor = preferences.edit()
+        editor.putInt("id", member.id)
         editor.putString("memberName", member.memberName)
         editor.putString("memberEmail", member.memberEmail)
         editor.putString("memberPassword", member.memberPassword)

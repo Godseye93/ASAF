@@ -105,6 +105,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
                     Toast.LENGTH_SHORT
                 ).show()
                 ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
+                sharedViewModel.logInUser = loginResult
                 sharedViewModel.getClassInfo(loginResult)
                 if (loginResult.authority == "stu") {
                     findNavController().navigate(R.id.navigation_student_home)
