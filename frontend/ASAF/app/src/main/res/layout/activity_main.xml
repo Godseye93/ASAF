@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navi_pro"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navi_pro"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_graph" />
@@ -32,6 +31,7 @@
         app:morphCornerRadius="128dp"
         app:morphItemRadius="64dp"
         app:morphVerticalOffset="8dp"
+        android:visibility="invisible"
         />
 
     <com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
@@ -46,6 +46,7 @@
         app:menu="@menu/student_menu_main_bottom"
         app:morphCornerRadius="128dp"
         app:morphItemRadius="64dp"
+        android:visibility="invisible"
         app:morphVerticalOffset="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -127,8 +127,8 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         notiList.add(noti1)
         // 오늘 날짜로 초기 선택
         binding.calendarView.setSelectedDate(CalendarDay.today())
-        binding.fragmentScheduleDateView.text = "${selectedDate.year}년 ${selectedDate.month} 월 ${selectedDate.day} 일"
-        sharedViewModel.selectedDate = "${selectedDate.year}년 ${selectedDate.month} 월 ${selectedDate.day} 일"
+        binding.fragmentScheduleDateView.text = "${selectedDate.year}년 ${selectedDate.month + 1} 월 ${selectedDate.day} 일"
+        sharedViewModel.selectedDate = "${selectedDate.year}년 ${selectedDate.month + 1} 월 ${selectedDate.day} 일"
 
         // 달력에 주간 요일 및 월간 형식 설정 (월, 화, 수, 목... / 1월,2월, 3월 ...)
         binding.calendarView.setTitleFormatter(MonthArrayTitleFormatter(resources.getTextArray(R.array.custom_months)))
@@ -164,8 +164,8 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
             ) {
                 selectedDate = binding.calendarView.selectedDate
                 Log.d("selectedDate", selectedDate.year.toString())
-                sharedViewModel.selectedDate = "${selectedDate.year}년 ${selectedDate.month} 월 ${selectedDate.day} 일"
-                binding.fragmentScheduleDateView.text = "${selectedDate.year}년 ${selectedDate.month} 월 ${selectedDate.day} 일"
+                sharedViewModel.selectedDate = "${selectedDate.year}년 ${selectedDate.month + 1} 월 ${selectedDate.day} 일"
+                binding.fragmentScheduleDateView.text = "${selectedDate.year}년 ${selectedDate.month + 1} 월 ${selectedDate.day} 일"
                 adapter.submitList(notiList)
             }
         })
