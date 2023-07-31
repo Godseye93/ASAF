@@ -59,7 +59,7 @@ class FindpwdFragment : Fragment() {
         }
 
         binding.fragmentFindpwdButtonBack.setOnClickListener {
-            findNavController().navigate(R.id.action_findpwdFragment_to_loginFragment)
+            findNavController().navigateUp()
         }
     }
 

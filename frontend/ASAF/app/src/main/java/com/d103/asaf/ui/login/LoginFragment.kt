@@ -3,6 +3,7 @@ package com.d103.asaf.ui.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import com.d103.asaf.R
 import com.d103.asaf.databinding.FragmentLoginBinding
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.MainActivity
+import com.d103.asaf.common.config.ApplicationClass
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+private const val TAG = "LoginFragment_cjw"
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
@@ -41,6 +45,20 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//        (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
+
+        //        sharedPreference에서 있으면 바로 화면 넘어가기
+        if(ApplicationClass.sharedPreferences.getString("email")?.isNotEmpty() == true){
+            Log.d(TAG, "onViewCreated: ${ApplicationClass.sharedPreferences.getString("email")}")
+
+//            val action = LoginFragmentDirections.actionLoginFragmentToMapFragment()
+//            Navigation.findNavController(binding.root).navigate(action)
+            findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
+            (requireActivity() as MainActivity).showBottomNavigationBarFromFragment()
+//            (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
+        }
+
+        
         // MainActivity의 hideBottomNavigationBarFromFragment() 메서드를 호출하여 바텀 네비게이션 바를 숨김
 //        (activity as? MainActivity)?.hideBottomNavigationBarFromFragment()
 //        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navi_student).visibility = View.GONE
@@ -54,7 +72,10 @@ class LoginFragment : Fragment() {
             val password = binding.fragmentLoginEditTvPass.text.toString()
             viewModel.login(email, password)
 
-            findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
+            observeLoginResult()
+            ApplicationClass.sharedPreferences.addUserByEmailAndPwd(email, password)
+
+//            findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
 
             // MainActivity의 hideBottomNavigationBarFromFragment() 메서드를 호출하여 바텀 네비게이션 바를 숨김
 //            (activity as? MainActivity)?.showBottomNavigationBarFromFragment()
@@ -85,6 +106,20 @@ class LoginFragment : Fragment() {
             }
         })
     }
+
+    private fun observeLoginResult() {
+        viewModel.loginResult.observe(viewLifecycleOwner, Observer { isLoginSuccess ->
+            if (isLoginSuccess) {
+                Toast.makeText(context, "로그인 되었습니다.", Toast.LENGTH_SHORT).show()
+                // 로그인 성공 시 ProHomeFragment로 이동
+                findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
+            } else {
+                // 로그인 실패 시 Toast 메시지 표시
+                Toast.makeText(requireContext(), "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 
 
 }

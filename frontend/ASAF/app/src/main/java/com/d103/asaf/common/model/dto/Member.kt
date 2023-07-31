@@ -31,4 +31,10 @@ data class Member(
         memberInfo: String
     ) : this(0, 0, memberName, memberEmail,
         memberPassword, memberInfo, birthDate, 0, "", "", 0, "")
+
+    constructor(
+        memberEmail: String,
+        memberPassword: String
+    ) : this(0, 0, "", memberEmail,
+        memberPassword, "", "", 0, "", "", 0, "")
 }
