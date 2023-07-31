@@ -54,9 +54,4 @@ class SharedViewModel : ViewModel() {
 
           }
      }
-
-<<<<<<< HEAD
-     
-=======
->>>>>>> library
 }
