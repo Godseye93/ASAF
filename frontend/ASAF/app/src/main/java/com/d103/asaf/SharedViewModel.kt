@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.dto.Classinfo
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
@@ -13,8 +14,7 @@ import java.lang.Exception
 
 private const val TAG = "SharedViewModel ASAF"
 class SharedViewModel : ViewModel() {
-     
-     
+
      lateinit var selectedDate : String // 캘린더에서 쓰는 데이터
      
      private val _classInfoList = MutableLiveData<MutableList<Classinfo>>()
@@ -32,6 +32,8 @@ class SharedViewModel : ViewModel() {
                          val responseBody = response.body()
                          if(!responseBody.isNullOrEmpty()){
                               _classInfoList.postValue(responseBody!!)
+
+                              ApplicationClass.mainClassInfo = responseBody
                          }
                          else{
 
@@ -47,5 +49,5 @@ class SharedViewModel : ViewModel() {
 
           }
      }
-     
+
 }

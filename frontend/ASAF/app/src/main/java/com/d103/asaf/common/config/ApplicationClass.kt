@@ -1,6 +1,7 @@
 package com.d103.asaf.common.config
 
 import android.app.Application
+import com.d103.asaf.common.model.dto.Classinfo
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.ssafy.template.config.AddCookiesInterceptor
@@ -17,9 +18,9 @@ class ApplicationClass : Application() {
 
     companion object {
        // 서버 주소
-//        val API_URL ="http://192.168.100.158:8080/"     // 진욱님
+        val API_URL ="http://192.168.100.158:8080/"     // 진욱님
 //        val API_URL ="http://192.168.100.62:8080/"     // 민재님
-        val API_URL = "http://192.168.100.169:8080/"    // 형진님
+//        val API_URL = "http://192.168.100.169:8080/"    // 형진님
 
         lateinit var sharedPreferences: SharedPreferencesUtil
 
@@ -31,6 +32,8 @@ class ApplicationClass : Application() {
         const val SHARED_PREFERENCES_NAME = "SSAFY_TEMPLATE_APP"
         const val COOKIES_KEY_NAME = "cookies"
 
+        // 클래스 정보
+        lateinit var mainClassInfo: MutableList<Classinfo>
     }
 
 

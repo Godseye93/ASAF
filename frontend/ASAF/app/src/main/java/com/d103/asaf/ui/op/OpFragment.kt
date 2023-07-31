@@ -7,8 +7,10 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.d103.asaf.R
+import com.d103.asaf.SharedViewModel
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentOpBinding
 import java.util.Calendar
