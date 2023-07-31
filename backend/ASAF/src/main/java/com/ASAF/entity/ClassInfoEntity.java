@@ -16,13 +16,15 @@ public class ClassInfoEntity {
 
 
     @ManyToOne
-    @JoinColumn(name = "classCode")
+    @JoinColumn(name = "class_code")
     private ClassEntity class_code;
 
     @ManyToOne
+    @JoinColumn(name="region_code")
     private RegionEntity region_code;
 
     @ManyToOne
+    @JoinColumn(name="generation_code")
     private GenerationEntity generation_code;
 
     @ManyToOne
