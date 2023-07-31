@@ -39,6 +39,10 @@ interface MemberService {
     @POST("member/login")
     suspend fun login(@Body body: Member) : Member
 
+    // 로그아웃
+    @GET("member/logout")
+    suspend fun logout()
+
     // 회원 정보 수정
 //    @PUT("member/")
 }

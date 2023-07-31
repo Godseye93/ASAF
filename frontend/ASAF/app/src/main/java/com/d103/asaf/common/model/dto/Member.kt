@@ -16,15 +16,15 @@ data class Member(
     @SerializedName("phone_number") val phoneNumber: String,
     @SerializedName("profile_image") val profileImage: String,
     @SerializedName("team_num") val teamNum: Int,
-    val authority: String,
     val token : String,
     var attended : String,
     var entryTime : Date?,
     var exitTime : Date?,
+    var authority: String = "stu",
 ){
     // 기본 생성자
     constructor() : this(0, 0, "", "", "", "", "",
-        0, "", "", 0, "", "", "", null, null)
+        0, "", "", 0, "", "", null, null, "stu")
 
     // 추가 생성자 추가
     constructor(
@@ -34,11 +34,11 @@ data class Member(
         birthDate: String,
         memberInfo: String
     ) : this(0, 0, memberName, memberEmail,
-        memberPassword, memberInfo, birthDate, 0, "", "", 0, "", "", "", null, null)
+        memberPassword, memberInfo, birthDate, 0, "", "", 0, "", "", null, null, "stu")
 
     constructor(
         memberEmail: String,
         memberPassword: String
     ) : this(0, 0, "", memberEmail,
-        memberPassword, "", "", 0, "", "", 0, "", "", "", null, null)
+        memberPassword, "", "", 0, "", "", 0, "", "", null, null, "stu")
 }

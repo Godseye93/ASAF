@@ -15,34 +15,59 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.d103.asaf.common.model.dto.Member
+import com.d103.asaf.common.util.RetrofitUtil
 
 private const val TAG = "LoginFragmentViewModel_cjw"
 class LoginFragmentViewModel : ViewModel() {
 
 
     // 가상의 로그인 결과를 MutableLiveData로 표현 (실제로는 서버와의 통신 등이 필요)
-    private val _loginResult = MutableLiveData<Boolean>()
-    val loginResult: LiveData<Boolean> get() = _loginResult
+    private val _loginResult = MutableLiveData<Member>()
+    val loginResult: LiveData<Member> get() = _loginResult
 
     private val _toastMessage = MutableLiveData<String>()
     val toastMessage: LiveData<String> get() = _toastMessage
 
+//    fun login(email: String, password: String) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val response1 = memberService.getUserInfo(email)
+//            Log.d(TAG, "login: ${response1.body()}")
+//            Log.d(TAG, "login: ${response1.body().toString()}")
+//            if (response1.isSuccessful) {
+//                val member = response1.body()
+//                // 서버로부터 받아온 회원 정보와 입력한 정보 비교
+//                if (member?.memberPassword == password) {
+//                    val body = mapOf("memberEmail" to email, "memberPassword" to password)
+//                    val response = memberService.login(response1.body()!!)
+////                    val response = memberService.login(email, password)
+//                    Log.d(TAG, "login: ${response.toString()}")
+//                    if (response == "로그인 성공!") {
+//                        _loginResult.postValue(true)
+//                        Log.d(TAG, "login: 로그인 되었습니다.")
+//                    } else {
+//                        _loginResult.postValue(false)
+//                        Log.d(TAG, "login: 비밀번호를 확인하세요.")
+//                    }
+//                }
+//            }else{
+//                Log.d(TAG, "login: 등록되지 않은 이메일입니다.")
+//            }
+//            // 생성한 memberService.login() 함수를 사용하여 로그인 요청을 서버에 전달합니다.
+////            val body = Member(memberEmail = email, memberPassword = password)
+////            val response = memberService.login(member)
+//        }
+//    }
     fun login(email: String, password: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            // 생성한 memberService.login() 함수를 사용하여 로그인 요청을 서버에 전달합니다.
-            val body = Member(memberEmail = email, memberPassword = password)
-            val response = memberService.login(body)
-
-            // 서버의 응답을 처리하고 _loginResult에 값을 설정합니다.
-            if (response != null) {
-                _loginResult.postValue(true)
-                Log.d(TAG, "login: 로그인 되었습니다.")
-            } else {
-                _loginResult.postValue(false)
-                Log.d(TAG, "login: 아이디 혹은 비밀번호를 확인하세요.")
+        viewModelScope.launch {
+            try {
+                _loginResult.value = memberService.login(Member(email, password))
+            } catch (e: Exception) {
+                _loginResult.value = Member()
             }
         }
+
     }
+
 
 
     // 예시를 위한 임시 가상의 로그인 메서드
