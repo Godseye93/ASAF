@@ -16,7 +16,7 @@ data class Member(
     @SerializedName("phone_number") val phoneNumber: String,
     @SerializedName("profile_image") val profileImage: String,
     @SerializedName("team_num") val teamNum: Int,
-    val authority: String,
+    var authority: String = "stu",
 ){
     // 기본 생성자
     constructor() : this(0, 0, "", "", "", "", "",

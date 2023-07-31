@@ -3,6 +3,7 @@ package com.ssafy.template.util
 import android.content.Context
 import android.content.SharedPreferences
 import com.d103.asaf.common.config.ApplicationClass
+import com.d103.asaf.common.model.dto.Member
 
 
 class SharedPreferencesUtil(context: Context) {
@@ -23,10 +24,12 @@ class SharedPreferencesUtil(context: Context) {
         return preferences.getString(key, null)
     }
 
-    fun addUserByEmailAndPwd(email : String, password : String){
+    fun addUserByEmailAndPwd(member : Member){
         val editor = preferences.edit()
-        editor.putString("email", email)
-        editor.putString("password", password)
+        editor.putString("memberName", member.memberName)
+        editor.putString("memberEmail", member.memberEmail)
+        editor.putString("memberPassword", member.memberPassword)
+        editor.putString("authority", member.authority)
         editor.apply()
     }
 

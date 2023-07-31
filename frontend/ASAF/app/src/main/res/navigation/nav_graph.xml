@@ -67,7 +67,11 @@
         android:id="@+id/navigation_setting"
         android:name="com.d103.asaf.ui.setting.SettingFragment"
         android:label="Setting"
-        tools:layout="@layout/fragment_setting"/>
+        tools:layout="@layout/fragment_setting">
+        <action
+            android:id="@+id/action_navigation_setting_to_login_fragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
 
 
     <fragment
@@ -136,6 +140,17 @@
         app:popUpTo="@id/findpwd_fragment"
         app:popUpToInclusive="true" />
 
+    <action
+        android:id="@+id/action_settingFragment_to_loginFragment"
+        app:destination="@+id/LoginFragment"
+        app:popUpTo="@id/fragment_setting"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/fragment_setting"
+        android:name="com.d103.asaf.ui.setting.SettingFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_setting" />
 
     <fragment
         android:id="@+id/fragment_setting_app_setting"

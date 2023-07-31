@@ -9,6 +9,8 @@ import androidx.fragment.app.viewModels
 import com.d103.asaf.R
 import com.d103.asaf.databinding.FragmentSettingBinding
 import androidx.navigation.fragment.findNavController
+import com.d103.asaf.common.config.ApplicationClass
+import com.d103.asaf.common.util.RetrofitUtil
 
 class SettingFragment : Fragment() {
 
@@ -54,6 +56,15 @@ class SettingFragment : Fragment() {
 
         binding.fragmentSettingImageviewArrowBack.setOnClickListener {
             findNavController().navigateUp()
+        }
+
+        binding.fragmentInformationTextviewLogout.setOnClickListener {
+            ApplicationClass.sharedPreferences.deleteUser()
+//            findNavController().navigate(R.id.action_navigation_setting_to_login_fragment)
+            val navController = findNavController()
+            navController.graph = navController.navInflater.inflate(R.navigation.nav_graph)
+            ApplicationClass.sharedPreferences.deleteUser()
+            navController.navigate(R.id.login_fragment)
         }
     }
 
