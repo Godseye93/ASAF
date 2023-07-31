@@ -21,7 +21,7 @@ class SharedViewModel : ViewModel() {
      val classInfoList : LiveData<MutableList<Classinfo>>
           get() = _classInfoList
 
-     lateinit var logInUser : Member
+     var logInUser : Member = Member()
 
      fun getClassInfo(user : Member){
           viewModelScope.launch {
