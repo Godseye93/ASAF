@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -25,6 +26,7 @@ import com.d103.asaf.databinding.FragmentScheduleBinding
 
 
 import com.d103.asaf.common.model.dto.Member
+import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.ui.home.student.StudentHomeFragment
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -35,8 +37,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
     private var param1: String? = null
     private var param2: String? = null
     private val viewModel: LoginFragmentViewModel by viewModels()
-
-    private val sharedViewModel: SharedViewModel by viewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -47,6 +48,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "FCM: ${ApplicationClass.sharedPreferences.getString("token")}")
         setupViews()
         observeViewModel()
 
@@ -97,7 +99,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
                 ).show()
                 ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
                 sharedViewModel.logInUser = loginResult
+                Log.d(TAG, "유저: ${sharedViewModel.logInUser}")
                 sharedViewModel.getClassInfo(loginResult)
+                Log.d(TAG, "담당 반: ${sharedViewModel.classInfoList.value?.size}")
                 if (loginResult.authority == "stu") {
                     findNavController().navigate(R.id.navigation_student_home)
                 } else {

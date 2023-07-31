@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -90,6 +91,9 @@ dependencies {
     //FCM 관련
     // https://mvnrepository.com/artifact/com.google.firebase/firebase-messaging
     implementation("com.google.firebase:firebase-messaging:22.0.0")
+    implementation platform('com.google.firebase:firebase-bom:32.1.0')
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
 
     // lottie 애니메이션
@@ -110,7 +114,9 @@ dependencies {
     implementation 'com.github.nedimf:maildroid:v0.1.1-release'
 
     //firebase
-    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+//    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+
+
 
     //tedPermission
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
