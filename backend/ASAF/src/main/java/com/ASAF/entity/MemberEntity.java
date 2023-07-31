@@ -98,12 +98,6 @@ public class MemberEntity {
         memberEntity.setEntryTime(memberDTO.getEntryTime());
         memberEntity.setExitTime(memberDTO.getExitTime());
 
-        // 학생 생성 시 AttendanceEntity도 함께 생성합니다.
-        // 참조필드 세팅 및 기타 필요한 초기화 진행
-        ClassInfoEntity classInfoEntity = new ClassInfoEntity();
-        classInfoEntity.setId(memberEntity);
-        memberEntity.getClassInfoEntityList().add(classInfoEntity);
-
         return memberEntity;
     }
 
