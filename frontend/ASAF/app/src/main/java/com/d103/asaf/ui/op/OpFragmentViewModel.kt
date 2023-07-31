@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.dto.Classinfo
 import com.d103.asaf.common.model.dto.DocLocker
 import com.d103.asaf.common.model.dto.DocSeat
@@ -19,7 +20,7 @@ import okhttp3.internal.wait
 
 private const val TAG = "운영뷰모델"
 // 외부 저장소에서 받아오는 리스트는 MutableStateFlow로 받아온다
-class OpFragmentViewModel: ViewModel() {
+class OpFragmentViewModel(): ViewModel() {
     // <!---------------------------- 공통 배치 변수 ------------------------------->
     // OpFragment의 textWather에 반 / 월 정보가 바뀌면 리스트 업데이트 하는 코드 삽입해야할 듯
     var curClass = MutableStateFlow(0)
@@ -80,21 +81,7 @@ class OpFragmentViewModel: ViewModel() {
     // 관리하는 반 정보를 가장 먼저 가져와야함
     private fun loadFirst() {
         // 프로가 관리하는 반 정보
-        viewModelScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) {
-                    RetrofitUtil.attendenceService.getClassInfo(0) // sharedPrefernce 유저 id
-                }
-                if (response.isSuccessful) {
-                    _classInfoes = response.body() ?: mutableListOf<Classinfo>()
-                } else {
-                    Log.d(TAG, " 반 정보 가져오기 네트워크 오류")
-                }
-            } catch (e: Exception) {
-                Log.d(TAG, " 반 정보 가져오기 네트워크 오류")
-            }
-        }
-
+        _classInfoes =  ApplicationClass.mainClassInfo
         // 첫번째 반을 최초 반으로 설정
         loadCommon()
     }

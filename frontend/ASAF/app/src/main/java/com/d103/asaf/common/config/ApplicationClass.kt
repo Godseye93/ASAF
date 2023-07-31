@@ -1,6 +1,7 @@
 package com.d103.asaf.common.config
 
 import android.app.Application
+import com.d103.asaf.common.model.dto.Classinfo
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.ssafy.template.config.AddCookiesInterceptor
@@ -31,6 +32,8 @@ class ApplicationClass : Application() {
         const val SHARED_PREFERENCES_NAME = "SSAFY_TEMPLATE_APP"
         const val COOKIES_KEY_NAME = "cookies"
 
+        // 클래스 정보
+        lateinit var mainClassInfo: MutableList<Classinfo>
     }
 
 
