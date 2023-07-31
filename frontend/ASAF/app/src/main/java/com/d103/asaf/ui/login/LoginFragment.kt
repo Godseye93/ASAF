@@ -53,22 +53,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
 //        (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
 
         //        sharedPreference에서 있으면 바로 화면 넘어가기
-
-
-
-        if (ApplicationClass.sharedPreferences.getString("memberEmail")
-                ?.isNotEmpty() == true
-        ) {
+        if (ApplicationClass.sharedPreferences.getString("memberEmail")?.isNotEmpty() == true) {
             if (ApplicationClass.sharedPreferences.getString("authority") == "stu") {
                 findNavController().navigate(R.id.navigation_student_home)
             } else {
                 findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
             }
-
         }
-
-
-
     }
 
     private fun setupViews() {
@@ -95,8 +86,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
                     "${loginResult.memberName}님, 로그인 되었습니다.",
                     Toast.LENGTH_SHORT
                 ).show()
-                ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
+                if(binding.fragmentLoginSwitchAutologin.isChecked){
+                    ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
+                }
+//                ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
                 sharedViewModel.logInUser = loginResult
+                Log.d(TAG, "observeViewModel______: ${sharedViewModel.logInUser.memberEmail}")
                 sharedViewModel.getClassInfo(loginResult)
                 if (loginResult.authority == "stu") {
                     findNavController().navigate(R.id.navigation_student_home)

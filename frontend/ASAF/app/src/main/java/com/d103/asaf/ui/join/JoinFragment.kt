@@ -112,19 +112,6 @@ class JoinFragment : Fragment() {
             val birth = binding.fragmentJoinEditTVBirth.text.toString()
             val information = "${binding.spinnerNth.selectedItem}${binding.spinnerRegion.selectedItem}${binding.spinnerClassNum.selectedItem}"
 
-            // information 문자열 split.
-            var Nth: Int? = null
-            var region: String? = null
-            var classNum: Int? = null
-
-            val info = parseInput(information)
-            if(info != null){
-                // 기수, 지역, 반
-                Nth = info.first
-                region = info.second
-                classNum = info.third
-            }
-
             val member = Member(name, email, password, birth, information)
             if (viewModel.validateInputs(member, confirmPassword)) {
 
@@ -207,26 +194,6 @@ class JoinFragment : Fragment() {
         binding.spinnerRegion.adapter = regionAdapter
         binding.spinnerClassNum.adapter = classNumAdapter
     }
-
-    // information 정보 문자열 split.
-    fun parseInput(input: String): Triple<Int, String, Int>? {
-        // 정규식을 사용하여 입력 문자열을 구분합니다.
-        val regex = """(\d+)(\D+)(\d+)""".toRegex()
-        val matchResult = regex.find(input)
-
-        // 정규식이 매칭되지 않으면 null을 반환합니다.
-        if (matchResult == null || matchResult.groupValues.size != 4) {
-            return null
-        }
-
-        // 매칭된 그룹에서 각각의 값을 추출합니다.
-        val Nth = matchResult.groupValues[1].toInt()
-        val region = matchResult.groupValues[2]
-        val classNum = matchResult.groupValues[3].toInt()
-
-        return Triple(Nth, region, classNum)
-    }
-
 
     // 생년월일을 선택하는 달력 다이얼로그를 보여주는 메서드입니다.
     private fun showDatePickerDialog(){
