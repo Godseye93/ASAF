@@ -41,11 +41,12 @@ public class DocumentService {
 
     // 문서 정보 가져오기(전체)
     public List<DocumentDTO> getAllDocuments() {
-        List<DocumentEntity> documentEntities = documentRepository.findAll();
+        List<DocumentEntity> documentEntities = documentRepository.findAllOrderByCreatedAtDesc();
         return documentEntities.stream()
                 .map(documentEntity -> new DocumentDTO(documentEntity))
                 .collect(Collectors.toList());
     }
+
 
     // 문서 정보 가지오기(하나)
     public DocumentDTO getDocument(long docId) {
