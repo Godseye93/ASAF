@@ -17,9 +17,9 @@ class ApplicationClass : Application() {
 
     companion object {
        // 서버 주소
-//        val API_URL ="http://192.168.100.158:8080/"     // 진욱님
+        val API_URL ="http://192.168.100.158:8080/"     // 진욱님
 //        val API_URL ="http://192.168.100.62:8080/"     // 민재님
-        val API_URL = "http://192.168.100.169:8080/"    // 형진님
+//        val API_URL = "http://192.168.100.169:8080/"    // 형진님
 
         lateinit var sharedPreferences: SharedPreferencesUtil
 

@@ -18,13 +18,18 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.config.BaseActivity
 import com.d103.asaf.common.model.dto.Member
+import com.d103.asaf.common.util.MyFirebaseMessagingService
 import com.d103.asaf.databinding.ActivityMainBinding
 import com.d103.asaf.ui.login.LoginFragmentViewModel
 import com.d103.asaf.ui.home.pro.ProHomeFragment
 import com.d103.asaf.ui.schedule.NotiRegisterFragment
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
+import com.ssafy.template.util.SharedPreferencesUtil
 import com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
 import java.sql.Date
 
@@ -42,37 +47,41 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         binding.bottomNaviStudent.visibility = View.GONE
         setupNavHost()
         setSupportActionBar(findViewById(com.airbnb.lottie.R.id.action_bar));
-        // user 정보 가지고 오기
-        // 임시 데이터
-//        var user = Member(
-//            1, 123, "testName", "test@test.com",
-//            "testPass", "testInfo",
-//            Date(System.currentTimeMillis()).toString(), 123, "010-1234-5478", "123", 2, "", "",
-//        )
-        // user 정보 가지고 오고 난 후 activity 나누기
 
-//        when (user.authority) {
-//            "교육생" -> {
-//                binding.bottomNaviPro.visibility = View.GONE
-//                binding.bottomNaviStudent.visibility = View.VISIBLE
-//            }
-//
-//            "프로" -> {
-//                binding.bottomNaviPro.visibility = View.VISIBLE
-//                binding.bottomNaviStudent.visibility = View.GONE
-//
-//                val navHostFragment =
-//                    supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-//                val navController = navHostFragment.navController
-////                val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-//                val bottomNavigationView =
-//                    findViewById<MorphBottomNavigationView>(R.id.bottom_navi_pro)
-//                bottomNavigationView.setupWithNavController(navController)
-//
-//            }
-//        }
+
+        // 토큰 가져오기
+//        MyFirebaseMessagingService().getFirebaseToken()
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            Log.d(TAG, "토큰 생성: $token")
+            ApplicationClass.sharedPreferences.addFCMToken(token)
+//            Log.d(TAG, msg)
+//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+        })
+        initDynamicLink()
+
 
     }
+    private fun initDynamicLink() {
+        val dynamicLinkData = intent.extras
+        if (dynamicLinkData != null) {
+            var dataStr = "DynamicLink 수신받은 값\n"
+            for (key in dynamicLinkData.keySet()) {
+                dataStr += "key: $key / value: ${dynamicLinkData.getString(key)}\n"
+            }
+
+            Log.d(TAG, "알림: $dataStr")
+        }
+    }
+
     private fun setupNavHost() {
         // NavHostFragment를 가져와서 설정합니다.
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment

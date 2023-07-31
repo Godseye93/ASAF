@@ -34,6 +34,12 @@ class SharedPreferencesUtil(context: Context) {
         editor.apply()
     }
 
+    fun addFCMToken(token : String){
+        val editor = preferences.edit()
+        editor.putString("token", token)
+        editor.apply()
+    }
+
     fun deleteUser() {
         val editor = preferences.edit()
         editor.clear()
