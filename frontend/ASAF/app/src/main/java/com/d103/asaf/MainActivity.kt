@@ -44,11 +44,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         setSupportActionBar(findViewById(com.airbnb.lottie.R.id.action_bar));
         // user 정보 가지고 오기
         // 임시 데이터
-        var user = Member(
-            1, 123, "testName", "test@test.com",
-            "testPass", "testInfo",
-            Date(System.currentTimeMillis()).toString(), 123, "010-1234-5478", "123", 2, "프로"
-        )
+//        var user = Member(
+//            1, 123, "testName", "test@test.com",
+//            "testPass", "testInfo",
+//            Date(System.currentTimeMillis()).toString(), 123, "010-1234-5478", "123", 2, "", "",
+//        )
         // user 정보 가지고 오고 난 후 activity 나누기
 
 //        when (user.authority) {
