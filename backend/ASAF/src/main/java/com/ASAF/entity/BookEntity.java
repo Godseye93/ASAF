@@ -4,7 +4,7 @@ import com.ASAF.dto.BookDTO;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.awt.print.Book;
+import java.util.Date;
 
 @Data
 @Entity
@@ -20,6 +20,14 @@ public class BookEntity {
     private String author;
 
     private String Publisher;
+
+    private boolean borrowState;
+
+    @Temporal(TemporalType.DATE)
+    private Date borrowDate;
+
+    @Temporal(TemporalType.DATE)
+    private Date returnDate;
 
     @ManyToOne
     @JoinColumn(name = "class_num")
@@ -41,23 +49,6 @@ public class BookEntity {
     @JoinColumn(name = "id")
     private MemberEntity id;
 
-
-    public static BookEntity toBookEntity(BookDTO bookDTO){
-        BookEntity bookEntity = new BookEntity();
-        bookEntity.setBook_name(bookDTO.getBook_name());
-        bookEntity.setAuthor(bookDTO.getAuthor());
-        bookEntity.setPublisher(bookDTO.getPublisher());
-        return bookEntity;
-    }
-
-    public static BookEntity toUpdateBookEntity(BookDTO bookDTO) {
-        BookEntity bookEntity = new BookEntity();
-        bookEntity.setBook_number(bookDTO.getBook_number());
-        bookEntity.setBook_name(bookDTO.getBook_name());
-        bookEntity.setAuthor(bookDTO.getAuthor());
-        bookEntity.setPublisher(bookDTO.getPublisher());
-        return bookEntity;
-    }
 
     public ClassInfoEntity getClassInfoEntity() {
         return class_num;

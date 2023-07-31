@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +19,12 @@ public class BookDTO {
     private String book_name;
     private String author;
     private String publisher;
+    private boolean borrowState;
+    private Date borrowDate;
+    private Date returnDate;
+
+
+
     private ClassInfoDTO classInfoDTO;
     private ClassDTO classDTO;
     private RegionDTO regionDTO;
@@ -26,21 +36,12 @@ public class BookDTO {
         this.book_name = bookEntity.getBook_name();
         this.author = bookEntity.getAuthor();
         this.publisher = bookEntity.getPublisher();
+        this.borrowState = bookEntity.isBorrowState();
+        this.borrowDate = bookEntity.getBorrowDate();
+        this.returnDate = bookEntity.getReturnDate();
         this.classInfoDTO = ClassInfoDTO.toClassInfoDTO(bookEntity.getClassInfoEntity());
         this.classDTO = ClassDTO.toClassDTO(bookEntity.getClassEntity());
         this.regionDTO = RegionDTO.toRegionDTO(bookEntity.getRegionEntity());
         this.generationDTO = GenerationDTO.toGenerationDTO(bookEntity.getGenerationEntity());
-    }
-    public static BookDTO toBookDTO(BookEntity bookEntity) {
-        BookDTO bookDto = new BookDTO();
-        bookDto.setBook_number(bookEntity.getBook_number());
-        bookDto.setBook_name(bookEntity.getBook_name());
-        bookDto.setAuthor(bookEntity.getAuthor());
-        bookDto.setPublisher(bookEntity.getPublisher());
-        bookDto.setClassInfoDTO(ClassInfoDTO.toClassInfoDTO(bookEntity.getClassInfoEntity()));
-        bookDto.setClassDTO(ClassDTO.toClassDTO(bookEntity.getClassEntity()));
-        bookDto.setRegionDTO(RegionDTO.toRegionDTO(bookEntity.getRegionEntity()));
-        bookDto.setGenerationDTO(GenerationDTO.toGenerationDTO(bookEntity.getGenerationEntity()));
-        return bookDto;
     }
 }

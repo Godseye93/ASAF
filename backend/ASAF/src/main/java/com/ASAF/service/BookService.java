@@ -17,10 +17,13 @@ public class BookService {
 
     // 도서 등록
     public BookDTO registerBook(BookDTO bookDTO) {
+
         BookEntity bookEntity = new BookEntity();
+
         bookEntity.setBook_name(bookDTO.getBook_name());
         bookEntity.setAuthor(bookDTO.getAuthor());
         bookEntity.setPublisher(bookDTO.getPublisher());
+
         BookEntity savedEntity = bookRepository.save(bookEntity);
         bookDTO.setBook_number(savedEntity.getBook_number());
         return bookDTO;

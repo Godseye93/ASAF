@@ -45,6 +45,4 @@ public class BookController {
     public List<BookDTO> getAllBooks() {
         return bookService.getAllBooks();
     }
-
-//    @GetMapping
 }
