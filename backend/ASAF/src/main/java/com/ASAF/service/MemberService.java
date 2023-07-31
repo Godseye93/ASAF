@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -146,6 +148,33 @@ public class MemberService{
                 .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
         return memberEntity.getProfile_image();
     }
+
+    public MemberDTO CheckIn(int id) {
+        Optional<MemberEntity> memberEntityOptional = memberRepository.findById(id);
+        LocalTime currentTime = LocalTime.now();
+        if (memberEntityOptional.isPresent()){
+            MemberEntity memberEntity = memberEntityOptional.get();
+            memberEntity.setEntryTime(Time.valueOf(currentTime));
+            memberEntity.setAttended("입실");
+            MemberEntity updatedMemberEntity = memberRepository.save(memberEntity);
+            return MemberDTO.toMemberDTO(updatedMemberEntity);
+        }
+        return null;
+    }
+
+    public MemberDTO CheckOut(int id) {
+        Optional<MemberEntity> memberEntityOptional = memberRepository.findById(id);
+        LocalTime currentTime = LocalTime.now();
+        if (memberEntityOptional.isPresent()){
+            MemberEntity memberEntity = memberEntityOptional.get();
+            memberEntity.setExitTime(Time.valueOf(currentTime));
+            memberEntity.setAttended("퇴실");
+            MemberEntity updatedMemberEntity = memberRepository.save(memberEntity);
+            return MemberDTO.toMemberDTO(updatedMemberEntity);
+        }
+        return null;
+    }
+
 
 
 }

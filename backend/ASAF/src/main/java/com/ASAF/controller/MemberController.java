@@ -145,4 +145,15 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @PostMapping("/checkin/{id}")
+    public MemberDTO checkIn(@PathVariable int id) {
+        return memberService.CheckIn(id);
+    }
+
+    @PostMapping("/checkout/{id}")
+    public MemberDTO checkOut(@PathVariable int id) {
+        return memberService.CheckOut(id);
+    }
+
 }

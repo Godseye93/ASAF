@@ -44,6 +44,7 @@ public class DataLoader implements CommandLineRunner {
             memberDTO.setElectronic_student_id(10000 + i);
             memberDTO.setMember_info("D10" + i);
             memberDTO.setToken("token" + i);
+            memberDTO.setAttended("미출석");
             if (i == 1){
                 memberDTO.setAuthority("프로");
             }else{
