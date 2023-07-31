@@ -4,10 +4,9 @@ package com.ASAF.dto;
 // MemberEntity 클래스를 현재 파일에서 사용하기 위해 com.codingrecipe.member.entity 패키지에서 가져옵니다.
 // 이 클래스는 데이터베이스의 한 테이블과 매핑되는 JPA 엔티티 클래스입니다.
 import com.ASAF.entity.MemberEntity;
-import com.ASAF.repository.AttendanceRepository;
 import lombok.*;
 
-import java.util.Date;
+import java.sql.Time;
 
 // @Getter: 각 필드에 대한 getter 메서드를 자동 생성합니다.
 // @Setter: 각 필드에 대한 setter 메서드를 자동 생성합니다.
@@ -32,6 +31,9 @@ public class MemberDTO {
     private String profile_image;
     private String authority;
     private String token;
+    private String attended;
+    private Time entryTime;
+    private Time exitTime;
 
     // MemberEntity 타입의 하나의 매개변수 memberEntity를 입력으로 받고 MemberDTO 객체를 반환합니다.
     // 이 메서드의 목적은 MemberEntity 객체의 정보를 가져와 MemberDTO 객체로 변환하는 것입니다.
@@ -49,6 +51,9 @@ public class MemberDTO {
         memberDTO.setMember_info(memberEntity.getMember_info());
         memberDTO.setAuthority(memberEntity.getAuthority());
         memberDTO.setToken(memberEntity.getToken());
+        memberDTO.setAttended(memberEntity.getAttended());
+        memberDTO.setEntryTime(memberEntity.getEntryTime());
+        memberDTO.setExitTime(memberEntity.getExitTime());
         return memberDTO;
     }
 }
