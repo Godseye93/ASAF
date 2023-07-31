@@ -8,6 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -33,4 +34,11 @@ interface MemberService {
         @Part("memberEmail") memberEmail: RequestBody,
         @Part file: MultipartBody.Part
     ): Response<Boolean>
+
+    // 로그인
+    @POST("member/login")
+    suspend fun login(@Body body: Member) : Member
+
+    // 회원 정보 수정
+//    @PUT("member/")
 }

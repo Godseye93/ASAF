@@ -9,14 +9,17 @@ package com.ASAF.service;
 import com.ASAF.dto.MemberDTO;
 import com.ASAF.repository.MemberRepository;
 import com.ASAF.entity.MemberEntity;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.crossstore.ChangeSetPersister;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,11 +32,13 @@ import java.util.Optional;
 // 이 어노테이션은 Lombok 라이브러리의 일부입니다. 주로 클래스에 선언된 final 필드들 중 매개변수가 있는 생성자를 자동으로 생성합니다.
 // 여기서는 MemberRepository를 주입(inject) 받기 위해 사용됩니다.
 @Service
-@RequiredArgsConstructor
-public class MemberService {
-    // 클래스의 멤버 변수로서 MemberRepository의 인스턴스를 가리킵니다.
-    // 이 변수는 클래스 생성자를 통해 주입됩니다 (이 경우 Lombok의 @RequiredArgsConstructor 어노테이션이 사용됩니다).
+@Scope("prototype")
+public class MemberService{
     private final MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     // 이 메서드는 MemberDTO 객체를 받아서 데이터베이스에 저장합니다.
     // 먼저 MemberEntity.toMemberEntity(memberDTO)를 호출해 MemberDTO 객체를 MemberEntity 객체로 변환한 후, memberRepository.save(memberEntity)를 호출하여 데이터베이스에 저장합니다.
@@ -58,6 +63,8 @@ public class MemberService {
             return null;
         }
     }
+
+
 
     // 이 메서드는 모든 MemberEntity 객체를 데이터베이스에서 조회한 후, 이를 MemberDTO 객체의 목록으로 변환하여 반환합니다.
     // memberRepository.findAll()을 호출한 다음, 반복문을 사용하여 각각의 MemberEntity 객체를 MemberDTO.toMemberDTO(memberEntity)를 사용해 MemberDTO 객체로 변환합니다.
@@ -143,18 +150,32 @@ public class MemberService {
         return memberEntity.getProfile_image();
     }
 
+    public MemberDTO CheckIn(int id) {
+        Optional<MemberEntity> memberEntityOptional = memberRepository.findById(id);
+        LocalTime currentTime = LocalTime.now();
+        if (memberEntityOptional.isPresent()){
+            MemberEntity memberEntity = memberEntityOptional.get();
+            memberEntity.setEntryTime(Time.valueOf(currentTime));
+            memberEntity.setAttended("입실");
+            MemberEntity updatedMemberEntity = memberRepository.save(memberEntity);
+            return MemberDTO.toMemberDTO(updatedMemberEntity);
+        }
+        return null;
+    }
+
+    public MemberDTO CheckOut(int id) {
+        Optional<MemberEntity> memberEntityOptional = memberRepository.findById(id);
+        LocalTime currentTime = LocalTime.now();
+        if (memberEntityOptional.isPresent()){
+            MemberEntity memberEntity = memberEntityOptional.get();
+            memberEntity.setExitTime(Time.valueOf(currentTime));
+            memberEntity.setAttended("퇴실");
+            MemberEntity updatedMemberEntity = memberRepository.save(memberEntity);
+            return MemberDTO.toMemberDTO(updatedMemberEntity);
+        }
+        return null;
+    }
+
+
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

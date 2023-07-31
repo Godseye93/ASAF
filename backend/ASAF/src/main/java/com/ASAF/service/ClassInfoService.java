@@ -1,36 +1,34 @@
 package com.ASAF.service;
 
-import com.ASAF.dto.ClassInfoDTO;
+import com.ASAF.dto.*;
 import com.ASAF.entity.ClassInfoEntity;
 import com.ASAF.repository.ClassInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ClassInfoService {
     private final ClassInfoRepository classInfoRepository;
 
-    public ClassInfoDTO getClassInfo(int class_code) {
-        return classInfoRepository.findByClass_codeClass_code(class_code)
-                .map(ClassInfoEntity::toDTO)
-                .orElse(null);
+    public ClassInfoDTO getClassInfoById(int Id) {
+        ClassInfoEntity classInfoEntity = classInfoRepository.findById(Id).orElseThrow(() -> new ClassInfoNotFoundException("ClassInfo not found with Id: " + Id));
+
+        ClassInfoDTO classInfoDTO = new ClassInfoDTO();
+        classInfoDTO.setClass_num(classInfoEntity.getClass_num());
+        classInfoDTO.setClass_code(ClassDTO.toClassDTO(classInfoEntity.getClass_code()));
+        classInfoDTO.setRegion_code(RegionDTO.toRegionDTO(classInfoEntity.getRegion_code()));
+        classInfoDTO.setGeneration_code(GenerationDTO.toGenerationDTO(classInfoEntity.getGeneration_code()));
+        classInfoDTO.setMemberDTO(MemberDTO.toMemberDTO(classInfoEntity.getId()));
+
+        return classInfoDTO;
     }
 
-    public List<ClassInfoDTO> findAll() {
-        return classInfoRepository.findAll().stream()
-                .map(ClassInfoEntity::toDTO)
-                .collect(Collectors.toList());
-    }
 
-    public ClassInfoDTO getClassInfoById(int id) {
-        return classInfoRepository.findById(id)
-                .map(ClassInfoEntity::toDTO)
-                .orElseThrow(() -> new RuntimeException("ClassInfo not found for id: " + id));
+
+    public class ClassInfoNotFoundException extends RuntimeException {
+        public ClassInfoNotFoundException(String message) {
+            super(message);
+        }
     }
 }

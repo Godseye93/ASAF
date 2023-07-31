@@ -14,6 +14,7 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import com.d103.asaf.common.model.dto.Member
 
 private const val TAG = "LoginFragmentViewModel_cjw"
 class LoginFragmentViewModel : ViewModel() {
@@ -25,13 +26,23 @@ class LoginFragmentViewModel : ViewModel() {
     private val _toastMessage = MutableLiveData<String>()
     val toastMessage: LiveData<String> get() = _toastMessage
 
-    // 실제로는 서버와 통신하여 로그인 처리를 해야하지만, 예시를 위해 가상의 로그인 메서드를 구현합니다.
     fun login(email: String, password: String) {
-        // 여기서 실제 로그인 처리 로직을 구현하고 로그인 결과를 _loginResult에 값을 설정합니다.
-        // 예시: 성공하면 _loginResult.value = true, 실패하면 _loginResult.value = false
-        val success = performFakeLogin(email, password)
-        _loginResult.value = success
+        viewModelScope.launch(Dispatchers.IO) {
+            // 생성한 memberService.login() 함수를 사용하여 로그인 요청을 서버에 전달합니다.
+            val body = Member(memberEmail = email, memberPassword = password)
+            val response = memberService.login(body)
+
+            // 서버의 응답을 처리하고 _loginResult에 값을 설정합니다.
+            if (response != null) {
+                _loginResult.postValue(true)
+                Log.d(TAG, "login: 로그인 되었습니다.")
+            } else {
+                _loginResult.postValue(false)
+                Log.d(TAG, "login: 아이디 혹은 비밀번호를 확인하세요.")
+            }
+        }
     }
+
 
     // 예시를 위한 임시 가상의 로그인 메서드
     private fun performFakeLogin(email: String, password: String): Boolean {
