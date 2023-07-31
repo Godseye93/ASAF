@@ -43,15 +43,16 @@ public class MemberController {
     // 사용자 로그인을 처리하는 요청을 처리합니다.
     // 전달받은 DTO 객체를 이용해 로그인 결과를 확인하고, 해당 결과에 따라 세션 정보를 설정하거나 반환합니다.
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody MemberDTO memberDTO, HttpSession session) {
+    public ResponseEntity<MemberDTO> login(@RequestBody MemberDTO memberDTO, HttpSession session) {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             session.setAttribute("loginEmail", loginResult.getMemberEmail());
-            return ResponseEntity.status(HttpStatus.OK).body("로그인 성공!");
+            return ResponseEntity.status(HttpStatus.OK).body(loginResult);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
+
 
     // 모든 회원의 정보를 조회하는 요청을 처리합니다.
     // 모든 회원의 정보를 조회하고, 그 결과를 ResponseEntity 형태로 반환합니다.

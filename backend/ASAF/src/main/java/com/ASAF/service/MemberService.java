@@ -65,6 +65,7 @@ public class MemberService{
     }
 
 
+
     // 이 메서드는 모든 MemberEntity 객체를 데이터베이스에서 조회한 후, 이를 MemberDTO 객체의 목록으로 변환하여 반환합니다.
     // memberRepository.findAll()을 호출한 다음, 반복문을 사용하여 각각의 MemberEntity 객체를 MemberDTO.toMemberDTO(memberEntity)를 사용해 MemberDTO 객체로 변환합니다.
     public List<MemberDTO> findAll() {
