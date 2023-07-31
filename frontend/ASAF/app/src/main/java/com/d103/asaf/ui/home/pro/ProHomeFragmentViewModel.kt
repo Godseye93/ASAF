@@ -5,17 +5,34 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.d103.asaf.common.model.dto.Accounts_user
-import com.d103.asaf.common.model.dto.Classinfo
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
 import kotlinx.coroutines.launch
-import java.lang.Exception
-import kotlin.math.log
 
-private const val TAG = "ProHomeFragmentViewMode"
+private const val TAG = "ProHomeFragmentViewMode ASAF"
 class ProHomeFragmentViewModel : ViewModel() {
-    private val _studentInfoList = MutableLiveData<MutableList<Accounts_user>>()
+    private val _studentInfoList = MutableLiveData<MutableList<Member>>()
+
+    val studentInfoList : LiveData<MutableList<Member>>
+        get() = _studentInfoList
+
+    // 해당 반에 해당하는 학생들 정보와 출석 정보 가지고 오기
+    fun getStudentsInfo(classNumber : Int) {
+        viewModelScope.launch {
+
+            try {
+                val response = RetrofitUtil.attendenceService.getStudentsInfo(classNumber)
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    _studentInfoList.postValue(responseBody!!)
+                }
+            } catch (e: Exception) {
+                Log.d(TAG, "통신 에러: ${e.printStackTrace()}")
+//            }
+            }
+        }
+    }
+
 //    private val _classInfoList = MutableLiveData<MutableList<Classinfo>>()
 
 //    val classInfoList : LiveData<MutableList<Classinfo>>

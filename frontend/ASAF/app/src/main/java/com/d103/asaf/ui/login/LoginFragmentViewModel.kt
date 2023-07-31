@@ -19,6 +19,7 @@ import com.d103.asaf.common.model.dto.Member
 private const val TAG = "LoginFragmentViewModel_cjw"
 class LoginFragmentViewModel : ViewModel() {
 
+
     // 가상의 로그인 결과를 MutableLiveData로 표현 (실제로는 서버와의 통신 등이 필요)
     private val _loginResult = MutableLiveData<Boolean>()
     val loginResult: LiveData<Boolean> get() = _loginResult

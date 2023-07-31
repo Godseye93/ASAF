@@ -1,19 +1,19 @@
 package com.d103.asaf.common.util
 
 import androidx.recyclerview.widget.DiffUtil
-import com.d103.asaf.common.model.dto.AttendanceInfo
+import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.model.dto.Noti
 
 class AdapterUtil {
 
     companion object {
         // diffUtil: currentList에 있는 각 아이템들을 비교하여 최신 상태를 유지하도록 한다.
-        val diffUtilUserInfo = object : DiffUtil.ItemCallback<AttendanceInfo>() {
-            override fun areItemsTheSame(oldItem: AttendanceInfo, newItem: AttendanceInfo): Boolean {
-                return oldItem.attendanceId == newItem.attendanceId
+        val diffUtilUserInfo = object : DiffUtil.ItemCallback<Member>() {
+            override fun areItemsTheSame(oldItem: Member, newItem: Member): Boolean {
+                return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: AttendanceInfo, newItem: AttendanceInfo): Boolean {
+            override fun areContentsTheSame(oldItem: Member, newItem: Member): Boolean {
                 return oldItem == newItem
             }
         }

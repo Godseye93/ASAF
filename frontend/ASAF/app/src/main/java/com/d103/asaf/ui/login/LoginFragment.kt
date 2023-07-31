@@ -17,33 +17,36 @@ import com.d103.asaf.R
 import com.d103.asaf.databinding.FragmentLoginBinding
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.MainActivity
+import com.d103.asaf.SharedViewModel
 import com.d103.asaf.common.config.ApplicationClass
+import com.d103.asaf.common.config.BaseFragment
+import com.d103.asaf.databinding.FragmentScheduleBinding
+
 import com.google.android.material.bottomnavigation.BottomNavigationView
-
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 private const val TAG = "LoginFragment_cjw"
-class LoginFragment : Fragment() {
-
-    private lateinit var binding: FragmentLoginBinding
+class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::bind, R.layout.fragment_login) {
+    private var param1: String? = null
+    private var param2: String? = null
     private val viewModel: LoginFragmentViewModel by viewModels()
+    private val sharedViewModel : SharedViewModel by viewModels()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
+        }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
 
-        // Bottom Navigation Bar를 숨김
-//        hideBottomBar()
-
-        setupViews()
-        observeViewModel()
-
-        return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupViews()
+        observeViewModel()
+
 
 //        (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
 
@@ -54,7 +57,7 @@ class LoginFragment : Fragment() {
 //            val action = LoginFragmentDirections.actionLoginFragmentToMapFragment()
 //            Navigation.findNavController(binding.root).navigate(action)
             findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
-            (requireActivity() as MainActivity).showBottomNavigationBarFromFragment()
+//            (requireActivity() as MainActivity).showBottomNavigationBarFromFragment()
 //            (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
         }
 
@@ -112,6 +115,9 @@ class LoginFragment : Fragment() {
             if (isLoginSuccess) {
                 Toast.makeText(context, "로그인 되었습니다.", Toast.LENGTH_SHORT).show()
                 // 로그인 성공 시 ProHomeFragment로 이동
+
+
+
                 findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
             } else {
                 // 로그인 실패 시 Toast 메시지 표시

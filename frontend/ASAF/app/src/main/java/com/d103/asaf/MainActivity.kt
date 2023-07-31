@@ -38,6 +38,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val viewModel : SharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding.bottomNaviPro.visibility = View.GONE
+        binding.bottomNaviStudent.visibility = View.GONE
         setupNavHost()
         setSupportActionBar(findViewById(com.airbnb.lottie.R.id.action_bar));
         // user 정보 가지고 오기
@@ -49,32 +51,41 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         )
         // user 정보 가지고 오고 난 후 activity 나누기
 
-        when (user.authority) {
-            "교육생" -> {
-                binding.bottomNaviPro.visibility = View.GONE
-                binding.bottomNaviStudent.visibility = View.VISIBLE
-            }
-
-            "프로" -> {
-                binding.bottomNaviPro.visibility = View.VISIBLE
-                binding.bottomNaviStudent.visibility = View.GONE
-
-                val navHostFragment =
-                    supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-                val navController = navHostFragment.navController
-//                val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-                val bottomNavigationView =
-                    findViewById<MorphBottomNavigationView>(R.id.bottom_navi_pro)
-                bottomNavigationView.setupWithNavController(navController)
-
-            }
-        }
+//        when (user.authority) {
+//            "교육생" -> {
+//                binding.bottomNaviPro.visibility = View.GONE
+//                binding.bottomNaviStudent.visibility = View.VISIBLE
+//            }
+//
+//            "프로" -> {
+//                binding.bottomNaviPro.visibility = View.VISIBLE
+//                binding.bottomNaviStudent.visibility = View.GONE
+//
+//                val navHostFragment =
+//                    supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+//                val navController = navHostFragment.navController
+////                val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+//                val bottomNavigationView =
+//                    findViewById<MorphBottomNavigationView>(R.id.bottom_navi_pro)
+//                bottomNavigationView.setupWithNavController(navController)
+//
+//            }
+//        }
 
     }
     private fun setupNavHost() {
         // NavHostFragment를 가져와서 설정합니다.
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.login_fragment -> hideBottomNavigationBar()
+                R.id.ProhomeFragment-> showProBottomNavigationBarFromFragment()
+                R.id.scheduleFragment -> showProBottomNavigationBarFromFragment()
+
+            }
+        }
+
 
         // 없던 부분
         val bottomNavigationView =
@@ -90,6 +101,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     fun showBottomNavigationBarFromFragment() {
         showBottomNavigationBar()
     }
+    fun showProBottomNavigationBarFromFragment() {
+        showProBottomNavigationBar()
+    }
+
+
 
 
 
