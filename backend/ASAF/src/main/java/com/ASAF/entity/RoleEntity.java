@@ -10,12 +10,12 @@ public class RoleEntity {
     private Long id;
     private String name;
 
-    // Constructors, getters, and setters omitted for brevity
-
+    // 'name' 필드의 getter입니다. 'name' 값을 반환합니다.
     public String getName() {
         return name;
     }
 
+    // 'name' 필드의 setter입니다. 'name' 값을 인수로 받아 업데이트합니다.
     public void setName(String name) {
         this.name = name;
     }
