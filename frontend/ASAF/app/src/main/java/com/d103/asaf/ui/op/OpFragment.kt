@@ -37,10 +37,12 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
 
     private fun initClickListener() {
         binding.fragmentOpTogglebuttonToggle.setFirstButtonClickListener {
+            binding.fragmentOpImageviewArcprogressbar.visibility = View.INVISIBLE
             initSeat()
         }
         binding.fragmentOpTogglebuttonToggle.setSecondButtonClickListener {
             binding.fragmentOpImageviewFront.visibility = View.INVISIBLE
+            binding.fragmentOpImageviewArcprogressbar.visibility = View.INVISIBLE
             binding.fragmentOpDropdownMonth.visibility = View.GONE
 
             childFragmentManager.beginTransaction()
@@ -50,6 +52,7 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
         binding.fragmentOpTogglebuttonToggle.setThirdButtonClickListener {
             binding.fragmentOpImageviewFront.visibility = View.INVISIBLE
             binding.fragmentOpDropdownMonth.visibility = View.VISIBLE
+            binding.fragmentOpImageviewArcprogressbar.visibility = View.VISIBLE
 
             childFragmentManager.beginTransaction()
                 .replace(binding.fragmentOpFramelayoutSeat.id, MoneyFragment())
@@ -80,6 +83,9 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
             // 객체가 바뀌면 안됨.. 요소를 변경해줘야 변화 인식됨
             fragmentOpDropdownClass.dataList.addAll(viewModel.classes.value)
             fragmentOpDropdownClass.dataList.removeAt(0)
+            // 프로그레스바 텍스트 크기 변경
+            fragmentOpImageviewArcprogressbar.progressRate.textSize = 30f
+            fragmentOpImageviewArcprogressbar.progressText.textSize = 15f
         }
     }
 

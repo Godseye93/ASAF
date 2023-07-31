@@ -8,6 +8,16 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <com.d103.asaf.common.component.ArcProgressBar
+        android:id="@+id/fragment_op_imageview_arcprogressbar"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="-50dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/fragment_op_imageview_logo"
         android:layout_width="match_parent"
