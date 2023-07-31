@@ -1,7 +1,7 @@
 package com.ASAF.controller;
 
+import com.ASAF.config.JwtTokenProvider;
 import com.ASAF.dto.LoginForm;
-import com.ASAF.config.JwtUtils;
 import com.ASAF.dto.SignUpForm;
 import com.ASAF.entity.RoleEntity;
 import com.ASAF.entity.UserEntity;
@@ -32,16 +32,18 @@ public class AuthController {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public AuthController(AuthenticationManager authenticationManager,
                           UserDetailsServiceImpl userDetailsService,
                           UserRepository userRepository, RoleRepository roleRepository,
-                          PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping("/login")
@@ -56,14 +58,14 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwtToken = JwtUtils.generateToken(authentication);
+        String jwtToken = jwtTokenProvider.generateToken(authentication);
 
         return ResponseEntity.ok().header("Authorization", "Bearer " + jwtToken).body(jwtToken);
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpForm signUpForm) {
-        if (userRepository.findByUsername(signUpForm.getUsername()) != null) {
+        if (userRepository.findByUsername(signUpForm.getUsername()).isPresent()) {
             return new ResponseEntity<>("Fail -> Username is already taken!", HttpStatus.BAD_REQUEST);
         }
 
@@ -75,11 +77,12 @@ public class AuthController {
         Set<RoleEntity> roles = new HashSet<>();
         // 각 사용자에게 적절한 역할을 할당해야 합니다.
         // 예를 들어, 사용자가 관리자인 경우 관리자 역할을 할당해야 합니다.
-        RoleEntity userRole = new RoleEntity();
-        userRole.setName("ROLE_USER");
-
-        // Save RoleEntity first
-        roleRepository.save(userRole);
+        RoleEntity userRole = roleRepository.findByName("ROLE_USER");
+        if (userRole == null) {
+            userRole = new RoleEntity();
+            userRole.setName("ROLE_USER");
+            roleRepository.save(userRole);
+        }
 
         roles.add(userRole);
         newUser.setRoles(roles);
@@ -88,4 +91,3 @@ public class AuthController {
         return ResponseEntity.ok().body("User registered successfully!");
     }
 }
-

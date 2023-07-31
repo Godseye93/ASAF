@@ -1,7 +1,10 @@
 package com.ASAF.config;
 
-import org.springframework.security.core.Authentication;
+import com.ASAF.service.UserDetailsServiceImpl;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -12,29 +15,38 @@ import java.io.IOException;
 
 public class JwtFilter extends OncePerRequestFilter {
 
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider tokenProvider;
+    private UserDetailsServiceImpl userDetailsService;
 
-    public JwtFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public JwtFilter(JwtTokenProvider tokenProvider, UserDetailsServiceImpl userDetailsService) {
+        this.tokenProvider = tokenProvider;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = getTokenFromRequestHeader(request);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        try {
+            String jwt = getJwtFromRequest(request);
 
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+                Long userId = tokenProvider.getUserIdFromJWT(jwt);
+
+                UserDetails userDetails = userDetailsService.loadUserById(userId);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        } catch (Exception ex) {
+            logger.error("Could not set user authentication in security context", ex);
         }
-        filterChain.doFilter(request, response);
-        System.out.println(SecurityContextHolder.getContext());
 
+        filterChain.doFilter(request, response);
     }
 
-    private String getTokenFromRequestHeader(HttpServletRequest request) {
+    private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7, bearerToken.length());
         }
         return null;
     }
