@@ -2,6 +2,7 @@ package com.d103.asaf
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -27,11 +28,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
 import java.sql.Date
 
+private const val TAG = "MainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate){
 
     private lateinit var user : Member
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
+    var waitTime = 0L
     private val viewModel : SharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +62,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 val navHostFragment =
                     supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
                 val navController = navHostFragment.navController
-                val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+//                val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
                 val bottomNavigationView =
                     findViewById<MorphBottomNavigationView>(R.id.bottom_navi_pro)
                 bottomNavigationView.setupWithNavController(navController)
@@ -72,6 +75,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         // NavHostFragment를 가져와서 설정합니다.
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
+
+        // 없던 부분
+        val bottomNavigationView =
+            findViewById<MorphBottomNavigationView>(R.id.bottom_navi_pro)
+        bottomNavigationView.setupWithNavController(navController)
     }
 
 
@@ -82,6 +90,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     fun showBottomNavigationBarFromFragment() {
         showBottomNavigationBar()
     }
+
 
 
 
