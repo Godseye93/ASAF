@@ -1,6 +1,7 @@
 package com.d103.asaf.ui.setting
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.util.RetrofitUtil
 
+private const val TAG = "SettingFragment ASAF"
 class SettingFragment : Fragment() {
 
     private var _binding: FragmentSettingBinding? = null
@@ -62,8 +64,9 @@ class SettingFragment : Fragment() {
             ApplicationClass.sharedPreferences.deleteUser()
 //            findNavController().navigate(R.id.action_navigation_setting_to_login_fragment)
             val navController = findNavController()
-            navController.graph = navController.navInflater.inflate(R.navigation.nav_graph)
-            ApplicationClass.sharedPreferences.deleteUser()
+            navController.popBackStack(R.id.nav_graph, true);
+//            ApplicationClass.sharedPreferences.deleteUser()
+            Log.d(TAG, "onViewCreated: ${ApplicationClass.sharedPreferences.getString("memberEmail")}")
             navController.navigate(R.id.login_fragment)
         }
     }

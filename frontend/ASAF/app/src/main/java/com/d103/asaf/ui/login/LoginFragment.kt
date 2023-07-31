@@ -53,30 +53,21 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
 //        (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
 
         //        sharedPreference에서 있으면 바로 화면 넘어가기
-        if (ApplicationClass.sharedPreferences.getString("email")?.isNotEmpty() == true) {
-            Log.d(
-                TAG,
-                "onViewCreated: ${ApplicationClass.sharedPreferences.getString("email")}"
-            )
 
-//            val action = LoginFragmentDirections.actionLoginFragmentToMapFragment()
-//            Navigation.findNavController(binding.root).navigate(action)
-            findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
-//            (requireActivity() as MainActivity).showBottomNavigationBarFromFragment()
-//            (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
 
-            if (ApplicationClass.sharedPreferences.getString("memberEmail")
-                    ?.isNotEmpty() == true
-            ) {
-                if (ApplicationClass.sharedPreferences.getString("authority") == "stu") {
-                    findNavController().navigate(R.id.navigation_student_home)
-                } else {
-                    findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
-                }
 
+        if (ApplicationClass.sharedPreferences.getString("memberEmail")
+                ?.isNotEmpty() == true
+        ) {
+            if (ApplicationClass.sharedPreferences.getString("authority") == "stu") {
+                findNavController().navigate(R.id.navigation_student_home)
+            } else {
+                findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
             }
 
         }
+
+
 
     }
 
