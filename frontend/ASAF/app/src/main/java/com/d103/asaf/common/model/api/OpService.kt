@@ -14,7 +14,7 @@ import retrofit2.http.Query
 
 interface OpService {
     // restController 경로 확인 필요
-    // 자리 배치 정보 가져오기
+    // 반 별 자리 배치 정보 가져오기
     @GET("/seat")
     suspend fun getSeats(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int) : Response<MutableList<DocSeat>>
 
@@ -23,15 +23,19 @@ interface OpService {
     suspend fun getLockers(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int) : Response<MutableList<DocLocker>>
 
     // 서명 정보 가져오기
-    @GET("/op/sign")
+    @GET("/sign")
     suspend fun getSigns(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int) : Response<MutableList<DocSign>>
 
     // 자리 정보 보내기
-    @POST("/op/seat")
+    @POST("/seat/complete")
     suspend fun postSeats(@Body seats: List<DocSeat>) : Boolean
 
     // 사물함 정보 보내기
-    @POST("/op/locker")
+    @POST("/locker/complete")
     suspend fun postLockers(@Body lockers: List<DocLocker>) : Boolean
+
+    // 서명 정보 보내기
+    @POST("/sign/complete")
+    suspend fun postSigns(@Body lockers: List<DocSign>) : Boolean
 
 }

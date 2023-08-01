@@ -4,8 +4,10 @@ import com.d103.asaf.common.model.dto.Book
 import com.d103.asaf.common.model.dto.DocSeat
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -39,4 +41,12 @@ interface LibraryService {
     // 대출 정보 보내기
     @POST("/library/seat/{book_id}")
     suspend fun postDraw(@Body book: Book) : Boolean
+
+    // 수정
+    @PUT("/book/{book_id}")
+    suspend fun updateBook(@Path("book_id") bookId: Int, @Body book: Book) : Boolean
+
+    // 삭제
+    @DELETE("/book/{book_id}")
+    suspend fun deleteBook(@Path("book_id") bookId: Int) : Boolean
 }
