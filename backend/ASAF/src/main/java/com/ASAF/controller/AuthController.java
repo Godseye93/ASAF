@@ -51,8 +51,8 @@ public class AuthController {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginForm.getUsername(),
-                        loginForm.getPassword()
+                        loginForm.getMemberEmail(),
+                        loginForm.getMemberPassword()
                 )
         );
 
@@ -65,14 +65,17 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpForm signUpForm) {
-        if (userRepository.findByUsername(signUpForm.getUsername()).isPresent()) {
+        if (userRepository.findByMemberEmail(signUpForm.getMemberEmail()).isPresent()) {
             return new ResponseEntity<>("Fail -> Username is already taken!", HttpStatus.BAD_REQUEST);
         }
 
         // Create UserEntity
         UserEntity newUser = new UserEntity();
-        newUser.setUsername(signUpForm.getUsername());
-        newUser.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+        newUser.setMemberEmail(signUpForm.getMemberEmail());
+        newUser.setMemberPassword(passwordEncoder.encode(signUpForm.getMemberPassword()));
+        newUser.setElectronic_student_id(signUpForm.getElectronic_student_id());
+        newUser.setMember_info(signUpForm.getMember_info());
+
 
         Set<RoleEntity> roles = new HashSet<>();
         // 각 사용자에게 적절한 역할을 할당해야 합니다.
