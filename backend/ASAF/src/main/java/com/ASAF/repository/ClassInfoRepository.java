@@ -6,9 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ClassInfoRepository extends JpaRepository<ClassInfoEntity, Integer> {
 
     List<ClassInfoEntity> findById_id(int memberId);
+
+    @Query("SELECT c.id FROM ClassInfoEntity c WHERE c.class_code.class_code = :class_code AND c.region_code.region_code = :region_code AND c.generation_code.generation_code = :generation_code")
+    List<MemberEntity> findMembersByClassRegionAndGeneration(
+            @Param("class_code") int class_code,
+            @Param("region_code") int region_code,
+            @Param("generation_code") int generation_code);
 }
