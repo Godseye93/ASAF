@@ -73,7 +73,7 @@ public class MemberEntity {
     private String token;
 
     @Column
-    private String attended;
+    private String attended = "미출석";
 
     @Column
     private Time entryTime;
