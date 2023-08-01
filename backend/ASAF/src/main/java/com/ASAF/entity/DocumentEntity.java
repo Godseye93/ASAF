@@ -32,7 +32,7 @@ public class DocumentEntity {
     private ClassInfoEntity generation_code;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     private ClassInfoEntity id;
 
     @Column

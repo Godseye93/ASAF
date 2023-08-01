@@ -17,7 +17,7 @@ public class LockerDTO {
     private int class_code;
     private int region_code;
     private int generation_code;
-    private String user_id;
+    private int id;
     private int locker_num;
     private String name;
 

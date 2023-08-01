@@ -35,7 +35,7 @@ public class SignEntity {
     private DocumentEntity generation_code;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     private DocumentEntity id;
 
     @Column
