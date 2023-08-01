@@ -11,8 +11,8 @@ public interface ClassInfoRepository extends JpaRepository<ClassInfoEntity, Inte
 
     List<ClassInfoEntity> findById_id(int memberId);
 
-    @Query("SELECT c.id.id FROM ClassInfoEntity c WHERE c.class_code.class_code = :class_code AND c.region_code.region_code = :region_code AND c.generation_code.generation_code = :generation_code")
-    List<Long> findMemberIdsByClassRegionAndGeneration(
+    @Query("SELECT c.id FROM ClassInfoEntity c WHERE c.class_code.class_code = :class_code AND c.region_code.region_code = :region_code AND c.generation_code.generation_code = :generation_code")
+    List<MemberEntity> findMembersByClassRegionAndGeneration(
             @Param("class_code") int class_code,
             @Param("region_code") int region_code,
             @Param("generation_code") int generation_code);

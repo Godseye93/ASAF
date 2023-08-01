@@ -56,4 +56,24 @@ public class MemberDTO {
         memberDTO.setExitTime(memberEntity.getExitTime());
         return memberDTO;
     }
+
+    public static MemberDTO fromMemberEntity(MemberEntity memberEntity) {
+        return new MemberDTO(
+                memberEntity.getId(),
+                memberEntity.getElectronic_student_id(),
+                memberEntity.getMember_info(),
+                memberEntity.getBirth_date(),
+                memberEntity.getMemberEmail(),
+                memberEntity.getMemberPassword(),
+                memberEntity.getMemberName(),
+                memberEntity.getStudent_number(),
+                memberEntity.getPhone_number(),
+                memberEntity.getProfile_image(),
+                memberEntity.getAuthority(),
+                memberEntity.getToken(),
+                memberEntity.getAttended(),
+                memberEntity.getEntryTime(),
+                memberEntity.getExitTime()
+        );
+    }
 }

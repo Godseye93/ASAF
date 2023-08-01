@@ -20,7 +20,7 @@ public class BookService {
 
         BookEntity bookEntity = new BookEntity();
 
-        bookEntity.setBook_name(bookDTO.getBook_name());
+        bookEntity.setBook_name(bookDTO.getBookName());
         bookEntity.setAuthor(bookDTO.getAuthor());
         bookEntity.setPublisher(bookDTO.getPublisher());
 
@@ -32,7 +32,7 @@ public class BookService {
     // 도서 정보 수정
     public BookDTO updateBook(int bookNumber, BookDTO bookDTO) {
         BookEntity bookEntity = bookRepository.findById(bookNumber).orElseThrow(() -> new RuntimeException("도서를 찾을 수 없습니다."));
-        bookEntity.setBook_name(bookDTO.getBook_name());
+        bookEntity.setBook_name(bookDTO.getBookName());
         bookEntity.setAuthor(bookDTO.getAuthor());
         bookEntity.setPublisher(bookDTO.getPublisher());
         BookEntity updatedEntity = bookRepository.save(bookEntity);

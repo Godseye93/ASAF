@@ -22,7 +22,10 @@ public class ClassInfoService {
                 .map(ClassInfoDTO::toClassInfoDTO)
                 .collect(Collectors.toList());
     }
-    public List<Long> findMemberIdsByClassRegionAndGeneration(int class_code, int region_code, int generation_code) {
-        return classInfoRepository.findMemberIdsByClassRegionAndGeneration(class_code, region_code, generation_code);
+    public List<MemberDTO> findMemberDTOsByClassRegionAndGeneration(int class_code, int region_code, int generation_code) {
+        List<MemberEntity> memberEntities = classInfoRepository.findMembersByClassRegionAndGeneration(class_code, region_code, generation_code);
+        return memberEntities.stream()
+                .map(MemberDTO::fromMemberEntity)
+                .collect(Collectors.toList());
     }
 }
