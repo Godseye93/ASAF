@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 // @Entity : 클래스가 엔티티임을 나타냅니다. 엔티티 클래스는 데이터베이스의 한 테이블에 해당하는 객체를 나타내며, JPA를 통해 자동으로 테이블과 매핑됩니다.
 @Entity
@@ -72,13 +73,19 @@ public class MemberEntity {
     private String token;
 
     @Column
-    private String attended;
+    private String attended = "미출석";
 
     @Column
     private Time entryTime;
 
     @Column
     private Time exitTime;
+
+    // 'UserEntity'와 'RoleEntity' 사이에 다대다 관계를 정의합니다.
+    // 여기서 fetch타입을 EAGER로 설정하면, UserEntity를 로딩할 때 관련된 RoleEntity도 함께 로딩됩니다.
+    @ManyToMany(fetch = FetchType.EAGER)
+    // 사용자와 연관된 역할 집합을 나타냅니다.
+    private Set<RoleEntity> roles;
 
     //  MemberDTO 객체를 데이터베이스에 저장하거나 업데이트하기 위해 MemberEntity로 변환해줍니다.
     public static MemberEntity toMemberEntity(MemberDTO memberDTO) {

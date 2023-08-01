@@ -4,7 +4,6 @@ package com.ASAF.dto;
 // MemberEntity 클래스를 현재 파일에서 사용하기 위해 com.codingrecipe.member.entity 패키지에서 가져옵니다.
 // 이 클래스는 데이터베이스의 한 테이블과 매핑되는 JPA 엔티티 클래스입니다.
 import com.ASAF.entity.MemberEntity;
-import com.ASAF.entity.UserEntity;
 import lombok.*;
 
 import java.sql.Time;
@@ -58,23 +57,23 @@ public class MemberDTO {
         return memberDTO;
     }
 
-    public static MemberDTO userEntitytoMemberDTO(UserEntity userEntity) {
-        MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setId(userEntity.getId());
-        memberDTO.setMemberEmail(userEntity.getMemberEmail());
-        memberDTO.setMemberPassword(userEntity.getMemberPassword());
-        memberDTO.setMemberName(userEntity.getMemberName());
-        memberDTO.setStudent_number(userEntity.getStudent_number());
-        memberDTO.setBirth_date(userEntity.getBirth_date());
-        memberDTO.setPhone_number(userEntity.getPhone_number());
-        memberDTO.setProfile_image(userEntity.getProfile_image());
-        memberDTO.setElectronic_student_id(userEntity.getElectronic_student_id());
-        memberDTO.setMember_info(userEntity.getMember_info());
-        memberDTO.setAuthority(userEntity.getAuthority());
-        memberDTO.setToken(userEntity.getToken());
-        memberDTO.setAttended(userEntity.getAttended());
-        memberDTO.setEntryTime(userEntity.getEntryTime());
-        memberDTO.setExitTime(userEntity.getExitTime());
-        return memberDTO;
+    public static MemberDTO fromMemberEntity(MemberEntity memberEntity) {
+        return new MemberDTO(
+                memberEntity.getId(),
+                memberEntity.getElectronic_student_id(),
+                memberEntity.getMember_info(),
+                memberEntity.getBirth_date(),
+                memberEntity.getMemberEmail(),
+                memberEntity.getMemberPassword(),
+                memberEntity.getMemberName(),
+                memberEntity.getStudent_number(),
+                memberEntity.getPhone_number(),
+                memberEntity.getProfile_image(),
+                memberEntity.getAuthority(),
+                memberEntity.getToken(),
+                memberEntity.getAttended(),
+                memberEntity.getEntryTime(),
+                memberEntity.getExitTime()
+        );
     }
 }

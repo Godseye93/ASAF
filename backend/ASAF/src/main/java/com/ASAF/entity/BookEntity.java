@@ -29,6 +29,8 @@ public class BookEntity {
     @Temporal(TemporalType.DATE)
     private Date returnDate;
 
+    private String borrower;
+
     @ManyToOne
     @JoinColumn(name = "class_num")
     private ClassInfoEntity class_num;
@@ -62,5 +64,9 @@ public class BookEntity {
     }
     public GenerationEntity getGenerationEntity() {
         return generation_code;
+    }
+
+    public MemberEntity getMemberEntity() {
+        return id;
     }
 }

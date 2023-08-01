@@ -1,5 +1,6 @@
 package com.ASAF.entity;
 
+import com.ASAF.dto.DocumentDTO;
 import com.ASAF.dto.SeatDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,23 +23,23 @@ public class SeatEntity {
 
     @ManyToOne
     @JoinColumn(name = "class_num")
-    private DocumentEntity class_num;
+    private ClassInfoEntity class_num;
 
     @ManyToOne
     @JoinColumn(name = "class_code")
-    private DocumentEntity class_code;
+    private ClassEntity class_code;
 
     @ManyToOne
     @JoinColumn(name = "region_code")
-    private DocumentEntity region_code;
+    private RegionEntity region_code;
 
     @ManyToOne
     @JoinColumn(name = "generation_code")
-    private DocumentEntity generation_code;
+    private GenerationEntity generation_code;
 
     @ManyToOne
     @JoinColumn(name = "id")
-    private DocumentEntity id;
+    private MemberEntity id;
 
     @Column
     private int seat_num;
@@ -46,19 +47,22 @@ public class SeatEntity {
     @Column
     private String name;
 
-    public static SeatEntity toSeatEntity(SeatDTO seatDTO) {
-        SeatEntity seatEntity = new SeatEntity();
-        seatEntity.setSeat_id(seatDTO.getSeat_id());
-        seatEntity.setSeat_num(seatDTO.getSeat_num());
-        seatEntity.setName(seatDTO.getName());
-        return seatEntity;
+    public DocumentEntity getDocumentEntity() {
+        return doc_id;
     }
-
-    public static SeatEntity toUpdateSeatEntity(SeatDTO seatDTO) {
-        SeatEntity seatEntity = new SeatEntity();
-        seatEntity.setSeat_id(seatDTO.getSeat_id());
-        seatEntity.setSeat_num(seatDTO.getSeat_num());
-        seatEntity.setName(seatDTO.getName());
-        return seatEntity;
+    public ClassInfoEntity getClassInfoEntity() {
+        return class_num;
+    }
+    public ClassEntity getClassEntity() {
+        return class_code;
+    }
+    public RegionEntity getRegionEntity() {
+        return region_code;
+    }
+    public GenerationEntity getGenerationEntity() {
+        return generation_code;
+    }
+    public MemberEntity getMemberEntity() {
+        return id;
     }
 }
