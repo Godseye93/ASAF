@@ -50,5 +50,18 @@ public class DocumentEntity {
     public GenerationEntity getGenerationEntity() {
         return generation_code;
     }
+    public MemberEntity getMemberEntity() {
+        return id;
+    }
 
+    public static DocumentEntity toDocumentEntity(DocumentDTO documentDTO) {
+        DocumentEntity documentEntity = new DocumentEntity();
+        return documentEntity;
+    }
+
+    public static DocumentEntity toUpdateDocumentEntity(DocumentDTO documentDTO) {
+        DocumentEntity documentEntity = new DocumentEntity();
+        documentEntity.setDoc_id(documentDTO.getDoc_id());
+        return documentEntity;
+    }
 }

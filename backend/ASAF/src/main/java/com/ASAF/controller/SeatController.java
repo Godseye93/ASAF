@@ -29,9 +29,11 @@ public class SeatController {
         return seats;
     }
 
-    @GetMapping("/class/{classCode}")
-    public List<SeatDTO> getSeatsByClassCode(@PathVariable int classCode) {
-        List<SeatDTO> seats = seatService.getSeatsByClassCode(classCode);
+    @GetMapping("/classCodes")
+    public List<SeatDTO> getSeatsByCodes(@RequestParam("class_code") int class_code,
+                                         @RequestParam("region_code") int region_code,
+                                         @RequestParam("generation_code") int generation_code) {
+        List<SeatDTO> seats = seatService.getSeatsByCodes(class_code, region_code, generation_code);
         seats.sort(Comparator.comparingInt(SeatDTO::getSeat_num));
         return seats;
     }

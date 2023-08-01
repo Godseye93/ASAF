@@ -62,4 +62,7 @@ public class SeatEntity {
     public GenerationEntity getGenerationEntity() {
         return generation_code;
     }
+    public MemberEntity getMemberEntity() {
+        return id;
+    }
 }

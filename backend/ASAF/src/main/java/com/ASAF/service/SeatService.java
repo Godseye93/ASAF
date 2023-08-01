@@ -35,8 +35,8 @@ public class SeatService {
                 .collect(Collectors.toList());
     }
 
-    public List<SeatDTO> getSeatsByClassCode(int classCode) {
-        List<SeatEntity> seatEntities = seatRepository.findByClassCode_code(classCode);
+    public List<SeatDTO> getSeatsByCodes(int class_code, int region_code, int generation_code) {
+        List<SeatEntity> seatEntities = seatRepository.findByClassCodeAndRegionCodeAndGenerationCode(class_code, region_code, generation_code);
         return seatEntities.stream()
                 .map(seatEntity -> new SeatDTO(seatEntity))
                 .collect(Collectors.toList());

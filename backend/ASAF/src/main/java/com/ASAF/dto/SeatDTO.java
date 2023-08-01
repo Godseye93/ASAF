@@ -1,15 +1,10 @@
 package com.ASAF.dto;
 
 import com.ASAF.entity.SeatEntity;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.util.List;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -20,21 +15,23 @@ public class SeatDTO {
     private int seat_num;
     private String name;
 
-    private DocumentDTO documentDTO;
-    private ClassInfoDTO classInfoDTO;
-    private ClassDTO classDTO;
-    private RegionDTO regionDTO;
-    private GenerationDTO generationDTO;
+    private Long doc_id;
+    private int class_num;
+    private int class_code;
+    private int region_code;
+    private int generation_code;
+    private int id;
 
     public SeatDTO(SeatEntity seatEntity) {
         this.seat_id = seatEntity.getSeat_id();
         this.seat_num = seatEntity.getSeat_num();
         this.name = seatEntity.getName();
-        this.documentDTO = DocumentDTO.toDocumentDTO(seatEntity.getDocumentEntity());
-        this.classInfoDTO = ClassInfoDTO.toClassInfoDTO(seatEntity.getClassInfoEntity());
-        this.classDTO = ClassDTO.toClassDTO(seatEntity.getClassEntity());
-        this.regionDTO = RegionDTO.toRegionDTO(seatEntity.getRegionEntity());
-        this.generationDTO = GenerationDTO.toGenerationDTO(seatEntity.getGenerationEntity());
+        this.doc_id = seatEntity.getDocumentEntity().getDoc_id();
+        this.class_num = seatEntity.getClassInfoEntity().getClass_num();
+        this.class_code = seatEntity.getClassEntity().getClass_code();
+        this.region_code = seatEntity.getRegionEntity().getRegion_code();
+        this.generation_code = seatEntity.getGenerationEntity().getGeneration_code();
+        this.id = seatEntity.getMemberEntity().getId();
     }
 
 //    public static SeatDTO toSeatDTO(SeatEntity seatEntity) {

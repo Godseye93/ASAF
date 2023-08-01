@@ -49,7 +49,6 @@ public class DocumentService {
                 .collect(Collectors.toList());
     }
 
-
     // 문서 정보 가지오기(하나)
     public DocumentDTO getDocument(long docId) {
         DocumentEntity documentEntity = documentRepository.findById(docId).orElseThrow(() -> new RuntimeException("문서를 찾을 수 없습니다."));
