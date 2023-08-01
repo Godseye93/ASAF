@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -57,9 +59,17 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        Optional<MemberEntity> byMemberEmail = memberRepository.findByMemberEmail(memberDTO.getMemberEmail());
+        MemberEntity memberEntity = byMemberEmail.get();
         String jwtToken = jwtTokenProvider.generateToken(authentication);
+        MemberDTO responseMemberDTO = MemberDTO.toMemberDTO(memberEntity);
 
-        return ResponseEntity.ok().header("Authorization", "Bearer " + jwtToken).body(jwtToken);
+        // Create response object
+        HashMap<String, Object> response = new HashMap<>();
+        response.put("token", jwtToken);
+        response.put("memberDTO", responseMemberDTO);
+
+        return ResponseEntity.ok().header("Authorization", "Bearer " + jwtToken).body(response);
     }
 
     @PostMapping("/signup")
