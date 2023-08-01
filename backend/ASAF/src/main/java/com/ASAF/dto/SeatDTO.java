@@ -17,26 +17,31 @@ import java.util.Map;
 @ToString
 public class SeatDTO {
     private Long seat_id;
-    private int doc_id;
-    private int class_num;
-    private int class_code;
-    private int region_code;
-    private int generation_code;
-    private int id;
     private int seat_num;
     private String name;
+
+    private DocumentDTO documentDTO;
+    private ClassInfoDTO classInfoDTO;
+    private ClassDTO classDTO;
+    private RegionDTO regionDTO;
+    private GenerationDTO generationDTO;
 
     public SeatDTO(SeatEntity seatEntity) {
         this.seat_id = seatEntity.getSeat_id();
         this.seat_num = seatEntity.getSeat_num();
         this.name = seatEntity.getName();
+        this.documentDTO = DocumentDTO.toDocumentDTO(seatEntity.getDocumentEntity());
+        this.classInfoDTO = ClassInfoDTO.toClassInfoDTO(seatEntity.getClassInfoEntity());
+        this.classDTO = ClassDTO.toClassDTO(seatEntity.getClassEntity());
+        this.regionDTO = RegionDTO.toRegionDTO(seatEntity.getRegionEntity());
+        this.generationDTO = GenerationDTO.toGenerationDTO(seatEntity.getGenerationEntity());
     }
 
-    public static SeatDTO toSeatDTO(SeatEntity seatEntity) {
-        SeatDTO seatDTO = new SeatDTO();
-        seatDTO.setSeat_id(seatEntity.getSeat_id());
-        seatDTO.setSeat_num(seatEntity.getSeat_num());
-        seatDTO.setName(seatEntity.getName());
-        return seatDTO;
-    }
+//    public static SeatDTO toSeatDTO(SeatEntity seatEntity) {
+//        SeatDTO seatDTO = new SeatDTO();
+//        seatDTO.setSeat_id(seatEntity.getSeat_id());
+//        seatDTO.setSeat_num(seatEntity.getSeat_num());
+//        seatDTO.setName(seatEntity.getName());
+//        return seatDTO;
+//    }
 }
