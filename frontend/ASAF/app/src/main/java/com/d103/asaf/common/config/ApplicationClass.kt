@@ -33,7 +33,7 @@ class ApplicationClass : Application() {
         const val COOKIES_KEY_NAME = "cookies"
 
         // 클래스 정보
-        lateinit var mainClassInfo: MutableList<Classinfo>
+        var mainClassInfo = mutableListOf<Classinfo>()
     }
 
 

@@ -1,6 +1,7 @@
 package com.d103.asaf.ui.op
 
 import MoneyFragment
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,22 +10,34 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import app.futured.donut.DonutSection
 import com.d103.asaf.R
 import com.d103.asaf.SharedViewModel
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentOpBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 
 class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.layout.fragment_op) {
     private val viewModel: OpFragmentViewModel by viewModels()
     private val handler = Handler(Looper.getMainLooper())
+    private var attendedPercent = MutableStateFlow(0f)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSeat()
         initMonth()
         initClass()
         initClickListener()
+        lifecycleScope.launch {
+            attendedPercent.collect {
+                progressBarUpdate()
+            }
+        }
     }
 
     private fun initSeat() {
@@ -40,10 +53,12 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
     private fun initClickListener() {
         binding.fragmentOpTogglebuttonToggle.setFirstButtonClickListener {
             binding.fragmentOpImageviewArcprogressbar.visibility = View.INVISIBLE
+            binding.fragmentOpImageviewLogo.visibility = View.VISIBLE
             initSeat()
         }
         binding.fragmentOpTogglebuttonToggle.setSecondButtonClickListener {
             binding.fragmentOpImageviewFront.visibility = View.INVISIBLE
+            binding.fragmentOpImageviewLogo.visibility = View.VISIBLE
             binding.fragmentOpImageviewArcprogressbar.visibility = View.INVISIBLE
             binding.fragmentOpDropdownMonth.visibility = View.GONE
 
@@ -53,6 +68,7 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
         }
         binding.fragmentOpTogglebuttonToggle.setThirdButtonClickListener {
             binding.fragmentOpImageviewFront.visibility = View.INVISIBLE
+            binding.fragmentOpImageviewLogo.visibility = View.INVISIBLE
             binding.fragmentOpDropdownMonth.visibility = View.VISIBLE
             binding.fragmentOpImageviewArcprogressbar.visibility = View.VISIBLE
 
@@ -80,10 +96,10 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
     private fun initClass() {
         binding.apply {
             fragmentOpDropdownClass.dropdownText.addTextChangedListener(classWatcher)
-            fragmentOpDropdownClass.dropdownText.text = viewModel.classes.value[0].toString()
+            fragmentOpDropdownClass.dropdownText.text = viewModel.classSurfaces.value[0].toString()
             fragmentOpDropdownClass.dropdownTextPost.text = "반"
             // 객체가 바뀌면 안됨.. 요소를 변경해줘야 변화 인식됨
-            fragmentOpDropdownClass.dataList.addAll(viewModel.classes.value)
+            fragmentOpDropdownClass.dataList.addAll(viewModel.classSurfaces.value)
             fragmentOpDropdownClass.dataList.removeAt(0)
             // 프로그레스바 텍스트 크기 변경
             fragmentOpImageviewArcprogressbar.progressRate.textSize = 30f
@@ -119,5 +135,16 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
             // 텍스트가 변경된 후에 호출됩니다.
             viewModel.curClass.value = s.toString().toInt()
         }
+    }
+
+    fun progressBarUpdate() {
+        binding.fragmentOpImageviewArcprogressbar.progressText.text = "서명 현황"
+        val section = DonutSection(
+            name = "signPercent",
+            color = Color.BLUE,
+            amount = attendedPercent.value
+        )
+        binding.fragmentOpImageviewArcprogressbar.arcProgressBar.submitData(listOf(section))
+        binding.fragmentOpImageviewArcprogressbar.progressRate.text = "${attendedPercent.value}%"
     }
 }

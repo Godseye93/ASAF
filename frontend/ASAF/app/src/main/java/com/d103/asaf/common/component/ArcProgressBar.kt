@@ -14,7 +14,7 @@ class ArcProgressBar @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    val progressText: TextView
+    var progressText: TextView
     val progressRate: TextView
     val arcProgressBar : DonutProgressView
 

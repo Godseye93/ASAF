@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.d103.asaf.R
 import com.d103.asaf.databinding.FragmentLoginBinding
@@ -30,6 +32,10 @@ import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.ui.home.student.StudentHomeFragment
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import java.lang.Exception
+
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 private const val TAG = "LoginFragment_cjw"
@@ -56,6 +62,26 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
 
         //        sharedPreference에서 있으면 바로 화면 넘어가기
         if (ApplicationClass.sharedPreferences.getString("memberEmail")?.isNotEmpty() == true) {
+            //Shared Preference에 저장된 값이 있으면 이메일 정보로 유저 정보 가져오기
+            lifecycleScope.launch {
+                try {
+                    Log.d(TAG, "onViewCreated: ${ApplicationClass.sharedPreferences.getInt("id")!!}")
+                    val response = RetrofitUtil.attendenceService.getClassInfo(
+                        ApplicationClass.sharedPreferences.getInt("id")!!
+                    )
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+                        if (!responseBody.isNullOrEmpty()) {
+                            ApplicationClass.mainClassInfo = responseBody
+                            Log.d(TAG, "onViewCreated: ddddddd")
+                        } else {
+                            Log.d(TAG, "onViewCreated: xxxxxx")
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.d(TAG, "onViewCreated: $e")
+                }
+            }
             if (ApplicationClass.sharedPreferences.getString("authority") == "stu") {
                 findNavController().navigate(R.id.navigation_student_home)
             } else {

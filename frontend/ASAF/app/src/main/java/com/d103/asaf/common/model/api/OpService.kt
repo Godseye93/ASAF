@@ -15,15 +15,15 @@ interface OpService {
     // restController 경로 확인 필요
     // 자리 배치 정보 가져오기
     @GET("/op/seat/{classCode}")
-    suspend fun getSeats(@Path("classCode") classCode : Int) : Response<MutableList<DocSeat>>
+    suspend fun getSeats(@Path("classNum") classNum : Int) : Response<MutableList<DocSeat>>
 
     // 사물함 배치 정보 가져오기
     @GET("/op/locker/{classCode}")
-    suspend fun getLockers(@Path("classCode") classCode : Int) : Response<MutableList<DocLocker>>
+    suspend fun getLockers(@Path("classNum") classNum : Int) : Response<MutableList<DocLocker>>
 
     // 서명 정보 가져오기
     @GET("/op/sign/{classCode}")
-    suspend fun getSigns(@Path("classCode") classCode : Int) : Response<MutableList<DocSign>>
+    suspend fun getSigns(@Path("classNum") classNum : Int) : Response<MutableList<DocSign>>
 
     // 자리 정보 보내기
     @POST("/op/seat")
