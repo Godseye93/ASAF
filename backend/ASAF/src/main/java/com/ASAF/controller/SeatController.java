@@ -3,8 +3,10 @@ package com.ASAF.controller;
 import com.ASAF.dto.SeatDTO;
 import com.ASAF.service.SeatService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.PropertySource;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RequestMapping("/seat")
@@ -22,6 +24,8 @@ public class SeatController {
 
     @GetMapping
     public List<SeatDTO> getAllSeats() {
-        return seatService.getAllSeats();
+        List<SeatDTO> seats = seatService.getAllSeats();
+        seats.sort(Comparator.comparingInt(SeatDTO::getSeat_num));
+        return seats;
     }
 }

@@ -106,25 +106,6 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
     fun initCalendar() {
 
 
-        //테스트 데이터
-        var noti1 = Noti(1, Date(System.currentTimeMillis()), "title1", "detail", true, 1)
-        var noti2 = Noti(1, Date(System.currentTimeMillis()), "title2", "detail", false, 1)
-        var noti3 = Noti(1, Date(System.currentTimeMillis()), "title3", "detail", true, 1)
-        var noti4 = Noti(1, Date(System.currentTimeMillis()), "title4", "detail", true, 1)
-        var noti5 = Noti(1, Date(System.currentTimeMillis()), "title5", "detail", false, 1)
-
-        notiList.add(noti1)
-        notiList.add(noti2)
-        notiList.add(noti3)
-        notiList.add(noti4)
-        notiList.add(noti5)
-        notiList.add(noti5)
-        notiList.add(noti5)
-        notiList.add(noti5)
-        notiList.add(noti5)
-        notiList.add(noti2)
-
-        notiList.add(noti1)
         // 오늘 날짜로 초기 선택
         binding.calendarView.setSelectedDate(CalendarDay.today())
         binding.fragmentScheduleDateView.text = "${selectedDate.year}년 ${selectedDate.month + 1} 월 ${selectedDate.day} 일"

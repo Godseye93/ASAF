@@ -1,11 +1,13 @@
 package com.d103.asaf.ui.library
 
+import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.dto.Book
 import com.d103.asaf.common.model.dto.Classinfo
 import com.d103.asaf.common.model.dto.DocLocker
@@ -35,10 +37,13 @@ class LibraryFragmentViewModel: ViewModel() {
     private var _classInfoes = mutableListOf<Classinfo>()
     val classInfoes = _classInfoes
 
-    // 반 리스트
-//    private val _classes = MutableStateFlow<List<Int>>(listOf(2, 3, 4))
+    // 반 id 리스트
     private var _classes = MutableStateFlow(mutableListOf<Int>())
     val classes = _classes
+
+    // 반 리스트
+    private var _classSurfaces = MutableStateFlow(mutableListOf<Int>())
+    val classSurfaces = _classSurfaces
 
     // <!---------------------------- 전체리스트 ------------------------------->
     private var _books = MutableStateFlow(MutableList(25) { Book(bookName = "이거 어디까지 올라가는 거에요?")})
@@ -55,21 +60,7 @@ class LibraryFragmentViewModel: ViewModel() {
     // <!---------------------------- 공통 배치 함수 ------------------------------->
     // 관리하는 반 정보를 가장 먼저 가져와야함
     private fun loadFirst() {
-        // 프로가 관리하는 반 정보
-        viewModelScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) {
-                    RetrofitUtil.attendenceService.getClassInfo(0) // sharedPrefernce 유저 id
-                }
-                if (response.isSuccessful) {
-                    _classInfoes = response.body() ?: mutableListOf<Classinfo>()
-                } else {
-                    Log.d(TAG, " 반 정보 가져오기 네트워크 오류")
-                }
-            } catch (e: Exception) {
-                Log.d(TAG, " 반 정보 가져오기 네트워크 오류")
-            }
-        }
+        _classInfoes = ApplicationClass.mainClassInfo
 
         // 첫번째 반을 최초 반으로 설정
         loadCommon()
@@ -128,6 +119,7 @@ class LibraryFragmentViewModel: ViewModel() {
     }
 
     private fun loadClasses() {
+        _classSurfaces.value = _classInfoes.map{it.classCode}.toMutableList()
         _classes.value = _classInfoes.map{it.classNum}.toMutableList()
     }
 

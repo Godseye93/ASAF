@@ -91,10 +91,10 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
     private fun initClass() {
         binding.apply {
             fragmentLibraryDropdownClass.dropdownText.addTextChangedListener(classWatcher)
-            fragmentLibraryDropdownClass.dropdownText.text = viewModel.classes.value[0].toString()
+            fragmentLibraryDropdownClass.dropdownText.text = viewModel.classSurfaces.value[0].toString()
             fragmentLibraryDropdownClass.dropdownTextPost.text = "반"
             // 객체가 바뀌면 안됨.. 요소를 변경해줘야 변화 인식됨
-            fragmentLibraryDropdownClass.dataList.addAll(viewModel.classes.value)
+            fragmentLibraryDropdownClass.dataList.addAll(viewModel.classSurfaces.value)
             fragmentLibraryDropdownClass.dataList.removeAt(0)
         }
     }

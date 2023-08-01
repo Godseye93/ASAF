@@ -17,13 +17,15 @@ class ProHomeFragmentViewModel : ViewModel() {
         get() = _studentInfoList
 
     // 해당 반에 해당하는 학생들 정보와 출석 정보 가지고 오기
-    fun getStudentsInfo(classNumber : Int) {
+    fun getStudentsInfo(classCode : Int, regionCode : Int, generationCode : Int) {
         viewModelScope.launch {
 
             try {
-                val response = RetrofitUtil.attendenceService.getStudentsInfo(classNumber)
+                val response = RetrofitUtil.attendenceService.getStudentsInfo(classCode, regionCode, generationCode)
+                Log.d(TAG, "get: $response")
                 if (response.isSuccessful) {
                     val responseBody = response.body()
+                    Log.d(TAG, "반 정보?????: $responseBody")
                     _studentInfoList.postValue(responseBody!!)
                 }
             } catch (e: Exception) {

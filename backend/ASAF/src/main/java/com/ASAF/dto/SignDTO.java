@@ -17,7 +17,7 @@ public class SignDTO {
     private int class_code;
     private int region_code;
     private int generation_code;
-    private String user_id;
+    private int id;
     private String image_url;
     private String name;
     private String month;

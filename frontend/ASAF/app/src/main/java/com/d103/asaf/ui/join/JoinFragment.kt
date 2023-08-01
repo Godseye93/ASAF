@@ -113,6 +113,7 @@ class JoinFragment : Fragment() {
             val information = "${binding.spinnerNth.selectedItem}${binding.spinnerRegion.selectedItem}${binding.spinnerClassNum.selectedItem}"
 
             val member = Member(name, email, password, birth, information)
+            member.token = ApplicationClass.sharedPreferences.getString("token")!!
             if (viewModel.validateInputs(member, confirmPassword)) {
 
                 // 이메일 중복 확인
