@@ -13,33 +13,24 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 public class NoticeDTO {
-    private Long notice_id;
-    private int doc_id;
-    private int class_num;
-    private int class_code;
-    private int region_code;
-    private int generation_code;
     private int id;
+    private String Title;
     private String content;
     private Date register_time;
     private Date send_time;
     private String writter;
-
-    public NoticeDTO(NoticeEntity noticeEntity) {
-        this.notice_id = noticeEntity.getNotice_id();
-        this.content = noticeEntity.getContent();
-        this.register_time = noticeEntity.getRegister_time();
-        this.send_time = noticeEntity.getSend_time();
-        this.writter = noticeEntity.getWritter();
-    }
+    private int sender;
+    private Boolean notification;
 
     public static NoticeDTO toNoticeDTO(NoticeEntity noticeEntity) {
         NoticeDTO noticeDTO = new NoticeDTO();
-        noticeDTO.setNotice_id(noticeEntity.getNotice_id());
+        noticeDTO.setId(noticeEntity.getId());
         noticeDTO.setContent(noticeEntity.getContent());
         noticeDTO.setRegister_time(noticeEntity.getRegister_time());
         noticeDTO.setSend_time(noticeEntity.getSend_time());
         noticeDTO.setWritter(noticeEntity.getWritter());
+        noticeDTO.setSender(noticeEntity.getSender());
+        noticeDTO.setNotification(noticeEntity.getNotification());
         return noticeDTO;
     }
 }
