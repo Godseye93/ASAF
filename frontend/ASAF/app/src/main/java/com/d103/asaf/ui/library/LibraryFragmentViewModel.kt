@@ -37,10 +37,13 @@ class LibraryFragmentViewModel: ViewModel() {
     private var _classInfoes = mutableListOf<Classinfo>()
     val classInfoes = _classInfoes
 
-    // 반 리스트
-//    private val _classes = MutableStateFlow<List<Int>>(listOf(2, 3, 4))
+    // 반 id 리스트
     private var _classes = MutableStateFlow(mutableListOf<Int>())
     val classes = _classes
+
+    // 반 리스트
+    private var _classSurfaces = MutableStateFlow(mutableListOf<Int>())
+    val classSurfaces = _classSurfaces
 
     // <!---------------------------- 전체리스트 ------------------------------->
     private var _books = MutableStateFlow(MutableList(25) { Book(bookName = "이거 어디까지 올라가는 거에요?")})
@@ -116,6 +119,7 @@ class LibraryFragmentViewModel: ViewModel() {
     }
 
     private fun loadClasses() {
+        _classSurfaces.value = _classInfoes.map{it.classCode}.toMutableList()
         _classes.value = _classInfoes.map{it.classNum}.toMutableList()
     }
 
