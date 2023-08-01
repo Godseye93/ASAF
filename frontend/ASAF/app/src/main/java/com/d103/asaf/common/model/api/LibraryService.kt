@@ -11,12 +11,16 @@ import retrofit2.http.Query
 
 interface LibraryService {
     // 모든 도서
-    @GET("/library/")
+    @GET("/book")
     suspend fun getBooks(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int) : Response<MutableList<Book>>
 
     // 대출 중인 도서
-    @GET("/library/return/")
+    @GET("/book")
     suspend fun getDraws(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int) : Response<MutableList<Book>>
+
+    // 한권 정보만 가져오기
+    @GET("/book/{book_id}")
+    suspend fun getBook(@Path("book_id") bookId: Int) : Response<Book>
 
     // 동일 제목 / 저자인 책 정보 가져오기 (서버 쪽에 요청해보기 수량 정보를 별도의 변수에 담아서 줘야할 듯? 굳이 DB 컬럼은 없어도 됨)
     // BookDto도 변해야함 count 정보 추가
@@ -25,7 +29,7 @@ interface LibraryService {
     suspend fun getBookCounts(@Path("title") title : String, @Path("author") author:String) : Int
 
     // 도서 등록 정보 보내기
-    @POST("/library/seat")
+    @POST("/book")
     suspend fun postBook(@Body book: Book) : Boolean
 
     // 반납 정보 보내기

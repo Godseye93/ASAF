@@ -14,6 +14,7 @@ import com.d103.asaf.common.model.dto.DocLocker
 import com.d103.asaf.common.model.dto.DocSeat
 import com.d103.asaf.common.model.dto.DocSign
 import com.d103.asaf.common.util.RetrofitUtil
+import com.google.gson.annotations.SerializedName
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
@@ -26,6 +27,7 @@ import kotlinx.coroutines.withContext
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.Date
 import java.util.Hashtable
 
 private val TAG = "LibraryFragmentViewModel"
@@ -74,7 +76,23 @@ class LibraryFragmentViewModel: ViewModel() {
                     RetrofitUtil.libraryService.getBooks(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
                 if (response.isSuccessful) {
-                    _books.value = response.body() ?: mutableListOf<Book>()
+                    _books.value = (response.body()?.map{ book ->
+                        Book(
+                            book.id,
+                            book.classNum,
+                            book.classCode,
+                            book.regionCode,
+                            book.generationCode,
+                            book.userId,
+                            book.bookName,
+                            book.author,
+                            book.publisher,
+                            Date(9999-99-99),
+                            Date(9999-99-99),
+                            book.borrowState,
+                            book.borrower
+                        )
+                    } ?: mutableListOf<Book>()) as MutableList<Book>
                 } else {
                     Log.d(TAG, "도서 가져오기 네트워크 오류")
                 }
