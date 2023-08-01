@@ -1,6 +1,7 @@
 package com.d103.asaf.ui.home.pro
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,15 @@ class UserInfoAdapter(var context : Context) : ListAdapter<Member, UserInfoAdapt
         fun bind(user : Member){
             binding.userName.text = user.memberName
             Glide.with(context).load(user.profileImage).into(binding.userProfileImage)
+            if(user.attended == "미출석"){
+                binding.attendanceCheckImage.setBackgroundColor(Color.RED)
+            }
+            else if(user.attended == "출석"){
+                binding.attendanceCheckImage.setBackgroundColor(Color.GREEN)
+            }
+            else {
+                binding.attendanceCheckImage.setBackgroundColor(Color.YELLOW)
+            }
             binding.checkBox.setOnClickListener {
                 if (it is CheckBox) {
                     val isChecked = it.isChecked // CheckBox의 선택 여부를 확인함

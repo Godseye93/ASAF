@@ -4,6 +4,7 @@ import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.api.AttendenceService
 import com.d103.asaf.common.model.api.LibraryService
 import com.d103.asaf.common.model.api.MemberService
+import com.d103.asaf.common.model.api.NotiService
 import com.d103.asaf.common.model.api.OpService
 
 class RetrofitUtil {
@@ -18,5 +19,8 @@ class RetrofitUtil {
         val libraryService = ApplicationClass.retrofit.create(LibraryService::class.java)
 
         // <--------------------- 도서관 ---------------------------->
+
+        // <--------------------- 알림 ----------------------------->
+        val notiService = ApplicationClass.retrofit.create(NotiService::class.java)
     }
 }

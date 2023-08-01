@@ -98,61 +98,61 @@ class OpFragmentViewModel(): ViewModel() {
     }
 
     private fun loadRemote() {
-        viewModelScope.launch {
-            try {
-                // Curclass의 학생 정보
-                val studentResponse = withContext(Dispatchers.IO) {
-                    RetrofitUtil.attendenceService.getStudentsInfo(curClass.value)
-                }
-                if (studentResponse.isSuccessful) {
-                    _students.value = studentResponse.body() ?: mutableListOf() // MutableList(classes.value.size) { DocSeat() }
-                } else {
-                    Log.d(TAG, "학생 가져오기 네트워크 오류")
-                }
-
-                // 자리 정보
-                val seatResponse = withContext(Dispatchers.IO) {
-                    RetrofitUtil.opService.getSeats(curClass.value)
-                }
-                if (seatResponse.isSuccessful) {
-                    Log.d(TAG, "loadRemote: ${classes.value.size}")
-                    _docSeat = seatResponse.body() ?: mutableListOf() // MutableList(classes.value.size) { DocSeat() }
-                } else {
-                    Log.d(TAG, " 자리 가져오기 네트워크 오류")
-                }
-
-                // 사물함 정보
-                val lockerResponse = withContext(Dispatchers.IO) {
-                    RetrofitUtil.opService.getLockers(curClass.value)
-                }
-                if (lockerResponse.isSuccessful) {
-                    _docLockers = lockerResponse.body() ?: MutableList(80) { DocLocker() }
-                } else {
-                    Log.d(TAG, "사물함 가져오기 네트워크 오류")
-                }
-
-                // 서명 정보
-                val signResponse = withContext(Dispatchers.IO) {
-                    RetrofitUtil.opService.getSigns(curClass.value)
-                }
-                if (signResponse.isSuccessful) {
-                    _signs.value = signResponse.body() ?: mutableListOf<DocSign>()
-                } else {
-                    Log.d(TAG, "사인 가져오기 네트워크 오류")
-                }
-
-                Log.d(TAG, "loadRemote: $_docSeat")
-
-                // 이후 작업은 모두 완료된 후 실행
-                loadSeats()
-                loadLockers()
-
-                // 작업이 완료되면 lock을 풀어줍니다.
-                loadRemoteMutex.unlock()
-            } catch (e: Exception) {
-                Log.d(TAG, "네트워크 오류")
-            }
-        }
+//        viewModelScope.launch {
+//            try {
+//                // Curclass의 학생 정보
+//                val studentResponse = withContext(Dispatchers.IO) {
+//                    RetrofitUtil.attendenceService.getStudentsInfo(curClass.value)
+//                }
+//                if (studentResponse.isSuccessful) {
+//                    _students.value = studentResponse.body() ?: mutableListOf() // MutableList(classes.value.size) { DocSeat() }
+//                } else {
+//                    Log.d(TAG, "학생 가져오기 네트워크 오류")
+//                }
+//
+//                // 자리 정보
+//                val seatResponse = withContext(Dispatchers.IO) {
+//                    RetrofitUtil.opService.getSeats(curClass.value)
+//                }
+//                if (seatResponse.isSuccessful) {
+//                    Log.d(TAG, "loadRemote: ${classes.value.size}")
+//                    _docSeat = seatResponse.body() ?: mutableListOf() // MutableList(classes.value.size) { DocSeat() }
+//                } else {
+//                    Log.d(TAG, " 자리 가져오기 네트워크 오류")
+//                }
+//
+//                // 사물함 정보
+//                val lockerResponse = withContext(Dispatchers.IO) {
+//                    RetrofitUtil.opService.getLockers(curClass.value)
+//                }
+//                if (lockerResponse.isSuccessful) {
+//                    _docLockers = lockerResponse.body() ?: MutableList(80) { DocLocker() }
+//                } else {
+//                    Log.d(TAG, "사물함 가져오기 네트워크 오류")
+//                }
+//
+//                // 서명 정보
+//                val signResponse = withContext(Dispatchers.IO) {
+//                    RetrofitUtil.opService.getSigns(curClass.value)
+//                }
+//                if (signResponse.isSuccessful) {
+//                    _signs.value = signResponse.body() ?: mutableListOf<DocSign>()
+//                } else {
+//                    Log.d(TAG, "사인 가져오기 네트워크 오류")
+//                }
+//
+//                Log.d(TAG, "loadRemote: $_docSeat")
+//
+//                // 이후 작업은 모두 완료된 후 실행
+//                loadSeats()
+//                loadLockers()
+//
+//                // 작업이 완료되면 lock을 풀어줍니다.
+//                loadRemoteMutex.unlock()
+//            } catch (e: Exception) {
+//                Log.d(TAG, "네트워크 오류")
+//            }
+//        }
     }
 
     private fun loadCommon() {

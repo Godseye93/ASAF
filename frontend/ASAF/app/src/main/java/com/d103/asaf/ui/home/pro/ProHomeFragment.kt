@@ -57,10 +57,7 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "초기값 : ${sharedViewModel.classInfoList.value}")
 
-        initToggleButton()
-        progressBarUpdate()
-
-
+        init()
 
         binding.fragmentProHomeNotiButton.setOnClickListener {
             if(!selectedStudentList.isEmpty()){
@@ -79,9 +76,11 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
                     noti.sender = student.id
                     pushNotiList.add(noti)
                 }
+                proHomeFragmentViewModel.pushMessage(pushNotiList)
+
                 Toast.makeText(requireContext(), "${selectedStudentList[0].memberName} 포함 총 ${selectedStudentList.size }명에게 알림을 전송했습니다.", Toast.LENGTH_SHORT).show()
                 selectedStudentList.clear()
-                initToggleButton()
+                init()
 
             }
         }
@@ -92,7 +91,7 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
     }
 
 
-    fun initToggleButton(){
+    fun init(){
 
 
         sharedViewModel.classInfoList.observe(viewLifecycleOwner){
@@ -186,6 +185,7 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
 
             }
             attendedPercent = (attendedCount/it.size.toFloat() * 100).toInt().toFloat()
+            progressBarUpdate()
 
         }
         adapter.itemClickListener = object : UserInfoAdapter.ItemClickListener{
@@ -212,8 +212,7 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
 
     override fun onResume() {
         super.onResume()
-        initToggleButton()
-        progressBarUpdate()
+        init()
     }
     companion object {
         /**

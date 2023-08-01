@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d103.asaf.common.model.dto.Member
+import com.d103.asaf.common.model.dto.Noti
 import com.d103.asaf.common.util.RetrofitUtil
 import kotlinx.coroutines.launch
 
@@ -29,6 +30,25 @@ class ProHomeFragmentViewModel : ViewModel() {
                     _studentInfoList.postValue(responseBody!!)
                 }
             } catch (e: Exception) {
+                Log.d(TAG, "통신 에러: ${e.printStackTrace()}")
+//            }
+            }
+        }
+    }
+
+    fun pushMessage(messageList : MutableList<Noti>){
+        viewModelScope.launch {
+
+            try{
+                for(message in messageList){
+                    val response = RetrofitUtil.notiService.pushMessage(message)
+                    if(response.isSuccessful){
+                        val responseBody = response.body()
+                        Log.d(TAG, "메시지 정상적으로 보냄?: $responseBody")
+                    }
+                }
+
+            }catch (e: Exception) {
                 Log.d(TAG, "통신 에러: ${e.printStackTrace()}")
 //            }
             }
