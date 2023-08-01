@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/book")
 @RestController
@@ -49,5 +50,26 @@ public class BookController {
 
         List<BookDTO> books = bookService.findBookDTOsByClassRegionAndGeneration(class_code, region_code, generation_code);
         return ResponseEntity.ok(books);
+    }
+
+    // 도서 정보 가져오기 (전체 도서) (수량)
+    @GetMapping("/quantity/{class_code}/{region_code}/{generation_code}")
+    public ResponseEntity<List<BookDTO>> findBookDTOsByClassRegionAndGenerationTest(
+            @PathVariable("class_code") int class_code,
+            @PathVariable("region_code") int region_code,
+            @PathVariable("generation_code") int generation_code) {
+
+        List<BookDTO> books = bookService.findBookDTOsByClassRegionAndGenerationTest(class_code, region_code, generation_code);
+        return ResponseEntity.ok(books);
+    }
+
+    @GetMapping("/distinct/{class_code}/{region_code}/{generation_code}")
+    public ResponseEntity<Map<String, Object>> findDistinctBookDTOsWithCountByClassRegionAndGeneration(
+            @PathVariable("class_code") int class_code,
+            @PathVariable("region_code") int region_code,
+            @PathVariable("generation_code") int generation_code) {
+
+        Map<String, Object> response = bookService.findDistinctBookDTOsWithCountByClassRegionAndGeneration(class_code, region_code, generation_code);
+        return ResponseEntity.ok(response);
     }
 }
