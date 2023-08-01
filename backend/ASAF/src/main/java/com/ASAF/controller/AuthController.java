@@ -103,6 +103,6 @@ public class AuthController {
         newUser.setRoles(roles);
 
         memberRepository.save(newUser);
-        return ResponseEntity.ok().body("User registered successfully!");
+        return ResponseEntity.ok().body("회원가입 성공!");
     }
 }
