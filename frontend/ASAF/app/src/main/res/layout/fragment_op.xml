@@ -10,8 +10,8 @@
 
     <com.d103.asaf.common.component.ArcProgressBar
         android:id="@+id/fragment_op_imageview_arcprogressbar"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_marginTop="-50dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"

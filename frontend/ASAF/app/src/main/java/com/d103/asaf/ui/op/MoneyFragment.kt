@@ -1,8 +1,10 @@
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import app.futured.donut.DonutSection
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.DocSign

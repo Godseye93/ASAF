@@ -131,7 +131,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
                 setTouchListener(childView)
                 if (i < seatNum) {
                     childView.seatImage.setImageDrawable(occupy)
-                    childView.seatText.text = i.toString()
+                    childView.seatText.text = viewModel.docSeat[i].name // 이름을 넣는 부분
                 }
                 else childView.seatImage.setImageDrawable(vacant)
                 setViewPosition(childView, position[i])
