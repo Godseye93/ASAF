@@ -311,7 +311,10 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
 
     // 서버에서 유저 id로 조회하여 최초로 자리 정보가 들어가 있는 상태라면 update로 처리해야함
     private fun postSeats() {
-        for(i in 0 until seatNum) viewModel.docSeat[i].seatNum = seat[i]
+        for(i in 0 until seatNum) {
+            Log.d("시트", "postSeats: ${viewModel.docSeat.size}")
+            viewModel.docSeat[i].seatNum = seat[i]
+        }
         // POST List<docSeat>
         CoroutineScope(Dispatchers.IO).launch {
             if(!RetrofitUtil.opService.postSeats(viewModel.docSeat))

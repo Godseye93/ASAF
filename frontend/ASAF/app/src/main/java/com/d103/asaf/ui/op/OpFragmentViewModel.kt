@@ -71,10 +71,6 @@ class OpFragmentViewModel(): ViewModel() {
     init{
         // 반 정보를 가장먼저 세팅해야함
         loadFirst() // loadCollect, loadRemote, loadCommon 등 초기화 함수 모두 포함
-
-        // 진짜 정보를 받아서 일부만 사용하는 클래스는 받아온 뒤 mapping
-        loadSeats()
-        loadLockers()
     }
 
     // <!---------------------------- 공통 배치 함수 ------------------------------->
@@ -87,49 +83,47 @@ class OpFragmentViewModel(): ViewModel() {
     }
 
     private fun loadRemote() {
-        // 자리 정보
         viewModelScope.launch {
             try {
-                val response = withContext(Dispatchers.IO) {
+                // 자리 정보
+                val seatResponse = withContext(Dispatchers.IO) {
                     RetrofitUtil.opService.getSeats(curClass.value)
                 }
-                if (response.isSuccessful) {
-                    _docSeat = response.body() ?: mutableListOf<DocSeat>()
+                if (seatResponse.isSuccessful) {
+                    Log.d(TAG, "loadRemote: ${classes.value.size}")
+                    _docSeat = seatResponse.body() ?: MutableList(classes.value.size) { DocSeat() }
                 } else {
                     Log.d(TAG, " 자리 가져오기 네트워크 오류")
                 }
-            } catch (e: Exception) {
-                Log.d(TAG, " 자리 가져오기 네트워크 오류")
-            }
-        }
-        // 사물함 정보
-        viewModelScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) {
+
+                // 사물함 정보
+                val lockerResponse = withContext(Dispatchers.IO) {
                     RetrofitUtil.opService.getLockers(curClass.value)
                 }
-                if (response.isSuccessful) {
-                    _docLockers = response.body() ?: mutableListOf<DocLocker>()
+                if (lockerResponse.isSuccessful) {
+                    _docLockers = lockerResponse.body() ?: MutableList(80) { DocLocker() }
                 } else {
                     Log.d(TAG, "사물함 가져오기 네트워크 오류")
                 }
-            } catch (e: Exception) {
-                Log.d(TAG, " 사물함 가져오기 네트워크 오류")
-            }
-        }
-        // 서명 정보
-        viewModelScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) {
+
+                // 서명 정보
+                val signResponse = withContext(Dispatchers.IO) {
                     RetrofitUtil.opService.getSigns(curClass.value)
                 }
-                if (response.isSuccessful) {
-                    _signs.value = response.body() ?: mutableListOf<DocSign>()
+                if (signResponse.isSuccessful) {
+                    _signs.value = signResponse.body() ?: mutableListOf<DocSign>()
                 } else {
                     Log.d(TAG, "사인 가져오기 네트워크 오류")
                 }
+
+                Log.d(TAG, "loadRemote: ${_docSeat}")
+
+                // 이후 작업은 모두 완료된 후 실행
+                loadSeats()
+                loadLockers()
+
             } catch (e: Exception) {
-                Log.d(TAG, "사인 가져오기 네트워크 오류")
+                Log.d(TAG, "네트워크 오류")
             }
         }
     }
@@ -137,6 +131,7 @@ class OpFragmentViewModel(): ViewModel() {
     private fun loadCommon() {
         // classinfoes 를 classes로 가공
         loadClasses()
+
         curClass.value = _classes.value[0]
         curMonth.value = _months.value[0]
 
@@ -148,14 +143,14 @@ class OpFragmentViewModel(): ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             curClass.collect { newClass ->
                 // GET해서 가져온 정보 업데이트 (자리 / 사물함 / 서명)
-                // loadRemote()
+                 loadRemote()
             }
         }
 
         CoroutineScope(Dispatchers.IO).launch {
             curMonth.collect { newMonth ->
                 // GET해서 가져온 정보 업데이트 (자리 / 사물함 / 서명)
-                // loadRemote()
+                 loadRemote()
             }
         }
     }
@@ -179,7 +174,7 @@ class OpFragmentViewModel(): ViewModel() {
     }
 
     private fun loadClasses() {
-        _classes.value = _classInfoes.map{it.classNum}.toMutableList()
+        _classes.value = _classInfoes.map{it.classCode}.toMutableList()
     }
 
     // 바뀐 자리 정보로 사물함 정보 교체해주는 코드
