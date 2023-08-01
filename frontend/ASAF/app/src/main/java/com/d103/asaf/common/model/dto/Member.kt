@@ -16,7 +16,7 @@ data class Member(
     @SerializedName("phone_number") val phoneNumber: String,
     @SerializedName("profile_image") val profileImage: String,
     @SerializedName("team_num") val teamNum: Int,
-    val token : String,
+    var token : String,
     var attended : String,
     var entryTime : Date?,
     var exitTime : Date?,

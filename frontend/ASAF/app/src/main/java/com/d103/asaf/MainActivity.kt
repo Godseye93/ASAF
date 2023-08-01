@@ -63,7 +63,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             // Log and toast
             Log.d(TAG, "토큰 생성: $token")
             ApplicationClass.sharedPreferences.addFCMToken(token)
-//            Log.d(TAG, msg)
+//            Log.d(TAG, msg)1111
 //            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
         })
         initDynamicLink()

@@ -32,7 +32,7 @@ class NotiInfoAdapter (context : Context) : ListAdapter<Noti, NotiInfoAdapter.It
 
 
         fun bind(data : Noti){
-            binding.notiDate.text = "${data.date.year}년 ${data.date.month} 월 ${data.date.day} 일"
+            binding.notiDate.text = "${data.sendTime.year}년 ${data.sendTime.month} 월 ${data.sendTime.day} 일"
             if(data.notification){
                 binding.notiIcon.setColorFilter(Color.YELLOW)
             }
@@ -43,7 +43,7 @@ class NotiInfoAdapter (context : Context) : ListAdapter<Noti, NotiInfoAdapter.It
 
             binding.cardView.setOnClickListener {
 
-                val customDialog = NotiCustomDialog(_context, data.notiDetail)
+                val customDialog = NotiCustomDialog(_context, data.content)
                 customDialog.show()
             }
 
