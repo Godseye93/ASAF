@@ -41,8 +41,13 @@ public class BookController {
     }
 
     // 도서 정보 가져오기 (전체 도서)
-    @GetMapping
-    public List<BookDTO> getAllBooks() {
-        return bookService.getAllBooks();
+    @GetMapping("/{class_code}/{region_code}/{generation_code}")
+    public ResponseEntity<List<BookDTO>> findBookDTOsByClassRegionAndGeneration(
+            @PathVariable("class_code") int class_code,
+            @PathVariable("region_code") int region_code,
+            @PathVariable("generation_code") int generation_code) {
+
+        List<BookDTO> books = bookService.findBookDTOsByClassRegionAndGeneration(class_code, region_code, generation_code);
+        return ResponseEntity.ok(books);
     }
 }

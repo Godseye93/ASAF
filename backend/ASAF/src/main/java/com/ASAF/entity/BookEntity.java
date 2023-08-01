@@ -15,7 +15,7 @@ public class BookEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int book_number;
 
-    private String Book_name;
+    private String bookName;
 
     private String author;
 
@@ -47,7 +47,7 @@ public class BookEntity {
     @JoinColumn(name = "generation_code")
     private GenerationEntity generation_code;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id")
     private MemberEntity id;
 
