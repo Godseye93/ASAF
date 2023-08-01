@@ -15,6 +15,7 @@ import app.futured.donut.DonutSection
 import com.d103.asaf.R
 import com.d103.asaf.SharedViewModel
 import com.d103.asaf.common.config.BaseFragment
+import com.d103.asaf.common.model.dto.Classinfo
 import com.d103.asaf.databinding.FragmentOpBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -133,7 +134,10 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
 
         override fun afterTextChanged(s: Editable?) {
             // 텍스트가 변경된 후에 호출됩니다.
-            viewModel.curClass.value = s.toString().toInt()
+            viewModel.curClass.value =
+                Classinfo(viewModel.curClass.value.classNum,
+                s.toString().toInt(), viewModel.curClass.value.regionCode,
+                viewModel.curClass.value.generationCode,viewModel.curClass.value.userId)
         }
     }
 

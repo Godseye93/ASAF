@@ -31,15 +31,15 @@ import java.util.Hashtable
 private val TAG = "LibraryFragmentViewModel"
 class LibraryFragmentViewModel: ViewModel() {
     // <!---------------------------- 공통변수 ------------------------------->
-    var curClass = MutableStateFlow(0)
+    var curClass = MutableStateFlow(Classinfo(0,0,0,0,0))
 
     // 진짜 반 리스트
     private var _classInfoes = mutableListOf<Classinfo>()
     val classInfoes = _classInfoes
 
     // 반 id 리스트
-    private var _classes = MutableStateFlow(mutableListOf<Int>())
-    val classes = _classes
+//    private var _classes = MutableStateFlow(mutableListOf<Int>())
+//    val classes = _classes
 
     // 반 리스트
     private var _classSurfaces = MutableStateFlow(mutableListOf<Int>())
@@ -71,7 +71,7 @@ class LibraryFragmentViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
-                    RetrofitUtil.libraryService.getBooks(curClass.value)
+                    RetrofitUtil.libraryService.getBooks(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
                 if (response.isSuccessful) {
                     _books.value = response.body() ?: mutableListOf<Book>()
@@ -86,7 +86,7 @@ class LibraryFragmentViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
-                    RetrofitUtil.libraryService.getDraws(curClass.value)
+                    RetrofitUtil.libraryService.getDraws(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
                 if (response.isSuccessful) {
                     _returns.value = response.body() ?: mutableListOf<Book>()
@@ -102,7 +102,7 @@ class LibraryFragmentViewModel: ViewModel() {
     private fun loadCommon() {
         // classinfoes를 classes로 가공
         loadClasses()
-        curClass.value = _classes.value[0]
+        curClass.value = ApplicationClass.mainClassInfo[0]
 
         // 현재 반설정이 완료되면 collect 리스너를 달아준다.
         initCollect()
@@ -120,7 +120,7 @@ class LibraryFragmentViewModel: ViewModel() {
 
     private fun loadClasses() {
         _classSurfaces.value = _classInfoes.map{it.classCode}.toMutableList()
-        _classes.value = _classInfoes.map{it.classNum}.toMutableList()
+//        _classes.value = _classInfoes.map{it.classNum}.toMutableList()
     }
 
     // QR코드

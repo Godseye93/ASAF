@@ -25,12 +25,11 @@ private const val TAG = "운영뷰모델"
 // 외부 저장소에서 받아오는 리스트는 MutableStateFlow로 받아온다
 class OpFragmentViewModel(): ViewModel() {
     // <!-- flow 최초 collect 등록 시 한번만 실행되도록 하는 뮤텍스 -->
-    private val loadRemoteMutex = Mutex()
     private var _remoteDataLoaded = false
 
     // <!---------------------------- 공통 배치 변수 ------------------------------->
     // OpFragment의 textWather에 반 / 월 정보가 바뀌면 리스트 업데이트 하는 코드 삽입해야할 듯
-    var curClass = MutableStateFlow(0)
+    var curClass = MutableStateFlow(Classinfo(0,0,0,0,0))
     var curMonth = MutableStateFlow(0)
 
     // 월 리스트
@@ -41,10 +40,10 @@ class OpFragmentViewModel(): ViewModel() {
     private var _classInfoes = mutableListOf<Classinfo>()
     val classInfoes = _classInfoes
 
-    // 반 id 리스트
-//    private val _classes = MutableStateFlow<List<Int>>(listOf(2, 3, 4))
-    private val _classes = MutableStateFlow(mutableListOf<Int>())
-    val classes = _classes
+//    // 반 id 리스트
+////    private val _classes = MutableStateFlow<List<Int>>(listOf(2, 3, 4))
+//    private val _classes = MutableStateFlow(mutableListOf<Int>())
+//    val classes = _classes
 
     // 반 리스트
     private val _classSurfaces = MutableStateFlow(mutableListOf<Int>())
@@ -83,6 +82,10 @@ class OpFragmentViewModel(): ViewModel() {
     private val _signs = MutableStateFlow(mutableListOf<DocSign>())
     val signs = _signs
 
+    //  서명 이미지 링크만
+    private val _signUrls = MutableStateFlow(mutableListOf<String>())
+    val signUrls = _signUrls
+
     init{
         // 반 정보를 가장먼저 세팅해야함
         loadFirst() // loadCollect, loadRemote, loadCommon 등 초기화 함수 모두 포함
@@ -102,7 +105,7 @@ class OpFragmentViewModel(): ViewModel() {
             try {
                 // Curclass의 학생 정보
                 val studentResponse = withContext(Dispatchers.IO) {
-                    RetrofitUtil.attendenceService.getStudentsInfo(curClass.value)
+                    RetrofitUtil.attendenceService.getStudentsInfo(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
                 if (studentResponse.isSuccessful) {
                     _students.value = studentResponse.body() ?: mutableListOf() // MutableList(classes.value.size) { DocSeat() }
@@ -112,10 +115,10 @@ class OpFragmentViewModel(): ViewModel() {
 
                 // 자리 정보
                 val seatResponse = withContext(Dispatchers.IO) {
-                    RetrofitUtil.opService.getSeats(curClass.value)
+                    Log.d(TAG, "현재클래스: ${curClass.value}")
+                    RetrofitUtil.opService.getSeats(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
                 if (seatResponse.isSuccessful) {
-                    Log.d(TAG, "loadRemote: ${classes.value.size}")
                     _docSeat = seatResponse.body() ?: mutableListOf() // MutableList(classes.value.size) { DocSeat() }
                 } else {
                     Log.d(TAG, " 자리 가져오기 네트워크 오류")
@@ -123,7 +126,7 @@ class OpFragmentViewModel(): ViewModel() {
 
                 // 사물함 정보
                 val lockerResponse = withContext(Dispatchers.IO) {
-                    RetrofitUtil.opService.getLockers(curClass.value)
+                    RetrofitUtil.opService.getLockers(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
                 if (lockerResponse.isSuccessful) {
                     _docLockers = lockerResponse.body() ?: MutableList(80) { DocLocker() }
@@ -133,7 +136,7 @@ class OpFragmentViewModel(): ViewModel() {
 
                 // 서명 정보
                 val signResponse = withContext(Dispatchers.IO) {
-                    RetrofitUtil.opService.getSigns(curClass.value)
+                    RetrofitUtil.opService.getSigns(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
                 if (signResponse.isSuccessful) {
                     _signs.value = signResponse.body() ?: mutableListOf<DocSign>()
@@ -141,16 +144,15 @@ class OpFragmentViewModel(): ViewModel() {
                     Log.d(TAG, "사인 가져오기 네트워크 오류")
                 }
 
-                Log.d(TAG, "loadRemote: $_docSeat")
-
                 // 이후 작업은 모두 완료된 후 실행
                 loadSeats()
                 loadLockers()
+                loadSignUrls()
 
                 // 작업이 완료되면 lock을 풀어줍니다.
-                loadRemoteMutex.unlock()
+                _remoteDataLoaded = false
             } catch (e: Exception) {
-                Log.d(TAG, "네트워크 오류")
+                Log.d(TAG, "네트워크 오류 : $e")
             }
         }
     }
@@ -159,7 +161,7 @@ class OpFragmentViewModel(): ViewModel() {
         // classinfoes 를 classes로 가공
         loadClasses()
 
-        curClass.value = _classes.value[0]
+        curClass.value = _classInfoes[0]
         curMonth.value = _months.value[0]
 
         // 현재 반설정이 완료되면 collect 리스너를 달아준다.
@@ -183,17 +185,16 @@ class OpFragmentViewModel(): ViewModel() {
     }
 
     private suspend fun loadRemoteOnce() {
-        loadRemoteMutex.withLock {
-            if (!_remoteDataLoaded) {
-                loadRemote()
-                _remoteDataLoaded = true
-            }
+        if (!_remoteDataLoaded) {
+            _remoteDataLoaded = true
+            loadRemote()
         }
     }
 
     // <!---------------------------- 자리 배치 함수 ------------------------------->
     // 외부에서 가져온 리스트 값을 5x5 이미지뷰에 차례로 넣어준다
     private fun loadSeats() {
+        Log.d(TAG, "가져왔냐?: $_docSeat")
         _seat.value = _docSeat.map { it.seatNum }.toMutableList()
         val fin = _seat.value.size
         val remainingNumbers = _position.value.filterNot { it in _seat.value }
@@ -211,7 +212,11 @@ class OpFragmentViewModel(): ViewModel() {
 
     private fun loadClasses() {
         _classSurfaces.value = _classInfoes.map{it.classCode }.toMutableList()
-        _classes.value = _classInfoes.map{it.classNum }.toMutableList()
+//        _classes.value = _classInfoes.map{it.classNum }.toMutableList()
+    }
+
+    private fun loadSignUrls() {
+        _signUrls.value = _signs.value.map{it.imageUrl}.toMutableList()
     }
 
     // 바뀐 자리 정보로 사물함 정보 교체해주는 코드

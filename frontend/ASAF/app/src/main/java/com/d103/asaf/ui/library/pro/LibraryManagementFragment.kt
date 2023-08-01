@@ -21,6 +21,7 @@ import co.nedim.maildroidx.MaildroidXType
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.Book
+import com.d103.asaf.common.model.dto.Classinfo
 import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.DialogAddBookBinding
 import com.d103.asaf.databinding.FragmentLibraryManagementBinding
@@ -33,9 +34,14 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+
 private const val PATH = "/data/data/com.d103.asaf/"
+
 // String -> BookDto로 변경 필요
-class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>(FragmentLibraryManagementBinding::bind, R.layout.fragment_library_management) {
+class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>(
+    FragmentLibraryManagementBinding::bind,
+    R.layout.fragment_library_management
+) {
     private val viewModel: LibraryFragmentViewModel by viewModels()
     private var books: MutableList<Book> = mutableListOf()
     private lateinit var adapter: BookAdapter
@@ -91,7 +97,8 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
     private fun initClass() {
         binding.apply {
             fragmentLibraryDropdownClass.dropdownText.addTextChangedListener(classWatcher)
-            fragmentLibraryDropdownClass.dropdownText.text = viewModel.classSurfaces.value[0].toString()
+            fragmentLibraryDropdownClass.dropdownText.text =
+                viewModel.classSurfaces.value[0].toString()
             fragmentLibraryDropdownClass.dropdownTextPost.text = "반"
             // 객체가 바뀌면 안됨.. 요소를 변경해줘야 변화 인식됨
             fragmentLibraryDropdownClass.dataList.addAll(viewModel.classSurfaces.value)
@@ -110,7 +117,12 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
 
         override fun afterTextChanged(s: Editable?) {
             // 텍스트가 변경된 후에 호출됩니다.
-            viewModel.curClass.value = s.toString().toInt()
+            viewModel.curClass.value =
+                Classinfo(
+                    viewModel.curClass.value.classNum,
+                    s.toString().toInt(), viewModel.curClass.value.regionCode,
+                    viewModel.curClass.value.generationCode, viewModel.curClass.value.userId
+                )
         }
     }
 
@@ -123,7 +135,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
             bookSearch(s.toString())
         }
 
-        override fun afterTextChanged(s: Editable?){
+        override fun afterTextChanged(s: Editable?) {
 
         }
     }
@@ -150,7 +162,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
 
 
     private fun addBookDialog() {
-        val dialogView = DialogAddBookBinding.inflate(layoutInflater,binding.root,false)
+        val dialogView = DialogAddBookBinding.inflate(layoutInflater, binding.root, false)
 
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView.root)
@@ -160,16 +172,23 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
         dialogView.bookAdd.setOnClickListener {
             // 입력받은 정보 DTO로 조립 & POST & dismiss() & createQR % send email
             // val bookDto = ~
-            val book = Book(bookName = dialogView.dialogAddBookEdittextTitle.text.toString(),
-                            author = dialogView.dialogAddBookEdittextAuthor.text.toString(),
-                            publisher = dialogView.dialogAddBookEdittextPublisher.text.toString())
-            CoroutineScope(Dispatchers.IO).launch {
-                val qr = viewModel.generateQRCode(book.bookName,book.author,book.publisher)
-                val qrImg = PATH +"${getFileName(book.bookName)}.png"
-                viewModel.saveQRCode(qr, qrImg)
-                sendEmail(qrImg)
-                postBook(book)
-                dialog.dismiss()
+            val book = Book(
+                bookName = dialogView.dialogAddBookEdittextTitle.text.toString(),
+                author = dialogView.dialogAddBookEdittextAuthor.text.toString(),
+                publisher = dialogView.dialogAddBookEdittextPublisher.text.toString()
+            )
+            try {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val qr = viewModel.generateQRCode(book.bookName, book.author, book.publisher)
+                    val qrImg = PATH + "${getFileName(book.bookName)}.png"
+                    viewModel.saveQRCode(qr, qrImg)
+                    sendEmail(qrImg)
+                    postBook(book)
+                    dialog.dismiss()
+                }
+            } catch (e: Exception) {
+                Log.d("메일전송", "addBookDialog: DDDddd")
+                e.printStackTrace()
             }
         }
         dialogView.bookCancel.setOnClickListener {
@@ -197,7 +216,10 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
         }
 
         dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
     private fun getFileName(title: String): String {
@@ -207,10 +229,10 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
 
     private fun sendEmail(path: String) {
         MaildroidX.Builder()
-            .smtp("live.smtp.mailtrap.io")
+            .smtp("smtp.mailtrap.live")
             .smtpUsername("api")
             .smtpPassword("0647ceab68282d673bdd53a351635833")
-            .port("2525")
+            .port("587")
             .type(MaildroidXType.HTML)
             .to("kieanupark@gmail.com")
             .from("mailtrap@asaf.live")

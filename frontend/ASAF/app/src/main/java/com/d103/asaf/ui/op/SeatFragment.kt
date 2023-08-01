@@ -71,6 +71,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launchWhenStarted  {
             viewModel.seat.collect { newSeat ->
+                Log.d("자리 프래그먼트", "onViewCreated: ${viewModel.seat.value} 업데이트 됨")
                 loadSeat() // 업데이트
             }
         }

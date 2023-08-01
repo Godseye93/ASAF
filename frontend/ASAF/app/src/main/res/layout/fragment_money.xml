@@ -21,6 +21,7 @@
         tools:listitem="@layout/item_money" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fragment_money_imageComb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
