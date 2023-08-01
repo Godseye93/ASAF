@@ -121,7 +121,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
                 }
 //                ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
                 sharedViewModel.logInUser = loginResult
-
                 Log.d(TAG, "observeViewModel______: ${sharedViewModel.logInUser.memberEmail}")
                 Log.d(TAG, "유저: ${sharedViewModel.logInUser}")
                 sharedViewModel.getClassInfo(loginResult)

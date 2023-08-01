@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import app.futured.donut.DonutSection
 import com.d103.asaf.R
 import com.d103.asaf.SharedViewModel
+import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.Classinfo
 import com.d103.asaf.common.model.dto.Member
@@ -63,25 +64,33 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
             if(!selectedStudentList.isEmpty()){
 
                 //지각 알림 보내기
-                val title = "지각 알림"
-                val content = "지각 하셨습니다. 출결관련 문의사항은 담당 프로에게 연락바람니다."
-                val noti = Noti()
-                noti.content = content
-                noti.title = title
-                noti.writter = sharedViewModel.logInUser.memberName
-
+                var writer = ApplicationClass.sharedPreferences.getString("memberName")
                 val pushNotiList = mutableListOf<Noti>()
 
                 for(student in selectedStudentList){
+                    Log.d(TAG, "라이터: $writer")
+                    val title = "지각 알림"
+                    val content = "지각 하셨습니다. 출결관련 문의사항은 담당 프로에게 연락바람니다."
+                    val noti = Noti()
+                    noti.content = content
+                    noti.title = title
+                    if (writer != null) {
+                        noti.writter = writer
+                    }
                     noti.sender = student.id
+                    Log.d(TAG, "학생 아이디: ${student.id}")
                     pushNotiList.add(noti)
                 }
+                Log.d(TAG, "몇 명?: ${pushNotiList.size} ")
                 proHomeFragmentViewModel.pushMessage(pushNotiList)
 
                 Toast.makeText(requireContext(), "${selectedStudentList[0].memberName} 포함 총 ${selectedStudentList.size }명에게 알림을 전송했습니다.", Toast.LENGTH_SHORT).show()
                 selectedStudentList.clear()
                 init()
 
+            }
+            else{
+                Log.d(TAG, "비어 있음")
             }
         }
 

@@ -37,15 +37,19 @@ class ProHomeFragmentViewModel : ViewModel() {
     }
 
     fun pushMessage(messageList : MutableList<Noti>){
+        Log.d(TAG, "보내기")
         viewModelScope.launch {
 
             try{
-                for(message in messageList){
-                    val response = RetrofitUtil.notiService.pushMessage(message)
-                    if(response.isSuccessful){
-                        val responseBody = response.body()
-                        Log.d(TAG, "메시지 정상적으로 보냄?: $responseBody")
-                    }
+
+                val response = RetrofitUtil.notiService.pushMessage(messageList)
+                if(response.isSuccessful){
+                    val responseBody = response.body()
+                    Log.d(TAG, "메시지 정상적으로 보냄?: $responseBody")
+                }
+                else{
+                    Log.d(TAG, "pushMessage: ${response.errorBody()}")
+
                 }
 
             }catch (e: Exception) {

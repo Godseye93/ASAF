@@ -7,7 +7,7 @@ import retrofit2.http.POST
 
 interface NotiService {
 
-    @POST("")
-    suspend fun pushMessage(@Body message : Noti) : Response<Boolean>
+    @POST("notice")
+    suspend fun pushMessage(@Body message : List<Noti>) : Response<Boolean>
 
 }
