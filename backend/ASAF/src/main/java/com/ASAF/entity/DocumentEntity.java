@@ -21,34 +21,34 @@ public class DocumentEntity {
 
     @ManyToOne
     @JoinColumn(name = "class_code")
-    private ClassInfoEntity class_code;
+    private ClassEntity class_code;
 
     @ManyToOne
     @JoinColumn(name = "region_code")
-    private ClassInfoEntity region_code;
+    private RegionEntity region_code;
 
     @ManyToOne
     @JoinColumn(name = "generation_code")
-    private ClassInfoEntity generation_code;
+    private GenerationEntity generation_code;
 
     @ManyToOne
     @JoinColumn(name = "id")
-    private ClassInfoEntity id;
+    private MemberEntity id;
 
     @Column
     private String doc_style;
 
-    public static DocumentEntity toDocumentEntity(DocumentDTO documentDTO) {
-        DocumentEntity documentEntity = new DocumentEntity();
-        documentEntity.setDoc_id(documentDTO.getDoc_id());
-        documentEntity.setDoc_style(documentDTO.getDoc_style());
-        return documentEntity;
+    public ClassInfoEntity getClassInfoEntity() {
+        return class_num;
+    }
+    public ClassEntity getClassEntity() {
+        return class_code;
+    }
+    public RegionEntity getRegionEntity() {
+        return region_code;
+    }
+    public GenerationEntity getGenerationEntity() {
+        return generation_code;
     }
 
-    public static DocumentEntity toUpdateDocumentEntity(DocumentDTO documentDTO) {
-        DocumentEntity documentEntity = new DocumentEntity();
-        documentEntity.setDoc_id(documentDTO.getDoc_id());
-        documentEntity.setDoc_style(documentDTO.getDoc_style());
-        return documentEntity;
-    }
 }

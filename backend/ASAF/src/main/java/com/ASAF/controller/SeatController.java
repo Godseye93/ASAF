@@ -28,4 +28,11 @@ public class SeatController {
         seats.sort(Comparator.comparingInt(SeatDTO::getSeat_num));
         return seats;
     }
+
+    @GetMapping("/class/{classCode}")
+    public List<SeatDTO> getSeatsByClassCode(@PathVariable int classCode) {
+        List<SeatDTO> seats = seatService.getSeatsByClassCode(classCode);
+        seats.sort(Comparator.comparingInt(SeatDTO::getSeat_num));
+        return seats;
+    }
 }
