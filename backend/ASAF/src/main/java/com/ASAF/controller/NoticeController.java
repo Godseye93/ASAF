@@ -3,6 +3,7 @@ package com.ASAF.controller;
 import com.ASAF.dto.NoticeDTO;
 import com.ASAF.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,20 @@ public class NoticeController {
     @Autowired
     private NoticeService noticeService;
 
+//    @PostMapping
+//    public ResponseEntity<NoticeDTO> createNotice(@RequestBody NoticeDTO noticeDTO) {
+//        return ResponseEntity.ok(noticeService.createNotice(noticeDTO));
+//    }
+
     @PostMapping
     public ResponseEntity<NoticeDTO> createNotice(@RequestBody NoticeDTO noticeDTO) {
-        return ResponseEntity.ok(noticeService.createNotice(noticeDTO));
+        NoticeDTO result = noticeService.createNotice(noticeDTO);
+
+        if (result == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } else {
+            return ResponseEntity.ok(result);
+        }
     }
 
     @PutMapping("/{id}")
