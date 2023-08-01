@@ -17,6 +17,8 @@ class UserInfoAdapter(var context : Context) : ListAdapter<Member, UserInfoAdapt
     AdapterUtil.diffUtilUserInfo) {
 
 
+
+
     inner class ItemViewHolder(var binding : ItemStudentAttendanceBinding) :  RecyclerView.ViewHolder(binding.root) {
 
         fun bind(user : Member){
@@ -30,6 +32,7 @@ class UserInfoAdapter(var context : Context) : ListAdapter<Member, UserInfoAdapt
 
             }
         }
+
     }
 
 
