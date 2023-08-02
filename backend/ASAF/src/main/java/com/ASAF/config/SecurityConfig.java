@@ -1,6 +1,9 @@
 package com.ASAF.config;
 
 import com.ASAF.service.UserDetailsServiceImpl;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,5 +63,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtAuthTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Bean
+    public HttpTransport httpTransport() {
+        return new NetHttpTransport();
+    }
+
+    @Bean
+    public JacksonFactory jacksonFactory() {
+        return JacksonFactory.getDefaultInstance();
     }
 }

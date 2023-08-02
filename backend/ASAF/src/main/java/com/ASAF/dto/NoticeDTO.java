@@ -14,21 +14,22 @@ import java.util.Date;
 @ToString
 public class NoticeDTO {
     private int id;
-    private String Title;
+    private String title;
     private String content;
     private Date register_time;
     private Date send_time;
-    private String writter;
     private int sender;
+    private int reciever;
     private Boolean notification;
 
     public static NoticeDTO toNoticeDTO(NoticeEntity noticeEntity) {
         NoticeDTO noticeDTO = new NoticeDTO();
         noticeDTO.setId(noticeEntity.getId());
+        noticeDTO.setTitle(noticeEntity.getTitle());
         noticeDTO.setContent(noticeEntity.getContent());
         noticeDTO.setRegister_time(noticeEntity.getRegister_time());
         noticeDTO.setSend_time(noticeEntity.getSend_time());
-        noticeDTO.setWritter(noticeEntity.getWritter());
+        noticeDTO.setReciever(noticeEntity.getReciever());
         noticeDTO.setSender(noticeEntity.getSender());
         noticeDTO.setNotification(noticeEntity.getNotification());
         return noticeDTO;

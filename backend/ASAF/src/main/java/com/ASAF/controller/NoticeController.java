@@ -1,12 +1,19 @@
 package com.ASAF.controller;
 
+import com.ASAF.dto.MemberDTO;
 import com.ASAF.dto.NoticeDTO;
+import com.ASAF.entity.MemberEntity;
+import com.ASAF.entity.NoticeEntity;
+import com.ASAF.service.FirebaseCloudMessageDataService;
+import com.ASAF.service.MemberService;
 import com.ASAF.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -16,29 +23,20 @@ public class NoticeController {
     @Autowired
     private NoticeService noticeService;
 
-//    @PostMapping
-//    public ResponseEntity<NoticeDTO> createNotice(@RequestBody NoticeDTO noticeDTO) {
-//        return ResponseEntity.ok(noticeService.createNotice(noticeDTO));
-//    }
+    @Autowired
+    private MemberService memberService;
 
-//    @PostMapping
-//    public ResponseEntity<NoticeDTO> createNotice(@RequestBody NoticeDTO noticeDTO) {
-//        NoticeDTO result = noticeService.createNotice(noticeDTO);
-//
-//        if (result == null) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//        } else {
-//            return ResponseEntity.ok(result);
-//        }
-//    }
+    @Autowired
+    private FirebaseCloudMessageDataService firebaseCloudMessageDataService;
+
     @PostMapping
-    public ResponseEntity<List<NoticeDTO>> createNotices(@RequestBody List<NoticeDTO> noticeDTOs) {
-        List<NoticeDTO> results = noticeService.createNotices(noticeDTOs);
+    public ResponseEntity<NoticeDTO> createNotice(@RequestBody NoticeDTO noticeDTO) {
+        NoticeDTO result = noticeService.createNotice(noticeDTO);
 
-        if (results.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        if (result != null) {
+            return ResponseEntity.ok(result);
         } else {
-            return ResponseEntity.ok(results);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
@@ -67,4 +65,38 @@ public class NoticeController {
         noticeService.deleteNotice(id);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/send/{noticeId}")
+    public String sendNotification(@PathVariable("noticeId") int noticeId) {
+        try {
+             // 사용자 목록을 가져옵니다. findAll() 메서드를 사용합니다.
+            List<MemberDTO> userList = memberService.findAll();
+            System.out.println(userList);
+
+            // MemberDTO 목록을 MemberEntity 목록으로 변환합니다.
+            List<MemberEntity> users = new ArrayList<>();
+            for (MemberDTO userDTO : userList) {
+                users.add(MemberEntity.toMemberEntity(userDTO));
+            }
+
+
+
+            // 알림을 보낼 공지사항을 가져옵니다. (NoticeDTO를 반환합니다.)
+            NoticeDTO noticeDTO = noticeService.getNoticeById(noticeId);
+            System.out.println(noticeDTO);
+
+            // NoticeDTO를 NoticeEntity로 변환합니다.
+            NoticeEntity noticeEntity = NoticeEntity.toNoticeEntity(noticeDTO);
+
+            // 각 사용자에게 알림을 보냅니다.
+            firebaseCloudMessageDataService.sendNotificationToUsers(users, noticeEntity);
+
+            return "Notification sent successfully!";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error sending notification: " + e.getMessage();
+        }
+    }
+
+
 }
