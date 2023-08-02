@@ -16,7 +16,7 @@ public class NoticeEntity {
     private int id;
 
     @Column
-    private String Title;
+    private String title;
 
     @Column
     private String content;
@@ -28,10 +28,10 @@ public class NoticeEntity {
     private Date send_time;
 
     @Column
-    private String writter;
+    private int sender;
 
     @Column
-    private int sender;
+    private int reciever;
 
     @Column
     private Boolean notification;
@@ -42,7 +42,7 @@ public class NoticeEntity {
         noticeEntity.setContent(noticeDTO.getContent());
         noticeEntity.setRegister_time(noticeDTO.getRegister_time());
         noticeEntity.setSend_time(noticeDTO.getSend_time());
-        noticeEntity.setWritter(noticeDTO.getWritter());
+        noticeEntity.setReciever(noticeDTO.getReciever());
         noticeEntity.setSender(noticeDTO.getSender());
         noticeEntity.setNotification(noticeDTO.getNotification());
         return noticeEntity;
@@ -55,7 +55,7 @@ public class NoticeEntity {
         noticeEntity.setContent(noticeDTO.getContent());
         noticeEntity.setRegister_time(noticeDTO.getRegister_time());
         noticeEntity.setSend_time(noticeDTO.getSend_time());
-        noticeEntity.setWritter(noticeDTO.getWritter());
+        noticeEntity.setReciever(noticeDTO.getReciever());
         noticeEntity.setSender(noticeDTO.getSender());
         noticeEntity.setNotification(noticeDTO.getNotification());
         return noticeEntity;

@@ -16,21 +16,11 @@ public class NoticeService {
     @Autowired
     private NoticeRepository noticeRepository;
 
-    // 공지 생성
-//    public NoticeDTO createNotice(NoticeDTO noticeDTO) {
-//        NoticeEntity noticeEntity = NoticeEntity.toNoticeEntity(noticeDTO);
-//        noticeEntity = noticeRepository.save(noticeEntity);
-//        return NoticeDTO.toNoticeDTO(noticeEntity);
-//    }
-
-//    public NoticeDTO createNotice(NoticeDTO noticeDTO) {
-//        if (noticeDTO.getNotification()) {
-//            NoticeEntity noticeEntity = NoticeEntity.toNoticeEntity(noticeDTO);
-//            noticeEntity = noticeRepository.save(noticeEntity);
-//            return NoticeDTO.toNoticeDTO(noticeEntity);
-//        }
-//        return null;
-//    }
+    public NoticeDTO createNotice(NoticeDTO noticeDTO) {
+        NoticeEntity noticeEntity = NoticeEntity.toNoticeEntity(noticeDTO);
+        noticeEntity = noticeRepository.save(noticeEntity);
+        return NoticeDTO.toNoticeDTO(noticeEntity);
+    }
 
     public List<NoticeDTO> createNotices(List<NoticeDTO> noticeDTOs) {
         List<NoticeDTO> resultList = new ArrayList<>();
