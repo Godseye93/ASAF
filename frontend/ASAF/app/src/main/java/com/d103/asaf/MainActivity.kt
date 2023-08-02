@@ -96,7 +96,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
 
 
-        // 없던 부분
+//        // 없던 부분
         val bottomNavigationView =
             findViewById<MorphBottomNavigationView>(R.id.bottom_navi_pro)
         bottomNavigationView.setupWithNavController(navController)

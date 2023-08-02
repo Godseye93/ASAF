@@ -1,10 +1,11 @@
 package com.d103.asaf.ui.schedule
 
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -35,7 +36,7 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
     private var param1: String? = null
     private var param2: String? = null
     private val sharedViewModel : SharedViewModel by activityViewModels()
-    private val viewModel : ScheduleRegisterFragmentViewModel by viewModels()
+    private val viewModel : NotiRegisterFragmentViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -92,18 +93,32 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
                 Log.d("공지시간", "공지 시간: ${noti.sendTime}")
                 Log.d("등록시간", "공지 시간: ${noti.registerTime}")
 
+                val classList = sharedViewModel.classInfoList.value
+                Log.d("반 크기", "notiList: ${classList!!.size}")
+                if (classList != null) {
+                    for(classInfo in classList){
+                        viewModel.getStudents(classInfo, noti, binding.notiCheckBox.isChecked)
+                        Log.d("학생들", "${viewModel.studentList.size} ")
 
-
-
-                // 공지 발송 + 저장
-                if(binding.notiCheckBox.isChecked){
-
+                    }
                 }
-                // 저장만
-                else{
+
+                var builder = AlertDialog.Builder(requireContext())
+                    .setTitle("공지 등록")
+                    .setMessage("공지를 등록하시겠습니까?")
+                    .setPositiveButton("확인", DialogInterface.OnClickListener{ dialog, which ->
+                        Log.d("리스트", "onViewCreated: ${viewModel.notiList}")
+                        viewModel.pushNoti()
+                    })
+
+                builder.show()
 
 
-                }
+
+
+
+
+
 
             }
         }

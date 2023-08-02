@@ -20,6 +20,7 @@ import com.d103.asaf.common.model.dto.Noti
 import com.d103.asaf.databinding.FragmentProHomeBinding
 import java.sql.Date
 import java.sql.Time
+import java.text.SimpleDateFormat
 
 private const val TAG = "ProHomeFragment ASAF"
 
@@ -64,7 +65,7 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
             if(!selectedStudentList.isEmpty()){
 
                 //지각 알림 보내기
-                var writer = ApplicationClass.sharedPreferences.getString("memberName")
+                var writer = ApplicationClass.sharedPreferences.getInt("id")
                 val pushNotiList = mutableListOf<Noti>()
 
                 for(student in selectedStudentList){
@@ -75,9 +76,11 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
                     noti.content = content
                     noti.title = title
                     if (writer != null) {
-                        noti.writter = writer
+                        noti.sender = writer + 1
                     }
-                    noti.sender = student.id
+
+
+                    noti.receiver = student.id
                     Log.d(TAG, "학생 아이디: ${student.id}")
                     pushNotiList.add(noti)
                 }

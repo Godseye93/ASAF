@@ -151,4 +151,6 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
         binding.fragmentOpImageviewArcprogressbar.arcProgressBar.submitData(listOf(section))
         binding.fragmentOpImageviewArcprogressbar.progressRate.text = "${attendedPercent.value}%"
     }
+
+
 }
