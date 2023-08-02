@@ -18,8 +18,11 @@ private const val TAG = "SharedViewModel ASAF"
 class SharedViewModel : ViewModel() {
 
      lateinit var selectedDate : String // 캘린더에서 쓰는 데이터
-     
-     private val _classInfoList = MutableLiveData<MutableList<Classinfo>>()
+     var year : Int = 0
+     var month : Int = 0
+     var day : Int = 0
+
+     val _classInfoList = MutableLiveData<MutableList<Classinfo>>()
 
      val classInfoList : LiveData<MutableList<Classinfo>>
           get() = _classInfoList
@@ -53,5 +56,9 @@ class SharedViewModel : ViewModel() {
                }
 
           }
+     }
+
+     fun postClassInfoList(list : MutableList<Classinfo>){
+          _classInfoList.value = list
      }
 }

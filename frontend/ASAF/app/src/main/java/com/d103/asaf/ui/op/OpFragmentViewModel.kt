@@ -155,6 +155,7 @@ class OpFragmentViewModel(): ViewModel() {
                 Log.d(TAG, "네트워크 오류 : $e")
             }
         }
+
     }
 
     private fun loadCommon() {

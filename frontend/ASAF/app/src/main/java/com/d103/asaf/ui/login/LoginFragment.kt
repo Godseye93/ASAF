@@ -62,6 +62,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
 
         //        sharedPreference에서 있으면 바로 화면 넘어가기
         if (ApplicationClass.sharedPreferences.getString("memberEmail")?.isNotEmpty() == true) {
+
             //Shared Preference에 저장된 값이 있으면 이메일 정보로 유저 정보 가져오기
             lifecycleScope.launch {
                 try {
@@ -72,6 +73,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
                     if (response.isSuccessful) {
                         val responseBody = response.body()
                         if (!responseBody.isNullOrEmpty()) {
+                            sharedViewModel.postClassInfoList(responseBody)
                             ApplicationClass.mainClassInfo = responseBody
                             Log.d(TAG, "onViewCreated: ddddddd")
                         } else {
@@ -119,10 +121,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
                 }
 //                ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
                 sharedViewModel.logInUser = loginResult
-
                 Log.d(TAG, "observeViewModel______: ${sharedViewModel.logInUser.memberEmail}")
                 Log.d(TAG, "유저: ${sharedViewModel.logInUser}")
-
                 sharedViewModel.getClassInfo(loginResult)
                 Log.d(TAG, "담당 반: ${sharedViewModel.classInfoList.value?.size}")
                 if (loginResult.authority == "stu") {
