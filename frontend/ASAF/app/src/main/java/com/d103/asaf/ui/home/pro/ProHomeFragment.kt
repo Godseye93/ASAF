@@ -76,7 +76,7 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
                     noti.content = content
                     noti.title = title
                     if (writer != null) {
-//                        noti.writter = writer
+                        noti.writter = writer
                     }
                     noti.sender = student.id
                     Log.d(TAG, "학생 아이디: ${student.id}")
