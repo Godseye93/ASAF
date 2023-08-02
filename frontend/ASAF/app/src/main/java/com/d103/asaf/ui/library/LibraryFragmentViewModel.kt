@@ -87,8 +87,8 @@ class LibraryFragmentViewModel: ViewModel() {
                             book.bookName,
                             book.author,
                             book.publisher,
-                            Date(9999-99-99),
-                            Date(9999-99-99),
+                            Date(Long.MAX_VALUE),
+                            Date(Long.MAX_VALUE),
                             book.borrowState,
                             book.borrower
                         )
