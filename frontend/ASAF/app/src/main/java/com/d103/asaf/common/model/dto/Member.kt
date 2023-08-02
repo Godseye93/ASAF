@@ -20,7 +20,7 @@ data class Member(
     var attended : String,
     var entryTime : Date?,
     var exitTime : Date?,
-    var authority: String = "stu",
+    var authority: String = "교육생",
 ){
     // 기본 생성자
     constructor() : this(0, 0, "", "", "", "", "",

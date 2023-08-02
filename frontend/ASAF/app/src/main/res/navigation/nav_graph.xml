@@ -12,10 +12,14 @@
         tools:layout="@layout/fragment_pro_home"/>
 
     <fragment
-        android:id="@+id/navigation_student_home"
+        android:id="@+id/StudentHomeFragment"
         android:name="com.d103.asaf.ui.home.student.StudentHomeFragment"
         android:label="StudentHome"
-        tools:layout="@layout/fragment_student_home"/>
+        tools:layout="@layout/fragment_student_home">
+        <action
+            android:id="@+id/action_StudentHomeFragment_to_fragment_setting"
+            app:destination="@id/fragment_setting" />
+    </fragment>
     <fragment
         android:id="@+id/busFragment"
         android:name="com.d103.asaf.ui.bus.BusFragment"
@@ -88,6 +92,9 @@
         <action
             android:id="@+id/action_loginFragment_to_ProhomeFragment"
             app:destination="@id/ProhomeFragment" />
+        <action
+            android:id="@+id/action_login_fragment_to_StudentHomeFragment"
+            app:destination="@id/StudentHomeFragment" />
     </fragment>
 
     <fragment
@@ -131,6 +138,12 @@
     <action
         android:id="@+id/action_loginFragment_to_ProhomeFragment"
         app:destination="@+id/ProhomeFragment"
+        app:popUpTo="@id/login_fragment"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_login_fragment_to_StudentHomeFragment"
+        app:destination="@+id/StudentHomeFragment"
         app:popUpTo="@id/login_fragment"
         app:popUpToInclusive="true" />
 
