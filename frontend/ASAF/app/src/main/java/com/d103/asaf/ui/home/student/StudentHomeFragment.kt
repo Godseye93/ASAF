@@ -50,41 +50,14 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        val rootView = inflater.inflate(R.layout.fragment_student_home, container, false)
-
-        cardView1 = rootView.findViewById(R.id.fragment_student_home_cardView_front)
-        cardView2 = rootView.findViewById(R.id.fragment_student_home_cardView_back)
-        buttonFlip = rootView.findViewById(R.id.buttonFlip)
-
-        // Set initial visibility
-        cardView1.visibility = View.VISIBLE
-        cardView2.visibility = View.GONE
-
-        // Set cameraDistance for the card views
-        val scale = resources.displayMetrics.density
-        cardView1.cameraDistance = 8000 * scale
-        cardView2.cameraDistance = 8000 * scale
-
-        buttonFlip.setOnClickListener {
-            flipCards()
-        }
-
-        return rootView
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initView()
 
-
-//        binding.fragmentStuHomeImagebuttonUserinfo.setOnClickListener {
-//            findNavController().navigate(R.id.navigation_setting)
-//        }
+        binding.fragmentStuHomeImagebuttonUserinfo.setOnClickListener {
+            findNavController().navigate(R.id.navigation_setting)
+        }
 
     }
 
@@ -136,5 +109,25 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
                 isFirstCardVisible = !isFirstCardVisible
             }
         })
+    }
+
+    fun initView(){
+
+        cardView1 = binding.fragmentStudentHomeCardViewFront
+        cardView2 = binding.fragmentStudentHomeCardViewBack
+        buttonFlip = binding.buttonFlip
+
+        // Set initial visibility
+        cardView1.visibility = View.VISIBLE
+        cardView2.visibility = View.GONE
+
+        // Set cameraDistance for the card views
+        val scale = resources.displayMetrics.density
+        cardView1.cameraDistance = 8000 * scale
+        cardView2.cameraDistance = 8000 * scale
+
+        buttonFlip.setOnClickListener {
+            flipCards()
+        }
     }
 }
