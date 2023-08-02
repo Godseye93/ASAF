@@ -21,14 +21,24 @@ public class NoticeController {
 //        return ResponseEntity.ok(noticeService.createNotice(noticeDTO));
 //    }
 
+//    @PostMapping
+//    public ResponseEntity<NoticeDTO> createNotice(@RequestBody NoticeDTO noticeDTO) {
+//        NoticeDTO result = noticeService.createNotice(noticeDTO);
+//
+//        if (result == null) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//        } else {
+//            return ResponseEntity.ok(result);
+//        }
+//    }
     @PostMapping
-    public ResponseEntity<NoticeDTO> createNotice(@RequestBody NoticeDTO noticeDTO) {
-        NoticeDTO result = noticeService.createNotice(noticeDTO);
+    public ResponseEntity<List<NoticeDTO>> createNotices(@RequestBody List<NoticeDTO> noticeDTOs) {
+        List<NoticeDTO> results = noticeService.createNotices(noticeDTOs);
 
-        if (result == null) {
+        if (results.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } else {
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(results);
         }
     }
 
