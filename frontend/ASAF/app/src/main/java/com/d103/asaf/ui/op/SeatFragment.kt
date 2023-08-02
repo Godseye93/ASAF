@@ -43,20 +43,24 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
     private var reversePosition = (0..24).toMutableList()
     private lateinit var gridLayout: GridLayout
     private var seatNum = 0;
-    private val viewModel: OpFragmentViewModel by viewModels()
+    private lateinit var viewModel: OpFragmentViewModel
 
     companion object {
         private const val POSITION = "position"
         private const val SEAT = "seat"
         // Factory method to create an instance of SeatFragment with position list.
-        fun instance(position: MutableList<Int>,seat: MutableList<Int>): SeatFragment {
+        fun instance(position: MutableList<Int>,seat: MutableList<Int>,parentViewModel: OpFragmentViewModel): SeatFragment {
             val fragment = SeatFragment()
+            fragment.viewModel = parentViewModel
             val args = Bundle()
             args.putIntegerArrayList(POSITION, ArrayList(position))
             args.putIntegerArrayList(SEAT, ArrayList(seat))
             fragment.arguments = args
             return fragment
         }
+    }
+    init {
+        viewModel = OpFragment.parentViewModel!!
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,10 +73,15 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launchWhenStarted  {
+        CoroutineScope(Dispatchers.Main).launch  {
             viewModel.seat.collect { newSeat ->
-                Log.d("자리 프래그먼트", "onViewCreated: ${viewModel.seat.value} 업데이트 됨")
-                loadSeat() // 업데이트
+                if(isAdded) {
+                    Log.d("자리 프래그먼트", "onViewCreated: ${viewModel.seat.value} 업데이트 됨")
+                    Log.d("자리 프래그먼트", "docSeat: ${viewModel.docSeat} 업데이트 됨")
+                    seat = viewModel.seat.value
+                    seatNum = seat.size
+                    loadSeat() // 업데이트
+                }
             }
         }
 
@@ -125,6 +134,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
     }
 
     fun setSeat() {
+        Log.d("싯넘", "setSeat: $seatNum")
         // targetView의 크기가 측정된 후에 다른 작업 수행
         val occupy = ResourcesCompat.getDrawable(resources, R.drawable.chair, null)
         val vacant = ResourcesCompat.getDrawable(resources, R.drawable.ssafy_logo, null)
@@ -136,7 +146,10 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
                     childView.seatImage.setImageDrawable(occupy)
                     childView.seatText.text = viewModel.docSeat[i].name // 이름을 넣는 부분
                 }
-                else childView.seatImage.setImageDrawable(vacant)
+                else {
+                    childView.seatImage.setImageDrawable(vacant)
+                    childView.seatText.text = ""
+                }
                 setViewPosition(childView, position[i])
                 reversePosition[position[i]] = i
             }

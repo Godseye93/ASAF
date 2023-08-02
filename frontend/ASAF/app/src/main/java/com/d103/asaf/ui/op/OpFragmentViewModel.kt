@@ -55,8 +55,7 @@ class OpFragmentViewModel(): ViewModel() {
 
     // <!---------------------------- 자리 배치 변수 ------------------------------->
     // 진짜 자리정보 get
-    private var _docSeat = mutableListOf<DocSeat>()
-    val docSeat = _docSeat
+    var docSeat = mutableListOf<DocSeat>()
 
     // 5x5보다 적을 수 있음
 //    private var _seat = MutableStateFlow(mutableListOf(1,22,3,4,15,6,17,8))
@@ -119,7 +118,7 @@ class OpFragmentViewModel(): ViewModel() {
                     RetrofitUtil.opService.getSeats(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
                 if (seatResponse.isSuccessful) {
-                    _docSeat = seatResponse.body() ?: mutableListOf() // MutableList(classes.value.size) { DocSeat() }
+                    docSeat = seatResponse.body() ?: mutableListOf() // MutableList(classes.value.size) { DocSeat() }
                 } else {
                     Log.d(TAG, " 자리 가져오기 네트워크 오류")
                 }
@@ -195,8 +194,7 @@ class OpFragmentViewModel(): ViewModel() {
     // <!---------------------------- 자리 배치 함수 ------------------------------->
     // 외부에서 가져온 리스트 값을 5x5 이미지뷰에 차례로 넣어준다
     private fun loadSeats() {
-        Log.d(TAG, "가져왔냐?: $_docSeat")
-        _seat.value = _docSeat.map { it.seatNum }.toMutableList()
+        _seat.value = docSeat.map { it.seatNum }.toMutableList()
         val fin = _seat.value.size
         val remainingNumbers = _position.value.filterNot { it in _seat.value }
         // 차례대로 불러온 자리 채워넣기
@@ -230,7 +228,7 @@ class OpFragmentViewModel(): ViewModel() {
     // 바뀐 자리 정보를 채워주는 코드
     fun setSeats(position: MutableList<Int>, seatNum: Int): MutableList<DocSeat> {
         val realPos = position.subList(0,seatNum)
-        val postSeats = _docSeat.subList(0,seatNum)
+        val postSeats = docSeat.subList(0,seatNum)
         for(i in 0 until seatNum) postSeats[i].seatNum = realPos[i]
         return postSeats
     }
