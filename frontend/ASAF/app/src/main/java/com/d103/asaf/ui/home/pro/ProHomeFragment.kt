@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -97,6 +98,26 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
         binding.fragmentProHomeSettingButton.setOnClickListener{
             findNavController().navigate(R.id.navigation_setting)
         }
+
+        // 뒤로가기 버튼 처리
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (ApplicationClass.sharedPreferences.getString("memberEmail").isNullOrEmpty()) {
+                    // 로그인 정보가 없는 경우, 로그인 화면으로 이동
+                    findNavController().navigate(R.id.action_ProHomeFragment_to_loginFragment)
+
+                    // 앱 종료
+//                    requireActivity().finish()
+                } else {
+                    // 뒤로가기 동작 수행
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                    // 앱 종료
+                    requireActivity().finish()
+                }
+            }
+        })
+
     }
 
 

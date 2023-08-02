@@ -54,6 +54,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         Log.d(TAG, "FCM: ${ApplicationClass.sharedPreferences.getString("token")}")
         setupViews()
         observeViewModel()
@@ -89,6 +90,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
             } else {
                 findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
             }
+        }else{
+            findNavController().popBackStack()
         }
     }
 

@@ -113,4 +113,22 @@ class LoginFragmentViewModel : ViewModel() {
             }
         }
     }
+
+//    private fun sendEmail(path: String) {
+//        MaildroidX.Builder()
+//            .smtp("smtp.mailtrap.live")
+//            .smtpUsername("api")
+//            .smtpPassword("0647ceab68282d673bdd53a351635833")
+//            .port("587")
+//            .type(MaildroidXType.HTML)
+//            .to("kieanupark@gmail.com")
+//            .from("mailtrap@asaf.live")
+//            .subject("hello")
+//            .body("body")
+//            .attachment(path)
+//            .isStartTLSEnabled(true)
+//            .mail()
+//
+//        Log.d("메일", "sendEmail: 보냄")
+//    }
 }

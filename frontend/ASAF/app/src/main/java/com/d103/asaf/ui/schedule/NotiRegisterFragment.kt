@@ -49,7 +49,7 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
         binding.dateTextView.text = sharedViewModel.selectedDate
 
         binding.fragmentNotiRegisterBackButton.setOnClickListener {
-            (requireActivity() as MainActivity).showBottomNavigationBarFromFragment()
+            (requireActivity() as MainActivity).showProBottomNavigationBarFromFragment()
             (requireActivity() as MainActivity).onBackPressed()
 
         }
