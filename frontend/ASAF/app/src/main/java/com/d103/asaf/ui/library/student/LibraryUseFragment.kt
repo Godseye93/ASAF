@@ -6,12 +6,14 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.Book
 import com.d103.asaf.databinding.FragmentLibraryUseBinding
 import com.d103.asaf.ui.library.QRCodeScannerDialog
 import com.d103.asaf.ui.library.adapter.BookAdapter
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -29,7 +31,11 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
     }
 
     private fun initList() {
-        books = viewModel.myDraws.value
+        lifecycleScope.launch {
+            viewModel.myDraws.collect {
+                books = viewModel.myDraws.value
+            }
+        }
         adapter = BookAdapter()
         binding.fragmentLibraryUserRecyclerview.adapter = adapter
         adapter.submitList(books)

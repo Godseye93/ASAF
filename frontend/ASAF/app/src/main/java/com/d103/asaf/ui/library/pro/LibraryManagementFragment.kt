@@ -16,6 +16,7 @@ import android.view.WindowManager
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import co.nedim.maildroidx.MaildroidX
 import co.nedim.maildroidx.MaildroidXType
 import com.d103.asaf.R
@@ -54,7 +55,11 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
     }
 
     private fun initList() {
-        books = viewModel.returns.value
+        lifecycleScope.launch {
+            viewModel.returns.collect {
+                books = viewModel.returns.value
+            }
+        }
         Log.d("책", "initList: $books")
         adapter = BookAdapter()
         adapter.isDraw = true
