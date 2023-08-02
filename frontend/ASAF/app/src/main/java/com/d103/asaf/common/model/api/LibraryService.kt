@@ -13,12 +13,12 @@ import retrofit2.http.Query
 
 interface LibraryService {
     // 모든 도서
-    @GET("/book")
-    suspend fun getBooks(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int) : Response<MutableList<Book>>
+    @GET("/book/distinct/{class_code}/{region_code}/{generation_code}")
+    suspend fun getBooks(@Path("class_code") classCode : Int, @Path("region_code") regionCode : Int, @Path("generation_code") generationCode : Int) : Response<MutableList<Book>>
 
     // 대출 중인 도서
-    @GET("/book")
-    suspend fun getDraws(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int) : Response<MutableList<Book>>
+    @GET("/book/borrowed/{class_code}/{region_code}/{generation_code}/sorted-by-name")
+    suspend fun getDraws(@Path("class_code") classCode : Int, @Path("region_code") regionCode : Int, @Path("generation_code") generationCode : Int) : Response<MutableList<Book>>
 
     // 한권 정보만 가져오기
     @GET("/book/{book_id}")

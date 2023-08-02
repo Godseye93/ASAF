@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -25,11 +26,16 @@ import java.util.Calendar
 
 
 class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.layout.fragment_op) {
+    companion object {
+        var parentViewModel : OpFragmentViewModel? = null
+    }
+
     private val viewModel: OpFragmentViewModel by viewModels()
     private val handler = Handler(Looper.getMainLooper())
     private var attendedPercent = MutableStateFlow(0f)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        parentViewModel = viewModel
         initSeat()
         initMonth()
         initClass()
@@ -46,7 +52,7 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
         handler.postDelayed({
             binding.fragmentOpImageviewFront.visibility = View.VISIBLE
             childFragmentManager.beginTransaction()
-                .replace(binding.fragmentOpFramelayoutSeat.id,SeatFragment.instance(viewModel.position.value, viewModel.seat.value))
+                .replace(binding.fragmentOpFramelayoutSeat.id,SeatFragment.instance(viewModel.position.value, viewModel.seat.value, viewModel))
                 .commit()
         }, 100)
     }
@@ -64,7 +70,7 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
             binding.fragmentOpDropdownMonth.visibility = View.GONE
 
             childFragmentManager.beginTransaction()
-                .replace(binding.fragmentOpFramelayoutSeat.id,LockerFragment.instance(viewModel.lockers.value))
+                .replace(binding.fragmentOpFramelayoutSeat.id,LockerFragment.instance(viewModel.lockers.value,viewModel))
                 .commit()
         }
         binding.fragmentOpTogglebuttonToggle.setThirdButtonClickListener {
@@ -74,7 +80,7 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
             binding.fragmentOpImageviewArcprogressbar.visibility = View.VISIBLE
 
             childFragmentManager.beginTransaction()
-                .replace(binding.fragmentOpFramelayoutSeat.id, MoneyFragment())
+                .replace(binding.fragmentOpFramelayoutSeat.id, MoneyFragment.instance(viewModel.signs.value, viewModel))
                 .commit()
         }
     }

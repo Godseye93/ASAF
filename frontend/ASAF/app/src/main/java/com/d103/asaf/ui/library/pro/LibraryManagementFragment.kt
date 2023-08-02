@@ -55,7 +55,9 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
 
     private fun initList() {
         books = viewModel.returns.value
+        Log.d("책", "initList: $books")
         adapter = BookAdapter()
+        adapter.isDraw = true
         binding.fragmentLibraryRecyclerview.adapter = adapter
         adapter.submitList(books)
     }
@@ -67,6 +69,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
             bookToggleButton.moneyText.visibility = View.GONE
 
             bookToggleButton.setFirstButtonClickListener {
+                adapter.isDraw = true
                 fragmentLibraryTextviewSecond.text = "대출자"
                 fragmentLibraryTextviewThird.text = "반납일"
                 books = viewModel.returns.value
@@ -74,6 +77,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
             }
 
             bookToggleButton.setSecondButtonClickListener {
+                adapter.isDraw = false
                 fragmentLibraryTextviewSecond.text = "저자"
                 fragmentLibraryTextviewThird.text = "수량"
                 books = viewModel.books.value

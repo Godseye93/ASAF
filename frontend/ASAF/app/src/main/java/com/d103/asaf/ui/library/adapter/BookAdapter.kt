@@ -17,7 +17,8 @@ import java.util.Locale
 
 // QR -> 책제목/작가/출판사
 // String  -> BookDto로 변경 필요 -> 이 때 BookDto는 도서 DTO + 대출 DTO 정보를 가진 1개의 거대한 DTO로 만들 것임
-class BookAdapter : androidx.recyclerview.widget.ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallback()) {
+class BookAdapter() : androidx.recyclerview.widget.ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallback()) {
+    var isDraw = false
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemBookBinding.inflate(inflater, parent, false)
@@ -36,8 +37,14 @@ class BookAdapter : androidx.recyclerview.widget.ListAdapter<Book, BookAdapter.B
                 // bookItemReturnSend.text = "반납"
                 bookItemTitle.text = book.bookName
                 bookItemTitle.isSelected = true
-                bookItemDrawer.text = book.borrower
-                bookItemReturn.text = dateToString(book.returnDate)
+                if(isDraw) {
+                    bookItemDrawer.text = book.borrower
+                    bookItemReturn.text = dateToString(book.returnDate)
+                } else {
+                    bookItemDrawer.text = book.author
+                    bookItemReturn.text = "${book.bookNameCount-book.trueBorrowStateCount} / ${book.bookNameCount}"
+                }
+
                 bookItemReturnSend.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.bookReturn))
                 // SharedPreference user가 학생이라면 버튼 글자를 변경
                 // 비콘 거리 안에 있을 때 버튼 visible 활성화

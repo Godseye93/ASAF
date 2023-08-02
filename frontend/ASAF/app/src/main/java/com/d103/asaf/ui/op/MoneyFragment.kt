@@ -43,8 +43,9 @@ class MoneyFragment :
     companion object {
         private const val SIGN = "sign"
 
-        fun instance(sign: MutableList<DocSign>): MoneyFragment {
+        fun instance(sign: MutableList<DocSign>, parentViewModel: OpFragmentViewModel): MoneyFragment {
             val fragment = MoneyFragment()
+            fragment.viewModel = parentViewModel
             val args = Bundle()
             args.putParcelableArrayList(SIGN, ArrayList(sign))
             fragment.arguments = args
@@ -52,7 +53,7 @@ class MoneyFragment :
         }
     }
 
-    private val viewModel: OpFragmentViewModel by viewModels()
+    lateinit var viewModel: OpFragmentViewModel
     private lateinit var adapter: MoneyAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

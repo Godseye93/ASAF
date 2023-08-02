@@ -19,8 +19,9 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
         private const val LOCKER = "locker"
 
         // Int를 LockerDto로 변경 필요
-        fun instance(locker: MutableList<Int>): LockerFragment {
+        fun instance(locker: MutableList<Int>, parentViewModel: OpFragmentViewModel): LockerFragment {
             val fragment = LockerFragment()
+            fragment.viewModel = parentViewModel
             val args = Bundle()
             args.putIntegerArrayList(LOCKER, ArrayList(locker))
             fragment.arguments = args
@@ -30,7 +31,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
 
     private var lockers: MutableList<Int> = mutableListOf()
     private lateinit var adapter: LockerAdapter
-    private val viewModel: OpFragmentViewModel by viewModels()
+    lateinit var viewModel: OpFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
