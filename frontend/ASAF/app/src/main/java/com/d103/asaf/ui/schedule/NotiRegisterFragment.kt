@@ -8,6 +8,7 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.d103.asaf.MainActivity
 import com.d103.asaf.R
 import com.d103.asaf.SharedViewModel
@@ -34,6 +35,7 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
     private var param1: String? = null
     private var param2: String? = null
     private val sharedViewModel : SharedViewModel by activityViewModels()
+    private val viewModel : ScheduleRegisterFragmentViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -90,6 +92,9 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
                 Log.d("공지시간", "공지 시간: ${noti.sendTime}")
                 Log.d("등록시간", "공지 시간: ${noti.registerTime}")
 
+
+
+
                 // 공지 발송 + 저장
                 if(binding.notiCheckBox.isChecked){
 
@@ -130,9 +135,10 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
 
 
         // 작성자
-        noti.writter = ApplicationClass.sharedPreferences.getString("memberName").toString()
+        noti.sender = ApplicationClass.sharedPreferences.getInt("id")!!
 
-        // sender 설정
+        // 공지 설정
+        noti.notification = binding.notiCheckBox.isChecked
 
 
 
