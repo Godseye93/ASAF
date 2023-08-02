@@ -118,7 +118,9 @@ class OpFragmentViewModel(): ViewModel() {
                     RetrofitUtil.opService.getSeats(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
                 if (seatResponse.isSuccessful) {
-                    docSeat = seatResponse.body() ?: mutableListOf() // MutableList(classes.value.size) { DocSeat() }
+                    docSeat = seatResponse.body() ?: MutableList(_students.value.size) { index ->
+                        DocSeat(name = _students.value[index].memberName)
+                    }
                 } else {
                     Log.d(TAG, " 자리 가져오기 네트워크 오류")
                 }

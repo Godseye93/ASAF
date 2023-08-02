@@ -20,6 +20,8 @@ data class Book (
     @SerializedName("returnDate") val returnDate: Date = Date(), // 반납일
     @SerializedName("borrowState") val borrowState: Boolean = false, // 대출 상태
     @SerializedName("borrower") val borrower: String = "", // 대출자
+    @SerializedName("bookNameCount") val bookNameCount: Int = 0, // 총 수량
+    @SerializedName("trueBorrowStateCount") val trueBorrowStateCount: Int = 0 // 빌린 수량
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
