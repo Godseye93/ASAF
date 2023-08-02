@@ -92,7 +92,9 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
             }
             // position 정보를 seatNum 크기 만큼만 보내기 서버에서 n건을 수정해야함
             seatComplete.setOnClickListener {
-                // position.subList(0,seatNum)
+                lifecycleScope.launch {
+                    RetrofitUtil.opService.postSeats(viewModel.setSeats(position, seatNum))
+                }
             }
 
             seatNumberInput.addTextChangedListener(object : TextWatcher {

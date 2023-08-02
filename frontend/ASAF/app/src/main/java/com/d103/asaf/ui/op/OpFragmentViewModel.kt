@@ -227,6 +227,13 @@ class OpFragmentViewModel(): ViewModel() {
         return _docLockers
     }
 
+    // 바뀐 자리 정보를 채워주는 코드
+    fun setSeats(position: MutableList<Int>, seatNum: Int): MutableList<DocSeat> {
+        val realPos = position.subList(0,seatNum)
+        val postSeats = _docSeat.subList(0,seatNum)
+        for(i in 0 until seatNum) postSeats[i].seatNum = realPos[i]
+        return postSeats
+    }
 
 //    private val _seat : MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
 //    val seat = _seat
