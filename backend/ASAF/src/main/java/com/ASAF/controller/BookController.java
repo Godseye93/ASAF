@@ -4,6 +4,7 @@ import com.ASAF.dto.BookDTO;
 import com.ASAF.service.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,5 +66,16 @@ public class BookController {
         List<Map<String, Object>> result = bookService.findDistinctBookDTOsWithBookNameCountByClassRegionAndGeneration(class_code, region_code, generation_code);
 
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/borrowed/{classCode}/{regionCode}/{generationCode}/sorted-by-name")
+    public ResponseEntity<List<BookDTO>> findBooksInBorrowedStateSortedByName(
+            @PathVariable("classCode") int classCode,
+            @PathVariable("regionCode") int regionCode,
+            @PathVariable("generationCode") int generationCode) {
+
+        List<BookDTO> borrowedBooks = bookService.findBorrowedBooksByClassRegionAndGenerationSortedByName(classCode, regionCode, generationCode);
+
+        return new ResponseEntity<>(borrowedBooks, HttpStatus.OK);
     }
 }

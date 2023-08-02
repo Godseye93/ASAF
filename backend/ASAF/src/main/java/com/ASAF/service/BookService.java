@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -168,5 +165,17 @@ public class BookService {
         return bookDTOList.stream()
                 .filter(bookDTO -> bookDTO.getBorrowState())
                 .collect(Collectors.groupingBy(BookDTO::getBookName, Collectors.counting()));
+    }
+
+    public List<BookDTO> findBorrowedBooksByClassRegionAndGenerationSortedByName(int class_code, int region_code, int generation_code) {
+        List<BookEntity> borrowedBooks = bookRepository.findBooksByClassRegionAndGenerationAndBorrowState(class_code, region_code, generation_code);
+
+        // Convert to BookDTO and sort by bookName
+        List<BookDTO> bookDTOList = borrowedBooks.stream()
+                .map(bookEntity -> new BookDTO(bookEntity))
+                .sorted(Comparator.comparing(BookDTO::getBookName))
+                .collect(Collectors.toList());
+
+        return bookDTOList;
     }
 }

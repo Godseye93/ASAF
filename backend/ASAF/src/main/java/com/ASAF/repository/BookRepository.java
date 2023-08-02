@@ -13,4 +13,10 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
             @Param("class_code") int class_code,
             @Param("region_code") int region_code,
             @Param("generation_code") int generation_code);
+
+    @Query("SELECT c FROM BookEntity c WHERE c.borrowState = true AND c.class_code.class_code = :class_code AND c.region_code.region_code = :region_code AND c.generation_code.generation_code = :generation_code")
+    List<BookEntity> findBooksByClassRegionAndGenerationAndBorrowState(
+            @Param("class_code") int class_code,
+            @Param("region_code") int region_code,
+            @Param("generation_code") int generation_code);
 }
