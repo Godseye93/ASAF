@@ -116,7 +116,7 @@ dependencies {
     //firebase
 //    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 
-
+    implementation 'androidx.biometric:biometric:1.2.0-alpha05'
 
     //tedPermission
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'

@@ -62,7 +62,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             // Log and toast
             Log.d(TAG, "토큰 생성: $token")
-            ApplicationClass.sharedPreferences.addFCMToken(token)
+            if (token != null) {
+                ApplicationClass.sharedPreferences.addFCMToken(token)
+            }
 //            Log.d(TAG, msg)1111
 //            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
         })
@@ -89,9 +91,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.login_fragment -> hideBottomNavigationBar()
-                R.id.ProhomeFragment-> showProBottomNavigationBarFromFragment()
+                R.id.ProhomeFragment -> showProBottomNavigationBarFromFragment()
                 R.id.scheduleFragment -> showProBottomNavigationBarFromFragment()
-
+                R.id.StudentHomeFragment -> {
+                    showStudentBottomNaviagtionBarFromFragment()
+                    // 없던 부분
+                    val bottomNavigationView =
+                        findViewById<MorphBottomNavigationView>(R.id.bottom_navi_student)
+                    bottomNavigationView.setupWithNavController(navController)
+                }
             }
         }
 
@@ -107,11 +115,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     fun hideBottomNavigationBarFromFragment() {
         hideBottomNavigationBar()
     }
-    fun showBottomNavigationBarFromFragment() {
-        showBottomNavigationBar()
-    }
+//    fun showBottomNavigationBarFromFragment() {
+//        showBottomNavigationBar()
+//    }
     fun showProBottomNavigationBarFromFragment() {
         showProBottomNavigationBar()
+    }
+
+    fun showStudentBottomNaviagtionBarFromFragment() {
+        showStudentBottomNavigationBar()
     }
 
 

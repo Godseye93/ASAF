@@ -30,13 +30,13 @@
         android:name="com.d103.asaf.ui.library.pro.LibraryManagementFragment"
         android:label="LibarayManagement"
         tools:layout="@layout/fragment_library_management"/>
-    <fragment
+    <!--<fragment
         android:id="@+id/navigation_library_use"
         android:name="com.d103.asaf.ui.library.student.LibraryUseFragment"
         android:label="LibarayUse"
-        tools:layout="@layout/fragment_library_use"/>
+        tools:layout="@layout/fragment_library_use"/>-->
     <fragment
-        android:id="@+id/navigation_market"
+        android:id="@+id/marketFragment"
         android:name="com.d103.asaf.ui.market.MarketFragment"
         android:label="Market"
         tools:layout="@layout/fragment_market"/>
@@ -50,6 +50,21 @@
         android:name="com.d103.asaf.ui.op.OpFragment"
         android:label="Operation"
         tools:layout="@layout/fragment_op"/>
+
+    <!-- Student Bottom Navigation Bar -->
+    <fragment
+        android:id="@+id/busFragment"
+        android:name="com.d103.asaf.ui.bus.BusFragment"
+        android:label="Bus"
+        tools:layout="@layout/fragment_bus"
+        tools:ignore="DuplicateIds" />
+    <fragment
+        android:id="@+id/libraryUseFragment"
+        android:name="com.d103.asaf.ui.library.student.LibraryUseFragment"
+        android:label="LibraryUse"
+        tools:layout="@layout/fragment_library_use" />
+
+
     <fragment
         android:id="@+id/scheduleFragment"
         android:name="com.d103.asaf.ui.schedule.ScheduleFragment"
@@ -145,6 +160,18 @@
         android:id="@+id/action_login_fragment_to_StudentHomeFragment"
         app:destination="@+id/StudentHomeFragment"
         app:popUpTo="@id/login_fragment"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_ProHomeFragment_to_loginFragment"
+        app:destination="@+id/login_fragment"
+        app:popUpTo="@id/ProhomeFragment"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_StudentHomeFragment_to_loginFragment"
+        app:destination="@+id/login_fragment"
+        app:popUpTo="@id/StudentHomeFragment"
         app:popUpToInclusive="true" />
 
     <action

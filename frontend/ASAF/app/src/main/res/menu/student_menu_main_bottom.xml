@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/operationFragmentBtn"
+        android:id="@+id/busFragment"
         android:enabled="true"
         android:icon="@drawable/ic_bus"
-        android:title="버스"/>
+        android:title="버스"
+        tools:ignore="DuplicateIds" />
 
     <item
-        android:id="@+id/scheduleFragment"
+        android:id="@+id/libraryUseFragment"
         android:enabled="true"
         android:icon="@drawable/ic_book"
         android:title="도서 이용"/>
 
     <item
-        android:id="@+id/homeFragment"
+        android:id="@+id/StudentHomeFragment"
         android:enabled="true"
         android:icon="@drawable/student_card"
         android:title="홈"/>
 
     <item
-        android:id="@+id/bookManageMentFragment"
+        android:id="@+id/marketFragment"
         android:enabled="true"
         android:icon="@drawable/ic_market"
         android:title="중고 거래"/>
 
     <item
-        android:id="@+id/busFragment"
+        android:id="@+id/supportFragment"
         android:enabled="true"
         android:icon="@drawable/ic_sign"
         android:title="교육 지원금"/>
