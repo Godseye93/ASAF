@@ -87,11 +87,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
             }
             if (ApplicationClass.sharedPreferences.getString("authority") == "교육생") {
                 findNavController().navigate(R.id.action_login_fragment_to_StudentHomeFragment)
+                findNavController().popBackStack()
             } else {
                 findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
+                findNavController().popBackStack()
             }
         }else{
-            findNavController().popBackStack()
+//            findNavController().popBackStack()
         }
     }
 
