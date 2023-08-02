@@ -1,17 +1,23 @@
 package com.d103.asaf.ui.schedule
 
+
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
+import android.widget.TimePicker
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.d103.asaf.MainActivity
 import com.d103.asaf.R
 import com.d103.asaf.SharedViewModel
+import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.config.BaseFragment
+import com.d103.asaf.common.model.dto.Noti
 import com.d103.asaf.databinding.FragmentNotiRegisterBinding
+import java.util.Calendar
+import java.util.Date
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -78,6 +84,12 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
                 Toast.makeText(requireContext(), "공지 제목을 입력해주세요", Toast.LENGTH_SHORT).show()
             }
             else {
+                val noti = createNoti()
+
+                Log.d("년", "년: ${sharedViewModel.year}")
+                Log.d("공지시간", "공지 시간: ${noti.sendTime}")
+                Log.d("등록시간", "공지 시간: ${noti.registerTime}")
+
                 // 공지 발송 + 저장
                 if(binding.notiCheckBox.isChecked){
 
@@ -92,6 +104,43 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
         }
 
     }
+
+    fun createNoti() : Noti{
+        val noti = Noti()
+
+        //시간 설정
+        val calendar: Calendar = Calendar.getInstance()
+        val year: Int = calendar.get(Calendar.YEAR)
+        val month: Int = calendar.get(Calendar.MONTH)
+        val dayOfMonth: Int = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val hour = binding.notiTime.hour
+        val minute = binding.notiTime.minute
+
+        calendar.set(year, month, dayOfMonth, hour, minute)
+
+        val selectedTime: Date = calendar.time
+        noti.sendTime = selectedTime
+        calendar.set(sharedViewModel.year, sharedViewModel.month, sharedViewModel.day)
+        noti.registerTime = calendar.time
+
+        // 제목 타이틀 설정
+        noti.title = binding.notiTitleEdittext.text.toString()
+        noti.content = binding.notiDetailEdittext.text.toString()
+
+
+        // 작성자
+        noti.writter = ApplicationClass.sharedPreferences.getString("memberName").toString()
+
+        // sender 설정
+
+
+
+
+
+        return noti
+    }
+
 
 
 
