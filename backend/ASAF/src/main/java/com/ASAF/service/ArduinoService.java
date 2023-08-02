@@ -1,34 +1,63 @@
 package com.ASAF.service;
 
+import com.ASAF.dto.RfidDTO;
+import com.ASAF.entity.RfidEntity;
+import com.ASAF.repository.RfidRepository;
 import com.fazecast.jSerialComm.SerialPort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class ArduinoService {
 
-    private final String PORT_NAME = "COM6"; // 리눅스 기반이라면 /dev/ttyACM* 형식으로 되어있습니다.
-    private final int BAUD_RATE =9600;
-    private final int TIMEOUT_READ_BLOCKING=100;
+    private final String PORT_NAME = "COM6";
+    private final int BAUD_RATE = 9600;
+    private final int TIMEOUT_READ_BLOCKING = 100;
 
-    public void startListeningForUid(){
-        try{
-            SerialPort serialPort= getConnectedArduino();
-            if(serialPort!=null){
-                while(true){
-                    byte[] readBuffer=new byte[1024];
-                    int numRead=serialPort.readBytes(readBuffer,readBuffer.length);
-                    if(numRead>0){
-                        String uid=new String(readBuffer).trim();
-                        System.out.println("UID: "+uid);
+    @Autowired
+    private RfidRepository rfidRepository;
+
+    private AtomicBoolean isListening = new AtomicBoolean(false);
+
+    public RfidDTO startListeningForUid() {
+        isListening.set(true);
+
+        try {
+            SerialPort serialPort = getConnectedArduino();
+
+            if (serialPort != null) {
+                while (isListening.get()) {
+                    byte[] readBuffer = new byte[1024];
+                    int numRead = serialPort.readBytes(readBuffer, readBuffer.length);
+
+                    if (numRead > 0) {
+                        String uid = new String(readBuffer).trim();
+                        System.out.println("UID: " + uid);
+
+                        Optional<RfidEntity> optionalRfidEntity = rfidRepository.findByRfidNumber(uid);
+
+                        if (optionalRfidEntity.isPresent()) {
+                            return RfidDTO.toRfidDTO(optionalRfidEntity.get());
+                        }
                     }
                 }
-            }else{
+
+                serialPort.closePort();
+            } else {
                 System.err.println("No Arduino device found.");
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
+        return null;
+    }
+
+    public void stopListeningForUid() {
+        isListening.set(false);
     }
 
     private SerialPort getConnectedArduino(){

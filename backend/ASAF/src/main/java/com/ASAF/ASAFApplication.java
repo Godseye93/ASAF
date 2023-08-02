@@ -13,9 +13,5 @@ public class ASAFApplication {
 		SpringApplication.run(ASAFApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner run(ArduinoService arduinoService) throws Exception{
-		return args -> arduinoService.startListeningForUid();
-	}
 
 }
