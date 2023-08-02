@@ -43,7 +43,7 @@ public class DataLoader implements CommandLineRunner {
             memberDTO.setProfile_image("src/main/resources/static/images/profile_images/ssafy" + i + "@email.com.png");
             memberDTO.setElectronic_student_id(10000 + i);
             memberDTO.setMember_info("D10" + i);
-            memberDTO.setToken("csDJO4XnSq-tGE2-3hsOSL:APA91bF6RtbC0tzFo7C6c7TmdM_8-Tc0A5-I8hMniLtFv-78yNO3rOLDk-pdvtHaTiTzwTvmpoZj_sdGjQ7YpOvjLgtM2iKzOuw-hV9qduBJZHFar4iRM5VOS5cU0GfUjrK-9V_aztpq");
+            memberDTO.setToken("fE_q5sa_RNKy7QkzhDar42:APA91bGHed0OzNm8ETlcMbzCFVNyXxs1moHW641-CQEN7PebBUjRKboMR8zg_HQfJuZiGFzShUDGD40zMWApLgZeBTFJckPfwN5za_LGm1txmE4EVcj8XqNDH81Vny__FwOwrLLM58Rh");
             memberDTO.setAttended("미출석");
             if (i == 1){
                 memberDTO.setAuthority("프로");
@@ -77,25 +77,25 @@ public class DataLoader implements CommandLineRunner {
 //            MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO);
 //            memberRepository.save(memberEntity);
 //        }
-        for (int i = 11; i <= 11; i++) {
-            // 더미 데이터 생성을 위한 MemberDTO 객체 설정
-            MemberDTO memberDTO = new MemberDTO();
-            memberDTO.setMemberEmail("r");
-            memberDTO.setMemberPassword("r");
-            memberDTO.setMemberName("교육생" + i);
-            memberDTO.setStudent_number("11111" + i);
-            memberDTO.setBirth_date("199" + i + "-01-01");
-            memberDTO.setPhone_number("010-1234-000" + i);
-            memberDTO.setProfile_image("src/main/resources/static/images/profile_images/ssafy" + i + "@email.com.png");
-            memberDTO.setElectronic_student_id(10000 + i);
-            memberDTO.setMember_info("D10" + i);
-            memberDTO.setToken("token" + i);
-            memberDTO.setAttended("미출석");
-            memberDTO.setAuthority("교육생");
-            // MemberDTO를 MemberEntity로 변환해서 저장
-            MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO);
-            memberRepository.save(memberEntity);
-        }
+//        for (int i = 11; i <= 11; i++) {
+//            // 더미 데이터 생성을 위한 MemberDTO 객체 설정
+//            MemberDTO memberDTO = new MemberDTO();
+//            memberDTO.setMemberEmail("r");
+//            memberDTO.setMemberPassword("r");
+//            memberDTO.setMemberName("교육생" + i);
+//            memberDTO.setStudent_number("11111" + i);
+//            memberDTO.setBirth_date("199" + i + "-01-01");
+//            memberDTO.setPhone_number("010-1234-000" + i);
+//            memberDTO.setProfile_image("src/main/resources/static/images/profile_images/ssafy" + i + "@email.com.png");
+//            memberDTO.setElectronic_student_id(10000 + i);
+//            memberDTO.setMember_info("D10" + i);
+//            memberDTO.setToken("token" + i);
+//            memberDTO.setAttended("미출석");
+//            memberDTO.setAuthority("교육생");
+//            // MemberDTO를 MemberEntity로 변환해서 저장
+//            MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO);
+//            memberRepository.save(memberEntity);
+//        }
         // 반 더미데이터
         for (int i = 1; i <= 20; i++) {
             ClassDTO classDTO = new ClassDTO();

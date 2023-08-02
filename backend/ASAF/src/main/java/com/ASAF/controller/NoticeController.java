@@ -40,6 +40,33 @@ public class NoticeController {
         }
     }
 
+    @PostMapping("/immediate")
+    public ResponseEntity<List<NoticeDTO>> createNoticeimmediate(@RequestBody List<NoticeDTO> noticeDTOList) throws IOException {
+        // List<NoticeDTO> results = noticeService.createNotice(noticeDTOList);
+        System.out.println(noticeDTOList.size());
+        if (noticeDTOList != null && !noticeDTOList.isEmpty()) {
+            // 수정해야함 테스트 데이터임
+                List<MemberEntity> users = new ArrayList<>();
+                for (NoticeDTO data : noticeDTOList) {
+                    System.out.println(data.getReciever());
+                    users.add(MemberEntity.toMemberEntity(memberService.findById(data.getReciever())));
+                }
+
+                String sender = memberService.findById(noticeDTOList.get(0).getSender()).getMemberName();
+                NoticeEntity noticeEntity = NoticeEntity.toNoticeEntity(noticeDTOList.get(0));
+                // 각 사용자에게 알림을 보냅니다.
+                firebaseCloudMessageDataService.sendNotificationToUsers(users,noticeEntity ,sender);
+
+
+            return ResponseEntity.ok(noticeDTOList);
+        } else {
+            System.out.println("NULLLLLLLLLL");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+
+
     @PutMapping("/{id}")
     public ResponseEntity<NoticeDTO> updateNotice(@PathVariable int id, @RequestBody NoticeDTO noticeDTO) {
         noticeDTO.setId(id);
@@ -88,8 +115,11 @@ public class NoticeController {
             // NoticeDTO를 NoticeEntity로 변환합니다.
             NoticeEntity noticeEntity = NoticeEntity.toNoticeEntity(noticeDTO);
 
+            // 수정해야함 테스트 데이터임
+            String sender = memberService.findById(1).getMemberName();
+
             // 각 사용자에게 알림을 보냅니다.
-            firebaseCloudMessageDataService.sendNotificationToUsers(users, noticeEntity);
+            firebaseCloudMessageDataService.sendNotificationToUsers(users, noticeEntity,sender);
 
             return "Notification sent successfully!";
         } catch (IOException e) {
