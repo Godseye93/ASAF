@@ -84,8 +84,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
                     Log.d(TAG, "onViewCreated: $e")
                 }
             }
-            if (ApplicationClass.sharedPreferences.getString("authority") == "stu") {
-                findNavController().navigate(R.id.navigation_student_home)
+            if (ApplicationClass.sharedPreferences.getString("authority") == "교육생") {
+                findNavController().navigate(R.id.action_login_fragment_to_StudentHomeFragment)
             } else {
                 findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
             }
@@ -125,8 +125,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
                 Log.d(TAG, "유저: ${sharedViewModel.logInUser}")
                 sharedViewModel.getClassInfo(loginResult)
                 Log.d(TAG, "담당 반: ${sharedViewModel.classInfoList.value?.size}")
-                if (loginResult.authority == "stu") {
-                    findNavController().navigate(R.id.navigation_student_home)
+                if (loginResult.authority == "교육생") {
+                    findNavController().navigate(R.id.action_login_fragment_to_StudentHomeFragment)
                 } else {
                     findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)
                 }
