@@ -3,6 +3,7 @@ package com.ASAF.service;
 import com.ASAF.dto.BookDTO;
 import com.ASAF.entity.*;
 import com.ASAF.repository.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -125,16 +127,8 @@ public class BookService {
                 .map(BookDTO::fromBookEntity)
                 .collect(Collectors.toList());
     }
-
-    public List<BookDTO> findBookDTOsByClassRegionAndGenerationTest(int class_code, int region_code, int generation_code) {
-        List<BookEntity> bookEntities = bookRepository.findBooksByClassRegionAndGeneration(class_code, region_code, generation_code);
-        return bookEntities.stream()
-                .map(BookDTO::fromBookEntity)
-                .collect(Collectors.toList());
-    }
-
     // 도서 목록 중복 제거 및 중복 개수 포함 조회
-    public Map<String, Object> findDistinctBookDTOsWithCountByClassRegionAndGeneration(int class_code, int region_code, int generation_code) {
+    public List<Map<String, Object>> findDistinctBookDTOsWithBookNameCountByClassRegionAndGeneration(int class_code, int region_code, int generation_code) {
         List<BookEntity> books = bookRepository.findBooksByClassRegionAndGeneration(class_code, region_code, generation_code);
 
         // Convert to BookDTO
@@ -149,9 +143,18 @@ public class BookService {
                 .filter(distinctByKey(BookDTO::getBookName)) // 중복 제거 (bookName 값 기준)
                 .collect(Collectors.toList());
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("distinctBooks", distinctBookDTOList);
-        response.put("bookNameCount", bookNameCount);
+        Map<String, Long> trueBorrowStateCount = countTrueBorrowState(bookDTOList);
+
+        List<Map<String, Object>> response = distinctBookDTOList.stream().map(bookDTO -> {
+            Map<String, Object> bookMap = new ObjectMapper().convertValue(bookDTO, TreeMap.class);
+            bookMap.put("bookNameCount", bookNameCount.get(bookDTO.getBookName()));
+            bookMap.put("borrowDate", bookDTO.getFormattedBorrowDate());
+            bookMap.put("returnDate", bookDTO.getFormattedReturnDate());
+            bookMap.put("trueBorrowStateCount", trueBorrowStateCount.getOrDefault(bookDTO.getBookName(), 0L));
+            bookMap.remove("formattedBorrowDate");
+            bookMap.remove("formattedReturnDate");
+            return bookMap;
+        }).collect(Collectors.toList());
 
         return response;
     }
@@ -159,5 +162,11 @@ public class BookService {
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Map<Object, Boolean> seen = new ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
+
+    private Map<String, Long> countTrueBorrowState(List<BookDTO> bookDTOList) {
+        return bookDTOList.stream()
+                .filter(bookDTO -> bookDTO.getBorrowState())
+                .collect(Collectors.groupingBy(BookDTO::getBookName, Collectors.counting()));
     }
 }

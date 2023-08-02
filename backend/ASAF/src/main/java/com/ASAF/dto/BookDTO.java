@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
@@ -103,5 +104,17 @@ public class BookDTO {
                 bookEntity.getGenerationEntity().getGeneration_code(),
                 bookEntity.getMemberEntity().getId()
         );
+    }
+
+    public String getFormattedBorrowDate() {
+        return borrowDate != null ? new SimpleDateFormat("yyyy-MM-dd").format(borrowDate) : null;
+    }
+
+    public String getFormattedReturnDate() {
+        return returnDate != null ? new SimpleDateFormat("yyyy-MM-dd").format(returnDate) : null;
+    }
+
+    public boolean getBorrowState() {
+        return borrowState;
     }
 }
