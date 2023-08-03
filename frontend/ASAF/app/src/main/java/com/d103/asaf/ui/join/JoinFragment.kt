@@ -93,7 +93,8 @@ class JoinFragment : Fragment() {
 
         // 뒤로가기 버튼 클릭 시,
         binding.fragmentJoinButtonBack.setOnClickListener {
-            findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
+            findNavController().navigateUp()
+//            findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
         }
         // 생년월일 클릭 시 달력 표시
         binding.fragmentJoinEditTVBirth.setOnClickListener {

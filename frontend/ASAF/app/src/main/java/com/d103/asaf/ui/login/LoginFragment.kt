@@ -106,10 +106,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
 
         binding.fragmentLoginTextviewForgetpass.setOnClickListener {
             findNavController().navigate(R.id.findpwd_fragment)
+//            findNavController().popBackStack()
         }
 
         binding.fragmentLoginButtonJoin.setOnClickListener {
             findNavController().navigate(R.id.join_fragment)
+//            findNavController().popBackStack()
         }
     }
 
