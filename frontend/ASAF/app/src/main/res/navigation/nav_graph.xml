@@ -30,11 +30,7 @@
         android:name="com.d103.asaf.ui.library.pro.LibraryManagementFragment"
         android:label="LibarayManagement"
         tools:layout="@layout/fragment_library_management"/>
-    <!--<fragment
-        android:id="@+id/navigation_library_use"
-        android:name="com.d103.asaf.ui.library.student.LibraryUseFragment"
-        android:label="LibarayUse"
-        tools:layout="@layout/fragment_library_use"/>-->
+
     <fragment
         android:id="@+id/marketFragment"
         android:name="com.d103.asaf.ui.market.MarketFragment"
@@ -50,20 +46,6 @@
         android:name="com.d103.asaf.ui.op.OpFragment"
         android:label="Operation"
         tools:layout="@layout/fragment_op"/>
-
-    <!-- Student Bottom Navigation Bar -->
-    <fragment
-        android:id="@+id/busFragment"
-        android:name="com.d103.asaf.ui.bus.BusFragment"
-        android:label="Bus"
-        tools:layout="@layout/fragment_bus"
-        tools:ignore="DuplicateIds" />
-    <fragment
-        android:id="@+id/libraryUseFragment"
-        android:name="com.d103.asaf.ui.library.student.LibraryUseFragment"
-        android:label="LibraryUse"
-        tools:layout="@layout/fragment_library_use" />
-
 
     <fragment
         android:id="@+id/scheduleFragment"
@@ -82,6 +64,27 @@
 
         </action>
     </fragment>
+
+    <!-- Student Bottom Navigation Bar -->
+    <fragment
+        android:id="@+id/busFragment"
+        android:name="com.d103.asaf.ui.bus.BusFragment"
+        android:label="Bus"
+        tools:layout="@layout/fragment_bus"
+        tools:ignore="DuplicateIds" />
+    <fragment
+        android:id="@+id/libraryUseFragment"
+        android:name="com.d103.asaf.ui.library.student.LibraryUseFragment"
+        android:label="LibraryUse"
+        tools:layout="@layout/fragment_library_use" />
+
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="com.d103.asaf.ui.sign.SignNextFragment"
+        tools:lable="Sign"
+        tools:layout="@layout/fragment_sign_next"/>
+
+
     <fragment
         android:id="@+id/navigation_setting"
         android:name="com.d103.asaf.ui.setting.SettingFragment"

@@ -44,7 +44,7 @@ class NotiRegisterFragmentViewModel : ViewModel() {
     fun pushNoti(){
         Log.d("공지 보내기", "공지 보내기: $notiList ")
         viewModelScope.launch{
-            RetrofitUtil.notiService.pushMessage(notiList)
+            RetrofitUtil.notiService.pushMessageReservation(notiList)
         }
 
 

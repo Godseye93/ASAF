@@ -10,4 +10,7 @@ interface NotiService {
     @POST("notice/immediate")
     suspend fun pushMessage(@Body message : List<Noti>) : Response<Boolean>
 
+    @POST("notice")
+    suspend fun pushMessageReservation(@Body message : List<Noti>) : Response<Boolean>
+
 }
