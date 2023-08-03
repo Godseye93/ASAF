@@ -1,7 +1,9 @@
 package com.d103.asaf.ui.sign
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentSignNextBinding
@@ -22,31 +24,41 @@ class SignNextFragment : BaseFragment<FragmentSignNextBinding>(FragmentSignNextB
                 dropdownText.text = currentMonth.toString()
                 dropdownTextPost.text = "월"
                 dataList.addAll(dataMonth)
-                dataList.removeAt(currentMonth)
+                dataList.removeAt(currentMonth-1)
             }
             fragmentSignNextDropdownSecond.apply {
                 dropdownText.text = currentDay.toString()
                 dropdownTextPost.text = "일"
                 dataList.addAll(dataDay)
-                dataList.removeAt(currentDay)
+                dataList.removeAt(currentDay-1)
             }
             fragmentSignNextDropdownThird.apply {
                 dropdownText.text = currentDay.toString()
                 dropdownTextPost.text = "일"
                 dataList.addAll(dataDay)
-                dataList.removeAt(currentDay)
+                dataList.removeAt(currentDay-1)
             }
             fragmentSignNextDropdownFourthMonth.apply {
                 dropdownText.text = currentMonth.toString()
                 dropdownTextPost.text = "월"
                 dataList.addAll(dataMonth)
-                dataList.removeAt(currentMonth)
+                dataList.removeAt(currentMonth-1)
             }
             fragmentSignNextDropdownFourthDay.apply {
                 dropdownText.text = currentDay.toString()
                 dropdownTextPost.text = "일"
                 dataList.addAll(dataDay)
-                dataList.removeAt(currentDay)
+                dataList.removeAt(currentDay-1)
+                Log.d("드랍다운", "onViewCreated: ${dropdownText.text} ")
+            }
+            uploadSignBtn.setOnClickListener {
+                val signMonth = fragmentSignNextDropdownFirst.dropdownText.text.toString()
+                val totDay = fragmentSignNextDropdownSecond.dropdownText.text.toString()
+                val attDay = fragmentSignNextDropdownThird.dropdownText.text.toString()
+                val subMonth = fragmentSignNextDropdownFourthMonth.dropdownText.text.toString()
+                val subDay = fragmentSignNextDropdownFourthDay.dropdownText.text.toString()
+                val fragment = SignFragment.instance(signMonth, totDay, attDay, subMonth, subDay)
+                findNavController().navigate(R.id.action_signNextFragment_to_signFragment, fragment.arguments)
             }
         }
     }

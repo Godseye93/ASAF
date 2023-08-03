@@ -17,6 +17,7 @@ import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentSignBinding
 import com.d103.asaf.databinding.FragmentSignNextBinding
+import com.d103.asaf.ui.library.student.LibraryUseDrawFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,13 +30,42 @@ import java.util.Date
 import java.util.Locale
 
 class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind, R.layout.fragment_sign) {
+    companion object {
+        fun instance(signMonth: String, totDay: String, attDay: String, subMonth: String, subDay: String): SignDrawFragment {
+            val fragment = SignDrawFragment()
+            val args = Bundle()
+            args.putString("signMonth", signMonth)
+            args.putString("totDay", totDay)
+            args.putString("attDay", attDay)
+            args.putString("subMonth", subMonth)
+            args.putString("subDay", subDay)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     lateinit var draw: DrawSign
     lateinit var document: Document
+    private var signMonth = ""
+    private var totDay = ""
+    private var attDay = ""
+    private var subMonth = ""
+    private var subDay = ""
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        signMonth = requireArguments().getString("signMonth") ?: "1"
+        totDay = requireArguments().getString("totDay") ?: "1"
+        attDay = requireArguments().getString("attDay") ?: "1"
+        subMonth = requireArguments().getString("subMonth") ?: "1"
+        subDay = requireArguments().getString("subDay") ?: "1"
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         draw = binding.fragmentSignConfirmDraw
+        draw.setSign(SignDrawFragment.draw?.getSign() ?: listOf(),"SignFragment")
 
         initView()
         initEvent()
@@ -50,21 +80,24 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
         val year = today[0]
         // 유저 정보 모두 필요
         document = Document(today[1], "박현우", "부울경", "11", "", "", "12", "29")
-
+        Log.d("사인", "setUserInfo: $totDay $attDay")
         binding.apply {
             fragmentSignConfirmTvYear.text = year
-            fragmentSignConfirmTvMonth1.text = document.month
-            fragmentSignConfirmTvMonth2.text = document.month
-            fragmentSignConfirmTvMonth3.text = document.month
-            fragmentSignConfirmTvMonth4.text = document.subMonth
-            fragmentSignConfirmTvDay.text = document.subDay
-            fragmentSignConfirmTvCampus.text = document.campus
-            fragmentSignConfirmTvClass.text = document.class_
-            fragmentSignConfirmTvName1.text = document.name
+            fragmentSignConfirmTvMonth1.text = signMonth
+            fragmentSignConfirmTvMonth2.text = signMonth
+            fragmentSignConfirmTvMonth3.text = signMonth
+            fragmentSignConfirmTvMonth4.text = signMonth
+
+            fragmentSignConfirmTvDay.text = subDay
+            fragmentSignConfirmTvCampus.text = document.campus // 캠퍼스 정보
+            fragmentSignConfirmTvClass.text = document.class_ // 반정보
+
+            fragmentSignConfirmTvName1.text = document.name // 유저 이름
             fragmentSignConfirmTvName2.text = document.name
             fragmentSignConfirmTvName3.text = document.name
-            fragmentSignConfirmTvClassDay.text = document.classDay
-            fragmentSignConfirmTvAttendDay.text = document.attendDay
+
+            fragmentSignConfirmTvClassDay.text = totDay
+            fragmentSignConfirmTvAttendDay.text = attDay
         }
     }
 
@@ -75,12 +108,12 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
             val current_time = sdf.format(time) //String형 변수에 저장
             //Request_Capture(binding.fragmentSignConfirmDocument, current_time + "_capture");
 
-            request_Capture(binding.fragmentSignConfirmDocument, "${document.campus}_${document.class_}반_${document.name}");
+            requestCapture(binding.fragmentSignConfirmDocument, "${document.campus}_${document.class_}반_${document.name}");
         }
     }
 
     // 특정 레이아웃 캡쳐해서 저장하기
-    private fun request_Capture(view: View?, title: String) {
+    private fun requestCapture(view: View?, title: String) {
         if (view == null) { // Null Point Exception ERROR 방지
             println("::::ERROR:::: view == NULL")
             return
@@ -112,6 +145,11 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
         fos?.use {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
         }
+    }
+
+    // DB에 서명 정보 저장
+    private fun uploadToDB() {
+
     }
 
     private fun todayToString(): List<String> {

@@ -28,9 +28,9 @@
         <com.d103.asaf.ui.sign.DrawSign
             android:id="@+id/fragment_sign_confirm_draw"
             android:layout_width="68dp"
-            android:layout_height="35dp"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline55"
-            app:layout_constraintEnd_toEndOf="@id/guideline14" />
+            android:layout_height="40dp"
+            app:layout_constraintBottom_toBottomOf="@+id/guidelineSignVertical"
+            app:layout_constraintEnd_toEndOf="@id/guidelineSignHorizontal" />
 
         <TextView
             android:id="@+id/fragment_sign_confirm_tvMonth1"
@@ -219,7 +219,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.91" />
+            app:layout_constraintGuide_begin="374dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline13"
@@ -286,14 +286,30 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.99" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineSignVertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.925" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineSignHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="1" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/fragment_sign_confirm_btn_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="저장"
-        android:textSize="16sp"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:text="업로드"
+        android:backgroundTint="@color/bookDraw"
+        android:textSize="30sp"
         app:layout_constraintTop_toBottomOf="@+id/fragment_sign_confirm_document"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

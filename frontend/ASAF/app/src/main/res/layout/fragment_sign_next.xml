@@ -21,6 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:elevation="10dp"
         android:id="@+id/fragment_sign_next_linearFirst"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,6 +54,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:elevation="9dp"
         android:id="@+id/fragment_sign_next_linearSecond"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,6 +88,7 @@
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:elevation="8dp"
         android:id="@+id/fragment_sign_next_linearThird"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -118,6 +121,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:elevation="7dp"
         android:id="@+id/fragment_sign_next_linearFourth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -158,11 +162,11 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButton"
+        android:id="@+id/uploadSignBtn"
         android:layout_width="200dp"
         android:layout_height="70dp"
         android:backgroundTint="@color/bookDraw"
-        android:text="업로드"
+        android:text="문서확인"
         android:textSize="30sp"
         app:cornerRadius="15dp"
         android:layout_marginTop="20dp"
