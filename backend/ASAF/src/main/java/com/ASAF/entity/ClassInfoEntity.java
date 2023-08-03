@@ -34,6 +34,23 @@ public class ClassInfoEntity {
 
     public static ClassInfoEntity toClassInfoEntity(ClassInfoDTO classInfoDTO) {
         ClassInfoEntity classInfoEntity = new ClassInfoEntity();
+
+        ClassEntity classEntity = new ClassEntity();
+        classEntity.setClass_code(classInfoDTO.getClass_code());
+        classInfoEntity.setClass_code(classEntity);
+
+        RegionEntity regionEntity = new RegionEntity();
+        regionEntity.setRegion_code(classInfoDTO.getRegion_code());
+        classInfoEntity.setRegion_code(regionEntity);
+
+        GenerationEntity generationEntity = new GenerationEntity();
+        generationEntity.setGeneration_code(classInfoDTO.getGeneration_code());
+        classInfoEntity.setGeneration_code(generationEntity);
+
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setId(classInfoDTO.getId());
+        classInfoEntity.setId(memberEntity);
+
         return classInfoEntity;
     }
 
