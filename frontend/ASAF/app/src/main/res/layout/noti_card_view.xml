@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_style">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/sender_profile_image"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
+                android:src="@drawable/testimg" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5분전" />
+
+                <TextView
+                    android:id="@+id/noti_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="9시 까지 출석 체크 하세요" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hiddenLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:background="@drawable/round_corner_background"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="오늘은 싸피데이가 있는 날입니다.
+모두들 빠르게 출석체크를 하고 자리에 착석해주시기 바랍니다.
+아아아아ㅏ아아"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+</com.google.android.material.card.MaterialCardView>
+

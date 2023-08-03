@@ -12,6 +12,7 @@ import com.d103.asaf.common.model.dto.Noti
 import com.d103.asaf.common.util.AdapterUtil
 import com.d103.asaf.databinding.ItemDayMemoBinding
 import com.d103.asaf.databinding.ItemStudentAttendanceBinding
+import java.util.Calendar
 import java.util.Date
 
 
@@ -32,8 +33,13 @@ class NotiInfoAdapter (context : Context) : ListAdapter<Noti, NotiInfoAdapter.It
 
 
         fun bind(data : Noti){
-            val date = Date(data.sendTime)
-            binding.notiDate.text = "${date.year}년 ${date.month} 월 ${date.day} 일"
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = data.registerTime
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            binding.notiDate.text = "${year}년 ${month+1} 월 ${day} 일"
             if(data.notification){
                 binding.notiIcon.setColorFilter(Color.YELLOW)
             }
@@ -44,7 +50,7 @@ class NotiInfoAdapter (context : Context) : ListAdapter<Noti, NotiInfoAdapter.It
 
             binding.cardView.setOnClickListener {
 
-                val customDialog = NotiCustomDialog(_context, data.content)
+                val customDialog = NotiCustomDialog(_context, data.content, data.title)
                 customDialog.show()
             }
 
