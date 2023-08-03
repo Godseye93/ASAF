@@ -123,30 +123,6 @@ public class NoticeController {
     // sender 문자열배열을 생성하고 sender의 이름을 찾아서 넣는다.
     // noticeEntity라는 NoticeEntity 인스턴스를 생성하고 첫번째 발송 내용을 넣는다.
 
-    @PostMapping("/immediate")
-    public ResponseEntity<List<NoticeDTO>> createNoticeimmediate(@RequestBody List<NoticeDTO> noticeDTOList) throws IOException {
-        // List<NoticeDTO> results = noticeService.createNotice(noticeDTOList);
-        System.out.println("total : " + noticeDTOList.size());
-        if (noticeDTOList != null && !noticeDTOList.isEmpty()) {
-            // 수정해야함 테스트 데이터임
-            List<MemberEntity> users = new ArrayList<>();
-            for (NoticeDTO data : noticeDTOList) {
-                System.out.println("receiver : " + data.getReceiver());
-                users.add(MemberEntity.toMemberEntity(memberService.findById(data.getReceiver())));
-            }
-
-            String sender = memberService.findById(noticeDTOList.get(0).getSender()).getMemberName();
-            NoticeEntity noticeEntity = NoticeEntity.toNoticeEntity(noticeDTOList.get(0));
-            // 각 사용자에게 알림을 보냅니다.
-            firebaseCloudMessageDataService.sendNotificationToUsers(users,noticeEntity ,sender);
-
-
-            return ResponseEntity.ok(noticeDTOList);
-        } else {
-            System.out.println("데이터가 없습니다.");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-    }
 
     // DB 저장 후 예약 발송
     @GetMapping("/send/{noticeId}")
