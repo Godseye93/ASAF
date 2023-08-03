@@ -15,16 +15,22 @@ class ScheduleFragmentViewModel : ViewModel() {
    fun getMeesage(sender : Int, date : Long){
        Log.d("공지 GET", "보내는 사람:$sender, 시간 : $date ")
        try {
-
            viewModelScope.launch {
                val response = RetrofitUtil.notiService.getTodayMessage(sender, date)
                if(response.isSuccessful){
                    val responseBody = response.body()
                    Log.d("NOTI LIST", "공지 BODY: $responseBody")
-                   if(responseBody != null){
+                   if(responseBody!!.isEmpty()){
                        Log.d("NOTI LIST", "공지들: $notiList")
-                       notiList = responseBody
+                       notiList.clear()
                    }
+                   else{
+                       notiList  = responseBody
+                   }
+               }
+               else{
+                   Log.d("공지 받기 에러", "error: ${response}")
+                   notiList = mutableListOf()
                }
            }
        }catch (e : Exception){
