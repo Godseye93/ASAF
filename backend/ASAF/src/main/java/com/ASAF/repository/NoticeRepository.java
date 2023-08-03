@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface NoticeRepository extends JpaRepository<NoticeEntity, Integer> {
-    // Optional<MemberEntity> findByMemberEmail(String memberEmail);
+//     Optional<MemberEntity> findByMemberEmail(String memberEmail);
 }
 
 

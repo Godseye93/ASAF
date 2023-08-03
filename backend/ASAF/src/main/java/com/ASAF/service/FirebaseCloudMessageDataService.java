@@ -16,6 +16,9 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.*;
 import org.apache.http.HttpHeaders;
@@ -36,18 +39,13 @@ public class FirebaseCloudMessageDataService {
     @Value("${firebase.messaging.server-key}")
     private String firebaseCloudMessagingServerKey;
 
-    private final HttpTransport httpTransport;
-    private final JacksonFactory jacksonFactory;
     private static final Logger logger = LoggerFactory.getLogger(FirebaseCloudMessageDataService.class);
 
     public final ObjectMapper objectMapper;
 
 
-    public FirebaseCloudMessageDataService(ObjectMapper objectMapper, HttpTransport httpTransport, JacksonFactory jacksonFactory){
+    public FirebaseCloudMessageDataService(ObjectMapper objectMapper){
         this.objectMapper = objectMapper;
-        this.httpTransport = httpTransport;
-        this.jacksonFactory = jacksonFactory;
-
     }
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/ssafy-common-proj/messages:send";
 
@@ -74,7 +72,7 @@ public class FirebaseCloudMessageDataService {
 
         googleCredentials.refreshIfExpired();
         String token = googleCredentials.getAccessToken().getTokenValue();
-        System.out.println("서버토큰" + token);
+        System.out.println("서버토큰 : " + token);
         return token;
     }
 
@@ -132,27 +130,41 @@ public class FirebaseCloudMessageDataService {
     }
 
 
+// 예약 발송
+    public void sendNotificationToUsers_reservation(List<MemberEntity> users, NoticeEntity noticeEntity, String sender, Long sendTime ) throws IOException {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        Date sendDate = new Date(sendTime);
+        long initialDelay = sendDate.getTime() - System.currentTimeMillis();
 
-    // 기존 파일
+        String title = noticeEntity.getTitle();
+        String content = noticeEntity.getContent();
+        String body = String.format("작성자 : %s \n %s", sender, content);
 
-//    @Value("${firebase.messaging.server-key}")
-//    private String firebaseCloudMessagingServerKey;
-//
-//    private final HttpTransport httpTransport;
-//    private final JacksonFactory jacksonFactory;
-//
-//    public FirebaseCloudMessageDataService(HttpTransport httpTransport, JacksonFactory jacksonFactory) {
-//        this.httpTransport = httpTransport;
-//        this.jacksonFactory = jacksonFactory;
-//    }
-//
-//    // 공지를 각 유저에게 할당
+        if (initialDelay <= 0) {
+            // 이미 지난 시간인 경우 즉시 전송하도록 예외처리
+            for (MemberEntity user : users) {
+                sendNotificationToUser(user, title, body);
+            }
+        }else{
+            // 예약 발송
+            scheduler.schedule(() -> {
+                for (MemberEntity user : users) {
+                    try {
+                        sendNotificationToUser(user, title, body);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }, initialDelay, TimeUnit.MILLISECONDS);
+        }
+    }
+// 공지를 각 유저에게 할당
     public void sendNotificationToUsers(List<MemberEntity> users, NoticeEntity noticeEntity, String sender ) throws IOException {
         String title = noticeEntity.getTitle();
         String content = noticeEntity.getContent();
 
 
-        String body = String.format("작성자 : %s \n %s", sender, content);
+        String body = String.format("[%s] \n %s", sender, content);
 
         for (MemberEntity user : users) {
             sendNotificationToUser(user, title, body);
@@ -166,42 +178,6 @@ public class FirebaseCloudMessageDataService {
         // Create Notification and Message instances
         Notification notification = new Notification(title, body, null);
         sendDataMessageTo(token, title, body, "123");
-        Message message = new Message(notification, token);
 
-//        try {
-////            boolean success = sendNotification(message);
-////            boolean success = sendNotification(message);
-////            if (!success) {
-////                // Handle the case when the message failed to send
-////                // ...
-////            }
-//        } catch (IOException e) {
-//            System.err.println("Failed to send notification.");
-//            e.printStackTrace();
-//        }
-    }
-//
-//    // Firebase 주소의 인스턴스를 통해 작성된 공지를 전송
-    private boolean sendNotification(Message message) throws IOException {
-        FirebaseMessaging firebaseMessaging = getFirebaseMessagingInstance();
-        if (firebaseMessaging != null) {
-            FcmDataMessage fcmDataMessage = new FcmDataMessage(false, message);
-            // Add code to send FcmDataMessage using FCM REST API or another method
-            // ...
-            return true;
-        }
-        return false;
-    }
-
-    // 사용할 Firebase 주소의 인스턴스 생성
-    private FirebaseMessaging getFirebaseMessagingInstance() {
-        try {
-            FirebaseApp firebaseApp = FirebaseApp.getInstance(); // 기존에 초기화된 FirebaseApp 인스턴스를 가져옵니다.
-            return FirebaseMessaging.getInstance(firebaseApp);
-        } catch (Exception e) {
-            System.err.println("Failed to initialize Firebase Cloud Messaging.");
-            e.printStackTrace();
-        }
-        return null;
     }
 }
