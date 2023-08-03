@@ -122,6 +122,9 @@
         android:name="com.d103.asaf.ui.sign.SignDrawFragment"
         android:label="SignDraw"
         tools:layout="@layout/fragment_sign_draw" >
+        <action
+            android:id="@+id/action_signDrawFragment_to_signNextFragment"
+            app:destination="@id/signNextFragment" />
     </fragment>
 
     <fragment
@@ -129,6 +132,9 @@
         android:name="com.d103.asaf.ui.sign.SignNextFragment"
         android:label="SignNext"
         tools:layout="@layout/fragment_sign_next" >
+        <action
+            android:id="@+id/action_signNextFragment_to_signFragment"
+            app:destination="@id/signFragment" />
     </fragment>
 
 
