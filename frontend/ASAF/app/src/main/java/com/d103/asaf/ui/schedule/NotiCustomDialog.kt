@@ -8,13 +8,14 @@ import android.os.Bundle
 import android.widget.TextView
 import com.d103.asaf.R
 
-class NotiCustomDialog(context : Context, val detail : String) : Dialog(context, R.style.CustomDialogStyle) {
+class NotiCustomDialog(context : Context, val detail : String, val title : String) : Dialog(context, R.style.CustomDialogStyle) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_custom_notil)
-
-        val textView = findViewById<TextView>(R.id.dailog_noti_detail_textView)
-        textView.text = detail
+        val titleText = findViewById<TextView>(R.id.dailog_title)
+        val contentText = findViewById<TextView>(R.id.dailog_noti_detail_textView)
+        titleText.text = title
+        contentText.text = detail
         window?.setBackgroundDrawableResource(android.R.color.transparent)
         val radius = 70f
         val backgroundDrawable = GradientDrawable()

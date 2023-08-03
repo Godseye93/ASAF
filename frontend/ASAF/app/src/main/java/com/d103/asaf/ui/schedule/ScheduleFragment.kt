@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -13,8 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.d103.asaf.MainActivity
 import com.d103.asaf.R
 import com.d103.asaf.SharedViewModel
+import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.Noti
+import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentScheduleBinding
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
@@ -44,6 +47,7 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
     private var param1: String? = null
     private var param2: String? = null
     private val sharedViewModel : SharedViewModel  by activityViewModels()
+    private val viewModel : ScheduleFragmentViewModel by viewModels()
     private var selectedDate: CalendarDay = CalendarDay.today()
     private var notiList  =  mutableListOf<Noti>()
     private lateinit var itemTouchHelper: ItemTouchHelper
@@ -125,7 +129,6 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         binding.calendarView.setHeaderTextAppearance(R.style.AppTheme)
 
 
-
         adapter = NotiInfoAdapter(requireContext())
         binding.fragmentScheduleRecyclerview.adapter = adapter
         binding.fragmentScheduleRecyclerview.layoutManager = LinearLayoutManager(requireContext())
@@ -134,7 +137,7 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.fragmentScheduleRecyclerview)
 
-        adapter.submitList(notiList)
+//        adapter.submitList(notiList)
 
 
         binding.calendarView.setOnDateChangedListener(object : OnDateSelectedListener {
@@ -143,16 +146,21 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
                 date: CalendarDay,
                 selected: Boolean
             ) {
+
                 selectedDate = binding.calendarView.selectedDate
                 Log.d("selectedDate", selectedDate.year.toString())
 
+                Log.d(TAG, "캘린더 선택 시간 : ${selectedDate.date.time}")
+                
                 sharedViewModel.year = selectedDate.year
                 sharedViewModel.month = selectedDate.month
                 sharedViewModel.day = selectedDate.day
+                //이거 바꿔야함
+                viewModel.getMeesage(ApplicationClass.sharedPreferences.getInt("id")!!, selectedDate.date.time)
 
                 sharedViewModel.selectedDate = "${selectedDate.year}년 ${selectedDate.month + 1} 월 ${selectedDate.day} 일"
                 binding.fragmentScheduleDateView.text = "${selectedDate.year}년 ${selectedDate.month + 1} 월 ${selectedDate.day} 일"
-                adapter.submitList(notiList)
+                adapter.submitList(viewModel.notiList)
             }
         })
 

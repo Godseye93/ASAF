@@ -38,9 +38,9 @@
         tools:layout="@layout/fragment_market"/>
     <fragment
         android:id="@+id/navigation_noti"
-        android:name="com.d103.asaf.ui.noti.NotiFragment"
+        android:name="com.d103.asaf.ui.noti.StudentNotiFragment"
         android:label="Noti"
-        tools:layout="@layout/fragment_noti"/>
+        tools:layout="@layout/fragment_student_noti"/>
     <fragment
         android:id="@+id/operationFragment"
         android:name="com.d103.asaf.ui.op.OpFragment"
