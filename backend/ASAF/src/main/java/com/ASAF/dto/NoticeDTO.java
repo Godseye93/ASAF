@@ -16,8 +16,8 @@ public class NoticeDTO {
     private int id;
     private String title;
     private String content;
-    private Date register_time;
-    private Date send_time;
+    private long register_time;
+    private long send_time;
     private int sender;
     private int receiver;
     private Boolean notification;

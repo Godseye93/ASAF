@@ -22,10 +22,10 @@ public class NoticeEntity {
     private String content;
 
     @Column
-    private Date register_time;
+    private long register_time;
 
     @Column
-    private Date send_time;
+    private long send_time;
 
     @Column
     private int sender;

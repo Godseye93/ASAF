@@ -8,6 +8,7 @@ import lombok.Setter;
 public class Notification {
     private String title;
     private String body;
+	private String image;
 
     public Notification() {}
 
@@ -15,6 +16,7 @@ public class Notification {
 		super();
 		this.title = title;
 		this.body = body;
+		this.image = image;
 	}
 
 	@Override
@@ -22,6 +24,7 @@ public class Notification {
 		return "Notification{" +
 				"title='" + title + '\'' +
 				", body='" + body + '\'' +
+				", image='" + image + '\'' +
 				'}';
 	}
 }
