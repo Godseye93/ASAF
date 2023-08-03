@@ -12,7 +12,7 @@ import com.d103.asaf.common.model.dto.Noti
 import com.d103.asaf.common.util.AdapterUtil
 import com.d103.asaf.databinding.ItemDayMemoBinding
 import com.d103.asaf.databinding.ItemStudentAttendanceBinding
-
+import java.util.Date
 
 
 class NotiInfoAdapter (context : Context) : ListAdapter<Noti, NotiInfoAdapter.ItemViewHolder>(AdapterUtil.diffUtilNotiInfo) {
@@ -32,7 +32,8 @@ class NotiInfoAdapter (context : Context) : ListAdapter<Noti, NotiInfoAdapter.It
 
 
         fun bind(data : Noti){
-            binding.notiDate.text = "${data.sendTime.year}년 ${data.sendTime.month} 월 ${data.sendTime.day} 일"
+            val date = Date(data.sendTime)
+            binding.notiDate.text = "${date.year}년 ${date.month} 월 ${date.day} 일"
             if(data.notification){
                 binding.notiIcon.setColorFilter(Color.YELLOW)
             }
