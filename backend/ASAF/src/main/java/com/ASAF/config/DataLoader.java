@@ -14,21 +14,26 @@ public class DataLoader implements CommandLineRunner {
     private final GenerationRepository generationRepository;
     private final ClassRepository classRepository;
     private final BusRepository busRepository;
+    private final BookRepository bookRepository;
+    private final ClassInfoRepository classInfoRepository;
 
 
-    public DataLoader(MemberRepository memberRepository, RegionRepository regionRepository, GenerationRepository generationRepository, ClassRepository classRepository, BusRepository busRepository) {
+    public DataLoader(MemberRepository memberRepository, RegionRepository regionRepository, GenerationRepository generationRepository, ClassRepository classRepository, BusRepository busRepository, BookRepository bookRepository, ClassInfoRepository classInfoRepository) {
         this.memberRepository = memberRepository;
         this.regionRepository = regionRepository;
         this.generationRepository = generationRepository;
         this.classRepository = classRepository;
         this.busRepository = busRepository;
+        this.bookRepository = bookRepository;
+        this.classInfoRepository = classInfoRepository;
+
     }
 
     @Override
     public void run(String... args) throws Exception {
         String[] regionNames = {"서울", "구미", "대전", "부울경", "광주"};
-        String[] generationNames = {"9기","10기"};
-        String[] bus_route = {"구미역 (파리바게트 앞)","오성예식장 앞 (버스 정류장)","구미상공회의소 건너 승강장","형곡동 파리바게트 앞","사곡 보성1차 (쪽쪽갈비 앞)","우방신세계2차 (상모우방2단지 정류장)","코오롱하늘채(정류장 지나 건널목)"};
+        String[] generationNames = {"9기", "10기"};
+        String[] bus_route = {"구미역 (파리바게트 앞)", "오성예식장 앞 (버스 정류장)", "구미상공회의소 건너 승강장", "형곡동 파리바게트 앞", "사곡 보성1차 (쪽쪽갈비 앞)", "우방신세계2차 (상모우방2단지 정류장)", "코오롱하늘채(정류장 지나 건널목)"};
 
         // 멤버 더미데이터
         for (int i = 1; i <= 9; i++) {
@@ -45,9 +50,9 @@ public class DataLoader implements CommandLineRunner {
             memberDTO.setMember_info("D10" + i);
             memberDTO.setToken("fE_q5sa_RNKy7QkzhDar42:APA91bGHed0OzNm8ETlcMbzCFVNyXxs1moHW641-CQEN7PebBUjRKboMR8zg_HQfJuZiGFzShUDGD40zMWApLgZeBTFJckPfwN5za_LGm1txmE4EVcj8XqNDH81Vny__FwOwrLLM58Rh");
             memberDTO.setAttended("미출석");
-            if (i == 1){
+            if (i == 1) {
                 memberDTO.setAuthority("프로");
-            }else{
+            } else {
                 memberDTO.setAuthority("교육생");
             }
 
@@ -122,7 +127,7 @@ public class DataLoader implements CommandLineRunner {
                 gumiRegionEntity = regionEntity;
             }
         }
-        
+
         // 기수 더미데이터
         for (int i = 1; i <= generationNames.length; i++) {
             GenerationDTO generationDTO = new GenerationDTO();
@@ -142,5 +147,27 @@ public class DataLoader implements CommandLineRunner {
             BusEntity busEntity = BusEntity.toBusEntity(busDTO);
             busRepository.save(busEntity);
         }
+
+        // 도서 더미데이터
+        // 학급 더미데이터
+//        for (int i = 1; i <= 10; i++) {
+//            ClassInfoDTO classInfoDTO = new ClassInfoDTO();
+//            if (i <= 2) {
+//                classInfoDTO.setClass_code(i);
+//                classInfoDTO.setId(i);
+//            } else {
+//                if (i % 2 == 0) {
+//                    classInfoDTO.setClass_code(1);
+//                    classInfoDTO.setId(1);
+//                } else {
+//                    classInfoDTO.setClass_code(2);
+//                    classInfoDTO.setId(i);
+//                }
+//            }
+//            classInfoDTO.setGeneration_code(1);
+//            classInfoDTO.setRegion_code(1);
+//            ClassInfoEntity classInfoEntity = ClassInfoEntity.toClassInfoEntity(classInfoDTO);
+//            classInfoRepository.save(classInfoEntity);
+//        }
     }
 }
