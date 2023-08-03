@@ -24,6 +24,7 @@ class SharedViewModel : ViewModel() {
 
      val _classInfoList = MutableLiveData<MutableList<Classinfo>>()
 
+
      val classInfoList : LiveData<MutableList<Classinfo>>
           get() = _classInfoList
 

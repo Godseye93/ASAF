@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,7 @@ import com.d103.asaf.common.model.dto.Noti
 import com.d103.asaf.databinding.FragmentProHomeBinding
 import java.sql.Date
 import java.sql.Time
+import java.text.SimpleDateFormat
 
 private const val TAG = "ProHomeFragment ASAF"
 
@@ -64,7 +66,7 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
             if(!selectedStudentList.isEmpty()){
 
                 //지각 알림 보내기
-                var writer = ApplicationClass.sharedPreferences.getString("memberName")
+                var writer = ApplicationClass.sharedPreferences.getInt("id")
                 val pushNotiList = mutableListOf<Noti>()
 
                 for(student in selectedStudentList){
@@ -75,9 +77,11 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
                     noti.content = content
                     noti.title = title
                     if (writer != null) {
-                        noti.writter = writer
+                        noti.sender = writer + 1
                     }
-                    noti.sender = student.id
+
+
+                    noti.receiver = student.id
                     Log.d(TAG, "학생 아이디: ${student.id}")
                     pushNotiList.add(noti)
                 }
@@ -97,6 +101,26 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
         binding.fragmentProHomeSettingButton.setOnClickListener{
             findNavController().navigate(R.id.navigation_setting)
         }
+
+        // 뒤로가기 버튼 처리
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (ApplicationClass.sharedPreferences.getString("memberEmail").isNullOrEmpty()) {
+                    // 로그인 정보가 없는 경우, 로그인 화면으로 이동
+                    findNavController().navigate(R.id.action_ProHomeFragment_to_loginFragment)
+
+                    // 앱 종료
+//                    requireActivity().finish()
+                } else {
+                    // 뒤로가기 동작 수행
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                    // 앱 종료
+                    requireActivity().finish()
+                }
+            }
+        })
+
     }
 
 

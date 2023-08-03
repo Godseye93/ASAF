@@ -14,6 +14,7 @@ import com.d103.asaf.common.model.dto.DocLocker
 import com.d103.asaf.common.model.dto.DocSeat
 import com.d103.asaf.common.model.dto.DocSign
 import com.d103.asaf.common.util.RetrofitUtil
+import com.google.gson.annotations.SerializedName
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
@@ -26,6 +27,7 @@ import kotlinx.coroutines.withContext
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.Date
 import java.util.Hashtable
 
 private val TAG = "LibraryFragmentViewModel"
@@ -50,7 +52,7 @@ class LibraryFragmentViewModel: ViewModel() {
     val books = _books
 
     // <!---------------------------- 대출한 리스트 ------------------------------->
-    private var _returns = MutableStateFlow(mutableListOf(Book(bookName = "find this"),Book(bookName = "what this")))
+    private var _returns = MutableStateFlow(mutableListOf<Book>())
     val returns = _returns
 
     init {
@@ -70,31 +72,43 @@ class LibraryFragmentViewModel: ViewModel() {
         // 전체 도서 정보
         viewModelScope.launch {
             try {
+                val drawResponse = withContext(Dispatchers.IO) {
+                    RetrofitUtil.libraryService.getDraws(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
+                }
+                if (drawResponse.isSuccessful) {
+                    _returns.value = drawResponse.body() ?: mutableListOf<Book>()
+                } else {
+                    Log.d(TAG, "대출 도서 가져오기 네트워크 오류")
+                }
+
                 val response = withContext(Dispatchers.IO) {
                     RetrofitUtil.libraryService.getBooks(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
                 if (response.isSuccessful) {
-                    _books.value = response.body() ?: mutableListOf<Book>()
+                    _books.value = (response.body()?.map{ book ->
+                        Book(
+                            book.id,
+                            book.classNum,
+                            book.classCode,
+                            book.regionCode,
+                            book.generationCode,
+                            book.userId,
+                            book.bookName,
+                            book.author,
+                            book.publisher,
+                            Date(Long.MAX_VALUE),
+                            Date(Long.MAX_VALUE),
+                            book.borrowState,
+                            book.borrower,
+                            book.bookNameCount,
+                            book.trueBorrowStateCount
+                        )
+                    } ?: mutableListOf<Book>()) as MutableList<Book>
                 } else {
                     Log.d(TAG, "도서 가져오기 네트워크 오류")
                 }
             } catch (e: Exception) {
                 Log.d(TAG, " 도서 가져오기 네트워크 오류")
-            }
-        }
-        // 대출 도서 정보
-        viewModelScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) {
-                    RetrofitUtil.libraryService.getDraws(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
-                }
-                if (response.isSuccessful) {
-                    _returns.value = response.body() ?: mutableListOf<Book>()
-                } else {
-                    Log.d(TAG, "대출 도서 가져오기 네트워크 오류")
-                }
-            } catch (e: Exception) {
-                Log.d(TAG, " 대출 도서 가져오기 네트워크 오류")
             }
         }
     }
@@ -112,10 +126,9 @@ class LibraryFragmentViewModel: ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             curClass.collect { newClass ->
                 // GET해서 가져온 정보 업데이트 (반 도서 대출정보/ 반 도서 전체정보)
-                // loadRemote()
+                loadRemote()
             }
         }
-        loadRemote()
     }
 
     private fun loadClasses() {

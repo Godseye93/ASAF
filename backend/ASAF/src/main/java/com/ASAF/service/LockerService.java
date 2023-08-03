@@ -34,4 +34,12 @@ public class LockerService {
                 .map(lockerEntity -> new LockerDTO(lockerEntity))
                 .collect(Collectors.toList());
     }
+
+    // 각 반의 사물함 정보
+    public List<LockerDTO> getLockersByCodes(int class_code, int region_code, int generation_code) {
+        List<LockerEntity> lockerEntities = lockerRepository.findByClassCodeAndRegionCodeAndGenerationCode(class_code, region_code, generation_code);
+        return lockerEntities.stream()
+                .map(lockerEntity -> new LockerDTO(lockerEntity))
+                .collect(Collectors.toList());
+    }
 }

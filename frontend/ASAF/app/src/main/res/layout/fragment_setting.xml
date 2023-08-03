@@ -126,13 +126,13 @@
         android:id="@+id/fragment_information_textview_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
         android:text="로그아웃"
         android:textColor="@color/design_default_color_primary_dark"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_information_layout_developers" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

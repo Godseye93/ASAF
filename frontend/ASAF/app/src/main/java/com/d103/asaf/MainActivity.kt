@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.activity.viewModels
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -62,7 +63,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             // Log and toast
             Log.d(TAG, "토큰 생성: $token")
-            ApplicationClass.sharedPreferences.addFCMToken(token)
+            if (token != null) {
+                ApplicationClass.sharedPreferences.addFCMToken(token)
+            }
 //            Log.d(TAG, msg)1111
 //            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
         })
@@ -89,14 +92,21 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.login_fragment -> hideBottomNavigationBar()
-                R.id.ProhomeFragment-> showProBottomNavigationBarFromFragment()
+                R.id.navigation_setting -> hideBottomNavigationBar()
+                R.id.ProhomeFragment -> showProBottomNavigationBarFromFragment()
                 R.id.scheduleFragment -> showProBottomNavigationBarFromFragment()
-
+                R.id.StudentHomeFragment -> {
+                    showStudentBottomNaviagtionBarFromFragment()
+                    // 없던 부분
+                    val bottomNavigationView =
+                        findViewById<MorphBottomNavigationView>(R.id.bottom_navi_student)
+                    bottomNavigationView.setupWithNavController(navController)
+                }
             }
         }
 
 
-        // 없던 부분
+//        // 없던 부분
         val bottomNavigationView =
             findViewById<MorphBottomNavigationView>(R.id.bottom_navi_pro)
         bottomNavigationView.setupWithNavController(navController)
@@ -107,11 +117,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     fun hideBottomNavigationBarFromFragment() {
         hideBottomNavigationBar()
     }
-    fun showBottomNavigationBarFromFragment() {
-        showBottomNavigationBar()
-    }
+//    fun showBottomNavigationBarFromFragment() {
+//        showBottomNavigationBar()
+//    }
     fun showProBottomNavigationBarFromFragment() {
         showProBottomNavigationBar()
+        //바텀 네브 바 상단에 fragment 위치시키는 코드
+        val layout = findViewById<View>(R.id.nav_host_fragment_activity_main)
+        val layoutParams = layout.layoutParams as ConstraintLayout.LayoutParams
+        layoutParams.bottomToTop = R.id.bottom_navi_pro
+        layout.layoutParams = layoutParams
+    }
+
+    fun showStudentBottomNaviagtionBarFromFragment() {
+        showStudentBottomNavigationBar()
+
+
+        //바텀 네브 바 상단에 fragment 위치시키는 코드
+        val layout = findViewById<View>(R.id.nav_host_fragment_activity_main)
+        val layoutParams = layout.layoutParams as ConstraintLayout.LayoutParams
+        layoutParams.bottomToTop = R.id.bottom_navi_student
+        layout.layoutParams = layoutParams
     }
 
 

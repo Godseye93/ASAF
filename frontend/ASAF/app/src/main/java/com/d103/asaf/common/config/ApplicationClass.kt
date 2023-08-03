@@ -19,8 +19,8 @@ class ApplicationClass : Application() {
     companion object {
        // 서버 주소
 //        val API_URL ="http://192.168.100.158:8080/"     // 진욱님
-        val API_URL ="http://192.168.100.62:8080/"     // 민재님
-//        val API_URL = "http://192.168.100.169:8080/"    // 형진님
+//        val API_URL ="http://192.168.100.62:8080/"     // 민재님
+        val API_URL = "http://192.168.100.169:8080/"    // 형진님
 
         lateinit var sharedPreferences: SharedPreferencesUtil
 
@@ -34,6 +34,10 @@ class ApplicationClass : Application() {
 
         // 클래스 정보
         var mainClassInfo = mutableListOf<Classinfo>()
+
+        // 화면 사이즈 정보
+        var dpHeight = 0.0F
+        var dpWidth = 0.0F
     }
 
 
@@ -44,6 +48,11 @@ class ApplicationClass : Application() {
 
         // 레트로핏 인스턴스 생성
         initRetrofitInstance()
+
+        // 화면 사이즈 계산
+        val density = resources.displayMetrics.density
+        dpHeight = resources.displayMetrics.heightPixels / density
+        dpWidth = resources.displayMetrics.widthPixels / density
     }
 
     private fun initRetrofitInstance() {

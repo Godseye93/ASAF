@@ -29,6 +29,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+// 1학기는 학생정보
+// 2학기는 자리정보가 입력 / 저장 한다는 가정인데 두개의 데이터가 다르므로 한 번에 넣을 수가 없다.
+// 자리정보의 name이 1학기는 학생이름 , 2학기는 팀이름이면 상관없음
 class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bind, R.layout.fragment_seat) {
     private lateinit var targetView: SeatView
     private var startX = 0
@@ -43,20 +46,24 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
     private var reversePosition = (0..24).toMutableList()
     private lateinit var gridLayout: GridLayout
     private var seatNum = 0;
-    private val viewModel: OpFragmentViewModel by viewModels()
+    private lateinit var viewModel: OpFragmentViewModel
 
     companion object {
         private const val POSITION = "position"
         private const val SEAT = "seat"
         // Factory method to create an instance of SeatFragment with position list.
-        fun instance(position: MutableList<Int>,seat: MutableList<Int>): SeatFragment {
+        fun instance(position: MutableList<Int>,seat: MutableList<Int>,parentViewModel: OpFragmentViewModel): SeatFragment {
             val fragment = SeatFragment()
+            fragment.viewModel = parentViewModel
             val args = Bundle()
             args.putIntegerArrayList(POSITION, ArrayList(position))
             args.putIntegerArrayList(SEAT, ArrayList(seat))
             fragment.arguments = args
             return fragment
         }
+    }
+    init {
+        viewModel = OpFragment.parentViewModel!!
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,10 +76,15 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launchWhenStarted  {
+        CoroutineScope(Dispatchers.Main).launch  {
             viewModel.seat.collect { newSeat ->
-                Log.d("자리 프래그먼트", "onViewCreated: ${viewModel.seat.value} 업데이트 됨")
-                loadSeat() // 업데이트
+                if(isAdded) {
+                    Log.d("자리 프래그먼트", "onViewCreated: ${viewModel.seat.value} 업데이트 됨")
+                    Log.d("자리 프래그먼트", "docSeat: ${viewModel.docSeat} 업데이트 됨")
+                    seat = viewModel.seat.value
+                    seatNum = seat.size
+                    loadSeat() // 업데이트
+                }
             }
         }
 
@@ -92,7 +104,9 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
             }
             // position 정보를 seatNum 크기 만큼만 보내기 서버에서 n건을 수정해야함
             seatComplete.setOnClickListener {
-                // position.subList(0,seatNum)
+                lifecycleScope.launch {
+                    RetrofitUtil.opService.postSeats(viewModel.setSeats(position, seatNum))
+                }
             }
 
             seatNumberInput.addTextChangedListener(object : TextWatcher {
@@ -107,7 +121,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
                     } catch (e: NumberFormatException) {
                         0
                     }
-                    if(seatNum >= 25) seatNum = 25
+                    if(seatNum >= viewModel.docSeat.size) seatNum = viewModel.docSeat.size
                 }
             })
         }
@@ -123,9 +137,11 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
     }
 
     fun setSeat() {
+        Log.d("싯넘", "setSeat: $seatNum")
         // targetView의 크기가 측정된 후에 다른 작업 수행
         val occupy = ResourcesCompat.getDrawable(resources, R.drawable.chair, null)
         val vacant = ResourcesCompat.getDrawable(resources, R.drawable.ssafy_logo, null)
+
         for (i in 0 until gridLayout.childCount) {
             val childView = gridLayout.getChildAt(i)
             if (childView is SeatView) {
@@ -134,7 +150,34 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
                     childView.seatImage.setImageDrawable(occupy)
                     childView.seatText.text = viewModel.docSeat[i].name // 이름을 넣는 부분
                 }
-                else childView.seatImage.setImageDrawable(vacant)
+                else {
+                    childView.seatImage.setImageDrawable(vacant)
+                    childView.seatText.text = ""
+                }
+                setViewPosition(childView, position[i])
+                reversePosition[position[i]] = i
+            }
+        }
+    }
+
+    fun setInitialSeat() {
+        Log.d("싯넘", "setSeat: $seatNum")
+        // targetView의 크기가 측정된 후에 다른 작업 수행
+        val occupy = ResourcesCompat.getDrawable(resources, R.drawable.chair, null)
+        val vacant = ResourcesCompat.getDrawable(resources, R.drawable.ssafy_logo, null)
+
+        for (i in 0 until gridLayout.childCount) {
+            val childView = gridLayout.getChildAt(i)
+            if (childView is SeatView) {
+                setTouchListener(childView)
+                if (i < seatNum) {
+                    childView.seatImage.setImageDrawable(occupy)
+                    childView.seatText.text = viewModel.docSeat[i].name // 이름을 넣는 부분
+                }
+                else {
+                    childView.seatImage.setImageDrawable(vacant)
+                    childView.seatText.text = ""
+                }
                 setViewPosition(childView, position[i])
                 reversePosition[position[i]] = i
             }
@@ -266,7 +309,6 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     hideKeyboard()
                     clearSeat()
-                    setSeat()
                     completeRemote()
                 }
                 false
@@ -276,7 +318,6 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
                 if (!hasFocus) {
                     hideKeyboard()
                     clearSeat()
-                    setSeat()
                     completeRemote()
                 }
             }
@@ -296,7 +337,6 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
         binding.seatComplete.setOnClickListener {
             hideKeyboard()
             clearSeat()
-            setSeat()
         }
     }
 
@@ -304,7 +344,6 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
         binding.seatComplete.setOnClickListener {
             hideKeyboard()
             clearSeat()
-            setSeat()
             // 변경된 정보를 POST 해준다.
             postSeats()
         }
@@ -313,7 +352,6 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
     // 서버에서 유저 id로 조회하여 최초로 자리 정보가 들어가 있는 상태라면 update로 처리해야함
     private fun postSeats() {
         for(i in 0 until seatNum) {
-            Log.d("시트", "postSeats: ${viewModel.docSeat.size}")
             viewModel.docSeat[i].seatNum = seat[i]
         }
         // POST List<docSeat>

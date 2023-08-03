@@ -13,13 +13,15 @@ data class Book (
     @SerializedName("region_code") val regionCode: Int = 0, // 지역ID
     @SerializedName("generation_code") val generationCode: Int = 0, // 기수ID
     @SerializedName("id") val userId: Int = 0, // 유저ID
-    @SerializedName("book_name") val bookName: String = "", // 책 제목
+    @SerializedName("bookName") val bookName: String = "", // 책 제목
     @SerializedName("author") val author: String = "", // 작가
     @SerializedName("publisher") val publisher: String = "", // 출판사
-    @SerializedName("borrowdate") val borrowDate: Date = Date(), // 대출일
-    @SerializedName("returndate") val returnDate: Date = Date(), // 반납일
-    @SerializedName("borrow_state") val borrowState: Boolean = false, // 대출 상태
+    @SerializedName("borrowDate") val borrowDate: Date = Date(), // 대출일
+    @SerializedName("returnDate") val returnDate: Date = Date(), // 반납일
+    @SerializedName("borrowState") val borrowState: Boolean = false, // 대출 상태
     @SerializedName("borrower") val borrower: String = "", // 대출자
+    @SerializedName("bookNameCount") val bookNameCount: Int = 0, // 총 수량
+    @SerializedName("trueBorrowStateCount") val trueBorrowStateCount: Int = 0 // 빌린 수량
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),

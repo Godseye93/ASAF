@@ -2,6 +2,7 @@ package com.d103.asaf.ui.home.pro
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.CheckBox
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.AdapterUtil
 import com.d103.asaf.databinding.ItemStudentAttendanceBinding
@@ -23,8 +25,9 @@ class UserInfoAdapter(var context : Context) : ListAdapter<Member, UserInfoAdapt
     inner class ItemViewHolder(var binding : ItemStudentAttendanceBinding) :  RecyclerView.ViewHolder(binding.root) {
 
         fun bind(user : Member){
+            Log.d("유저 프로필", "${ApplicationClass.API_URL}member/${user.profileImage.split("/")[6].split(".")[0]}.com/profile-image")
             binding.userName.text = user.memberName
-            Glide.with(context).load(user.profileImage).into(binding.userProfileImage)
+            Glide.with(context).load("${ApplicationClass.API_URL}member/${user.profileImage.split("/")[6].split(".")[0]}.com/profile-image").into(binding.userProfileImage)
             if(user.attended == "미출석"){
                 binding.attendanceCheckImage.setBackgroundColor(Color.RED)
             }

@@ -20,23 +20,23 @@ public class LockerEntity {
 
     @ManyToOne
     @JoinColumn(name = "class_num")
-    private DocumentEntity class_num;
+    private ClassInfoEntity class_num;
 
     @ManyToOne
     @JoinColumn(name = "class_code")
-    private DocumentEntity class_code;
+    private ClassEntity class_code;
 
     @ManyToOne
     @JoinColumn(name = "region_code")
-    private DocumentEntity region_code;
+    private RegionEntity region_code;
 
     @ManyToOne
     @JoinColumn(name = "generation_code")
-    private DocumentEntity generation_code;
+    private GenerationEntity generation_code;
 
     @ManyToOne
     @JoinColumn(name = "id")
-    private DocumentEntity id;
+    private MemberEntity id;
 
     @Column
     private int locker_num;
@@ -44,20 +44,23 @@ public class LockerEntity {
     @Column
     private String name;
 
-    public static LockerEntity toLockerEntity(LockerDTO lockerDTO) {
-        LockerEntity lockerEntity = new LockerEntity();
-        lockerEntity.setLocker_id(lockerDTO.getLocker_id());
-        lockerEntity.setLocker_num(lockerDTO.getLocker_num());
-        lockerEntity.setName(lockerDTO.getName());
-        return lockerEntity;
+    public DocumentEntity getDocumentEntity() {
+        return doc_id;
     }
-
-    public static LockerEntity toUpdateLockerEntity(LockerDTO lockerDTO) {
-        LockerEntity lockerEntity = new LockerEntity();
-        lockerEntity.setLocker_id(lockerDTO.getLocker_id());
-        lockerEntity.setLocker_num(lockerDTO.getLocker_num());
-        lockerEntity.setName(lockerDTO.getName());
-        return lockerEntity;
+    public ClassInfoEntity getClassInfoEntity() {
+        return class_num;
+    }
+    public ClassEntity getClassEntity() {
+        return class_code;
+    }
+    public RegionEntity getRegionEntity() {
+        return region_code;
+    }
+    public GenerationEntity getGenerationEntity() {
+        return generation_code;
+    }
+    public MemberEntity getMemberEntity() {
+        return id;
     }
 }
 

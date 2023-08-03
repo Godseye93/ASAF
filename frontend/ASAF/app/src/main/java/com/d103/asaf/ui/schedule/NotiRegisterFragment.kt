@@ -1,13 +1,15 @@
 package com.d103.asaf.ui.schedule
 
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.d103.asaf.MainActivity
 import com.d103.asaf.R
 import com.d103.asaf.SharedViewModel
@@ -34,6 +36,7 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
     private var param1: String? = null
     private var param2: String? = null
     private val sharedViewModel : SharedViewModel by activityViewModels()
+    private val viewModel : NotiRegisterFragmentViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -49,7 +52,7 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
         binding.dateTextView.text = sharedViewModel.selectedDate
 
         binding.fragmentNotiRegisterBackButton.setOnClickListener {
-            (requireActivity() as MainActivity).showBottomNavigationBarFromFragment()
+            (requireActivity() as MainActivity).showProBottomNavigationBarFromFragment()
             (requireActivity() as MainActivity).onBackPressed()
 
         }
@@ -65,7 +68,7 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
         binding.checkoutChip.setOnClickListener {
             binding.notiCheckBox.isChecked = true
             binding.notiDetailEdittext.setText("퇴실 버튼 안 누른 사람들 퇴실 버튼 누르러 뭅뭅")
-            binding.notiTitleEdittext.setText("퇴실 체크 공지")
+            binding.notiTitleEdittext.setText("라이브 공지")
             binding.notiTime.hour = 18
             binding.notiTime.minute = 5
         }
@@ -90,19 +93,39 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
                 Log.d("공지시간", "공지 시간: ${noti.sendTime}")
                 Log.d("등록시간", "공지 시간: ${noti.registerTime}")
 
-                // 공지 발송 + 저장
-                if(binding.notiCheckBox.isChecked){
+                val classList = sharedViewModel.classInfoList.value
+                Log.d("반 크기", "notiList: ${classList!!.size}")
+                if (classList != null) {
+                    for(classInfo in classList){
+                        viewModel.getStudents(classInfo, noti, binding.notiCheckBox.isChecked)
+                        Log.d("학생들", "${viewModel.studentList.size} ")
 
+                    }
                 }
-                // 저장만
-                else{
+
+                var builder = AlertDialog.Builder(requireContext())
+                    .setTitle("공지 등록")
+                    .setMessage("공지를 등록하시겠습니까?")
+                    .setPositiveButton("확인", DialogInterface.OnClickListener{ dialog, which ->
+                        Log.d("공지 보내기", "onViewCreated: ${viewModel.notiList}")
+                        viewModel.pushNoti()
+                    })
+
+                builder.show()
 
 
-                }
+
+
+
+
+
 
             }
         }
 
+    }
+    fun dateToLog(date : Date) : Long{
+        return date.time
     }
 
     fun createNoti() : Noti{
@@ -119,10 +142,10 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
 
         calendar.set(year, month, dayOfMonth, hour, minute)
 
-        val selectedTime: Date = calendar.time
-        noti.sendTime = selectedTime
+        val selectedTime = calendar.time
+        noti.sendTime = selectedTime.time
         calendar.set(sharedViewModel.year, sharedViewModel.month, sharedViewModel.day)
-        noti.registerTime = calendar.time
+        noti.registerTime = calendar.time.time
 
         // 제목 타이틀 설정
         noti.title = binding.notiTitleEdittext.text.toString()
@@ -130,9 +153,10 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
 
 
         // 작성자
-        noti.writter = ApplicationClass.sharedPreferences.getString("memberName").toString()
+        noti.sender = ApplicationClass.sharedPreferences.getInt("id")!! + 1
 
-        // sender 설정
+        // 공지 설정
+        noti.notification = binding.notiCheckBox.isChecked
 
 
 

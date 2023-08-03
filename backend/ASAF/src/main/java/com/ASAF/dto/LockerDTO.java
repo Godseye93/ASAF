@@ -12,26 +12,25 @@ import lombok.ToString;
 @ToString
 public class LockerDTO {
     private Long locker_id;
-    private int doc_id;
+    private int locker_num;
+    private String name;
+
+    private Long doc_id;
     private int class_num;
     private int class_code;
     private int region_code;
     private int generation_code;
     private int id;
-    private int locker_num;
-    private String name;
 
     public LockerDTO(LockerEntity lockerEntity) {
         this.locker_id = lockerEntity.getLocker_id();
         this.locker_num = lockerEntity.getLocker_num();
         this.name = lockerEntity.getName();
-    }
-
-    public static LockerDTO toLockerDTO(LockerEntity lockerEntity) {
-        LockerDTO lockerDTO = new LockerDTO();
-        lockerDTO.setLocker_id(lockerEntity.getLocker_id());
-        lockerDTO.setLocker_num(lockerEntity.getLocker_num());
-        lockerDTO.setName(lockerEntity.getName());
-        return lockerDTO;
+        this.doc_id = lockerEntity.getDocumentEntity().getDoc_id();
+        this.class_num = lockerEntity.getClassInfoEntity().getClass_num();
+        this.class_code = lockerEntity.getClassEntity().getClass_code();
+        this.region_code = lockerEntity.getRegionEntity().getRegion_code();
+        this.generation_code = lockerEntity.getGenerationEntity().getGeneration_code();
+        this.id = lockerEntity.getMemberEntity().getId();
     }
 }
