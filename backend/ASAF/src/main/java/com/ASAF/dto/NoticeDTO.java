@@ -16,7 +16,7 @@ public class NoticeDTO {
     private int id;
     private String title;
     private String content;
-    private long register_time;
+    private long registerTime;
     private long send_time;
     private int sender;
     private int receiver;
@@ -27,7 +27,7 @@ public class NoticeDTO {
         noticeDTO.setId(noticeEntity.getId());
         noticeDTO.setTitle(noticeEntity.getTitle());
         noticeDTO.setContent(noticeEntity.getContent());
-        noticeDTO.setRegister_time(noticeEntity.getRegister_time());
+        noticeDTO.setRegisterTime(noticeEntity.getRegisterTime());
         noticeDTO.setSend_time(noticeEntity.getSend_time());
         noticeDTO.setReceiver(noticeEntity.getReceiver());
         noticeDTO.setSender(noticeEntity.getSender());
