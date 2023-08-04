@@ -97,6 +97,12 @@
 
 
     <fragment
+        android:id="@+id/student_noti_fragment"
+        android:name="com.d103.asaf.ui.noti.StudentNotiFragment"
+        android:label="StudentNoti"
+        tools:layout="@layout/fragment_student_noti"/>
+
+    <fragment
         android:id="@+id/login_fragment"
         android:name="com.d103.asaf.ui.login.LoginFragment"
         android:label="Login"

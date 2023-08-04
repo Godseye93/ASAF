@@ -48,6 +48,8 @@ dependencies {
 	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
 	// for 아두이노
 	implementation 'com.fazecast:jSerialComm:2.7.0'
+	// 데이터 처리
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
 
 }
 

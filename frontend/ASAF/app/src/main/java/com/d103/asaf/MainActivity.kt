@@ -74,24 +74,26 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         // Check if the user is logged in
         val isLoggedIn = ApplicationClass.sharedPreferences.getString("memberEmail")?.isNotEmpty() == true
-
-//        if (isLoggedIn) {
-//            // Perform any actions or initialization needed for a logged-in user
-//            // For example, you might want to navigate the user to the appropriate screen
-//            val userAuthority = ApplicationClass.sharedPreferences.getString("authority")
-//            if (userAuthority == "교육생") {
-//                // Navigate to the student home fragment
-//                findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.action_login_fragment_to_StudentHomeFragment)
-//            } else {
-//                // Navigate to the pro home fragment
-//                findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.action_loginFragment_to_ProhomeFragment)
-//            }
-//        } else {
-//            // The user is not logged in or there is no saved data
-//            // Perform any other necessary initialization for a new session
-//            // For example, you might want to show the login fragment
-//            findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.login_fragment)
-//        }
+        
+        if (isLoggedIn) {
+            // Perform any actions or initialization needed for a logged-in user
+            // For example, you might want to navigate the user to the appropriate screen
+            val userAuthority = ApplicationClass.sharedPreferences.getString("authority")
+            if (userAuthority == "교육생") {
+                // Navigate to the student home fragment
+                findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.action_login_fragment_to_StudentHomeFragment)
+//                findNavController(R.id.nav_host_fragment_activity_main).popBackStack()
+            } else {
+                // Navigate to the pro home fragment
+                findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.action_loginFragment_to_ProhomeFragment)
+//                findNavController(R.id.nav_host_fragment_activity_main).popBackStack()
+            }
+        } else {
+            // The user is not logged in or there is no saved data
+            // Perform any other necessary initialization for a new session
+            // For example, you might want to show the login fragment
+            findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.login_fragment)
+        }
     }
     private fun initDynamicLink() {
         val dynamicLinkData = intent.extras
