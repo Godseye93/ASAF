@@ -78,4 +78,14 @@ public class BookController {
 
         return new ResponseEntity<>(borrowedBooks, HttpStatus.OK);
     }
+
+    //학생정보로 빌린 책 목록 보여주기
+    @GetMapping("/borrowed/user/{memberId}")
+    public ResponseEntity<List<BookDTO>> findBorrowedBooksByUserId(
+            @PathVariable("memberId") int memberId) {
+
+        List<BookDTO> borrowedBooks = bookService.findBorrowedBooksByUserId(memberId);
+
+        return new ResponseEntity<>(borrowedBooks, HttpStatus.OK);
+    }
 }

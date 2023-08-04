@@ -178,4 +178,16 @@ public class BookService {
 
         return bookDTOList;
     }
+
+    // 본인이 빌린 책 목록 보여주기
+    public List<BookDTO> findBorrowedBooksByUserId(int memberId) {
+        List<BookEntity> borrowedBooks = bookRepository.findByBorrowStateTrueAndId_id(memberId);
+
+        // Convert to BookDTO
+        List<BookDTO> bookDTOList = borrowedBooks.stream()
+                .map(bookEntity -> new BookDTO(bookEntity))
+                .collect(Collectors.toList());
+
+        return bookDTOList;
+    }
 }
