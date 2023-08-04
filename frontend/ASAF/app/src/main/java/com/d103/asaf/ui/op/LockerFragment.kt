@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
+import com.d103.asaf.common.model.dto.DocLocker
 import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentLockerBinding
 import com.d103.asaf.ui.op.adapter.LockerAdapter
@@ -55,9 +56,8 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
         binding.fragmentLockerRecyclerview.adapter = adapter
 
         binding.lockerRandom.setOnClickListener {
-            lockers.shuffle()
-            Log.d("라커섞기", "onViewCreated: ${lockers}")
-            adapter.submitList(viewModel.setLockers(lockers))
+              viewModel.docLockers.shuffle()
+              adapter.submitList(viewModel.docLockers.toMutableList())
         }
 
         binding.lockerComplete.setOnClickListener {

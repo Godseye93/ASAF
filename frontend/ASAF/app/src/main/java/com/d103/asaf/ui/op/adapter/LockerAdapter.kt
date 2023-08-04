@@ -29,7 +29,6 @@ class LockerAdapter : androidx.recyclerview.widget.ListAdapter<DocLocker, Locker
 
     class LockerDiffCallback : DiffUtil.ItemCallback<DocLocker>() {
         override fun areItemsTheSame(oldItem: DocLocker, newItem: DocLocker): Boolean {
-            Log.d("다르냐", "areItemsTheSame: ${oldItem.id == newItem.id}")
             // 식별자 요소를 비교하는게 맞다
             return oldItem.id == newItem.id
         }

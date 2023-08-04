@@ -237,23 +237,6 @@ class OpFragmentViewModel(): ViewModel() {
         _signUrls.value = _signs.value.map{it.imageUrl}.toMutableList()
     }
 
-    // 바뀐 자리 정보로 사물함 정보 교체해주는 코드
-    fun setLockers(lockers: MutableList<Int>): MutableList<DocLocker> {
-        val loop = lockers.size
-        val newDocLockers = mutableListOf<DocLocker>()
-        Log.d(TAG, "이전사물함: ${docLockers}")
-        Log.d(TAG, "포지션 사이즈: $loop")
-        for(i in 0 until loop) {
-            newDocLockers.add(DocLocker(docLockers[i].id, docLockers[i].docId, docLockers[i].classNum,
-                docLockers[i].classCode, docLockers[i].regionCode, docLockers[i].generationCode
-                ,docLockers[i].userId,lockers[i],docLockers[i].name))
-        }
-        Log.d(TAG, "이후사물함: $newDocLockers")
-        docLockers = newDocLockers
-        Log.d(TAG, "이후사물함: $newDocLockers")
-        return newDocLockers
-    }
-
     // 바뀐 자리 정보를 채워주는 코드
     fun setSeats(position: MutableList<Int>, seatNum: Int): MutableList<DocSeat> {
         Log.d(TAG, "바뀐포지션: $position")
