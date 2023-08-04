@@ -18,6 +18,7 @@ public class DataLoader implements CommandLineRunner {
     private final ClassInfoRepository classInfoRepository;
 
 
+
     public DataLoader(MemberRepository memberRepository, RegionRepository regionRepository, GenerationRepository generationRepository, ClassRepository classRepository, BusRepository busRepository, BookRepository bookRepository, ClassInfoRepository classInfoRepository) {
         this.memberRepository = memberRepository;
         this.regionRepository = regionRepository;
@@ -26,7 +27,6 @@ public class DataLoader implements CommandLineRunner {
         this.busRepository = busRepository;
         this.bookRepository = bookRepository;
         this.classInfoRepository = classInfoRepository;
-
     }
 
     @Override
@@ -56,51 +56,11 @@ public class DataLoader implements CommandLineRunner {
                 memberDTO.setAuthority("교육생");
             }
 
-
-
             // MemberDTO를 MemberEntity로 변환해서 저장
             MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO);
             memberRepository.save(memberEntity);
         }
 
-//        for (int i = 10; i <= 10; i++) {
-//            // 더미 데이터 생성을 위한 MemberDTO 객체 설정
-//            MemberDTO memberDTO = new MemberDTO();
-//            memberDTO.setMemberEmail("v");
-//            memberDTO.setMemberPassword("v");
-//            memberDTO.setMemberName("프로" + i);
-//            memberDTO.setStudent_number("11111" + i);
-//            memberDTO.setBirth_date("199" + i + "-01-01");
-//            memberDTO.setPhone_number("010-1234-000" + i);
-//            memberDTO.setProfile_image("src/main/resources/static/images/profile_images/ssafy" + i + "@email.com.png");
-//            memberDTO.setElectronic_student_id(10000 + i);
-//            memberDTO.setMember_info("D10" + i);
-//            memberDTO.setToken("token" + i);
-//            memberDTO.setAttended("미출석");
-//            memberDTO.setAuthority("프로");
-//            // MemberDTO를 MemberEntity로 변환해서 저장
-//            MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO);
-//            memberRepository.save(memberEntity);
-//        }
-//        for (int i = 11; i <= 11; i++) {
-//            // 더미 데이터 생성을 위한 MemberDTO 객체 설정
-//            MemberDTO memberDTO = new MemberDTO();
-//            memberDTO.setMemberEmail("r");
-//            memberDTO.setMemberPassword("r");
-//            memberDTO.setMemberName("교육생" + i);
-//            memberDTO.setStudent_number("11111" + i);
-//            memberDTO.setBirth_date("199" + i + "-01-01");
-//            memberDTO.setPhone_number("010-1234-000" + i);
-//            memberDTO.setProfile_image("src/main/resources/static/images/profile_images/ssafy" + i + "@email.com.png");
-//            memberDTO.setElectronic_student_id(10000 + i);
-//            memberDTO.setMember_info("D10" + i);
-//            memberDTO.setToken("token" + i);
-//            memberDTO.setAttended("미출석");
-//            memberDTO.setAuthority("교육생");
-//            // MemberDTO를 MemberEntity로 변환해서 저장
-//            MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO);
-//            memberRepository.save(memberEntity);
-//        }
         // 반 더미데이터
         for (int i = 1; i <= 20; i++) {
             ClassDTO classDTO = new ClassDTO();
@@ -148,26 +108,61 @@ public class DataLoader implements CommandLineRunner {
             busRepository.save(busEntity);
         }
 
-        // 도서 더미데이터
         // 학급 더미데이터
-//        for (int i = 1; i <= 10; i++) {
-//            ClassInfoDTO classInfoDTO = new ClassInfoDTO();
-//            if (i <= 2) {
-//                classInfoDTO.setClass_code(i);
-//                classInfoDTO.setId(i);
-//            } else {
-//                if (i % 2 == 0) {
-//                    classInfoDTO.setClass_code(1);
-//                    classInfoDTO.setId(1);
-//                } else {
-//                    classInfoDTO.setClass_code(2);
-//                    classInfoDTO.setId(i);
-//                }
-//            }
-//            classInfoDTO.setGeneration_code(1);
-//            classInfoDTO.setRegion_code(1);
-//            ClassInfoEntity classInfoEntity = ClassInfoEntity.toClassInfoEntity(classInfoDTO);
-//            classInfoRepository.save(classInfoEntity);
-//        }
+        for (int i = 1; i <= 10; i++) {
+            ClassInfoDTO classInfoDTO = new ClassInfoDTO();
+            if (i <= 2) {
+                classInfoDTO.setClass_code(i);
+                classInfoDTO.setId(1);
+            } else {
+                if (i % 2 == 0) {
+                    classInfoDTO.setClass_code(1);
+                    classInfoDTO.setId(i-1);
+                } else {
+                    classInfoDTO.setClass_code(2);
+                    classInfoDTO.setId(i-1);
+                }
+            }
+            classInfoDTO.setGeneration_code(1);
+            classInfoDTO.setRegion_code(2);
+            ClassInfoEntity classInfoEntity = ClassInfoEntity.toClassInfoEntity(classInfoDTO);
+            classInfoRepository.save(classInfoEntity);
+        }
+        
+        // 도서 더미데이터
+        for (int i = 1; i <= 10; i++) {
+            BookDTO bookDTO = new BookDTO();
+            if (i==1){
+                bookDTO.setBookName("책" + 1);
+                bookDTO.setAuthor("저자 " + 1);
+                bookDTO.setPublisher("출판사" + 1);
+                bookDTO.setBorrowState(true);
+                bookDTO.setId(2);
+                bookDTO.setClass_code(2);
+                bookDTO.setRegion_code(1);
+                bookDTO.setGeneration_code(1);
+            }else if(i<=3){
+                bookDTO.setBookName("책" + 1);
+                bookDTO.setAuthor("저자 " + 1);
+                bookDTO.setPublisher("출판사" + 1);
+                bookDTO.setBorrowState(false);
+                bookDTO.setId(1);
+                bookDTO.setClass_code(1);
+                bookDTO.setRegion_code(2);
+                bookDTO.setGeneration_code(1);
+            }else{
+                bookDTO.setBookName("책" + (i-3));
+                bookDTO.setAuthor("저자 " + (i-3));
+                bookDTO.setPublisher("출판사" + (i-3));
+                bookDTO.setBorrowState(false);
+                bookDTO.setId(1);
+                bookDTO.setClass_code(1);
+                bookDTO.setRegion_code(2);
+                bookDTO.setGeneration_code(1);
+            }
+            BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
+            bookRepository.save(bookEntity);
+        }
+
     }
 }

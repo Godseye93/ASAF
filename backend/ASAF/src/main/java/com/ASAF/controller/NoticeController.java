@@ -103,17 +103,20 @@ public class NoticeController {
     }
 
     // 공지 수정
-    @PutMapping("/{id}")
-    public ResponseEntity<NoticeDTO> updateNotice(@PathVariable int id, @RequestBody NoticeDTO noticeDTO) {
-        noticeDTO.setId(id);
-        return ResponseEntity.ok(noticeService.updateNotice(noticeDTO));
+    @PutMapping
+    public ResponseEntity<Boolean> updateNotice(@RequestBody NoticeDTO noticeDTO) {
+        noticeDTO.setId(noticeDTO.getId());
+        noticeService.updateNotice(noticeDTO);
+        System.out.println(noticeDTO);
+        return ResponseEntity.ok(true);
     }
 
     // 공지 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNotice(@PathVariable int id) {
+    public ResponseEntity<Boolean> deleteNotice(@PathVariable int id) {
         noticeService.deleteNotice(id);
-        return ResponseEntity.ok().build();
+        System.out.println("삭제 완료");
+        return ResponseEntity.ok(true);
     }
 
     // 공지를 조회 (sender & registerTime)

@@ -1,6 +1,7 @@
 package com.ASAF.entity;
 
 import com.ASAF.dto.BookDTO;
+import com.ASAF.dto.RegionDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -71,5 +72,31 @@ public class BookEntity {
 
     public MemberEntity getMemberEntity() {
         return id;
+    }
+
+    public static BookEntity toBookEntity(BookDTO bookDTO) {
+        BookEntity bookEntity = new BookEntity();
+
+        bookEntity.setBookName(bookDTO.getBookName());
+        bookEntity.setAuthor(bookDTO.getAuthor());
+        bookEntity.setPublisher(bookDTO.getPublisher());
+        bookEntity.setBorrowState(bookDTO.getBorrowState());
+
+        ClassEntity classEntity = new ClassEntity();
+        classEntity.setClass_code(bookDTO.getClass_code());
+        bookEntity.setClass_code(classEntity);
+
+        RegionEntity regionEntity = new RegionEntity();
+        regionEntity.setRegion_code(bookDTO.getRegion_code());
+        bookEntity.setRegion_code(regionEntity);
+
+        GenerationEntity generationEntity = new GenerationEntity();
+        generationEntity.setGeneration_code(bookDTO.getGeneration_code());
+        bookEntity.setGeneration_code(generationEntity);
+
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setId(bookDTO.getId());
+        bookEntity.setId(memberEntity);
+        return bookEntity;
     }
 }

@@ -66,23 +66,24 @@ public class FirebaseCloudMessageDataService {
         String title = noticeEntity.getTitle();
         String content = noticeEntity.getContent();
         String body = String.format("작성자 : %s \n %s", sender, content);
-
-        if (initialDelay <= 0) {
-            // 이미 지난 시간인 경우 즉시 전송하도록 예외처리
-            for (MemberEntity user : users) {
-                sendNotificationToUser(user, title, body);
-            }
-        }else{
-            // 예약 발송
-            scheduler.schedule(() -> {
+        if (noticeEntity.getNotification() == true){
+            if (initialDelay <= 0) {
+                // 이미 지난 시간인 경우 즉시 전송하도록 예외처리
                 for (MemberEntity user : users) {
-                    try {
-                        sendNotificationToUser(user, title, body);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    sendNotificationToUser(user, title, body);
                 }
-            }, initialDelay, TimeUnit.MILLISECONDS);
+            }else{
+                // 예약 발송
+                scheduler.schedule(() -> {
+                    for (MemberEntity user : users) {
+                        try {
+                            sendNotificationToUser(user, title, body);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }, initialDelay, TimeUnit.MILLISECONDS);
+            }
         }
     }
 
