@@ -1,6 +1,5 @@
 package com.ASAF.controller;
 
-import com.ASAF.dto.MemberDTO;
 import com.ASAF.dto.NoticeDTO;
 import com.ASAF.entity.MemberEntity;
 import com.ASAF.entity.NoticeEntity;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,11 +63,12 @@ public class NoticeController {
             List<MemberEntity> users = new ArrayList<>();
             System.out.println("발신 시각 : " + noticeDTOList.get(0).getSend_time());
             System.out.println("------수신인 목록------");
+            // 공지 1개를 DB에 저장한다.
+            NoticeDTO result = noticeService.createNotice(noticeDTOList.get(0));
             for (NoticeDTO data : noticeDTOList) {
+                System.out.println(data.getRegisterTime());
                 // users 에 각 수신인 정보를 저장한다.
                 users.add(MemberEntity.toMemberEntity(memberService.findById(data.getReceiver())));
-                // 각 공지를 DB에 저장한다.
-                NoticeDTO result = noticeService.createNotice(data);
                 System.out.println(MemberEntity.toMemberEntity(memberService.findById(data.getReceiver())).getMemberName());
             }
             // sender에 발신인 이름을 저장한다.
@@ -104,59 +103,33 @@ public class NoticeController {
     }
 
     // 공지 수정
-    @PutMapping("/{id}")
-    public ResponseEntity<NoticeDTO> updateNotice(@PathVariable int id, @RequestBody NoticeDTO noticeDTO) {
-        noticeDTO.setId(id);
-        return ResponseEntity.ok(noticeService.updateNotice(noticeDTO));
+    @PutMapping
+    public ResponseEntity<Boolean> updateNotice(@RequestBody NoticeDTO noticeDTO) {
+        noticeDTO.setId(noticeDTO.getId());
+        noticeService.updateNotice(noticeDTO);
+        System.out.println(noticeDTO);
+        return ResponseEntity.ok(true);
     }
 
     // 공지 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNotice(@PathVariable int id) {
+    public ResponseEntity<Boolean> deleteNotice(@PathVariable int id) {
         noticeService.deleteNotice(id);
-        return ResponseEntity.ok().build();
+        System.out.println("삭제 완료");
+        return ResponseEntity.ok(true);
     }
 
-    // 즉시 발송 (알람)
-    // 데이터를 리스트형식으로 받는다.
-    // users 리스트배열을 생성하고 receiver에 해당하는 유저들을 넣는다.
-    // sender 문자열배열을 생성하고 sender의 이름을 찾아서 넣는다.
-    // noticeEntity라는 NoticeEntity 인스턴스를 생성하고 첫번째 발송 내용을 넣는다.
-
-
-    // DB 저장 후 예약 발송
-    @GetMapping("/send/{noticeId}")
-    public String sendNotification(@PathVariable("noticeId") int noticeId) {
-        try {
-             // 사용자 목록을 가져옵니다. findAll() 메서드를 사용합니다.
-            List<MemberDTO> userList = memberService.findAll();
-            System.out.println(userList);
-
-            // MemberDTO 목록을 MemberEntity 목록으로 변환합니다.
-            List<MemberEntity> users = new ArrayList<>();
-            for (MemberDTO userDTO : userList) {
-                users.add(MemberEntity.toMemberEntity(userDTO));
-            }
-
-            // 알림을 보낼 공지사항을 가져옵니다. (NoticeDTO를 반환합니다.)
-            NoticeDTO noticeDTO = noticeService.getNoticeById(noticeId);
-            System.out.println(noticeDTO);
-
-            // NoticeDTO를 NoticeEntity로 변환합니다.
-            NoticeEntity noticeEntity = NoticeEntity.toNoticeEntity(noticeDTO);
-
-            // 수정해야함 테스트 데이터임
-            String sender = memberService.findById(1).getMemberName();
-
-            // 각 사용자에게 알림을 보냅니다.
-            firebaseCloudMessageDataService.sendNotificationToUsers(users, noticeEntity,sender);
-
-            return "Notification sent successfully!";
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Error sending notification: " + e.getMessage();
+    // 공지를 조회 (sender & registerTime)
+    @GetMapping("/getBySenderIdAndDate")
+    public ResponseEntity<List<NoticeEntity>> getNoticesBySenderAndDate(@RequestParam int sender, @RequestParam long registerTime) {
+        System.out.println(registerTime);
+        System.out.println(sender);
+        List<NoticeEntity> notices = noticeService.getNoticesBySenderAndRegisterTime(sender, registerTime);
+        if (notices.isEmpty()) {
+            System.out.println("비었음");
+            return ResponseEntity.notFound().build();
         }
+        System.out.println(notices);
+        return ResponseEntity.ok(notices);
     }
-
-
 }

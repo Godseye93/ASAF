@@ -22,7 +22,7 @@ public class NoticeEntity {
     private String content;
 
     @Column
-    private long register_time;
+    private long registerTime;
 
     @Column
     private long send_time;
@@ -40,7 +40,7 @@ public class NoticeEntity {
         NoticeEntity noticeEntity = new NoticeEntity();
         noticeEntity.setTitle(noticeDTO.getTitle());
         noticeEntity.setContent(noticeDTO.getContent());
-        noticeEntity.setRegister_time(noticeDTO.getRegister_time());
+        noticeEntity.setRegisterTime(noticeDTO.getRegisterTime());
         noticeEntity.setSend_time(noticeDTO.getSend_time());
         noticeEntity.setReceiver(noticeDTO.getReceiver());
         noticeEntity.setSender(noticeDTO.getSender());
@@ -53,7 +53,7 @@ public class NoticeEntity {
         noticeEntity.setId(noticeDTO.getId());
         noticeEntity.setTitle(noticeDTO.getTitle());
         noticeEntity.setContent(noticeDTO.getContent());
-        noticeEntity.setRegister_time(noticeDTO.getRegister_time());
+        noticeEntity.setRegisterTime(noticeDTO.getRegisterTime());
         noticeEntity.setSend_time(noticeDTO.getSend_time());
         noticeEntity.setReceiver(noticeDTO.getReceiver());
         noticeEntity.setSender(noticeDTO.getSender());
