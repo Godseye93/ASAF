@@ -82,9 +82,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             if (userAuthority == "교육생") {
                 // Navigate to the student home fragment
                 findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.action_login_fragment_to_StudentHomeFragment)
+//                findNavController(R.id.nav_host_fragment_activity_main).popBackStack()
             } else {
                 // Navigate to the pro home fragment
                 findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.action_loginFragment_to_ProhomeFragment)
+//                findNavController(R.id.nav_host_fragment_activity_main).popBackStack()
             }
         } else {
             // The user is not logged in or there is no saved data
