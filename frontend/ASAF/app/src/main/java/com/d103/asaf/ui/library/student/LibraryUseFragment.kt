@@ -115,4 +115,6 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
         val dialogFragment = QRCodeScannerDialog.newInstance()
         dialogFragment.show(childFragmentManager, "QRCodeScannerDialog")
     }
+
+
 }
