@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.d103.asaf.MainActivity
 import com.d103.asaf.common.model.dto.Noti
 import com.d103.asaf.common.util.AdapterUtil
 import com.d103.asaf.databinding.ItemDayMemoBinding
@@ -16,7 +18,7 @@ import java.util.Calendar
 import java.util.Date
 
 
-class NotiInfoAdapter (context : Context) : ListAdapter<Noti, NotiInfoAdapter.ItemViewHolder>(AdapterUtil.diffUtilNotiInfo) {
+class NotiInfoAdapter (context : Context, var fragment : Fragment) : ListAdapter<Noti, NotiInfoAdapter.ItemViewHolder>(AdapterUtil.diffUtilNotiInfo) {
 
     private var _context = context
 
@@ -24,6 +26,7 @@ class NotiInfoAdapter (context : Context) : ListAdapter<Noti, NotiInfoAdapter.It
     fun removeItem(position: Int) {
         if (position in 0 until itemCount) {
             val newList = ArrayList(currentList)
+            (fragment as ScheduleFragment).deleteMessage(currentList[position].id)
             newList.removeAt(position)
             submitList(newList)
         }
@@ -50,7 +53,7 @@ class NotiInfoAdapter (context : Context) : ListAdapter<Noti, NotiInfoAdapter.It
 
             binding.cardView.setOnClickListener {
 
-                val customDialog = NotiCustomDialog(_context, data.content, data.title)
+                val customDialog = NotiCustomDialog(_context, data, fragment)
                 customDialog.show()
             }
 

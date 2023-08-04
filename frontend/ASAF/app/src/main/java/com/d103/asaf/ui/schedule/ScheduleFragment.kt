@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -24,6 +25,10 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.Date
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,12 +47,12 @@ private const val ARG_PARAM2 = "param2"
 private const val TAG = "ScheduleFragment"
 
 
-class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::bind, R.layout.fragment_schedule){
+class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::bind, R.layout.fragment_schedule), NotiUpdateListener{
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private val sharedViewModel : SharedViewModel  by activityViewModels()
-    private val viewModel : ScheduleFragmentViewModel by viewModels()
+     val viewModel : ScheduleFragmentViewModel by viewModels()
     private var selectedDate: CalendarDay = CalendarDay.today()
     private var notiList  =  mutableListOf<Noti>()
     private lateinit var itemTouchHelper: ItemTouchHelper
@@ -64,6 +69,10 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.notiList.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
 
 
         binding.notiRegisterButton.setOnClickListener {
@@ -118,6 +127,9 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         sharedViewModel.month = selectedDate.month
         sharedViewModel.day = selectedDate.day
 
+        viewModel.getMeesage(ApplicationClass.sharedPreferences.getInt("id")!!, selectedDate.date.time)
+
+
 
         // 달력에 주간 요일 및 월간 형식 설정 (월, 화, 수, 목... / 1월,2월, 3월 ...)
         binding.calendarView.setTitleFormatter(MonthArrayTitleFormatter(resources.getTextArray(R.array.custom_months)))
@@ -129,7 +141,7 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         binding.calendarView.setHeaderTextAppearance(R.style.AppTheme)
 
 
-        adapter = NotiInfoAdapter(requireContext())
+        adapter = NotiInfoAdapter(requireContext(), this)
         binding.fragmentScheduleRecyclerview.adapter = adapter
         binding.fragmentScheduleRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         // 스와이프
@@ -160,7 +172,7 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
 
                 sharedViewModel.selectedDate = "${selectedDate.year}년 ${selectedDate.month + 1} 월 ${selectedDate.day} 일"
                 binding.fragmentScheduleDateView.text = "${selectedDate.year}년 ${selectedDate.month + 1} 월 ${selectedDate.day} 일"
-                adapter.submitList(viewModel.notiList)
+//                adapter.submitList(viewModel.notiList.value)
             }
         })
 
@@ -168,6 +180,33 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
 
 
 
+    }
+    fun deleteMessage(id  : Int){
+        try{
+            CoroutineScope(Dispatchers.IO).launch {
+                val response = RetrofitUtil.notiService.deleteNoti(id)
+                if(response.isSuccessful){
+                    val responseBody = response.body()
+                    if(responseBody!!){
+                        for(noti in notiList){
+                            if(noti.id == id){
+                                notiList.remove(noti)
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }catch (e : Exception){
+            Log.d("NOTI DELETE ERROR", "deleteMessage: ${e.message}")
+        }
+    }
+
+    override fun onNotiUpdate(noti: Noti) {
+        Log.d(TAG, "dd: $noti")
+
+        viewModel.updateNoti(noti)
+        viewModel.getMeesage(ApplicationClass.sharedPreferences.getInt("id")!!, selectedDate.date.time)
     }
 
 

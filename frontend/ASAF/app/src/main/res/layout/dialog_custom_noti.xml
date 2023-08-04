@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:background="@drawable/rounded_dialog_background"
+        android:orientation="vertical">
+
+        <!--    <TextView-->
+        <!--        android:id="@+id/dailog_title"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:text="Title"-->
+        <!--        android:textSize="32sp"-->
+        <!--        android:gravity="center_horizontal"-->
+        <!--        />-->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/noti_title_layout_update"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="공지 제목"
+            app:counterEnabled="true"
+            app:counterMaxLength="50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/detailTextView">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/dailog_title_udpate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="false"
+                android:textSize="24sp"
+                android:maxLines="4"
+                android:maxLength="20" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/black" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+            <androidx.cardview.widget.CardView
+
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="50dp"
+                >
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/noti_detail_layout_update"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="공지 내용"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="50"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/detailTextView">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/noti_detail_edittext_update"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="false"
+                        android:textSize="24sp"
+                        android:maxLines="4"
+                        android:maxLength="50" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--            <com.google.android.material.textview.MaterialTextView-->
+                <!--                android:id="@+id/dailog_noti_detail_textView"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="wrap_content"-->
+
+                <!--                android:textSize="24sp" />-->
+
+
+            </androidx.cardview.widget.CardView>
+
+        </ScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/dailog_noti_button_update"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/defaultMainColor"
+            android:text="수정하기"
+            app:cornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_information" />
+
+
+    </LinearLayout>
+</ScrollView>
