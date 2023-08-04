@@ -1,6 +1,7 @@
 package com.d103.asaf.ui.op
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -29,7 +30,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
         }
     }
 
-    private var lockers: MutableList<Int> = mutableListOf()
+    private var  lockers: MutableList<Int> = MutableList(80) { 0 }
     private lateinit var adapter: LockerAdapter
     lateinit var viewModel: OpFragmentViewModel
 
@@ -52,6 +53,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
         binding.fragmentLockerRecyclerview.adapter = adapter
 
         binding.lockerRandom.setOnClickListener {
+            Log.d("사물함랜덤배치", "onViewCreated: ddddd")
             lockers.shuffle()
             adapter.submitList(viewModel.setLockers(lockers))
         }
