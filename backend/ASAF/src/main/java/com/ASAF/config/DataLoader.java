@@ -150,24 +150,25 @@ public class DataLoader implements CommandLineRunner {
 
         // 도서 더미데이터
         // 학급 더미데이터
-//        for (int i = 1; i <= 10; i++) {
-//            ClassInfoDTO classInfoDTO = new ClassInfoDTO();
-//            if (i <= 2) {
-//                classInfoDTO.setClass_code(i);
-//                classInfoDTO.setId(i);
-//            } else {
-//                if (i % 2 == 0) {
-//                    classInfoDTO.setClass_code(1);
-//                    classInfoDTO.setId(1);
-//                } else {
-//                    classInfoDTO.setClass_code(2);
-//                    classInfoDTO.setId(i);
-//                }
-//            }
-//            classInfoDTO.setGeneration_code(1);
-//            classInfoDTO.setRegion_code(1);
-//            ClassInfoEntity classInfoEntity = ClassInfoEntity.toClassInfoEntity(classInfoDTO);
-//            classInfoRepository.save(classInfoEntity);
-//        }
+        // 학급 더미데이터
+        for (int i = 1; i <= 10; i++) {
+            ClassInfoDTO classInfoDTO = new ClassInfoDTO();
+            if (i <= 2) {
+                classInfoDTO.setClass_code(i);
+                classInfoDTO.setId(1);
+            } else {
+                if (i % 2 == 0) {
+                    classInfoDTO.setClass_code(1);
+                    classInfoDTO.setId(i-1);
+                } else {
+                    classInfoDTO.setClass_code(2);
+                    classInfoDTO.setId(i-1);
+                }
+            }
+            classInfoDTO.setGeneration_code(1);
+            classInfoDTO.setRegion_code(2);
+            ClassInfoEntity classInfoEntity = ClassInfoEntity.toClassInfoEntity(classInfoDTO);
+            classInfoRepository.save(classInfoEntity);
+        }
     }
 }

@@ -25,4 +25,6 @@ public interface LockerRepository extends JpaRepository<LockerEntity, Long> {
     @Query("DELETE FROM LockerEntity l WHERE l.class_code = ?1 AND l.region_code = ?2 AND l.generation_code = ?3")
     void deleteByClassCodeAndRegionCodeAndGenerationCode(ClassEntity classCode, RegionEntity regionCode, GenerationEntity generationCode);
 
+    @Query("SELECT MAX(l.locker_id) FROM LockerEntity l")
+    Long findMaxLockerId();
 }
