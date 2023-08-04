@@ -20,6 +20,11 @@ interface LibraryService {
     @GET("/book/borrowed/{class_code}/{region_code}/{generation_code}/sorted-by-name")
     suspend fun getDraws(@Path("class_code") classCode : Int, @Path("region_code") regionCode : Int, @Path("generation_code") generationCode : Int) : Response<MutableList<Book>>
 
+    // 내가 대출 중인 도서
+    @GET("/book/borrowed/{class_code}/{region_code}/{generation_code}/{user_id}/sorted-by-name")
+    suspend fun getMyDraws(@Path("class_code") classCode : Int, @Path("region_code") regionCode : Int, @Path("generation_code") generationCode : Int,@Path("user_id") userId: Int) : Response<MutableList<Book>>
+
+
     // 한권 정보만 가져오기
     @GET("/book/{book_id}")
     suspend fun getBook(@Path("book_id") bookId: Int) : Response<Book>

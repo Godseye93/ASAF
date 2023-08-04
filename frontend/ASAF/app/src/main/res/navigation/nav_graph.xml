@@ -38,9 +38,9 @@
         tools:layout="@layout/fragment_market"/>
     <fragment
         android:id="@+id/navigation_noti"
-        android:name="com.d103.asaf.ui.noti.NotiFragment"
+        android:name="com.d103.asaf.ui.noti.StudentNotiFragment"
         android:label="Noti"
-        tools:layout="@layout/fragment_noti"/>
+        tools:layout="@layout/fragment_student_noti"/>
     <fragment
         android:id="@+id/operationFragment"
         android:name="com.d103.asaf.ui.op.OpFragment"
@@ -133,6 +133,34 @@
         <action
             android:id="@+id/action_findpwd_fragment_to_login_fragment"
             app:destination="@id/login_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signDrawFragment"
+        android:name="com.d103.asaf.ui.sign.SignDrawFragment"
+        android:label="SignDraw"
+        tools:layout="@layout/fragment_sign_draw" >
+        <action
+            android:id="@+id/action_signDrawFragment_to_signNextFragment"
+            app:destination="@id/signNextFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signNextFragment"
+        android:name="com.d103.asaf.ui.sign.SignNextFragment"
+        android:label="SignNext"
+        tools:layout="@layout/fragment_sign_next" >
+        <action
+            android:id="@+id/action_signNextFragment_to_signFragment"
+            app:destination="@id/signFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/signFragment"
+        android:name="com.d103.asaf.ui.sign.SignFragment"
+        android:label="Sign"
+        tools:layout="@layout/fragment_sign" >
     </fragment>
 
     <fragment

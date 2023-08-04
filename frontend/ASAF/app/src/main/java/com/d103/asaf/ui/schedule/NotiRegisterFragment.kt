@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.d103.asaf.MainActivity
 import com.d103.asaf.R
 import com.d103.asaf.SharedViewModel
@@ -109,6 +110,7 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
                     .setPositiveButton("확인", DialogInterface.OnClickListener{ dialog, which ->
                         Log.d("공지 보내기", "onViewCreated: ${viewModel.notiList}")
                         viewModel.pushNoti()
+                        findNavController().navigateUp()
                     })
 
                 builder.show()
@@ -121,6 +123,8 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
 
 
             }
+
+
         }
 
     }
@@ -133,9 +137,9 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
 
         //시간 설정
         val calendar: Calendar = Calendar.getInstance()
-        val year: Int = calendar.get(Calendar.YEAR)
-        val month: Int = calendar.get(Calendar.MONTH)
-        val dayOfMonth: Int = calendar.get(Calendar.DAY_OF_MONTH)
+        val year: Int = sharedViewModel.year
+        val month: Int = sharedViewModel.month
+        val dayOfMonth: Int = sharedViewModel.day
 
         val hour = binding.notiTime.hour
         val minute = binding.notiTime.minute
@@ -144,8 +148,11 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
 
         val selectedTime = calendar.time
         noti.sendTime = selectedTime.time
-        calendar.set(sharedViewModel.year, sharedViewModel.month, sharedViewModel.day)
+
+
+        calendar.set(sharedViewModel.year, sharedViewModel.month, sharedViewModel.day,0,0)
         noti.registerTime = calendar.time.time
+        Log.d("REGESTERTIME", "NOTI:${noti.registerTime} ")
 
         // 제목 타이틀 설정
         noti.title = binding.notiTitleEdittext.text.toString()
@@ -153,7 +160,7 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
 
 
         // 작성자
-        noti.sender = ApplicationClass.sharedPreferences.getInt("id")!! + 1
+        noti.sender = ApplicationClass.sharedPreferences.getInt("id")!!
 
         // 공지 설정
         noti.notification = binding.notiCheckBox.isChecked

@@ -1,6 +1,7 @@
 package com.ASAF.entity;
 
 import com.ASAF.dto.BookDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ public class BookEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int book_number;
 
-    private String Book_name;
+    private String bookName;
 
     private String author;
 
@@ -24,9 +25,11 @@ public class BookEntity {
     private boolean borrowState;
 
     @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date borrowDate;
 
     @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date returnDate;
 
     private String borrower;
@@ -47,7 +50,7 @@ public class BookEntity {
     @JoinColumn(name = "generation_code")
     private GenerationEntity generation_code;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id")
     private MemberEntity id;
 

@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/dailog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Title"
@@ -20,23 +21,27 @@
         android:layout_height="3dp"
         android:background="@color/black" />
 
-
-    <androidx.cardview.widget.CardView
-
-        android:layout_height="wrap_content"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_marginTop="50dp"
-        >
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/dailog_noti_detail_textView"
-            android:layout_width="match_parent"
+        android:layout_height="200dp">
+        <androidx.cardview.widget.CardView
+
             android:layout_height="wrap_content"
-            android:textSize="32sp"
-            android:text="테스트 내용 입니다. 테스트 내용 입니다. 테스트 내용 입니다. 테스트 내용 입니다. 테스트 내용 입니다. 테스트 내용 입니다. 테스트 내용 입니다."
-            />
+            android:layout_width="match_parent"
+            android:layout_marginTop="50dp"
+            >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dailog_noti_detail_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="테스트 내용 입니다. 테스트 내용 입니다. 테스트 내용 입니다. 테스트 내용 입니다. 테스트 내용 입니다. 테스트 내용 입니다. 테스트 내용 입니다."
+                android:textSize="24sp" />
 
 
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+
+    </ScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:layout_marginTop="50dp"

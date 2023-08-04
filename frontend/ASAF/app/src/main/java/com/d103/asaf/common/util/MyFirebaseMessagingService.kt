@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
@@ -85,6 +86,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setSmallIcon(R.mipmap.ic_launcher) // 아이콘 설정
             .setContentTitle(remoteMessage.data["title"].toString()) // 제목
             .setContentText(remoteMessage.data["body"].toString()) // 메시지 내용
+            .setColor(Color.BLUE)
             .setAutoCancel(true) // 알람클릭시 삭제여부
             .setSound(soundUri)  // 알림 소리
             .setContentIntent(pendingIntent) // 알림 실행 시 Intent

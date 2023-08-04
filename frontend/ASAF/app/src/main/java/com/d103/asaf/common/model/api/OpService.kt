@@ -27,7 +27,7 @@ interface OpService {
     suspend fun getSigns(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int) : Response<MutableList<DocSign>>
 
     // 자리 정보 보내기
-    @POST("/seat/docFromSeats")
+    @POST("/seat/complete")
     suspend fun postSeats(@Body seats: List<DocSeat>) : Boolean
 
     // 사물함 정보 보내기
