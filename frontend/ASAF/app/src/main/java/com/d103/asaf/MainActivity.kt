@@ -74,7 +74,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         // Check if the user is logged in
         val isLoggedIn = ApplicationClass.sharedPreferences.getString("memberEmail")?.isNotEmpty() == true
-        
+
         if (isLoggedIn) {
             // Perform any actions or initialization needed for a logged-in user
             // For example, you might want to navigate the user to the appropriate screen
