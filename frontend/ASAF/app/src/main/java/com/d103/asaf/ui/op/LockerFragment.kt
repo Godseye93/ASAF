@@ -43,12 +43,13 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         CoroutineScope(Dispatchers.Main).launch  {
             if(isAdded) {
-                viewModel.lockers.collect { newLocker ->
-                    adapter.submitList(viewModel.docLockers)// 업데이트
-                }
+                adapter.submitList(viewModel.docLockers)
+//                viewModel.lockers.collect { newLocker ->
+//                    adapter.submitList(viewModel.docLockers)// 업데이트
+//                    Log.d("랜덤사물함전", "onViewCreated: ${viewModel.docLockers}")
+//                }
             }
         }
 
@@ -57,6 +58,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
 
         binding.lockerRandom.setOnClickListener {
               viewModel.docLockers.shuffle()
+            Log.d("랜덤사물함", "onViewCreated: ${viewModel.docLockers}")
               adapter.submitList(viewModel.docLockers.toMutableList())
         }
 

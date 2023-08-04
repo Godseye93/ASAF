@@ -24,6 +24,7 @@ class LockerAdapter : androidx.recyclerview.widget.ListAdapter<DocLocker, Locker
     inner class LockerViewHolder(private val binding: ItemLockerBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(locker: DocLocker) {
             binding.itemLockerImageviewText.text = locker.name
+//            binding.itemLockerImageviewText.text = locker.lockerNum.toString()
         }
     }
 

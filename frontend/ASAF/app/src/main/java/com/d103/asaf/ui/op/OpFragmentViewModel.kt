@@ -20,6 +20,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import okhttp3.internal.wait
+import java.net.SocketTimeoutException
 
 private const val TAG = "운영뷰모델"
 // 외부 저장소에서 받아오는 리스트는 MutableStateFlow로 받아온다
@@ -97,53 +98,15 @@ class OpFragmentViewModel(): ViewModel() {
         // 첫번째 반을 최초 반으로 설정
         loadCommon()
     }
-
+    // areItemsTheSame 에서 false가 나면 뷰가 이동하는 애니메이션이 나오고, areContentsTheSame 에서 false 나면 데이터가 깜빡거리면서 변하는 애니메이션이 나옴!!
     private fun loadRemote() {
-        Log.d(TAG, "loadRemote: 다시불림")
+        docLockers = MutableList(80) {index -> DocLocker(name = index.toString(), id = index)}
         viewModelScope.launch {
             try {
-                // Curclass의 학생 정보
-                val studentResponse = withContext(Dispatchers.IO) {
-                    RetrofitUtil.attendenceService.getStudentsInfo(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
-                }
-                if (studentResponse.isSuccessful) {
-                    _students.value = studentResponse.body() ?: mutableListOf() // MutableList(classes.value.size) { DocSeat() }
-                } else {
-                    Log.d(TAG, "학생 가져오기 네트워크 오류")
-                }
-
-                // 자리 정보
-                val seatResponse = withContext(Dispatchers.IO) {
-                    Log.d(TAG, "현재클래스: ${curClass.value}")
-                    RetrofitUtil.opService.getSeats(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
-                }
-                if (seatResponse.isSuccessful) {
-                    docSeat = seatResponse.body() ?: MutableList(_students.value.size) { index ->
-                        DocSeat(name = _students.value[index].memberName)
-                    }
-                } else {
-                    Log.d(TAG, " 자리 가져오기 네트워크 오류")
-                }
-
-                // 사물함 정보
-                val lockerResponse = withContext(Dispatchers.IO) {
-                    RetrofitUtil.opService.getLockers(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
-                }
-                if (lockerResponse.isSuccessful) {
-                    docLockers = lockerResponse.body() ?: MutableList(80) { DocLocker() }
-                } else {
-                    Log.d(TAG, "사물함 가져오기 네트워크 오류")
-                }
-
-                // 서명 정보
-                val signResponse = withContext(Dispatchers.IO) {
-                    RetrofitUtil.opService.getSigns(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
-                }
-                if (signResponse.isSuccessful) {
-                    _signs.value = signResponse.body() ?: mutableListOf<DocSign>()
-                } else {
-                    Log.d(TAG, "사인 가져오기 네트워크 오류")
-                }
+                fetchStudentsInfo()
+                fetchSeats()
+                fetchLockers()
+                fetchSigns()
 
                 // 이후 작업은 모두 완료된 후 실행
                 loadSeats()
@@ -152,11 +115,59 @@ class OpFragmentViewModel(): ViewModel() {
 
                 // 작업이 완료되면 lock을 풀어줍니다.
                 _remoteDataLoaded = false
+            } catch (e: SocketTimeoutException) {
+                Log.d(TAG, "네트워크 오류 : $e")
             } catch (e: Exception) {
                 Log.d(TAG, "네트워크 오류 : $e")
             }
         }
+    }
 
+    private suspend fun fetchStudentsInfo() {
+        val studentResponse = withContext(Dispatchers.IO) {
+            RetrofitUtil.attendenceService.getStudentsInfo(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
+        }
+        if (studentResponse.isSuccessful) {
+            _students.value = studentResponse.body() ?: mutableListOf()
+        } else {
+            Log.d(TAG, "학생 가져오기 네트워크 오류")
+        }
+    }
+
+    private suspend fun fetchSeats() {
+        val seatResponse = withContext(Dispatchers.IO) {
+            Log.d(TAG, "현재클래스: ${curClass.value}")
+            RetrofitUtil.opService.getSeats(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
+        }
+        if (seatResponse.isSuccessful) {
+            docSeat = seatResponse.body() ?: MutableList(_students.value.size) { index ->
+                DocSeat(name = _students.value[index].memberName)
+            }
+        } else {
+            Log.d(TAG, " 자리 가져오기 네트워크 오류")
+        }
+    }
+
+    private suspend fun fetchLockers() {
+        val lockerResponse = withContext(Dispatchers.IO) {
+            RetrofitUtil.opService.getLockers(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
+        }
+        if (lockerResponse.isSuccessful) {
+            docLockers = lockerResponse.body() ?: MutableList(80) { DocLocker() }
+        } else {
+            Log.d(TAG, "사물함 가져오기 네트워크 오류")
+        }
+    }
+
+    private suspend fun fetchSigns() {
+        val signResponse = withContext(Dispatchers.IO) {
+            RetrofitUtil.opService.getSigns(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
+        }
+        if (signResponse.isSuccessful) {
+            _signs.value = signResponse.body() ?: mutableListOf<DocSign>()
+        } else {
+            Log.d(TAG, "사인 가져오기 네트워크 오류")
+        }
     }
 
     private fun loadCommon() {

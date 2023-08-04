@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@+id/login_fragment">
+    app:startDestination="@+id/opFragment">
+
+    <fragment
+        android:id="@+id/opFragment"
+        android:name="com.d103.asaf.ui.op.OpFragment"
+        android:label="opFragment"
+        tools:layout="@layout/fragment_op"/>
 
     <fragment
         android:id="@+id/ProhomeFragment"
