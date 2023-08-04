@@ -69,14 +69,14 @@ class NotiRegisterFragment : BaseFragment<FragmentNotiRegisterBinding>(FragmentN
         binding.checkoutChip.setOnClickListener {
             binding.notiCheckBox.isChecked = true
             binding.notiDetailEdittext.setText("퇴실 버튼 안 누른 사람들 퇴실 버튼 누르러 뭅뭅")
-            binding.notiTitleEdittext.setText("라이브 공지")
+            binding.notiTitleEdittext.setText("퇴실 체크 공지")
             binding.notiTime.hour = 18
             binding.notiTime.minute = 5
         }
         binding.liveChip.setOnClickListener {
             binding.notiCheckBox.isChecked = true
             binding.notiDetailEdittext.setText("[9시 라이브 방송 안내] 9시부터 라이브 방송이 진행될 예정입니다.")
-            binding.notiTitleEdittext.setText("퇴실 체크 공지")
+            binding.notiTitleEdittext.setText("라이브  공지")
             binding.notiTime.hour = 8
             binding.notiTime.minute = 55
         }
