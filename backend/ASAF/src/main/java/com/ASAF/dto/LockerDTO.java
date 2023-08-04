@@ -15,7 +15,6 @@ public class LockerDTO {
     private int locker_num;
     private String name;
 
-    private Long doc_id;
     private int class_num;
     private int class_code;
     private int region_code;
@@ -26,7 +25,6 @@ public class LockerDTO {
         this.locker_id = lockerEntity.getLocker_id();
         this.locker_num = lockerEntity.getLocker_num();
         this.name = lockerEntity.getName();
-        this.doc_id = lockerEntity.getDocumentEntity().getDoc_id();
         this.class_num = lockerEntity.getClassInfoEntity().getClass_num();
         this.class_code = lockerEntity.getClassEntity().getClass_code();
         this.region_code = lockerEntity.getRegionEntity().getRegion_code();

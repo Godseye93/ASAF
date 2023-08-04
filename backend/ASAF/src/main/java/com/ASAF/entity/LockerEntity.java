@@ -15,10 +15,6 @@ public class LockerEntity {
     private Long locker_id;
 
     @ManyToOne
-    @JoinColumn(name = "doc_id")
-    private DocumentEntity doc_id;
-
-    @ManyToOne
     @JoinColumn(name = "class_num")
     private ClassInfoEntity class_num;
 
@@ -44,9 +40,6 @@ public class LockerEntity {
     @Column
     private String name;
 
-    public DocumentEntity getDocumentEntity() {
-        return doc_id;
-    }
     public ClassInfoEntity getClassInfoEntity() {
         return class_num;
     }
