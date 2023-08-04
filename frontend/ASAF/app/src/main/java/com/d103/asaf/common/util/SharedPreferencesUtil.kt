@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.dto.Member
+import com.d103.asaf.ui.sign.Point
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 
 class SharedPreferencesUtil(context: Context) {
@@ -48,6 +51,33 @@ class SharedPreferencesUtil(context: Context) {
 
     fun getInt(key:String): Int? {
         return preferences.getInt(key, 0)
+    }
+
+    // 서명 사인 저장
+    fun savePoints(points: List<Point>) {
+        val editor = preferences.edit()
+
+        // List<Point>를 Gson을 사용하여 JSON 형태의 문자열로 변환하여 저장
+        val gson = Gson()
+        val json = gson.toJson(points)
+        editor.putString("signs", json)
+
+        editor.apply()
+    }
+
+    fun loadPoints(): List<Point> {
+        // 저장된 JSON 문자열을 불러옴
+        val json = preferences.getString("signs", null)
+
+        if (json != null) {
+            // Gson을 사용하여 JSON 문자열을 List<Point>로 변환하여 반환
+            val gson = Gson()
+            val type = object : TypeToken<List<Point>>() {}.type
+            return gson.fromJson(json, type)
+        }
+
+        // 저장된 데이터가 없을 경우 빈 List<Point> 반환
+        return emptyList()
     }
 
 }

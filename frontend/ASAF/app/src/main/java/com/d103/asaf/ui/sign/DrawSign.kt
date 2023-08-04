@@ -62,14 +62,14 @@ class DrawSign(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
         invalidate()
     }
 
-    fun getSign() : ArrayList<Point> {
+    fun getSign() : List<Point> {
         return list;
     }
 
     fun setSign(sign: List<Point>, caller: String) {
-        val rate = if(caller == "SignNextFragment") {
-            paint.strokeWidth = 20 / (dpHeight / 68)
-            dpHeight / 68
+        val rate = if(caller == "SignFragment") {
+            paint.strokeWidth = 20 / (dpHeight / 90)
+            dpHeight / 90
         } else {
             paint.strokeWidth = 20 / (dpHeight / dpWidth / 0.8f)
             dpHeight / dpWidth / 0.8f
