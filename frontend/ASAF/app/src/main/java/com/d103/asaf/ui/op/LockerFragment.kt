@@ -47,7 +47,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
         CoroutineScope(Dispatchers.Main).launch  {
             if(isAdded) {
                 viewModel.lockers.collect { newLocker ->
-                    adapter.submitList(viewModel.setLockers(newLocker))// 업데이트
+                    adapter.submitList(viewModel.docLockers)// 업데이트
                 }
             }
         }

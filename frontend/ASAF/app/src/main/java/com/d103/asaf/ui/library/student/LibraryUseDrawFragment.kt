@@ -7,6 +7,7 @@ import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentLibraryUseDrawBinding
 import com.d103.asaf.ui.library.LibraryFragmentViewModel
+import com.ssafy.template.util.SharedPreferencesUtil
 
 class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(FragmentLibraryUseDrawBinding::bind, R.layout.fragment_library_use_draw) {
     companion object {
@@ -40,6 +41,7 @@ class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(Fragm
             fragmentLibraryUserDrawDrawdayDropdown.dataList.removeAt(2)
             fragmentLibraryUserDrawDrawdayDropdown.dropdownText.text = "3"
             fragmentLibraryUserDrawDrawdayDropdown.dropdownTextPost.text = "일"
+            // fragmentLibraryUserDrawTextviewDrawerText.text =
         }
     }
 }
