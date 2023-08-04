@@ -24,7 +24,7 @@ data class Member(
 ){
     // 기본 생성자
     constructor() : this(0, 0, "", "", "", "", "",
-        0, "", "", 0, "", "", null, null, "stu")
+        0, "", "", 0, "", "", null, null, "교육생")
 
     // 추가 생성자 추가
     constructor(
@@ -34,11 +34,11 @@ data class Member(
         birthDate: String,
         memberInfo: String
     ) : this(0, 0, memberName, memberEmail,
-        memberPassword, memberInfo, birthDate, 0, "", "", 0, "", "", null, null, "stu")
+        memberPassword, memberInfo, birthDate, 0, "", "", 0, "", "", null, null, "교육생")
 
     constructor(
         memberEmail: String,
         memberPassword: String
     ) : this(0, 0, "", memberEmail,
-        memberPassword, "", "", 0, "", "", 0, "", "", null, null, "stu")
+        memberPassword, "", "", 0, "", "", 0, "", "", null, null, "교육생")
 }
