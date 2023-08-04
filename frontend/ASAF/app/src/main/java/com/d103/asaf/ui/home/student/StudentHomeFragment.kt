@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -68,7 +69,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
     // 애니메이션 부분
     private lateinit var cardView1: CardView
     private lateinit var cardView2: CardView
-    private lateinit var buttonFlip: Button
+    private lateinit var buttonFlip: ImageView
     private var isFirstCardVisible = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -181,6 +182,8 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
     }
 
     fun initView(){
+
+//        binding.fragmentstuhome
 
         cardView1 = binding.fragmentStudentHomeCardViewFront
         cardView2 = binding.fragmentStudentHomeCardViewBack
