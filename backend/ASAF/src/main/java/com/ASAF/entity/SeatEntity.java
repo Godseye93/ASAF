@@ -1,9 +1,5 @@
 package com.ASAF.entity;
 
-import com.ASAF.dto.DocumentDTO;
-import com.ASAF.dto.SeatDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,10 +12,6 @@ public class SeatEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seat_id;
-
-    @ManyToOne
-    @JoinColumn(name = "doc_id")
-    private DocumentEntity doc_id;
 
     @ManyToOne
     @JoinColumn(name = "class_num")
@@ -47,9 +39,6 @@ public class SeatEntity {
     @Column
     private String name;
 
-    public DocumentEntity getDocumentEntity() {
-        return doc_id;
-    }
     public ClassInfoEntity getClassInfoEntity() {
         return class_num;
     }
