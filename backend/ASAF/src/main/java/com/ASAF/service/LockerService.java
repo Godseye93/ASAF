@@ -6,6 +6,7 @@ import com.ASAF.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class LockerService {
     private MemberRepository memberRepository;
 
     // 배치 완료
+    @Transactional
     public void completeLockers(List<LockerDTO> lockerDTOList) {
         List<LockerEntity> lockerEntities = new ArrayList<>();
         int classCode = lockerDTOList.get(0).getClass_code();
@@ -40,9 +42,20 @@ public class LockerService {
 
         lockerRepository.deleteByClassCodeAndRegionCodeAndGenerationCode(classEntity, regionEntity, generationEntity);
 
+        Long maxLockerId = lockerRepository.findMaxLockerId();
+
+        System.out.println("maxLockerId found: " + maxLockerId);
+        // locker_id가 없는 경우 0L으로 설정합니다.
+        if (maxLockerId == null) {
+            maxLockerId = 0L;
+            System.out.println("maxLockerId is set to " + maxLockerId);
+        }
+
         for (LockerDTO lockerDTO : lockerDTOList) {
             LockerEntity lockerEntity = new LockerEntity();
-            lockerEntity.setLocker_id(lockerDTO.getLocker_id());
+            System.out.println(maxLockerId);
+            maxLockerId++; // locker_id를 결정하기 위해 최댓값에서 1씩 증가시킵니다.
+            lockerEntity.setLocker_id(maxLockerId); // 증가된 locker_id를 lockerEntity에 설정합니다.
             lockerEntity.setLocker_num(lockerDTO.getLocker_num());
             lockerEntity.setName(lockerDTO.getName());
             ClassInfoEntity classInfoEntity = classInfoRepository.findById(lockerDTO.getClass_num()).orElse(null);
