@@ -102,6 +102,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
                 gridLayout.visibility = View.INVISIBLE
                 switchToEditText()
                 completeLocal()
+                // 변경 후 변경된 정보 가져와서 UI업데이트
                 viewModel.callRealSeats()
             }
             // position 정보를 seatNum 크기 만큼만 보내기 서버에서 n건을 수정해야함
