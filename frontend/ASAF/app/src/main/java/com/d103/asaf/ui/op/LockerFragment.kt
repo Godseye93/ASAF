@@ -30,9 +30,9 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
         }
     }
 
-    private var  lockers: MutableList<Int> = MutableList(80) { 0 }
+    private var lockers: MutableList<Int> = MutableList(80) { 0 }
     private lateinit var adapter: LockerAdapter
-    lateinit var viewModel: OpFragmentViewModel
+    private var viewModel: OpFragmentViewModel = OpFragment.parentViewModel!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +43,11 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launchWhenStarted  {
-            viewModel.lockers.collect { newLocker ->
-                adapter.submitList(viewModel.setLockers(newLocker))// 업데이트
+        CoroutineScope(Dispatchers.Main).launch  {
+            if(isAdded) {
+                viewModel.lockers.collect { newLocker ->
+                    adapter.submitList(viewModel.setLockers(newLocker))// 업데이트
+                }
             }
         }
 
@@ -53,8 +55,8 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
         binding.fragmentLockerRecyclerview.adapter = adapter
 
         binding.lockerRandom.setOnClickListener {
-            Log.d("사물함랜덤배치", "onViewCreated: ddddd")
             lockers.shuffle()
+            Log.d("라커섞기", "onViewCreated: ${lockers}")
             adapter.submitList(viewModel.setLockers(lockers))
         }
 
@@ -67,6 +69,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
     private fun postLockers() {
         // POST List<docLockers>
         CoroutineScope(Dispatchers.IO).launch {
+            Log.d("사물함 보내기", "보내기: ${viewModel.docLockers}")
             if(!RetrofitUtil.opService.postLockers(viewModel.docLockers))
                 Toast.makeText(context,"사물함 업데이트 네트워크 오류", Toast.LENGTH_SHORT).show()
         }

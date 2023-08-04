@@ -68,8 +68,7 @@ class OpFragmentViewModel(): ViewModel() {
 
     // <!---------------------------- 사물함 배치 함수 ------------------------------->
     // 진짜 사물함 정보
-    private var _docLockers = mutableListOf<DocLocker>()
-    val docLockers = _docLockers
+    var docLockers = mutableListOf<DocLocker>()
 
     // 고정 크기 4x20
     private var _lockers = MutableStateFlow(mutableListOf<Int>())
@@ -131,7 +130,7 @@ class OpFragmentViewModel(): ViewModel() {
                     RetrofitUtil.opService.getLockers(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
                 if (lockerResponse.isSuccessful) {
-                    _docLockers = lockerResponse.body() ?: MutableList(80) { DocLocker() }
+                    docLockers = lockerResponse.body() ?: MutableList(80) { DocLocker() }
                 } else {
                     Log.d(TAG, "사물함 가져오기 네트워크 오류")
                 }
@@ -226,7 +225,7 @@ class OpFragmentViewModel(): ViewModel() {
     // <!---------------------------- 사물함 배치 함수 ------------------------------->
     private fun loadLockers() {
 //        for(i in 0 until 4*20) _lockers.value.add(i)
-        _lockers.value =  _docLockers.map { it.lockerNum }.toMutableList()
+         _lockers.value =  docLockers.map { it.lockerNum }.toMutableList()
     }
 
     private fun loadClasses() {
@@ -241,8 +240,18 @@ class OpFragmentViewModel(): ViewModel() {
     // 바뀐 자리 정보로 사물함 정보 교체해주는 코드
     fun setLockers(lockers: MutableList<Int>): MutableList<DocLocker> {
         val loop = lockers.size
-        for(i in 0 until loop) _docLockers[i].lockerNum = _lockers.value[i]
-        return _docLockers
+        val newDocLockers = mutableListOf<DocLocker>()
+        Log.d(TAG, "이전사물함: ${docLockers}")
+        Log.d(TAG, "포지션 사이즈: $loop")
+        for(i in 0 until loop) {
+            newDocLockers.add(DocLocker(docLockers[i].id, docLockers[i].docId, docLockers[i].classNum,
+                docLockers[i].classCode, docLockers[i].regionCode, docLockers[i].generationCode
+                ,docLockers[i].userId,lockers[i],docLockers[i].name))
+        }
+        Log.d(TAG, "이후사물함: $newDocLockers")
+        docLockers = newDocLockers
+        Log.d(TAG, "이후사물함: $newDocLockers")
+        return newDocLockers
     }
 
     // 바뀐 자리 정보를 채워주는 코드

@@ -46,7 +46,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
     private var reversePosition = (0..24).toMutableList()
     private lateinit var gridLayout: GridLayout
     private var seatNum = 0;
-    private lateinit var viewModel: OpFragmentViewModel
+    private var viewModel: OpFragmentViewModel = OpFragment.parentViewModel!!
 
     companion object {
         private const val POSITION = "position"
@@ -61,9 +61,6 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
             fragment.arguments = args
             return fragment
         }
-    }
-    init {
-        viewModel = OpFragment.parentViewModel!!
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
