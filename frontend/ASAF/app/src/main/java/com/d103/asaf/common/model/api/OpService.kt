@@ -19,7 +19,7 @@ interface OpService {
     suspend fun getSeats(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int) : Response<MutableList<DocSeat>>
 
     // 사물함 배치 정보 가져오기
-    @GET("/locker")
+    @GET("/locker/classCodes")
     suspend fun getLockers(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int) : Response<MutableList<DocLocker>>
 
     // 서명 정보 가져오기

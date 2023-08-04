@@ -100,6 +100,7 @@ class OpFragmentViewModel(): ViewModel() {
     }
 
     private fun loadRemote() {
+        Log.d(TAG, "loadRemote: 다시불림")
         viewModelScope.launch {
             try {
                 // Curclass의 학생 정보
@@ -163,7 +164,7 @@ class OpFragmentViewModel(): ViewModel() {
         // classinfoes 를 classes로 가공
         loadClasses()
 
-        curClass.value = _classInfoes[0]
+        if(_classInfoes.size > 0) curClass.value = _classInfoes[0]
         curMonth.value = _months.value[0]
 
         // 현재 반설정이 완료되면 collect 리스너를 달아준다.
@@ -205,6 +206,23 @@ class OpFragmentViewModel(): ViewModel() {
         for(i in fin until 25) _position.value[i] = remainingNumbers[i-fin]
     }
 
+    fun callRealSeats() {
+        viewModelScope.launch {
+            val seatResponse = withContext(Dispatchers.IO) {
+                Log.d(TAG, "현재클래스: ${curClass.value}")
+                RetrofitUtil.opService.getSeats(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
+            }
+            if (seatResponse.isSuccessful) {
+                docSeat = seatResponse.body() ?: MutableList(_students.value.size) { index ->
+                    DocSeat(name = _students.value[index].memberName)
+                }
+            } else {
+                Log.d(TAG, " 자리 가져오기 네트워크 오류")
+            }
+            loadSeats()
+        }
+    }
+
     // <!---------------------------- 사물함 배치 함수 ------------------------------->
     private fun loadLockers() {
 //        for(i in 0 until 4*20) _lockers.value.add(i)
@@ -229,6 +247,8 @@ class OpFragmentViewModel(): ViewModel() {
 
     // 바뀐 자리 정보를 채워주는 코드
     fun setSeats(position: MutableList<Int>, seatNum: Int): MutableList<DocSeat> {
+        Log.d(TAG, "바뀐포지션: $position")
+        Log.d(TAG, "바뀐독시트: $docSeat")
         val realPos = position.subList(0,seatNum)
         val postSeats = docSeat.subList(0,seatNum)
         for(i in 0 until seatNum) postSeats[i].seatNum = realPos[i]

@@ -20,11 +20,11 @@ class LibraryUseFragmentViewModel: ViewModel() {
     val classInfoes = _classInfoes
 
     // <!---------------------------- 전체리스트 ------------------------------->
-    private var _books = MutableStateFlow(MutableList(25) { Book(bookName = "이거 어디까지 올라가는 거에요?") })
+    private var _books = MutableStateFlow(mutableListOf<Book>())
     val books = _books
 
     // <!---------------------------- 내가 대출한 리스트 ------------------------------->
-    private var _myDraws = MutableStateFlow(mutableListOf(Book(bookName = "find this"), Book(bookName = "what this")))
+    private var _myDraws = MutableStateFlow(mutableListOf<Book>())
     val myDraws = _myDraws
 
     // 대출기간
@@ -63,7 +63,7 @@ class LibraryUseFragmentViewModel: ViewModel() {
     }
 
     private fun loadCommon() {
-        curClass.value = ApplicationClass.mainClassInfo[0]
+        if(ApplicationClass.mainClassInfo.size > 0) curClass.value = ApplicationClass.mainClassInfo[0]
         loadRemote()
     }
 }

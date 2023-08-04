@@ -48,7 +48,7 @@ class LibraryFragmentViewModel: ViewModel() {
     val classSurfaces = _classSurfaces
 
     // <!---------------------------- 전체리스트 ------------------------------->
-    private var _books = MutableStateFlow(MutableList(25) { Book(bookName = "이거 어디까지 올라가는 거에요?")})
+    private var _books = MutableStateFlow(mutableListOf<Book>())
     val books = _books
 
     // <!---------------------------- 대출한 리스트 ------------------------------->
@@ -116,7 +116,7 @@ class LibraryFragmentViewModel: ViewModel() {
     private fun loadCommon() {
         // classinfoes를 classes로 가공
         loadClasses()
-        curClass.value = ApplicationClass.mainClassInfo[0]
+        if(ApplicationClass.mainClassInfo.size > 0)curClass.value = ApplicationClass.mainClassInfo[0]
 
         // 현재 반설정이 완료되면 collect 리스너를 달아준다.
         initCollect()
@@ -149,7 +149,7 @@ class LibraryFragmentViewModel: ViewModel() {
         val height = 500
 
         // Set the barcode content
-        val content = "$title $author $publisher"
+        val content = "\"$title\"|<$author>|$publisher"
 
         // Set the barcode hints
         val hints = Hashtable<EncodeHintType, Any>()

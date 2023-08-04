@@ -103,11 +103,11 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
     private fun initClass() {
         binding.apply {
             fragmentOpDropdownClass.dropdownText.addTextChangedListener(classWatcher)
-            fragmentOpDropdownClass.dropdownText.text = viewModel.classSurfaces.value[0].toString()
+            if(viewModel.classSurfaces.value.size > 0 )fragmentOpDropdownClass.dropdownText.text = viewModel.classSurfaces.value[0].toString()
             fragmentOpDropdownClass.dropdownTextPost.text = "반"
             // 객체가 바뀌면 안됨.. 요소를 변경해줘야 변화 인식됨
             fragmentOpDropdownClass.dataList.addAll(viewModel.classSurfaces.value)
-            fragmentOpDropdownClass.dataList.removeAt(0)
+            if(fragmentOpDropdownClass.dataList.size > 0)fragmentOpDropdownClass.dataList.removeAt(0)
             // 프로그레스바 텍스트 크기 변경
             fragmentOpImageviewArcprogressbar.progressRate.textSize = 30f
             fragmentOpImageviewArcprogressbar.progressText.textSize = 15f

@@ -76,14 +76,15 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("포지션 불러오기", "onViewCreated: ${viewModel.position.value}")
         CoroutineScope(Dispatchers.Main).launch  {
             viewModel.seat.collect { newSeat ->
                 if(isAdded) {
-                    Log.d("자리 프래그먼트", "onViewCreated: ${viewModel.seat.value} 업데이트 됨")
-                    Log.d("자리 프래그먼트", "docSeat: ${viewModel.docSeat} 업데이트 됨")
                     seat = viewModel.seat.value
                     seatNum = seat.size
                     loadSeat() // 업데이트
+                    Log.d("자리 프래그먼트", "onViewCreated: ${viewModel.seat.value} 업데이트 됨")
+                    Log.d("자리 프래그먼트", "docSeat: ${viewModel.docSeat} 업데이트 됨")
                 }
             }
         }
@@ -101,11 +102,15 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
                 gridLayout.visibility = View.INVISIBLE
                 switchToEditText()
                 completeLocal()
+                viewModel.callRealSeats()
             }
             // position 정보를 seatNum 크기 만큼만 보내기 서버에서 n건을 수정해야함
             seatComplete.setOnClickListener {
                 lifecycleScope.launch {
+                    Log.d("자리변경", "$reversePosition")
                     RetrofitUtil.opService.postSeats(viewModel.setSeats(position, seatNum))
+                    // 변경 후 변경된 정보 가져와서 UI업데이트
+                    viewModel.callRealSeats()
                 }
             }
 
@@ -250,6 +255,7 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
         moveImageViewToGridPosition(org, nxtIndex)
         moveImageViewToGridPosition(next, curIndex)
         // 위치정보 변경
+        position.swap(reversePosition[curIndex], reversePosition[nxtIndex])
         reversePosition.swap(curIndex, nextIndex)
     }
 
@@ -293,6 +299,8 @@ class SeatFragment() : BaseFragment<FragmentSeatBinding>(FragmentSeatBinding::bi
                         , target.y.toInt() + target.height / 2 - 5)
                     Log.d("스왑전", "$targetViewIndex, $newIndex")
                     swapImageViewPosition(target, newIndex)
+                    Log.d("자리변경후", "setTouchListener: $position")
+                    Log.d("자리변경후리버스", "setTouchListener: $reversePosition")
                 }
             }
             true

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.d103.asaf.databinding.DialogQrcodeScannerBinding
 import com.d103.asaf.ui.library.student.LibraryUseDrawFragment
@@ -41,6 +42,11 @@ class QRCodeScannerDialog : DialogFragment() {
         binding.barcodeScanner.pause()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.barcodeScanner.resume()
+    }
+
     private fun requestCameraPermission() {
         val permissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
@@ -74,13 +80,18 @@ class QRCodeScannerDialog : DialogFragment() {
             // QR 코드가 스캔되면 바코드 결과를 처리하고 원하는 작업을 수행합니다.
             val qrCodeResult = result.text
             // 예를 들어, 다음과 같이 QR 코드 결과를 다른 곳으로 전달할 수 있습니다.
-            val fragment = LibraryUseDrawFragment.instance(qrCodeResult.split(" "))
-            // framelayout으로 바꿔야하나? dismiss는 없애야 하나? << 고려하기
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(binding.barcodeScanner.id, fragment)
-                .addToBackStack(null)
-                .commit()
-            dismiss()
+            try {
+                val fragment = LibraryUseDrawFragment.instance(qrCodeResult.split("|"))
+                // framelayout으로 바꿔야하나? dismiss는 없애야 하나? << 고려하기
+                binding.barcodeScanner.isVisible = false
+                childFragmentManager.beginTransaction()
+                    .replace(binding.dialogFramelayout.id, fragment)
+                    .addToBackStack(null)
+                    .commit()
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "잘못된 QR코드입니다.", Toast.LENGTH_SHORT).show()
+            }
+//            dismiss()
         }
 
         override fun possibleResultPoints(resultPoints: List<ResultPoint>) {}

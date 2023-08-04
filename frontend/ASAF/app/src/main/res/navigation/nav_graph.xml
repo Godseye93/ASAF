@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@+id/login_fragment">
+    app:startDestination="@+id/libraryUserFragment">
 
     <fragment
         android:id="@+id/ProhomeFragment"
@@ -162,6 +162,14 @@
         android:label="Sign"
         tools:layout="@layout/fragment_sign" >
     </fragment>
+
+    <fragment
+        android:id="@+id/libraryUserFragment"
+        android:name="com.d103.asaf.ui.library.student.LibraryUseFragment"
+        android:label="LibraryUser"
+        tools:layout="@layout/fragment_library_use" >
+    </fragment>
+
 
     <fragment
         android:id="@+id/noti_register_fragment"

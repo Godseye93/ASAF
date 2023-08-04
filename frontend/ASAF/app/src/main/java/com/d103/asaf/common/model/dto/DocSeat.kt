@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class DocSeat(
     @SerializedName("seat_id") val id: Int = 0,
-    @SerializedName("doc_id") val docId: Int = 0,
     @SerializedName("class_num") val classNum: Int = 0,
     @SerializedName("class_code") val classCode: Int = 0,
     @SerializedName("region_code") val regionCode: Int = 0,

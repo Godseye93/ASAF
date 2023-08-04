@@ -2,9 +2,11 @@ package com.d103.asaf.ui.library.student
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentLibraryUseDrawBinding
+import com.d103.asaf.ui.library.LibraryFragmentViewModel
 
 class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(FragmentLibraryUseDrawBinding::bind, R.layout.fragment_library_use_draw) {
     companion object {
@@ -20,6 +22,7 @@ class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(Fragm
     }
 
     private var drawInfo: MutableList<String> = mutableListOf()
+    private val viewModel: LibraryUseFragmentViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,5 +32,14 @@ class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(Fragm
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.apply {
+            fragmentLibraryUserDrawTextviewTitle.text = drawInfo[0]
+            fragmentLibraryUserDrawTextviewAuthor.text = drawInfo[1]
+            fragmentLibraryUserDrawDrawdayDropdown.dataList.addAll(viewModel.days.value)
+            fragmentLibraryUserDrawDrawdayDropdown.dataList.removeAt(2)
+            fragmentLibraryUserDrawDrawdayDropdown.dropdownText.text = "3"
+            fragmentLibraryUserDrawDrawdayDropdown.dropdownTextPost.text = "일"
+        }
     }
 }

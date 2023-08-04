@@ -68,11 +68,10 @@ class DrawSign(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
     fun setSign(sign: List<Point>, caller: String) {
         val rate = if(caller == "SignFragment") {
-            paint.strokeWidth = 20 / (dpHeight / 90)
-            dpHeight / 90
+            paint.strokeWidth = 20 / (dpHeight / 105)
+            dpHeight / 105
         } else {
-            paint.strokeWidth = 20 / (dpHeight / dpWidth / 0.8f)
-            dpHeight / dpWidth / 0.8f
+            1f
         }
 
         val mapped = sign.map { it -> Point(it.x / rate, it.y / rate, it.isContinue) }
