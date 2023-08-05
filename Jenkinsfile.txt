@@ -10,7 +10,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('backend/ASAF') { // 프로젝트 하위 디렉터리로 이동
+                dir('backend/ASAF/src/main/java/com/ASAF') { // 프로젝트 하위 디렉터리로 이동
                     sh './gradlew build'
                 }
             }
