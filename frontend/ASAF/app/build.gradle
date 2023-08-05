@@ -121,4 +121,7 @@ dependencies {
     //tedPermission
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
 
+    //beacon
+    implementation 'org.altbeacon:android-beacon-library:2.19'
+
 }
