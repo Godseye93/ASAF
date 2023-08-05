@@ -28,4 +28,9 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <!-- 스플래시 화면 -->
+    <style name="Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/professor</item>
+    </style>
+
 </resources>
