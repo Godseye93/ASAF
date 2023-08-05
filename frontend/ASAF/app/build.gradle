@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -33,6 +34,13 @@ android {
     viewBinding{
         enabled = true
     }
+    dataBinding{
+        enabled = true
+    }
+    packagingOptions {
+        exclude 'META-INF/NOTICE.md'
+        exclude 'META-INF/LICENSE.md'
+    }
 }
 
 dependencies {
@@ -54,7 +62,7 @@ dependencies {
     // https://github.com/square/retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     // https://github.com/square/okhttp
-    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation "com.squareup.okhttp3:okhttp:4.9.0"
     // https://github.com/square/retrofit/tree/master/retrofit-converters/gson
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     // https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor
@@ -83,12 +91,33 @@ dependencies {
     //FCM 관련
     // https://mvnrepository.com/artifact/com.google.firebase/firebase-messaging
     implementation("com.google.firebase:firebase-messaging:22.0.0")
+    implementation platform('com.google.firebase:firebase-bom:32.1.0')
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
 
     // lottie 애니메이션
     def lottieVersion = "5.2.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
+    // bottom nav bar
+    implementation 'com.tbuonomo:morph-bottom-navigation:1.0.1'
+
+    //캘린더
+    implementation 'com.github.prolificinteractive:material-calendarview:1.4.3'
 
 
+    // QR 코드
+    implementation("com.google.zxing:core:3.5.1")
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+    // SMTP PROTOCOL
+    implementation 'com.github.nedimf:maildroid:v0.1.1-release'
+
+    //firebase
+//    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+
+    implementation 'androidx.biometric:biometric:1.2.0-alpha05'
+
+    //tedPermission
+    implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
 }

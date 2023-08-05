@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f3fb5d2b-bb3f-4632-9682-b2b2d5f8f38e" name="Changes" comment="" />
+    <list default="true" id="f3fb5d2b-bb3f-4632-9682-b2b2d5f8f38e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/ASAF/src/main/java/com/ASAF/controller/NoticeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASAF/src/main/java/com/ASAF/controller/NoticeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASAF/src/main/java/com/ASAF/dto/NoticeDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASAF/src/main/java/com/ASAF/dto/NoticeDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASAF/src/main/java/com/ASAF/entity/NoticeEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASAF/src/main/java/com/ASAF/entity/NoticeEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASAF/src/main/java/com/ASAF/service/FirebaseCloudMessageDataService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASAF/src/main/java/com/ASAF/service/FirebaseCloudMessageDataService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASAF/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ASAF/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,6 +26,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
   }
 }</component>

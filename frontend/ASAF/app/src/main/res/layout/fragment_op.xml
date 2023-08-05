@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.d103.asaf.common.component.ArcProgressBar
+        android:id="@+id/fragment_op_imageview_arcprogressbar"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="-50dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/fragment_op_imageview_logo"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/student_card"
+        tools:src="@drawable/student_card" />
+
+    <com.d103.asaf.common.component.CustomToggleButton
+        android:id="@+id/fragment_op_togglebutton_toggle"
+        android:layout_marginHorizontal="10dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_op_imageview_logo" />
+
+    <ImageView
+        android:id="@+id/fragment_op_imageview_front"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginVertical="10dp"
+        android:src="@drawable/whiteboard"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_op_framelayout_seat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_op_togglebutton_toggle" />
+
+    <com.d103.asaf.common.component.Dropdown
+        android:id="@+id/fragment_op_dropdown_class"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginRight="15dp"
+        android:elevation="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/fragment_op_dropdown_month"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_op_togglebutton_toggle" />
+
+    <com.d103.asaf.common.component.Dropdown
+        android:id="@+id/fragment_op_dropdown_month"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginRight="15dp"
+        android:visibility="gone"
+        android:elevation="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_op_togglebutton_toggle" />
+
+
+    <FrameLayout
+        android:id="@+id/fragment_op_framelayout_seat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_op_togglebutton_toggle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

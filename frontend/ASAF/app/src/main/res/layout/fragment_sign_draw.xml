@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.sign.SignDrawFragment">
+
+    <TextView
+        android:id="@+id/fragment_sign_next_textview_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="교육 지원금 서명"
+        android:textSize="36sp"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/signload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/load_sign"
+        app:layout_constraintBottom_toTopOf="@+id/signPaint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/resetBtn" />
+
+    <ImageButton
+        android:id="@+id/signsave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/save_sign"
+        app:layout_constraintBottom_toBottomOf="@+id/resetBtn"
+        app:layout_constraintStart_toEndOf="@+id/signload"
+        app:layout_constraintTop_toTopOf="@+id/resetBtn" />
+
+    <ImageButton
+        android:id="@+id/resetBtn"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/refresh"
+        app:layout_constraintBottom_toTopOf="@+id/signPaint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_sign_next_textview_title" />
+
+    <com.d103.asaf.ui.sign.DrawSign
+        android:id="@+id/signPaint"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:background="@color/grey"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resetBtn" />
+
+    <ImageButton
+        android:id="@+id/signNextBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrow_next"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/bookReturn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signPaint" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

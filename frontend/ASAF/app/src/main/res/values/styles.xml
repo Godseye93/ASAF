@@ -1,9 +1,31 @@
 <resources>
 
     <!-- 기본 폰트를 포함하는 스타일 정의 -->
-    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:fontFamily">@font/custom_font_family</item>
-        <!-- 기타 필요한 스타일 속성들 -->
+        <!-- statusbar 배경을 하얀색으로 -->
+        <item name="android:statusBarColor">@color/white</item>
+        <!-- 아이콘을 검은색으로 -->
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+
+
+    <style name="CustomDialogStyle" parent="Theme.Material3.DayNight.Dialog">
+        <!-- Set the desired width and height for the dialog window -->
+        <item name="android:layout_width">500dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TimePickerStyle" parent="ThemeOverlay.Material3.MaterialTimePicker">
+        <item name="android:timePickerMode">spinner</item>
+    </style>
+
+    <!-- dialog를 fullscreen 으로 -->
+    <style name="dialog_fullscreen" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
 </resources>

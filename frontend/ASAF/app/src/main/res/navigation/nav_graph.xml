@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/login_fragment">
+
+    <fragment
+        android:id="@+id/ProhomeFragment"
+        android:name="com.d103.asaf.ui.home.pro.ProHomeFragment"
+        android:label="ProHome"
+        tools:layout="@layout/fragment_pro_home"/>
+
+    <fragment
+        android:id="@+id/StudentHomeFragment"
+        android:name="com.d103.asaf.ui.home.student.StudentHomeFragment"
+        android:label="StudentHome"
+        tools:layout="@layout/fragment_student_home">
+        <action
+            android:id="@+id/action_StudentHomeFragment_to_fragment_setting"
+            app:destination="@id/fragment_setting" />
+    </fragment>
+    <fragment
+        android:id="@+id/busFragment"
+        android:name="com.d103.asaf.ui.bus.BusFragment"
+        android:label="Bus"
+        tools:layout="@layout/fragment_bus"/>
+    <fragment
+        android:id="@+id/bookManageMentFragment"
+        android:name="com.d103.asaf.ui.library.pro.LibraryManagementFragment"
+        android:label="LibarayManagement"
+        tools:layout="@layout/fragment_library_management"/>
+
+    <fragment
+        android:id="@+id/marketFragment"
+        android:name="com.d103.asaf.ui.market.MarketFragment"
+        android:label="Market"
+        tools:layout="@layout/fragment_market"/>
+    <fragment
+        android:id="@+id/navigation_noti"
+        android:name="com.d103.asaf.ui.noti.StudentNotiFragment"
+        android:label="Noti"
+        tools:layout="@layout/fragment_student_noti"/>
+    <fragment
+        android:id="@+id/operationFragment"
+        android:name="com.d103.asaf.ui.op.OpFragment"
+        android:label="Operation"
+        tools:layout="@layout/fragment_op"/>
+
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="com.d103.asaf.ui.schedule.ScheduleFragment"
+        android:label="Schedule"
+        tools:layout="@layout/fragment_schedule">
+
+        <action
+            android:id="@+id/action_scheduleFragment_to_notiRegisterFragment"
+            app:destination="@+id/noti_register_fragment">
+
+            <argument
+                android:name="date"
+                app:argType="string"
+                />
+
+        </action>
+    </fragment>
+
+    <!-- Student Bottom Navigation Bar -->
+    <fragment
+        android:id="@+id/busFragment"
+        android:name="com.d103.asaf.ui.bus.BusFragment"
+        android:label="Bus"
+        tools:layout="@layout/fragment_bus"
+        tools:ignore="DuplicateIds" />
+    <fragment
+        android:id="@+id/libraryUseFragment"
+        android:name="com.d103.asaf.ui.library.student.LibraryUseFragment"
+        android:label="LibraryUse"
+        tools:layout="@layout/fragment_library_use" />
+
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="com.d103.asaf.ui.sign.SignNextFragment"
+        tools:lable="Sign"
+        tools:layout="@layout/fragment_sign_next"/>
+
+
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="com.d103.asaf.ui.setting.SettingFragment"
+        android:label="Setting"
+        tools:layout="@layout/fragment_setting">
+        <action
+            android:id="@+id/action_navigation_setting_to_login_fragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/student_noti_fragment"
+        android:name="com.d103.asaf.ui.noti.StudentNotiFragment"
+        android:label="StudentNoti"
+        tools:layout="@layout/fragment_student_noti"/>
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.d103.asaf.ui.login.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_fragment_to_findpwd_fragment"
+            app:destination="@id/findpwd_fragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_joinFragment"
+            app:destination="@id/join_fragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_ProhomeFragment"
+            app:destination="@id/ProhomeFragment" />
+        <action
+            android:id="@+id/action_login_fragment_to_StudentHomeFragment"
+            app:destination="@id/StudentHomeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/join_fragment"
+        android:name="com.d103.asaf.ui.join.JoinFragment"
+        android:label="Join"
+        tools:layout="@layout/fragment_join" >
+        <action
+            android:id="@+id/action_joinFragment_to_loginFragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/findpwd_fragment"
+        android:name="com.d103.asaf.ui.login.FindpwdFragment"
+        android:label="Findpwd"
+        tools:layout="@layout/fragment_findpwd" >
+        <action
+            android:id="@+id/action_findpwd_fragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signDrawFragment"
+        android:name="com.d103.asaf.ui.sign.SignDrawFragment"
+        android:label="SignDraw"
+        tools:layout="@layout/fragment_sign_draw" >
+        <action
+            android:id="@+id/action_signDrawFragment_to_signNextFragment"
+            app:destination="@id/signNextFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signNextFragment"
+        android:name="com.d103.asaf.ui.sign.SignNextFragment"
+        android:label="SignNext"
+        tools:layout="@layout/fragment_sign_next" >
+        <action
+            android:id="@+id/action_signNextFragment_to_signFragment"
+            app:destination="@id/signFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/signFragment"
+        android:name="com.d103.asaf.ui.sign.SignFragment"
+        android:label="Sign"
+        tools:layout="@layout/fragment_sign" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/libraryUserFragment"
+        android:name="com.d103.asaf.ui.library.student.LibraryUseFragment"
+        android:label="LibraryUser"
+        tools:layout="@layout/fragment_library_use" >
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/noti_register_fragment"
+        android:name="com.d103.asaf.ui.schedule.NotiRegisterFragment"
+        android:label="NotiRegister"
+        tools:layout="@layout/fragment_noti_register"/>
+
+    <action
+        android:id="@+id/action_joinFragment_to_loginFragment"
+        app:destination="@id/login_fragment"
+        app:popUpTo="@id/join_fragment"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_loginFragment_to_joinFragment"
+        app:destination="@id/join_fragment"
+        app:popUpTo="@id/login_fragment"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_loginFragment_to_ProhomeFragment"
+        app:destination="@+id/ProhomeFragment"
+        app:popUpTo="@id/login_fragment"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_login_fragment_to_StudentHomeFragment"
+        app:destination="@+id/StudentHomeFragment"
+        app:popUpTo="@id/login_fragment"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_ProHomeFragment_to_loginFragment"
+        app:destination="@+id/login_fragment"
+        app:popUpTo="@id/ProhomeFragment"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_StudentHomeFragment_to_loginFragment"
+        app:destination="@+id/login_fragment"
+        app:popUpTo="@id/StudentHomeFragment"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_findpwdFragment_to_loginFragment"
+        app:destination="@+id/LoginFragment"
+        app:popUpTo="@id/findpwd_fragment"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_settingFragment_to_loginFragment"
+        app:destination="@+id/LoginFragment"
+        app:popUpTo="@id/fragment_setting"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/fragment_setting"
+        android:name="com.d103.asaf.ui.setting.SettingFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_setting" />
+
+    <fragment
+        android:id="@+id/fragment_setting_app_setting"
+        android:name="com.d103.asaf.ui.setting.AppSettingFragment"
+        android:label="AppSetting"
+        tools:layout="@layout/fragment_setting_app_setting" />
+
+    <fragment
+        android:id="@+id/fragment_setting_userinfo"
+        android:name="com.d103.asaf.ui.setting.UserInfoFragment"
+        android:label="UserInfo"
+        tools:layout="@layout/fragment_setting_userinfo" />
+
+    <fragment
+        android:id="@+id/fragment_setting_privacy_policy"
+        android:name="com.d103.asaf.ui.setting.PrivacyPolicyFragment"
+        android:label="PrivacyPolicy"
+        tools:layout="@layout/fragment_setting_privacy_policy" />
+
+    <fragment
+        android:id="@+id/fragment_setting_developers"
+        android:name="com.d103.asaf.ui.setting.DevelopersFragment"
+        android:label="Developers"
+        tools:layout="@layout/fragment_setting_developers" />
+</navigation>

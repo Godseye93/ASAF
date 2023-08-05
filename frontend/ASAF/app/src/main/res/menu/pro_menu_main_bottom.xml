@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/operationFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_operation"
+        android:title="운영"/>
+
+    <item
+        android:id="@+id/scheduleFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_calendar"
+        android:title="스케줄"/>
+
+    <item
+        android:id="@+id/ProhomeFragment"
+        android:enabled="true"
+        android:icon="@drawable/baseline_home_24"
+        android:title="홈"/>
+
+    <item
+        android:id="@+id/bookManageMentFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_book_management"
+        android:title="도서 관리"/>
+
+    <item
+        android:id="@+id/busFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_bus"
+        android:title="버스"/>
+
+
+</menu>

@@ -3,4 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="defaultMainColor">#3D50DF</color>
+    <color name="libraryTop">#C4FAED</color>
+    <color name="blueSearch">#3D50DF</color>
+    <color name="bookReturn">#FFB129</color>
+    <color name="isClicked">#D3D3D3</color>
+    <color name="bookColor">#e6e6e6</color>
+    <color name="bookDraw">#00A6FF</color>
 </resources>
