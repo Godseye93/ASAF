@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-         jdk 'JDK 11'
+        jdk 'JDK 11'
     }
 
     stages {
@@ -14,13 +14,15 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'gradle clean build'
+                // Windows 환경에서는 'bat' 명령어를 사용합니다.
+                bat 'gradlew clean build'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'gradle test'
+                // Windows 환경에서는 'bat' 명령어를 사용합니다.
+                bat 'gradlew test'
             }
         }
 
@@ -28,12 +30,12 @@ pipeline {
             steps {
                 // 서버에 파일을 전송할 때는 SSH를 사용할 수 있습니다.
                 sshagent(['your-ssh-credentials']) {
-                    sh 'scp S09P12D103/backend/ASAF/build/libs/*.jar ssafy@i9d103.p.ssafy.io:/home/ubuntu/'
+                    bat 'scp S09P12D103/backend/ASAF/build/libs/*.jar ssafy@i9d103.p.ssafy.io:/home/ubuntu/'
                 }
 
                 // 원격 서버에서 JAR 파일을 실행합니다.
                 sshagent(['your-ssh-credentials']) {
-                    sh 'ssh ssafy@i9d103.p.ssafy.io "nohup java -jar ASAF-0.0.1-SNAPSHOT.jar &"'
+                    bat 'ssh ssafy@i9d103.p.ssafy.io "nohup java -jar ASAF-0.0.1-SNAPSHOT.jar &"'
                 }
             }
         }
