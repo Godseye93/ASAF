@@ -263,6 +263,10 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
                     }
                 }
                 if (isEmpty()) {
+                    if(bluetoothAdapter!!.isEnabled == false) {
+                        Toast.makeText(activity, "블루투스 기능을 확인해 주세요.", Toast.LENGTH_SHORT).show()
+                        requestBluetoothActivation()
+                    }
                     Log.d(TAG, "didRangeBeaconsInRegion: 비컨을 찾을 수 없습니다.")
                 }
             }
