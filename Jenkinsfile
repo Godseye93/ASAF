@@ -15,7 +15,10 @@ pipeline {
         stage('Build') {
             steps {
                 dir('backend/ASAF') {
-                    sh 'gradlew clean build' // 'bat' 대신 'sh' 명령어 사용
+                    // gradlew 파일에 실행 권한 부여
+                    sh 'chmod +x gradlew'
+                    
+                    sh './gradlew clean build' // 'gradlew' 대신 './gradlew' 사용
                 }
             }
         }
@@ -23,7 +26,10 @@ pipeline {
         stage('Test') {
             steps {
                 dir('backend/ASAF') {
-	                sh 'gradlew test' // 'bat' 대신 'sh' 명령어 사용
+                    // gradlew 파일에 실행 권한 부여
+                    sh 'chmod +x gradlew'
+                    
+                    sh './gradlew test' // 'gradlew' 대신 './gradlew' 사용
                 }
             }
         }
