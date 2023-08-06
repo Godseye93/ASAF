@@ -17,6 +17,7 @@ pipeline {
                 // Windows 환경에서는 'bat' 명령어를 사용합니다.
                 dir('backend/ASAF') {
                     bat 'gradlew clean build'
+                }
             }
         }
 
