@@ -39,7 +39,7 @@ pipeline {
         		sh 'cp backend/ASAF/build/libs/*.jar /home/ubuntu/'
 
         // 백그라운드에서 앱 실행
-        		sh 'nohup java -jar build/libs/ASAF-0.0.1-SNAPSHOT.jar &'
+        		sh 'nohup java -Dserver.port=8081 -jar ASAF-0.0.1-SNAPSHOT.jar &'
    		 }
 	}
     }
