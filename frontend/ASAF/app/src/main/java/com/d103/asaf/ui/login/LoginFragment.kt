@@ -125,6 +125,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
                 ).show()
                 if(binding.fragmentLoginSwitchAutologin.isChecked){
                     ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
+                    ////
                 }
 //                ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
                 sharedViewModel.logInUser = loginResult
