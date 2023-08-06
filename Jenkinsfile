@@ -15,7 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Windows 환경에서는 'bat' 명령어를 사용합니다.
-                bat 'S09P12D103/backend/ASAF/gradlew clean build'
+                bat 'backend/ASAF/gradlew clean build'
             }
         }
 
