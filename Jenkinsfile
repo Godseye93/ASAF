@@ -41,7 +41,8 @@ pipeline {
 
 
         // 백그라운드에서 앱 실행
-            sh 'sudo nohup java -jar ASAF-0.0.1-SNAPSHOT.jar &'
+            sh 'sudo nohup java -jar /home/ubuntu/ASAF-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 &'
+
    		 }
 	    
 	}
