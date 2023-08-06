@@ -35,15 +35,14 @@ pipeline {
         }
 
         stage('Deploy') {
-            steps {
-                sshagent(['jenkin-ssh']) {
-                    sh 'scp S09P12D103/backend/ASAF/build/libs/*.jar ssafy@i9d103.p.ssafy.io:/home/ubuntu/' // 'bat' 대신 'sh' 명령어 사용
-                }
+    	steps {
+        		sh 'cp backend/ASAF/build/libs/*.jar /home/ubuntu/'
 
-                sshagent(['jenkin-ssh']) {
-                    sh 'ssh ssafy@i9d103.p.ssafy.io "nohup java -jar ASAF-0.0.1-SNAPSHOT.jar &"' // 'bat' 대신 'sh' 명령어 사용
-                }
-            }
+        // 백그라운드에서 앱 실행
+        		sh 'nohup java -jar /home/ubuntu/ASAF-0.0.1-SNAPSHOT.jar &'
+   		 }
+	}
+
         }
     }
 }
