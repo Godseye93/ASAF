@@ -58,13 +58,14 @@ class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(Fragm
                 // 대출여부를 true로 바꾸면 된다.
                 // 또한 이미 true(대출 중인) 상태라면 boolean으로 false를 반환하면 된다.
                 lifecycleScope.launch {
-                    updateBook(id)
+                    val userId = ApplicationClass.sharedPreferences.getInt("id")
+                    // updateBook(userId, qr에 넣어준 도서 id 정보)
                 }
             }
         }
     }
 
-    private suspend fun updateBook(bookId: Int) {
+    private suspend fun updateBook(userId: Int, bookId: Int) {
         try {
             val response = withContext(Dispatchers.IO) {
                 RetrofitUtil.libraryService.updateBook(bookId)
