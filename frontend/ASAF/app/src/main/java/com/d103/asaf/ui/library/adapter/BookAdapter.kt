@@ -26,7 +26,7 @@ import java.util.Locale
 
 // QR -> 책제목/작가/출판사
 // String  -> BookDto로 변경 필요 -> 이 때 BookDto는 도서 DTO + 대출 DTO 정보를 가진 1개의 거대한 DTO로 만들 것임
-class BookAdapter() : androidx.recyclerview.widget.ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallback()) {
+class BookAdapter(private val navigationListener: NavigationListener?) : androidx.recyclerview.widget.ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallback()) {
     var isDraw = false
     private val fcmService = MyFirebaseMessagingService()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
@@ -99,7 +99,7 @@ class BookAdapter() : androidx.recyclerview.widget.ListAdapter<Book, BookAdapter
     private fun sendReturn(book: Book) {
         // 반납하기
         // fragment를 이동 LibraryUserReturnFragment (반납)
-        // RetrofitUtil.libraryService.postReturn(book)
+        navigationListener?.navigateToDestination()
     }
 
     private fun isDatePassed(sdate: Date): Boolean {

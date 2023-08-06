@@ -1,5 +1,6 @@
 package com.d103.asaf.ui.library.pro
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
@@ -31,6 +32,7 @@ import com.d103.asaf.ui.library.adapter.BookAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -56,12 +58,12 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
 
     private fun initList() {
         lifecycleScope.launch {
-            viewModel.returns.collect {
-                books = viewModel.returns.value
+            viewModel.draws.collect {
+                books = viewModel.draws.value
             }
         }
         Log.d("책", "initList: $books")
-        adapter = BookAdapter()
+        adapter = BookAdapter(null)
         adapter.isDraw = true
         binding.fragmentLibraryRecyclerview.adapter = adapter
         adapter.submitList(books)
@@ -77,7 +79,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
                 adapter.isDraw = true
                 fragmentLibraryTextviewSecond.text = "대출자"
                 fragmentLibraryTextviewThird.text = "반납일"
-                books = viewModel.returns.value
+                books = viewModel.draws.value
                 adapter.submitList(books)
             }
 
@@ -172,6 +174,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
     }
 
 
+    @SuppressLint("WrongConstant")
     private fun addBookDialog() {
         val dialogView = DialogAddBookBinding.inflate(layoutInflater, binding.root, false)
 
@@ -186,15 +189,24 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
             val book = Book(
                 bookName = dialogView.dialogAddBookEdittextTitle.text.toString(),
                 author = dialogView.dialogAddBookEdittextAuthor.text.toString(),
-                publisher = dialogView.dialogAddBookEdittextPublisher.text.toString()
+                publisher = dialogView.dialogAddBookEdittextPublisher.text.toString(),
+                classCode = viewModel.curClass.value.classCode,
+                classNum = viewModel.curClass.value.classNum,
+                regionCode = viewModel.curClass.value.regionCode,
+                generationCode = viewModel.curClass.value.generationCode,
+                userId = viewModel.curClass.value.userId,
+                borrowState = false
             )
             try {
                 CoroutineScope(Dispatchers.IO).launch {
+                    // 북 정보를 등록하고
+                    postBook(book)
+                    // 등록된 책의 ID 값을 가져와서 qr코드에 같이 넣어주는게 필요할 듯
+
                     val qr = viewModel.generateQRCode(book.bookName, book.author, book.publisher)
                     val qrImg = PATH + "${getFileName(book.bookName)}.png"
                     viewModel.saveQRCode(qr, qrImg)
                     sendEmail(qrImg)
-                    postBook(book)
                     dialog.dismiss()
                 }
             } catch (e: Exception) {
@@ -258,9 +270,24 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
 
 
     // 책 등록
-    private fun postBook(book: Book) {
-        CoroutineScope(Dispatchers.IO).launch {
-            RetrofitUtil.libraryService.postBook(book)
+//    private fun postBook(book: Book) {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            RetrofitUtil.libraryService.postBook(book)
+//        }
+//    }
+
+    private suspend fun postBook(book: Book) {
+        try {
+            val response = withContext(Dispatchers.IO) {
+                RetrofitUtil.libraryService.postBook(book)
+            }
+            if (response.isSuccessful) {
+
+            } else {
+                Log.d("운영도서", "도서 등록 네트워크 오류")
+            }
+        } catch (e: Exception) {
+            Log.e("운영도서", "도서 등록  오류: ${e.message}", e)
         }
     }
 }

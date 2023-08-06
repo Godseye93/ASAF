@@ -60,7 +60,7 @@ class SharedPreferencesUtil(context: Context) {
         editor.apply()
     }
 
-    fun getInt(key:String): Int? {
+    fun getInt(key:String): Int {
         return preferences.getInt(key, 0)
     }
 

@@ -7,19 +7,22 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.Book
 import com.d103.asaf.databinding.FragmentLibraryUseBinding
 import com.d103.asaf.ui.library.QRCodeScannerDialog
 import com.d103.asaf.ui.library.adapter.BookAdapter
+import com.d103.asaf.ui.library.adapter.NavigationListener
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibraryUseBinding::bind, R.layout.fragment_library_use) {
+class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibraryUseBinding::bind, R.layout.fragment_library_use),
+    NavigationListener {
     private val viewModel: LibraryUseFragmentViewModel by viewModels()
     private var books: MutableList<Book> = mutableListOf()
     private lateinit var adapter: BookAdapter
@@ -36,7 +39,7 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
                 books = viewModel.myDraws.value
             }
         }
-        adapter = BookAdapter()
+        adapter = BookAdapter(this)
         binding.fragmentLibraryUserRecyclerview.adapter = adapter
         adapter.submitList(books)
     }
@@ -116,5 +119,7 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
         dialogFragment.show(childFragmentManager, "QRCodeScannerDialog")
     }
 
-
+    override fun navigateToDestination() {
+        findNavController().navigate(R.id.action_libraryUseFragment_to_libraryUseReturnFragment)
+    }
 }

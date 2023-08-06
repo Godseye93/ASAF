@@ -96,4 +96,8 @@ class QRCodeScannerDialog : DialogFragment() {
 
         override fun possibleResultPoints(resultPoints: List<ResultPoint>) {}
     }
+    
+    fun dismissDialog() {
+        dismiss()
+    }
 }

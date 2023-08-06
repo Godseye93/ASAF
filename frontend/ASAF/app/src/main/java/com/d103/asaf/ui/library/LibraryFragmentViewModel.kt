@@ -52,8 +52,8 @@ class LibraryFragmentViewModel: ViewModel() {
     val books = _books
 
     // <!---------------------------- 대출한 리스트 ------------------------------->
-    private var _returns = MutableStateFlow(mutableListOf<Book>())
-    val returns = _returns
+    private var _draws = MutableStateFlow(mutableListOf<Book>())
+    val draws = _draws
 
     init {
         loadFirst()
@@ -73,10 +73,13 @@ class LibraryFragmentViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val drawResponse = withContext(Dispatchers.IO) {
-                    RetrofitUtil.libraryService.getDraws(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
+                    if(ApplicationClass.sharedPreferences.getString("authority") == "교육생")
+                        RetrofitUtil.libraryService.getMyDraws(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode, ApplicationClass.sharedPreferences.getInt("id"))
+                    else
+                        RetrofitUtil.libraryService.getDraws(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
                 if (drawResponse.isSuccessful) {
-                    _returns.value = drawResponse.body() ?: mutableListOf<Book>()
+                    _draws.value = drawResponse.body() ?: mutableListOf<Book>()
                 } else {
                     Log.d(TAG, "대출 도서 가져오기 네트워크 오류")
                 }

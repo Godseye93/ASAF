@@ -117,7 +117,8 @@ class SeatFragment() :
             seatComplete.setOnClickListener {
                 lifecycleScope.launch {
                     Log.d("자리변경", "$reversePosition")
-                    RetrofitUtil.opService.postSeats(viewModel.setSeats(position, seatNum))
+                    //RetrofitUtil.opService.postSeats(viewModel.setSeats(position, seatNum))
+                    completeRemote()
                     // 변경 후 변경된 정보 가져와서 UI업데이트
                     viewModel.callRealSeats()
                 }
@@ -406,19 +407,39 @@ class SeatFragment() :
             hideKeyboard()
             clearSeat()
             // 변경된 정보를 POST 해준다.
-            postSeats()
+            lifecycleScope.launch{
+                postSeats()
+            }
         }
     }
 
     // 서버에서 유저 id로 조회하여 최초로 자리 정보가 들어가 있는 상태라면 update로 처리해야함
-    private fun postSeats() {
+//    private fun postSeats() {
+//        for (i in 0 until seatNum) {
+//            viewModel.docSeat[i].seatNum = seat[i]
+//        }
+//        // POST List<docSeat>
+//        CoroutineScope(Dispatchers.IO).launch {
+//            if (!RetrofitUtil.opService.postSeats(viewModel.docSeat))
+//                Toast.makeText(context, "자리 업데이트 네트워크 오류", Toast.LENGTH_SHORT).show()
+//        }
+//    }
+
+    private suspend fun postSeats() {
         for (i in 0 until seatNum) {
             viewModel.docSeat[i].seatNum = seat[i]
         }
-        // POST List<docSeat>
-        CoroutineScope(Dispatchers.IO).launch {
-            if (!RetrofitUtil.opService.postSeats(viewModel.docSeat))
+        try {
+            val response = withContext(Dispatchers.IO) {
+                RetrofitUtil.opService.postSeats(viewModel.docSeat)
+            }
+            if (response.isSuccessful) {
+
+            } else {
                 Toast.makeText(context, "자리 업데이트 네트워크 오류", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Log.e("자리 변경", "자리 오류: ${e.message}", e)
         }
     }
 }

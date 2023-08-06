@@ -15,6 +15,7 @@ import com.d103.asaf.ui.op.adapter.LockerAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding::bind, R.layout.fragment_locker) {
     companion object {
@@ -63,17 +64,34 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
         }
 
         binding.lockerComplete.setOnClickListener {
-            postLockers()
+            lifecycleScope.launch{
+                postLockers()
+            }
         }
     }
 
     // 서버에서 유저 id로 조회하여 최초로 사물함 정보가 들어가 있는 상태라면 update로 처리해야함
-    private fun postLockers() {
-        // POST List<docLockers>
-        CoroutineScope(Dispatchers.IO).launch {
-            Log.d("사물함 보내기", "보내기: ${viewModel.docLockers}")
-            if(!RetrofitUtil.opService.postLockers(viewModel.docLockers))
+//    private fun postLockers() {
+//        // POST List<docLockers>
+//        CoroutineScope(Dispatchers.IO).launch {
+//            Log.d("사물함 보내기", "보내기: ${viewModel.docLockers}")
+//            if(!RetrofitUtil.opService.postLockers(viewModel.docLockers))
+//                Toast.makeText(context,"사물함 업데이트 네트워크 오류", Toast.LENGTH_SHORT).show()
+//        }
+//    }
+
+    private suspend fun postLockers() {
+        try {
+            val response = withContext(Dispatchers.IO) {
+                RetrofitUtil.opService.postLockers(viewModel.docLockers)
+            }
+            if (response.isSuccessful) {
+
+            } else {
                 Toast.makeText(context,"사물함 업데이트 네트워크 오류", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Log.e("사물함 변경", "사물함 오류: ${e.message}", e)
         }
     }
 }
