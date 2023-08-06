@@ -41,7 +41,8 @@ pipeline {
         dir('/home/ubuntu') {
 
         // 백그라운드에서 앱 실행
-        		sh 'java -jar ASAF-0.0.1-SNAPSHOT.jar'
+        		sh 'sudo chmod 755 ASAF-0.0.1-SNAPSHOT.jar'
+            sh 'nohup java -jar ASAF-0.0.1-SNAPSHOT.jar &'
    		 }
 	    }
 	}
