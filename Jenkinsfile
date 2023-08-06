@@ -15,14 +15,17 @@ pipeline {
         stage('Build') {
             steps {
                 // Windows 환경에서는 'bat' 명령어를 사용합니다.
-                bat 'backend/ASAF/gradlew clean build'
+                dir('backend/ASAF') {
+                    bat 'gradlew clean build'
             }
         }
 
         stage('Test') {
             steps {
                 // Windows 환경에서는 'bat' 명령어를 사용합니다.
-                bat 'gradlew test'
+                dir('backend/ASAF') {
+	        bat 'gradlew test'
+                }
             }
         }
 
