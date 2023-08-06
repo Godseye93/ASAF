@@ -28,6 +28,7 @@ import java.util.Locale
 // String  -> BookDto로 변경 필요 -> 이 때 BookDto는 도서 DTO + 대출 DTO 정보를 가진 1개의 거대한 DTO로 만들 것임
 class BookAdapter(private val navigationListener: NavigationListener?) : androidx.recyclerview.widget.ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallback()) {
     var isDraw = false
+    var nearBy = false // 비콘 근처인지
     private val fcmService = MyFirebaseMessagingService()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -44,7 +45,26 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
         fun bind(book: Book) {
             binding.apply {
                 // SharedPreference user가 학생이라면 버튼 글자를 변경
-                // bookItemReturnSend.text = "반납"
+                if(ApplicationClass.sharedPreferences.getString("authority") == "교육생") {
+                    bookItemReturnSend.text = "반납"
+                    if(nearBy) bookItemReturnSend.isVisible = true
+                    bookItemReturnSend.setOnClickListener {
+                        sendReturn(book)
+                    }
+                } else {
+                    bookItemReturnSend.isVisible = isDatePassed(book.returnDate)
+                    bookItemReturnSend.setOnClickListener {
+                        // 알림을 해당 학생에게 보내기
+                        sendNotification(binding)
+                        // 색깔을 회색으로
+                        bookItemReturnSend.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.isClicked))
+                        // 버튼을 비활성화
+                        bookItemReturnSend.isClickable = false
+                    }
+                }
+
+                bookItemReturnSend.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.bookReturn))
+
                 bookItemTitle.text = book.bookName
                 bookItemTitle.isSelected = true
                 if(isDraw) {
@@ -53,22 +73,8 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
                 } else {
                     bookItemDrawer.text = book.author
                     bookItemReturn.text = "${book.bookNameCount-book.trueBorrowStateCount} / ${book.bookNameCount}"
+                    bookItemReturnSend.isVisible = false
                 }
-
-                bookItemReturnSend.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.bookReturn))
-                // SharedPreference user가 학생이라면 버튼 글자를 변경
-                // 비콘 거리 안에 있을 때 버튼 visible 활성화
-                // bookItemReturnSend.setOnclickListenr 반납으로 변경한다. 
-                // bookItemReturnSend.setOnClickListener{sendReturn(book) // 반납요청후 요청성공하면 해당 항목 리스트에서 지우기 기능 추가 필요}
-                bookItemReturnSend.setOnClickListener {
-                    // 알림을 해당 학생에게 보내기
-                    sendNotification(binding)
-                    // 색깔을 회색으로
-                    bookItemReturnSend.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.isClicked))
-                    // 버튼을 비활성화
-                    bookItemReturnSend.isClickable = false
-                }
-                bookItemReturnSend.isVisible = isDatePassed(book.returnDate)
             }
         }
     }
@@ -99,7 +105,7 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
     private fun sendReturn(book: Book) {
         // 반납하기
         // fragment를 이동 LibraryUserReturnFragment (반납)
-        navigationListener?.navigateToDestination()
+        navigationListener?.navigateToDestination(book)
     }
 
     private fun isDatePassed(sdate: Date): Boolean {

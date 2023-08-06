@@ -1,5 +1,6 @@
 package com.d103.asaf.ui.library.student
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -7,6 +8,7 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
+import com.d103.asaf.common.model.dto.Book
 import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentLibraryUseReturnBinding
 import com.d103.asaf.ui.library.QRCodeScannerDialog
@@ -18,21 +20,25 @@ class LibraryUseReturnFragment : BaseFragment<FragmentLibraryUseReturnBinding>(
     companion object {
         private const val RETURN = "return"
 
-        fun instance(drawInfo: List<String>): LibraryUseDrawFragment {
-            val fragment = LibraryUseDrawFragment()
+        fun instance(returnInfo: Book): LibraryUseReturnFragment {
+            val fragment = LibraryUseReturnFragment()
             val args = Bundle()
-            args.putStringArrayList(RETURN, ArrayList(drawInfo))
+            args.putParcelable(RETURN, returnInfo)
             fragment.arguments = args
             return fragment
         }
     }
 
-    private var returnInfo: MutableList<String> = mutableListOf()
+    private var returnInfo:Book = Book()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // arguments로부터 리스트를 가져와서 변수에 할당합니다.
-        returnInfo = requireArguments().getStringArrayList(RETURN) ?: mutableListOf()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            returnInfo = requireArguments().getParcelable(RETURN,Book::class.java) ?: Book()
+        } else {
+            returnInfo = requireArguments().getParcelable(RETURN) ?: Book()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
