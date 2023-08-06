@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // 코드 장소에서 프로젝트 가져오기
+                git 'https://lab.ssafy.com/s09-webmobile4-sub2/S09P12D103.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // 빌드 명령어 실행
+                sh 'echo "Building..."'
+                sh './gradlew clean build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // 테스트 명령어 실행
+                sh 'echo "Testing..."'
+                sh './gradlew test'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // 배포 명령어 실행
+                sh 'echo "Deploying..."'
+                sh './deploy.sh'
+            }
+        }
+    }
+
+    post {
+        always {
+            // 언제나 실행할 후처리 작업
+            echo 'Pipeline completed.'
+        }
+        success {
+            // 성공 시 실행할 후처리 작업
+            echo 'Pipeline succeeded.'
+        }
+        failure {
+            // 실패 시 실행할 후처리 작업
+            echo 'Pipeline failed.'
+        }
+    }
+}
