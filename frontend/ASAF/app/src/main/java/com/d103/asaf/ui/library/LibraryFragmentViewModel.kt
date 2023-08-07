@@ -99,19 +99,20 @@ class LibraryFragmentViewModel: ViewModel() {
                             book.bookName,
                             book.author,
                             book.publisher,
-                            Date(Long.MAX_VALUE),
-                            Date(Long.MAX_VALUE),
+                            Long.MAX_VALUE,
+                            Long.MAX_VALUE,
                             book.borrowState,
                             book.borrower,
                             book.bookNameCount,
                             book.trueBorrowStateCount
                         )
                     } ?: mutableListOf<Book>()) as MutableList<Book>
+                    Log.d("들어오냐", "${_books.value}")
                 } else {
                     Log.d(TAG, "도서 가져오기 네트워크 오류")
                 }
             } catch (e: Exception) {
-                Log.d(TAG, " 도서 가져오기 네트워크 오류")
+                Log.d(TAG, " 도서 가져오기 네트워크 오류 $e")
             }
         }
     }
@@ -140,7 +141,7 @@ class LibraryFragmentViewModel: ViewModel() {
     }
 
     // QR코드
-    fun generateQRCode(title: String, author: String, publisher: String): Bitmap? {
+    fun generateQRCode(title: String, author: String, publisher: String, bookId: Int): Bitmap? {
         // Create a QR Code Writer
         val writer = MultiFormatWriter()
 
@@ -152,7 +153,7 @@ class LibraryFragmentViewModel: ViewModel() {
         val height = 500
 
         // Set the barcode content
-        val content = "\"$title\"|<$author>|$publisher"
+        val content = "\"$title\"|<$author>|$publisher|$bookId"
 
         // Set the barcode hints
         val hints = Hashtable<EncodeHintType, Any>()

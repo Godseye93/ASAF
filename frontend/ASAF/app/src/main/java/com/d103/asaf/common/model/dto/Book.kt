@@ -16,8 +16,8 @@ data class Book (
     @SerializedName("bookName") val bookName: String = "", // 책 제목
     @SerializedName("author") val author: String = "", // 작가
     @SerializedName("publisher") val publisher: String = "", // 출판사
-    @SerializedName("borrowDate") val borrowDate: Date = Date(), // 대출일
-    @SerializedName("returnDate") val returnDate: Date = Date(), // 반납일
+    @SerializedName("borrowDate") val borrowDate: Long = Long.MAX_VALUE, // 대출일
+    @SerializedName("returnDate") val returnDate: Long = Long.MAX_VALUE, // 반납일
     @SerializedName("borrowState") val borrowState: Boolean = false, // 대출 상태
     @SerializedName("borrower") val borrower: String = "", // 대출자
     @SerializedName("bookNameCount") val bookNameCount: Int = 0, // 총 수량
@@ -33,8 +33,8 @@ data class Book (
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        Date(parcel.readLong()),
-        Date(parcel.readLong()),
+        parcel.readLong(),
+        parcel.readLong(),
         parcel.readByte() != 0.toByte(),
         parcel.readString() ?: ""
     )
@@ -49,8 +49,8 @@ data class Book (
         parcel.writeString(bookName)
         parcel.writeString(author)
         parcel.writeString(publisher)
-        parcel.writeLong(borrowDate.time)
-        parcel.writeLong(returnDate.time)
+        parcel.writeLong(borrowDate)
+        parcel.writeLong(returnDate)
         parcel.writeByte(if (borrowState) 1 else 0)
         parcel.writeString(borrower)
     }

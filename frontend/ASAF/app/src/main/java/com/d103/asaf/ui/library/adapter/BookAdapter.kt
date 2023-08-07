@@ -108,15 +108,14 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
         navigationListener?.navigateToDestination(book)
     }
 
-    private fun isDatePassed(sdate: Date): Boolean {
-        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.KOREA)
+    fun isDatePassed(sdate: Long): Boolean {
         val currentDate = Calendar.getInstance().time
-        val date = dateFormat.parse(dateToString(sdate))
-        return date?.before(currentDate) ?: false
+        val date = Date(sdate)
+        return date.before(currentDate)
     }
 
-    private fun dateToString(date: Date): String {
-        val formatter = SimpleDateFormat("yyyy/MM/dd", Locale.KOREA)
-        return formatter.format(date)
+    private fun dateToString(date: Long): String {
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+        return dateFormat.format(Date(date))
     }
 }

@@ -85,9 +85,10 @@ class SeatFragment() :
         super.onViewCreated(view, savedInstanceState)
         Log.d("포지션 불러오기", "onViewCreated: ${viewModel.position.value}")
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.seat.collect { newSeat ->
+            viewModel.docSeat.collect { newSeat ->
                 if (isAdded) {
-                    seat = viewModel.seat.value
+//                    seat = viewModel.seat.value
+                    seat = viewModel.docSeat.value.map { it.seatNum }.toMutableList()
                     seatNum = seat.size
                     loadSeat() // 업데이트
                     Log.d("자리 프래그먼트", "onViewCreated: ${viewModel.seat.value} 업데이트 됨")
@@ -116,8 +117,7 @@ class SeatFragment() :
             // position 정보를 seatNum 크기 만큼만 보내기 서버에서 n건을 수정해야함
             seatComplete.setOnClickListener {
                 lifecycleScope.launch {
-                    Log.d("자리변경", "$reversePosition")
-                    //RetrofitUtil.opService.postSeats(viewModel.setSeats(position, seatNum))
+                    RetrofitUtil.opService.postSeats(viewModel.setSeats(position, seatNum))
                     completeRemote()
                     // 변경 후 변경된 정보 가져와서 UI업데이트
                     viewModel.callRealSeats()
@@ -133,12 +133,14 @@ class SeatFragment() :
                 allRandom()
                 seatRandomAll.visibility = View.INVISIBLE
                 seatRandomPart.visibility = View.INVISIBLE
+                Log.d("랜덤올", "onViewCreated: $position")
             }
 
             seatRandomPart.setOnClickListener {
                 seatRandom()
                 seatRandomAll.visibility = View.INVISIBLE
                 seatRandomPart.visibility = View.INVISIBLE
+                Log.d("랜덤자리", "onViewCreated: $position")
             }
 
             seatNumberInput.addTextChangedListener(object : TextWatcher {
@@ -163,7 +165,8 @@ class SeatFragment() :
                             .show()
                         0
                     }
-                    if (seatNum >= viewModel.docSeat.size) seatNum = viewModel.docSeat.size
+                    if (seatNum >= viewModel.docSeat.value.size) seatNum = viewModel.docSeat.value.size
+//                    if (seatNum >= viewModel.students.value.size) seatNum = viewModel.students.value.size
                 }
             })
         }
@@ -204,7 +207,7 @@ class SeatFragment() :
                 setTouchListener(childView)
                 if (i < seatNum) {
                     childView.seatImage.setImageDrawable(occupy)
-                    childView.seatText.text = viewModel.docSeat[i].name // 이름을 넣는 부분
+                    childView.seatText.text = viewModel.docSeat.value[i].name // 이름을 넣는 부분
                 } else {
                     childView.seatImage.setImageDrawable(vacant)
                     childView.seatText.text = ""
@@ -227,7 +230,7 @@ class SeatFragment() :
                 setTouchListener(childView)
                 if (i < seatNum) {
                     childView.seatImage.setImageDrawable(occupy)
-                    childView.seatText.text = viewModel.docSeat[i].name // 이름을 넣는 부분
+                    childView.seatText.text = viewModel.docSeat.value[i].name // 이름을 넣는 부분
                 } else {
                     childView.seatImage.setImageDrawable(vacant)
                     childView.seatText.text = ""
@@ -396,6 +399,7 @@ class SeatFragment() :
     }
 
     private fun completeLocal() {
+        Log.d("포스트전시트", "completeLocal: 로컬")
         binding.seatComplete.setOnClickListener {
             hideKeyboard()
             clearSeat()
@@ -406,6 +410,7 @@ class SeatFragment() :
         binding.seatComplete.setOnClickListener {
             hideKeyboard()
             clearSeat()
+            Log.d("포스트시트", "postSeats: 보내기전 ${viewModel.docSeat.value}")
             // 변경된 정보를 POST 해준다.
             lifecycleScope.launch{
                 postSeats()
@@ -427,11 +432,12 @@ class SeatFragment() :
 
     private suspend fun postSeats() {
         for (i in 0 until seatNum) {
-            viewModel.docSeat[i].seatNum = seat[i]
+            viewModel.docSeat.value[i].seatNum = seat[i]
         }
         try {
             val response = withContext(Dispatchers.IO) {
-                RetrofitUtil.opService.postSeats(viewModel.docSeat)
+//                RetrofitUtil.opService.postSeats(viewModel.setSeats(position, seatNum))
+                RetrofitUtil.opService.postSeats(viewModel.docSeat.value.subList(0, seatNum))
             }
             if (response.isSuccessful) {
 

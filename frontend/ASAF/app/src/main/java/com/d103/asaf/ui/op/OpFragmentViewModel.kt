@@ -56,8 +56,8 @@ class OpFragmentViewModel(): ViewModel() {
 
     // <!---------------------------- 자리 배치 변수 ------------------------------->
     // 진짜 자리정보 get
-    var docSeat = mutableListOf<DocSeat>()
-
+    private var _docSeat = MutableStateFlow(mutableListOf<DocSeat>())
+    val docSeat = _docSeat
     // 5x5보다 적을 수 있음
 //    private var _seat = MutableStateFlow(mutableListOf(1,22,3,4,15,6,17,8))
     private var _seat = MutableStateFlow(mutableListOf<Int>())
@@ -69,11 +69,14 @@ class OpFragmentViewModel(): ViewModel() {
 
     // <!---------------------------- 사물함 배치 함수 ------------------------------->
     // 진짜 사물함 정보
-    var docLockers = mutableListOf<DocLocker>()
-
+    private var _docLockers = MutableStateFlow(mutableListOf<DocLocker>())
+    val docLockers = _docLockers
     // 고정 크기 4x20
     private var _lockers = MutableStateFlow(mutableListOf<Int>())
     val lockers = _lockers
+
+    // 실제 학생 수 (사용되는  사물함 수)
+    var realLockerNum = 0
 
     // <!---------------------------- 서명 함수 ------------------------------->
 //    val testSrc = "https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd"
@@ -100,7 +103,7 @@ class OpFragmentViewModel(): ViewModel() {
     }
     // areItemsTheSame 에서 false가 나면 뷰가 이동하는 애니메이션이 나오고, areContentsTheSame 에서 false 나면 데이터가 깜빡거리면서 변하는 애니메이션이 나옴!!
     private fun loadRemote() {
-        docLockers = MutableList(80) {index -> DocLocker(name = index.toString(), id = index)}
+//        docLockers = MutableList(80) {index -> DocLocker(name = index.toString(), id = index)}
         viewModelScope.launch {
             try {
                 fetchStudentsInfo()
@@ -109,8 +112,8 @@ class OpFragmentViewModel(): ViewModel() {
                 fetchSigns()
 
                 // 이후 작업은 모두 완료된 후 실행
-                loadSeats()
-                loadLockers()
+                // loadSeats()
+                // loadLockers()
                 loadSignUrls()
 
                 // 작업이 완료되면 lock을 풀어줍니다.
@@ -141,9 +144,10 @@ class OpFragmentViewModel(): ViewModel() {
         }
         if (seatResponse.isSuccessful) {
             val maxSize = if(_students.value.size > 25) 25 else _students.value.size
-            docSeat = seatResponse.body() ?: MutableList(maxSize) { index ->
+            _docSeat.value = seatResponse.body() ?: MutableList(maxSize) { index ->
                 DocSeat(name = _students.value[index].memberName)
             }
+            loadSeats()
         } else {
             Log.d(TAG, " 자리 가져오기 네트워크 오류")
         }
@@ -155,10 +159,11 @@ class OpFragmentViewModel(): ViewModel() {
         }
         if (lockerResponse.isSuccessful) {
             // 80개를 임의로 생성, 학생 수 만큼 삽입
-            docLockers = MutableList(80) { DocLocker() }
-            val realDocLockers = lockerResponse.body() ?: MutableList(80) { DocLocker() }
-            val loop = realDocLockers.size
-            for(i in 0 until loop) docLockers[i] = realDocLockers[i]
+            _docLockers.value = MutableList(80) { index -> DocLocker(name = "X", lockerNum = index) }
+            val realDocLockers = lockerResponse.body() ?: MutableList(80) { index -> DocLocker(name = "X", lockerNum = index) }
+            realLockerNum = realDocLockers.size
+            for(i in 0 until realLockerNum) _docLockers.value[i] = realDocLockers[i]
+            // loadLockers()
         } else {
             Log.d(TAG, "사물함 가져오기 네트워크 오류")
         }
@@ -190,6 +195,7 @@ class OpFragmentViewModel(): ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             curClass.collect { newClass ->
                 // GET해서 가져온 정보 업데이트 (자리 / 사물함 / 서명)
+                Log.d(TAG, "initCollect: 클래스바뀜")
                 loadRemoteOnce()
             }
         }
@@ -202,9 +208,10 @@ class OpFragmentViewModel(): ViewModel() {
         }
     }
 
-    private suspend fun loadRemoteOnce() {
+    private fun loadRemoteOnce() {
         if (!_remoteDataLoaded) {
             _remoteDataLoaded = true
+            Log.d(TAG, "loadRemoteOnce: 로드리모트 불림")
             loadRemote()
         }
     }
@@ -212,7 +219,7 @@ class OpFragmentViewModel(): ViewModel() {
     // <!---------------------------- 자리 배치 함수 ------------------------------->
     // 외부에서 가져온 리스트 값을 5x5 이미지뷰에 차례로 넣어준다
     private fun loadSeats() {
-        _seat.value = docSeat.map { it.seatNum }.toMutableList()
+        _seat.value = _docSeat.value.map { it.seatNum }.toMutableList()
         val fin = _seat.value.size
         val remainingNumbers = _position.value.filterNot { it in _seat.value }
         // 차례대로 불러온 자리 채워넣기
@@ -228,7 +235,7 @@ class OpFragmentViewModel(): ViewModel() {
                 RetrofitUtil.opService.getSeats(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
             }
             if (seatResponse.isSuccessful) {
-                docSeat = seatResponse.body() ?: MutableList(_students.value.size) { index ->
+                _docSeat.value = seatResponse.body() ?: MutableList(_students.value.size) { index ->
                     DocSeat(name = _students.value[index].memberName)
                 }
             } else {
@@ -241,7 +248,7 @@ class OpFragmentViewModel(): ViewModel() {
     // <!---------------------------- 사물함 배치 함수 ------------------------------->
     private fun loadLockers() {
 //        for(i in 0 until 4*20) _lockers.value.add(i)
-         _lockers.value =  docLockers.map { it.lockerNum }.toMutableList()
+         _lockers.value =  _docLockers.value.map { it.lockerNum }.toMutableList()
     }
 
     private fun loadClasses() {
@@ -256,11 +263,22 @@ class OpFragmentViewModel(): ViewModel() {
     // 바뀐 자리 정보를 채워주는 코드
     fun setSeats(position: MutableList<Int>, seatNum: Int): MutableList<DocSeat> {
         Log.d(TAG, "바뀐포지션: $position")
-        Log.d(TAG, "바뀐독시트: $docSeat")
+        Log.d(TAG, "바뀐독시트: ${_docSeat.value}")
         val realPos = position.subList(0,seatNum)
-        val postSeats = docSeat.subList(0,seatNum)
+        val postSeats = _docSeat.value.subList(0,seatNum)
         for(i in 0 until seatNum) postSeats[i].seatNum = realPos[i]
         return postSeats
+    }
+
+    // 바뀐 사물함 정보를 채워주는 코드
+    fun setLockerPositions(tempDocLockers: MutableList<DocLocker>): MutableList<DocLocker> {
+        for(i in 0 until realLockerNum) tempDocLockers[i].lockerNum = i
+        return tempDocLockers
+    }
+
+    //
+    fun setDocLocker(temp: MutableList<DocLocker>) {
+        _docLockers.value = setLockerPositions(temp)
     }
 
 //    private val _seat : MutableStateFlow<List<String>> = MutableStateFlow(emptyList())

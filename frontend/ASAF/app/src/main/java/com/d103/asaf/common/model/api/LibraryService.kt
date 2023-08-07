@@ -37,7 +37,7 @@ interface LibraryService {
 
     // 도서 등록 정보 보내기
     @POST("/book")
-    suspend fun postBook(@Body book: Book) : Response<Boolean>
+    suspend fun postBook(@Body book: Book) : Response<Book>
 
     // 반납 정보 보내기
     @POST("/library/seat/{book_id}")

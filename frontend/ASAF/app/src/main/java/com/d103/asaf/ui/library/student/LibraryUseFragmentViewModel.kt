@@ -45,7 +45,7 @@ class LibraryUseFragmentViewModel: ViewModel() {
     }
 
     private fun loadRemote() {
-        // 전체 도서 정보
+        // 내가 빌린 전체 도서 정보
         viewModelScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
