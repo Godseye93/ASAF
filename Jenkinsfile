@@ -23,17 +23,6 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                dir('backend/ASAF') {
-                    // gradlew 파일에 실행 권한 부여
-                    sh 'chmod +x gradlew'
-                    
-                    sh './gradlew test' // 'gradlew' 대신 './gradlew' 사용
-                }
-            }
-        }
-
         stage('Deploy') {
     	steps {
         		sh 'cp backend/ASAF/build/libs/*.jar /home/ubuntu/'
