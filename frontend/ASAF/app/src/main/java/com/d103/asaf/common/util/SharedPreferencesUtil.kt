@@ -48,6 +48,25 @@ class SharedPreferencesUtil(context: Context) {
         editor.apply()
     }
 
+    fun autoLoginIsChecked(isChecked : Boolean) {
+        val editor = preferences.edit()
+        editor.putBoolean("autoLogin", isChecked)
+        editor.apply()
+    }
+
+    fun getBoolean(key : String): Boolean {
+        return preferences.getBoolean(key, false)
+    }
+
+    fun addUserInfo(Nth : Int, region : Int, classNum : Int) {
+        val editor = preferences.edit()
+        editor.putInt("Nth", Nth)
+        editor.putInt("region", region)
+        editor.putInt("classNum", classNum)
+
+        editor.apply()
+    }
+
     fun addFCMToken(token : String){
         val editor = preferences.edit()
         editor.putString("token", token)

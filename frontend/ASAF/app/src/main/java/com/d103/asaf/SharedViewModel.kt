@@ -44,6 +44,12 @@ class SharedViewModel : ViewModel() {
                               Log.d(TAG, "classInfoList:${_classInfoList.value} ")
                               _classInfoList.postValue(responseBody!!)
                               ApplicationClass.mainClassInfo = responseBody
+                              Log.d(TAG, "getClassInfo: ${ApplicationClass.mainClassInfo}")
+                              ApplicationClass.sharedPreferences.addUserInfo(
+                                   responseBody[0].generationCode,
+                                   responseBody[0].regionCode,
+                                   responseBody[0].classNum
+                              )
                          }
                          else{
                               Log.d(TAG, "통신 ERROR : responseBody가 NULL")

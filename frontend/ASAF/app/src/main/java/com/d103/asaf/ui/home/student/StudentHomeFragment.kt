@@ -3,6 +3,7 @@ package com.d103.asaf.ui.home.student
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.app.Dialog
 import android.content.Context
@@ -40,6 +41,13 @@ import com.d103.asaf.databinding.FragmentStudentHomeBinding
 import androidx.biometric.BiometricPrompt
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
+import com.d103.asaf.common.util.RetrofitUtil
+import com.google.android.datatransport.runtime.util.PriorityMapping.toInt
+import kotlinx.coroutines.launch
 import java.nio.charset.Charset
 import java.util.Arrays
 
@@ -147,7 +155,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
         val nextCard = if (isFirstCardVisible) cardView2 else cardView1
 
         val objectAnimatorFirst =
-            ObjectAnimator.ofFloat(currentCard, View.ROTATION_Y, 0f, 90f)
+            ObjectAnimator.ofFloat(currentCard, View.ROTATION_Y, 0f, -90f)
         objectAnimatorFirst.duration = 500
         objectAnimatorFirst.start()
 
@@ -162,7 +170,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
                 nextCard.visibility = View.VISIBLE
 
                 val objectAnimatorSecond =
-                    ObjectAnimator.ofFloat(nextCard, View.ROTATION_Y, -90f, 0f)
+                    ObjectAnimator.ofFloat(nextCard, View.ROTATION_Y, 90f, 0f)
                 objectAnimatorSecond.duration = 500
                 objectAnimatorSecond.start()
 
@@ -171,26 +179,59 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
         })
     }
 
+    @SuppressLint("SetTextI18n")
     fun initView(){
-        // information 문자열 split.
-        var Nth: Int? = null
-        var region: String? = null
-        var classNum: Int? = null
-        val info = parseInput(sharedViewModel.logInUser.memberInfo)
-        if(info != null){
-            // 기수, 지역, 반
-            Nth = info.first
-            region = info.second
-            classNum = info.third
+
+        Log.d("유저 프로필 !!!!!", "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image")
+        val imageUrl = "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image"
+        val requestOptions = RequestOptions().transform(CircleCrop())
+        Glide.with(this)
+            .load(imageUrl)
+            .apply(requestOptions)
+            .into(binding.fragmentStudentHomeCardViewFrontImage)
+
+        binding.fragmentStudentHomeCardViewFrontCardView1FrontName.text = ApplicationClass.sharedPreferences.getString("memberName")
+        binding.fragmentStudentHomeCardViewFrontCardView1FrontNum.text = ApplicationClass.sharedPreferences.getInt("student_number").toString()
+
+//        Log.d(TAG, "initView~~~~: ${ApplicationClass.sharedPreferences.getInt("Nth")}")
+//        Log.d(TAG, "initView~~~~: ${ApplicationClass.sharedPreferences.getInt("region")}")
+//        Log.d(TAG, "initView~~~~: ${ApplicationClass.sharedPreferences.getInt("classNum")}")
+
+        // 기수
+        stuHomeFragmentViewModel.nthLiveData.observe(viewLifecycleOwner) { newNth ->
+            val nthText = when (newNth) {
+                1 -> "9 기"
+                2 -> "10 기"
+                else -> " - "
+            }
+            binding.fragmentStudentHomeCardViewFrontTextviewNth.text = nthText
         }
-        binding.apply {
-//            fragmentStudentHomeCardViewFrontImage.setImageURI(sharedViewModel.logInUser.profileImage.toUri())
-            fragmentStudentHomeCardViewFrontCardView1FrontName.text = sharedViewModel.logInUser.memberName
-            fragmentStudentHomeCardViewFrontCardView1FrontNum.text = sharedViewModel.logInUser.studentNumber.toString()
-            fragmentStudentHomeCardViewFrontTextviewNth.text = Nth.toString()
-            fragmentStudentHomeCardViewFrontTextviewRegion.text = region
-            fragmentStudentHomeCardViewFrontTextviewClass.text = classNum.toString()
+        // 지역
+        stuHomeFragmentViewModel.regionLiveData.observe(viewLifecycleOwner) { newRegion ->
+            val regionText = when (newRegion) {
+                1 -> "서울"
+                2 -> "구미"
+                3 -> "대전"
+                4 -> "부울경"
+                5 -> "광주"
+                else -> " - "
+            }
+            binding.fragmentStudentHomeCardViewFrontTextviewRegion.text = regionText
         }
+        // 반
+        stuHomeFragmentViewModel.classNumLiveData.observe(viewLifecycleOwner) { newClassNum ->
+            val classText = when (newClassNum) {
+                0 -> " - "
+                else -> "$newClassNum 반"
+            }
+            binding.fragmentStudentHomeCardViewFrontTextviewClass.text = classText
+        }
+
+        // 카드뷰 뒷면
+        binding.fragmentStudentHomeCardViewBackName.text = ApplicationClass.sharedPreferences.getString("memberName")
+        binding.fragmentStudentHomeCardViewBackInfo.text = "${binding.fragmentStudentHomeCardViewFrontTextviewNth.text} " +
+                "${binding.fragmentStudentHomeCardViewFrontTextviewRegion.text} " +
+                "${binding.fragmentStudentHomeCardViewFrontTextviewClass.text} "
 
         cardView1 = binding.fragmentStudentHomeCardViewFront
         cardView2 = binding.fragmentStudentHomeCardViewBack
@@ -338,6 +379,20 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
             disableNFC()
         }
 
+        // TextView와 ImageView를 찾아서 내용을 수정
+        val nameTextView = view.findViewById<TextView>(R.id.fragment_nfc_card_name)
+        val numberTextView = view.findViewById<TextView>(R.id.fragment_nfc_card_number)
+        val imageImageView = view.findViewById<ImageView>(R.id.fragment_nfc_card_image)
+
+        // 원하는 내용으로 수정
+        nameTextView.text = ApplicationClass.sharedPreferences.getString("memberName")
+        numberTextView.text = ApplicationClass.sharedPreferences.getInt("student_number").toString()
+//        imageImageView.setImageResource(R.drawable.new_image)
+        val imageUrl = "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image"
+        Glide.with(this)
+            .load(imageUrl)
+            .into(imageImageView)
+
         nfcDialog.show()
     }
 
@@ -436,22 +491,4 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
         return sb.toString()
     }
 
-    // information 정보 문자열 split.
-    fun parseInput(input: String): Triple<Int, String, Int>? {
-        // 정규식을 사용하여 입력 문자열을 구분합니다.
-        val regex = """(\d+)(\D+)(\d+)""".toRegex()
-        val matchResult = regex.find(input)
-
-        // 정규식이 매칭되지 않으면 null을 반환합니다.
-        if (matchResult == null || matchResult.groupValues.size != 4) {
-            return null
-        }
-
-        // 매칭된 그룹에서 각각의 값을 추출합니다.
-        val Nth = matchResult.groupValues[1].toInt()
-        val region = matchResult.groupValues[2]
-        val classNum = matchResult.groupValues[3].toInt()
-
-        return Triple(Nth, region, classNum)
-    }
 }

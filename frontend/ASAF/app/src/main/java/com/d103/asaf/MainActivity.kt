@@ -164,7 +164,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
 
 
+    override fun onDestroy() {
+        // 어떤 정리 작업이나 데이터 처리를 수행
+        cleanupResources()
 
+        super.onDestroy()
+    }
+
+    private fun cleanupResources() {
+        // 여기에 정리 작업을 구현
+        // 예: 파일 닫기, 네트워크 연결 해제, 등등...
+        if(!ApplicationClass.sharedPreferences.getBoolean("autoLogin")){
+            ApplicationClass.sharedPreferences.deleteUser()
+        }
+    }
 
 
 
