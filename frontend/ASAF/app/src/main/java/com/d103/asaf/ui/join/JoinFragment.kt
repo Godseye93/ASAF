@@ -78,12 +78,16 @@ class JoinFragment : Fragment() {
     ): View? {
         binding = FragmentJoinBinding.inflate(inflater, container, false)
 
-        setupViews()
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // view 초기 설정
+        setupViews()
         // Spinner default 값을 설정하는 메서드를 호출
         setSpinnerDefaultValues()
-
-        return binding.root
     }
 
     private fun setupViews() {
