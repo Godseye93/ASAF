@@ -58,9 +58,12 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
         binding.fragmentLockerRecyclerview.adapter = adapter
 
         binding.lockerRandom.setOnClickListener {
-              viewModel.docLockers.shuffle()
+            val originalList =  viewModel.docLockers.toMutableList() // 80개의 사물함 정보
+            val sublist = originalList.subList(0, viewModel.realLockerNum) // 학생 수 만큼 번호 자르기
+            sublist.shuffle()
+            for(i in 0 until viewModel.realLockerNum) viewModel.docLockers[i] = sublist[i]
             Log.d("랜덤사물함", "onViewCreated: ${viewModel.docLockers}")
-              adapter.submitList(viewModel.docLockers.toMutableList())
+            adapter.submitList(viewModel.docLockers.toMutableList())
         }
 
         binding.lockerComplete.setOnClickListener {
@@ -83,7 +86,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
     private suspend fun postLockers() {
         try {
             val response = withContext(Dispatchers.IO) {
-                RetrofitUtil.opService.postLockers(viewModel.docLockers)
+                RetrofitUtil.opService.postLockers(viewModel.docLockers.subList(0,viewModel.realLockerNum))
             }
             if (response.isSuccessful) {
 

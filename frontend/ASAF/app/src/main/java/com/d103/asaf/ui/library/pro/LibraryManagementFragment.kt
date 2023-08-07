@@ -195,18 +195,13 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
                 regionCode = viewModel.curClass.value.regionCode,
                 generationCode = viewModel.curClass.value.generationCode,
                 userId = viewModel.curClass.value.userId,
-                borrowState = false
+                borrowState = false,
             )
             try {
                 CoroutineScope(Dispatchers.IO).launch {
-                    // 북 정보를 등록하고
+                    // 북 정보를 등록하고 qr 코드에 저장하는 처리
                     postBook(book)
-                    // 등록된 책의 ID 값을 가져와서 qr코드에 같이 넣어주는게 필요할 듯
-
-                    val qr = viewModel.generateQRCode(book.bookName, book.author, book.publisher)
-                    val qrImg = PATH + "${getFileName(book.bookName)}.png"
-                    viewModel.saveQRCode(qr, qrImg)
-                    sendEmail(qrImg)
+                    // 도서 등록 창 닫기
                     dialog.dismiss()
                 }
             } catch (e: Exception) {
@@ -252,7 +247,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
 
     private fun sendEmail(path: String) {
         MaildroidX.Builder()
-            .smtp("smtp.mailtrap.live")
+            .smtp("live.smtp.mailtrap.io")
             .smtpUsername("api")
             .smtpPassword("0647ceab68282d673bdd53a351635833")
             .port("587")
@@ -282,7 +277,12 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
                 RetrofitUtil.libraryService.postBook(book)
             }
             if (response.isSuccessful) {
-
+                val realBook = response.body() ?: book
+                Log.d("포스트", "$realBook")
+                val qr = viewModel.generateQRCode(realBook.bookName, realBook.author, realBook.publisher, realBook.id)
+                val qrImg = PATH + "${getFileName(book.bookName)}.png"
+                viewModel.saveQRCode(qr, qrImg)
+                sendEmail(qrImg)
             } else {
                 Log.d("운영도서", "도서 등록 네트워크 오류")
             }

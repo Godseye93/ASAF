@@ -10,11 +10,11 @@
         android:id="@+id/fragment_library_imageview_logo"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:src="@drawable/student_card"
+        android:src="@drawable/asaf_real_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/student_card" />
+        tools:src="@drawable/asaf_real_logo" />
 
     <com.d103.asaf.common.component.CustomToggleButton
         android:id="@+id/book_toggle_button"

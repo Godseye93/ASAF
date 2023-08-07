@@ -75,6 +75,9 @@ class OpFragmentViewModel(): ViewModel() {
     private var _lockers = MutableStateFlow(mutableListOf<Int>())
     val lockers = _lockers
 
+    // 실제 학생 수 (사용되는  사물함 수)
+    var realLockerNum = 0
+
     // <!---------------------------- 서명 함수 ------------------------------->
 //    val testSrc = "https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd"
 //    private val _moneys = MutableStateFlow(MutableList(25) { testSrc })
@@ -100,7 +103,7 @@ class OpFragmentViewModel(): ViewModel() {
     }
     // areItemsTheSame 에서 false가 나면 뷰가 이동하는 애니메이션이 나오고, areContentsTheSame 에서 false 나면 데이터가 깜빡거리면서 변하는 애니메이션이 나옴!!
     private fun loadRemote() {
-        docLockers = MutableList(80) {index -> DocLocker(name = index.toString(), id = index)}
+//        docLockers = MutableList(80) {index -> DocLocker(name = index.toString(), id = index)}
         viewModelScope.launch {
             try {
                 fetchStudentsInfo()
@@ -155,10 +158,10 @@ class OpFragmentViewModel(): ViewModel() {
         }
         if (lockerResponse.isSuccessful) {
             // 80개를 임의로 생성, 학생 수 만큼 삽입
-            docLockers = MutableList(80) { DocLocker() }
-            val realDocLockers = lockerResponse.body() ?: MutableList(80) { DocLocker() }
-            val loop = realDocLockers.size
-            for(i in 0 until loop) docLockers[i] = realDocLockers[i]
+            docLockers = MutableList(80) { index -> DocLocker(name = "X", lockerNum = index) }
+            val realDocLockers = lockerResponse.body() ?: MutableList(80) { index -> DocLocker(name = "X", lockerNum = index) }
+            realLockerNum = realDocLockers.size
+            for(i in 0 until realLockerNum) docLockers[i] = realDocLockers[i]
         } else {
             Log.d(TAG, "사물함 가져오기 네트워크 오류")
         }
@@ -190,6 +193,7 @@ class OpFragmentViewModel(): ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             curClass.collect { newClass ->
                 // GET해서 가져온 정보 업데이트 (자리 / 사물함 / 서명)
+                Log.d(TAG, "initCollect: 클래스바뀜")
                 loadRemoteOnce()
             }
         }
@@ -202,9 +206,10 @@ class OpFragmentViewModel(): ViewModel() {
         }
     }
 
-    private suspend fun loadRemoteOnce() {
+    private fun loadRemoteOnce() {
         if (!_remoteDataLoaded) {
             _remoteDataLoaded = true
+            Log.d(TAG, "loadRemoteOnce: 로드리모트 불림")
             loadRemote()
         }
     }
@@ -212,6 +217,8 @@ class OpFragmentViewModel(): ViewModel() {
     // <!---------------------------- 자리 배치 함수 ------------------------------->
     // 외부에서 가져온 리스트 값을 5x5 이미지뷰에 차례로 넣어준다
     private fun loadSeats() {
+        // 반의 자리정보가 같을 경우 가령 0~24, 0~24 이면 변화가 없는 것으로 인식해서 처음에 빈값을 넣어줌
+        _seat.value = MutableList(25) { -1 }
         _seat.value = docSeat.map { it.seatNum }.toMutableList()
         val fin = _seat.value.size
         val remainingNumbers = _position.value.filterNot { it in _seat.value }
