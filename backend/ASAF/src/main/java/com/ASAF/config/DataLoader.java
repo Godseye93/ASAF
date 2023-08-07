@@ -5,6 +5,9 @@ import com.ASAF.entity.*;
 import com.ASAF.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -58,7 +61,31 @@ public class DataLoader implements CommandLineRunner {
             String randomPassword = String.format("%04d", random.nextInt(10000));
             memberDTO.setMemberPassword(randomPassword);
 
-            String randomName = "User" + String.format("%04d", random.nextInt(10000));
+            List<String> exampleNames = Arrays.asList(
+                    "김태희", "박시환", "정지민", "이성민", "조영훈", "장지수",
+                    "송해솔", "유지안", "주아린", "박세준", "양주원", "최예린",
+                    "황소희", "서시은", "임하윤", "이한나", "강주영", "한승훈",
+                    "조민서", "신수도", "유희진", "남지원", "문혜림", "임예원",
+                    "진서희", "최윤표", "류은주", "이승호", "김하영", "박동원",
+                    "강지숙", "남승연", "서연우", "최인준", "임민준", "유경민",
+                    "박서은", "양예지", "조원서", "문도현", "김준희", "이가령",
+                    "송미수", "진윤창", "장태호", "허민진", "홍승환", "이우승",
+                    "성민기", "유민서", "박재원", "김상준", "서주리", "오재후",
+                    "류선영", "조영규", "노경아", "정윤재", "한나리", "권수현",
+                    "전수진", "신예진", "나연서", "김성우", "이자인", "박희주",
+                    "송지원", "류하림", "안서연", "조성윤", "원승주", "장지윤",
+                    "김유진", "황수민", "이우진", "정하은", "조민지", "류재영",
+                    "김주리", "조혜준", "배육희", "최은영", "한유경", "김윤선",
+                    "허다영", "이나리", "서민수", "표선미", "장혜진", "조우찬",
+                    "강민경", "황진우", "김상영", "오지연", "임성훈", "김채원",
+                    "윤소희", "박상윤", "이승연", "김현우", "전지민", "서영수",
+                    "남예원", "한동영", "황수영", "신은경", "천승민", "진재윤",
+                    "김유리", "노가영", "가은경", "장호연", "옥용재", "김영준",
+                    "김태경", "하지은", "최지원", "강민규", "석하림", "조미진"
+            );
+
+            int randomIndex = random.nextInt(exampleNames.size());
+            String randomName = exampleNames.get(randomIndex);
             memberDTO.setMemberName(randomName);
 
             if (i <= 24) {
@@ -334,67 +361,79 @@ public class DataLoader implements CommandLineRunner {
             ClassInfoEntity classInfoEntity = ClassInfoEntity.toClassInfoEntity(classInfoDTO);
             classInfoRepository.save(classInfoEntity);
         }
-        
-        // 도서 더미데이터
+
+        List<List<String>> bookAuthorList = Arrays.asList(
+                Arrays.asList("김영한과 함께하는 즐거운 스프링부트", "김영한"),
+                Arrays.asList("김영한과 함께하는 지옥의 스프링부트", "김영한"),
+                Arrays.asList("Vue.js 철저 입문", "박재구"),
+                Arrays.asList("예제로 배우는 블록체인", "한영환"),
+                Arrays.asList("머신 러닝 교과서", "한문철"),
+                Arrays.asList("리엑트 디자인 패턴과 모범 사례", "이은지"),
+                Arrays.asList("Docker", "안드류"),
+                Arrays.asList("AWS 인프라 구축 가이드", "김수민"),
+                Arrays.asList("모던 자바 스크립트", "권종민"),
+                Arrays.asList("CISCO 네트워킹", "박나래")
+        );
+
         for (int i = 1; i <= 12; i++) {
-            BookDTO bookDTO = new BookDTO();
-            if (i<=10) {
-                bookDTO.setBorrowState(false);
-                bookDTO.setId(1);
-                bookDTO.setClass_code(i);
-                bookDTO.setRegion_code(1);
-                bookDTO.setGeneration_code(1);
-                for (int j=1; j<=10; j++) {
-                    bookDTO.setBookName("책" + 1);
-                    bookDTO.setAuthor("저자 " + 1);
-                    bookDTO.setPublisher("출판사" + 1);
+            if (i <= 10) {
+                for (int j = 1; j <= 30; j++) {
+                    BookDTO bookDTO = new BookDTO();
+                    List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
+                    String book = bookAuthor.get(0);
+                    String author = bookAuthor.get(1);
+
+                    bookDTO.setBorrowState(false);
+                    bookDTO.setId(1);
+                    bookDTO.setClass_code(i);
+                    bookDTO.setRegion_code(1);
+                    bookDTO.setGeneration_code(1);
+                    bookDTO.setBookName(book);
+                    bookDTO.setAuthor(author);
+                    bookDTO.setPublisher("싸피출판사");
+
+                    BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
+                    bookRepository.save(bookEntity);
                 }
-            } else if (i==11){
-                bookDTO.setBorrowState(false);
-                bookDTO.setId(1);
-                bookDTO.setClass_code(1);
-                bookDTO.setRegion_code(2);
-                bookDTO.setGeneration_code(1);
-            } else if (i==12) {
-                bookDTO.setBorrowState(false);
-                bookDTO.setId(1);
-                bookDTO.setClass_code(2);
-                bookDTO.setRegion_code(2);
-                bookDTO.setGeneration_code(1);
+            } else if (i == 11) {
+                for (int j = 1; j <= 30; j++) {
+                    BookDTO bookDTO = new BookDTO();
+                    List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
+                    String book = bookAuthor.get(0);
+                    String author = bookAuthor.get(1);
+
+                    bookDTO.setBorrowState(false);
+                    bookDTO.setId(1);
+                    bookDTO.setClass_code(1);
+                    bookDTO.setRegion_code(2);
+                    bookDTO.setGeneration_code(1);
+                    bookDTO.setBookName(book);
+                    bookDTO.setAuthor(author);
+                    bookDTO.setPublisher("싸피출판사");
+
+                    BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
+                    bookRepository.save(bookEntity);
+                }
+            } else if (i == 12) {
+                for (int j = 1; j <= 30; j++) {
+                    BookDTO bookDTO = new BookDTO();
+                    List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
+                    String book = bookAuthor.get(0);
+                    String author = bookAuthor.get(1);
+
+                    bookDTO.setBorrowState(false);
+                    bookDTO.setId(1);
+                    bookDTO.setClass_code(2);
+                    bookDTO.setRegion_code(2);
+                    bookDTO.setGeneration_code(1);
+                    bookDTO.setBookName(book);
+                    bookDTO.setAuthor(author);
+                    bookDTO.setPublisher("싸피출판사");
+
+                    BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
+                    bookRepository.save(bookEntity);
+                }
             }
-
-
-//            if (i==1){
-//                bookDTO.setBookName("책" + 1);
-//                bookDTO.setAuthor("저자 " + 1);
-//                bookDTO.setPublisher("출판사" + 1);
-//                bookDTO.setBorrowState(true);
-//                bookDTO.setId(2);
-//                bookDTO.setClass_code(2);
-//                bookDTO.setRegion_code(1);
-//                bookDTO.setGeneration_code(1);
-//            }else if(i<=3){
-//                bookDTO.setBookName("책" + 1);
-//                bookDTO.setAuthor("저자 " + 1);
-//                bookDTO.setPublisher("출판사" + 1);
-//                bookDTO.setBorrowState(false);
-//                bookDTO.setId(1);
-//                bookDTO.setClass_code(1);
-//                bookDTO.setRegion_code(2);
-//                bookDTO.setGeneration_code(1);
-//            }else{
-//                bookDTO.setBookName("책" + (i-3));
-//                bookDTO.setAuthor("저자 " + (i-3));
-//                bookDTO.setPublisher("출판사" + (i-3));
-//                bookDTO.setBorrowState(false);
-//                bookDTO.setId(1);
-//                bookDTO.setClass_code(1);
-//                bookDTO.setRegion_code(2);
-//                bookDTO.setGeneration_code(1);
-//            }
-            BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
-            bookRepository.save(bookEntity);
         }
-
     }
 }
