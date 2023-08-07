@@ -140,7 +140,8 @@ class OpFragmentViewModel(): ViewModel() {
             RetrofitUtil.opService.getSeats(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
         }
         if (seatResponse.isSuccessful) {
-            docSeat = seatResponse.body() ?: MutableList(_students.value.size) { index ->
+            val maxSize = if(_students.value.size > 25) 25 else _students.value.size
+            docSeat = seatResponse.body() ?: MutableList(maxSize) { index ->
                 DocSeat(name = _students.value[index].memberName)
             }
         } else {
@@ -153,7 +154,11 @@ class OpFragmentViewModel(): ViewModel() {
             RetrofitUtil.opService.getLockers(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
         }
         if (lockerResponse.isSuccessful) {
-            docLockers = lockerResponse.body() ?: MutableList(80) { DocLocker() }
+            // 80개를 임의로 생성, 학생 수 만큼 삽입
+            docLockers = MutableList(80) { DocLocker() }
+            val realDocLockers = lockerResponse.body() ?: MutableList(80) { DocLocker() }
+            val loop = realDocLockers.size
+            for(i in 0 until loop) docLockers[i] = realDocLockers[i]
         } else {
             Log.d(TAG, "사물함 가져오기 네트워크 오류")
         }

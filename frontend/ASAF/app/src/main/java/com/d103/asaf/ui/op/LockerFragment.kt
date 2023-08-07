@@ -46,11 +46,11 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
         super.onViewCreated(view, savedInstanceState)
         CoroutineScope(Dispatchers.Main).launch  {
             if(isAdded) {
-                adapter.submitList(viewModel.docLockers)
-//                viewModel.lockers.collect { newLocker ->
-//                    adapter.submitList(viewModel.docLockers)// 업데이트
-//                    Log.d("랜덤사물함전", "onViewCreated: ${viewModel.docLockers}")
-//                }
+//                adapter.submitList(viewModel.docLockers)
+                viewModel.lockers.collect { newLocker ->
+                    adapter.submitList(viewModel.docLockers)// 업데이트
+                    Log.d("랜덤사물함전", "onViewCreated: ${viewModel.docLockers}")
+                }
             }
         }
 
