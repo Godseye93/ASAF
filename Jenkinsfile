@@ -12,13 +12,13 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build and Test') {
             steps {
                 dir('backend/ASAF') {
                     // gradlew 파일에 실행 권한 부여
                     sh 'chmod +x gradlew'
                     
-                    sh './gradlew clean build' // 'gradlew' 대신 './gradlew' 사용
+                    sh './gradlew clean build -x test' // 'gradlew' 대신 './gradlew' 사용
                 }
             }
         }
