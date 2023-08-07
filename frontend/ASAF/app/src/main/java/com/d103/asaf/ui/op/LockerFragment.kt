@@ -14,6 +14,7 @@ import com.d103.asaf.databinding.FragmentLockerBinding
 import com.d103.asaf.ui.op.adapter.LockerAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -46,10 +47,10 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
         super.onViewCreated(view, savedInstanceState)
         CoroutineScope(Dispatchers.Main).launch  {
             if(isAdded) {
-//                adapter.submitList(viewModel.docLockers)
-                viewModel.lockers.collect { newLocker ->
-                    adapter.submitList(viewModel.docLockers)// 업데이트
-                    Log.d("랜덤사물함전", "onViewCreated: ${viewModel.docLockers}")
+                viewModel.docLockers.collect { newLocker ->
+                    Log.d("사물함부르기", "onViewCreated: 불리긴하니")
+                    adapter.submitList(viewModel.docLockers.value)// 업데이트
+                    Log.d("랜덤사물함전", "onViewCreated: ${viewModel.docLockers.value}")
                 }
             }
         }
@@ -58,12 +59,12 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
         binding.fragmentLockerRecyclerview.adapter = adapter
 
         binding.lockerRandom.setOnClickListener {
-            val originalList =  viewModel.docLockers.toMutableList() // 80개의 사물함 정보
+            val originalList =  viewModel.docLockers.value.toMutableList() // 80개의 사물함 정보
             val sublist = originalList.subList(0, viewModel.realLockerNum) // 학생 수 만큼 번호 자르기
             sublist.shuffle()
-            for(i in 0 until viewModel.realLockerNum) viewModel.docLockers[i] = sublist[i]
-            Log.d("랜덤사물함", "onViewCreated: ${viewModel.docLockers}")
-            adapter.submitList(viewModel.docLockers.toMutableList())
+            val temp = viewModel.docLockers.value.toMutableList()
+            for(i in 0 until viewModel.realLockerNum) temp[i] = sublist[i]
+            viewModel.setDocLocker(temp)
         }
 
         binding.lockerComplete.setOnClickListener {
@@ -84,9 +85,12 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>(FragmentLockerBinding
 //    }
 
     private suspend fun postLockers() {
+        Log.d("사물함보내기", "postLockers: ${viewModel.docLockers.value.subList(0,viewModel.realLockerNum)}")
         try {
             val response = withContext(Dispatchers.IO) {
-                RetrofitUtil.opService.postLockers(viewModel.docLockers.subList(0,viewModel.realLockerNum))
+                // docLockers 포지션 정보 변경
+                RetrofitUtil.opService.postLockers(viewModel.docLockers.value)
+//                RetrofitUtil.opService.postLockers(viewModel.setLockerPositions(viewModel.docLockers.value.subList(0,viewModel.realLockerNum)))
             }
             if (response.isSuccessful) {
 
