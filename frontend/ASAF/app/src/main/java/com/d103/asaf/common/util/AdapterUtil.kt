@@ -1,6 +1,8 @@
 package com.d103.asaf.common.util
 
 import androidx.recyclerview.widget.DiffUtil
+import com.d103.asaf.common.model.dto.Market
+import com.d103.asaf.common.model.dto.MarketImage
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.model.dto.Noti
 
@@ -26,6 +28,28 @@ class AdapterUtil {
             override fun areContentsTheSame(oldItem: Noti, newItem: Noti): Boolean {
                 return oldItem == newItem
             }
+        }
+
+        val diffUtilMarket = object : DiffUtil.ItemCallback<Market>() {
+            override fun areItemsTheSame(oldItem: Market, newItem: Market): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: Market, newItem: Market): Boolean {
+                return oldItem == newItem
+            }
+
+        }
+
+        val diffUtilMarketRegister = object : DiffUtil.ItemCallback<MarketImage>() {
+            override fun areItemsTheSame(oldItem: MarketImage, newItem: MarketImage): Boolean {
+                return oldItem.imageUri == newItem.imageUri
+            }
+
+            override fun areContentsTheSame(oldItem: MarketImage, newItem: MarketImage): Boolean {
+                return oldItem == newItem
+            }
+
         }
     }
 }
