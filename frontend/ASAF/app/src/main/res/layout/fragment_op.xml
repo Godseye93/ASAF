@@ -25,8 +25,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/student_card"
-        tools:src="@drawable/student_card" />
+        android:src="@drawable/asaf_real_logo"
+        tools:src="@drawable/asaf_real_logo" />
 
     <com.d103.asaf.common.component.CustomToggleButton
         android:id="@+id/fragment_op_togglebutton_toggle"

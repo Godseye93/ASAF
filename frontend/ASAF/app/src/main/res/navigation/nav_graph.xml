@@ -6,6 +6,12 @@
     app:startDestination="@+id/login_fragment">
 
     <fragment
+        android:id="@+id/opFragment"
+        android:name="com.d103.asaf.ui.op.OpFragment"
+        android:label="opFragment"
+        tools:layout="@layout/fragment_op"/>
+
+    <fragment
         android:id="@+id/ProhomeFragment"
         android:name="com.d103.asaf.ui.home.pro.ProHomeFragment"
         android:label="ProHome"
@@ -86,11 +92,22 @@
         android:label="Bus"
         tools:layout="@layout/fragment_bus"
         tools:ignore="DuplicateIds" />
+
     <fragment
         android:id="@+id/libraryUseFragment"
         android:name="com.d103.asaf.ui.library.student.LibraryUseFragment"
         android:label="LibraryUse"
-        tools:layout="@layout/fragment_library_use" />
+        tools:layout="@layout/fragment_library_use" >
+        <action
+            android:id="@+id/action_libraryUseFragment_to_libraryUseReturnFragment"
+            app:destination="@id/libraryUseReturnFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/libraryUseReturnFragment"
+        android:name="com.d103.asaf.ui.library.student.LibraryUseReturnFragment"
+        android:label="LibraryUseReturn"
+        tools:layout="@layout/fragment_library_use_return" />
 
     <fragment
         android:id="@+id/supportFragment"
@@ -182,14 +199,6 @@
         android:label="Sign"
         tools:layout="@layout/fragment_sign" >
     </fragment>
-
-    <fragment
-        android:id="@+id/libraryUserFragment"
-        android:name="com.d103.asaf.ui.library.student.LibraryUseFragment"
-        android:label="LibraryUser"
-        tools:layout="@layout/fragment_library_use" >
-    </fragment>
-
 
     <fragment
         android:id="@+id/noti_register_fragment"

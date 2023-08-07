@@ -38,4 +38,8 @@
     </style>
 
 
+    <!-- 스플래시 화면 -->
+    <style name="Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    </style>
+
 </resources>

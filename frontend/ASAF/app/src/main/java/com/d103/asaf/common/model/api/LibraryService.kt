@@ -37,21 +37,21 @@ interface LibraryService {
 
     // 도서 등록 정보 보내기
     @POST("/book")
-    suspend fun postBook(@Body book: Book) : Boolean
+    suspend fun postBook(@Body book: Book) : Response<Boolean>
 
     // 반납 정보 보내기
     @POST("/library/seat/{book_id}")
-    suspend fun postReturn(@Body book: Book) : Boolean
+    suspend fun postReturn(@Body book: Book) : Response<Boolean>
 
     // 대출 정보 보내기
     @POST("/library/seat/{book_id}")
-    suspend fun postDraw(@Body book: Book) : Boolean
+    suspend fun postDraw(@Body book: Book) : Response<Boolean>
 
     // 수정
     @PUT("/book/{book_id}")
-    suspend fun updateBook(@Path("book_id") bookId: Int, @Body book: Book) : Boolean
+    suspend fun updateBook(@Path("book_id") bookId: Int) : Response<Boolean>
 
     // 삭제
     @DELETE("/book/{book_id}")
-    suspend fun deleteBook(@Path("book_id") bookId: Int) : Boolean
+    suspend fun deleteBook(@Path("book_id") bookId: Int) : Response<Boolean>
 }
