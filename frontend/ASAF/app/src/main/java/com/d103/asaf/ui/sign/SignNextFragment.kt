@@ -7,7 +7,6 @@ import androidx.navigation.fragment.findNavController
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentSignNextBinding
-import com.d103.asaf.ui.library.student.LibraryUseDrawFragment
 import java.util.Calendar
 
 class SignNextFragment : BaseFragment<FragmentSignNextBinding>(FragmentSignNextBinding::bind, R.layout.fragment_sign_next) {

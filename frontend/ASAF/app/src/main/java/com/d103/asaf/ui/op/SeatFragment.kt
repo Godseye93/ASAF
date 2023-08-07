@@ -166,6 +166,7 @@ class SeatFragment() :
                         0
                     }
                     if (seatNum >= viewModel.docSeat.value.size) seatNum = viewModel.docSeat.value.size
+//                    if (seatNum >= viewModel.students.value.size) seatNum = viewModel.students.value.size
                 }
             })
         }
@@ -436,7 +437,7 @@ class SeatFragment() :
         try {
             val response = withContext(Dispatchers.IO) {
 //                RetrofitUtil.opService.postSeats(viewModel.setSeats(position, seatNum))
-                RetrofitUtil.opService.postSeats(viewModel.docSeat.value)
+                RetrofitUtil.opService.postSeats(viewModel.docSeat.value.subList(0, seatNum))
             }
             if (response.isSuccessful) {
 
