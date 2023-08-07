@@ -1,6 +1,9 @@
 package com.d103.asaf.ui.sign
 
+import android.Manifest
 import android.content.ContentValues
+import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
@@ -12,18 +15,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
 import com.d103.asaf.R
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.config.BaseFragment
+import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentSignBinding
 import com.d103.asaf.databinding.FragmentSignNextBinding
+import com.d103.asaf.ui.join.TAG
 import com.d103.asaf.ui.library.student.LibraryUseDrawFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.InputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -152,14 +164,42 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
         }
     }
 
-    // DB에 서명 정보 저장
-    private fun uploadToDB() {
-
-    }
-
     private fun todayToString(): List<String> {
         val calendar = Calendar.getInstance()
         val formatter = SimpleDateFormat("yyyy/MM/dd", Locale.KOREA)
         return formatter.format(calendar.time).split("/")
+    }
+
+    // ---------------------------------------- 서명 업로드 ---------------------------------
+    fun createMultipartFromUri(context: Context, uri: Uri): MultipartBody.Part? {
+        val file: File? = getFileFromUri(context, uri)
+        if (file == null) {
+            // 파일을 가져오지 못한 경우 처리할 로직을 작성하세요.
+            return null
+        }
+        val requestFile: RequestBody = createRequestBodyFromFile(file)
+        return MultipartBody.Part.createFormData("file", file.name, requestFile)
+    }
+
+    private fun getFileFromUri(context: Context, uri: Uri): File? {
+        val filePath = uriToFilePath(context, uri)
+        return if (filePath != null) File(filePath) else null
+    }
+
+    private fun uriToFilePath(context: Context, uri: Uri): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = context.contentResolver.query(uri, projection, null, null, null)
+        val columnIndex = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor?.moveToFirst()
+        val filePath = cursor?.getString(columnIndex!!)
+        cursor?.close()
+        return filePath
+    }
+
+    private fun createRequestBodyFromFile(file: File): RequestBody {
+        val MEDIA_TYPE_IMAGE = "image/png".toMediaTypeOrNull()
+        val inputStream: InputStream = FileInputStream(file)
+        val byteArray = inputStream.readBytes()
+        return byteArray.toRequestBody(MEDIA_TYPE_IMAGE)
     }
 }
