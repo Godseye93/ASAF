@@ -25,12 +25,12 @@ pipeline {
 
         stage('Deploy') {
     	steps {
-        		sh 'cp backend/ASAF/build/libs/*.jar /home/ubuntu/'
+        		sh 'sudo cp backend/ASAF/build/libs/*.jar /home/ubuntu/'
  // Change to target directory before running the jar file
 
 
         // 백그라운드에서 앱 실행
-            sh 'nohup java -jar /home/ubuntu/ASAF-0.0.1-SNAPSHOT.jar &'
+            sh 'nohup sudo java -jar /home/ubuntu/ASAF-0.0.1-SNAPSHOT.jar &'
 
    		 }
 	    
