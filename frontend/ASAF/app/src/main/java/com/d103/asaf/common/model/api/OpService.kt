@@ -5,10 +5,14 @@ import com.d103.asaf.common.model.dto.DocLocker
 import com.d103.asaf.common.model.dto.DocSeat
 import com.d103.asaf.common.model.dto.DocSign
 import com.d103.asaf.common.model.dto.Member
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -35,7 +39,10 @@ interface OpService {
     suspend fun postLockers(@Body lockers: List<DocLocker>) : Response<Boolean>
 
     // 서명 정보 보내기
+    @Multipart
     @POST("/sign/complete")
-    suspend fun postSigns(@Body lockers: List<DocSign>) : Response<Boolean>
-
+    suspend fun postSigns(
+        @Part("signs") sign: MultipartBody.Part,
+        @Part filePart: MultipartBody.Part
+    ): Response<Boolean>
 }
