@@ -21,7 +21,7 @@ class SharedViewModel : ViewModel() {
      var year : Int = 0
      var month : Int = 0
      var day : Int = 0
-
+     var selectedMarketId  = 0 // 마켓 상세 정보 조회할 때 사용
      val _classInfoList = MutableLiveData<MutableList<Classinfo>>()
 
 

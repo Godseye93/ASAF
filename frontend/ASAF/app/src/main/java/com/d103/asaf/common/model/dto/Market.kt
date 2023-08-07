@@ -8,4 +8,6 @@ data class Market(@SerializedName("post_id") var id : Int,
                   var content : String,
                   @SerializedName("id") var userId : Int,
                   @SerializedName("profile_image") var profileImage : String,
-                  @SerializedName("name") var userName : String)
+                  @SerializedName("name") var userName : String) {
+    constructor(register_time: Long, title : String, content : String, userId : Int, profileImage: String, userName : String) : this(0, register_time, title, content, userId, profileImage, userName)
+}
