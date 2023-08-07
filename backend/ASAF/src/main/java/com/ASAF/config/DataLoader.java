@@ -128,7 +128,7 @@ public class DataLoader implements CommandLineRunner {
             ClassInfoEntity classInfoEntity = ClassInfoEntity.toClassInfoEntity(classInfoDTO);
             classInfoRepository.save(classInfoEntity);
         }
-        
+
         // 도서 더미데이터
         for (int i = 1; i <= 10; i++) {
             BookDTO bookDTO = new BookDTO();
