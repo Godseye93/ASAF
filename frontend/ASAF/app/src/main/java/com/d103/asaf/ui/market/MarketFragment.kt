@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.d103.asaf.MainActivity
 import com.d103.asaf.R
+import com.d103.asaf.SharedViewModel
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.Market
 import com.d103.asaf.common.model.dto.Member
@@ -31,6 +34,8 @@ class MarketFragment : BaseFragment<FragmentMarketBinding>(FragmentMarketBinding
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var adapter: MarketAdpater
+    private val viewModel : MarketFragmentViewModel by viewModels()
+    private val sharedViewModel : SharedViewModel by activityViewModels()
     private val testList = mutableListOf<Market>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +66,9 @@ class MarketFragment : BaseFragment<FragmentMarketBinding>(FragmentMarketBinding
 
         adapter.itemClickListener = object : MarketAdpater.ItemClickListener{
             override fun onClick(view: View, position: Int, data: Market) {
-                Toast.makeText(requireContext(), "클릭함", Toast.LENGTH_SHORT).show()
+                sharedViewModel.selectedMarketId = data.id
+                findNavController().navigate(R.id.action_marketFragment_to_marketDetailFragment)
+                (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
             }
 
 
