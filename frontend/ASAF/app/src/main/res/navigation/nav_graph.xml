@@ -35,7 +35,21 @@
         android:id="@+id/marketFragment"
         android:name="com.d103.asaf.ui.market.MarketFragment"
         android:label="Market"
-        tools:layout="@layout/fragment_market"/>
+        tools:layout="@layout/fragment_market">
+
+        <action
+            android:id="@+id/action_marketFragment_to_marketFragmentRegister"
+            app:destination="@+id/marketRegisterFragment">
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/marketRegisterFragment"
+        android:name="com.d103.asaf.ui.market.MarketRegisterFragment"
+        android:label="MarketRegister"
+        tools:layout="@layout/fragment_market_register"/>
     <fragment
         android:id="@+id/navigation_noti"
         android:name="com.d103.asaf.ui.noti.StudentNotiFragment"
