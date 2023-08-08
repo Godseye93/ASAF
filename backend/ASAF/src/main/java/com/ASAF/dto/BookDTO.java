@@ -26,7 +26,6 @@ public class BookDTO {
     private boolean borrowState;
     private String borrower;
 
-
     private int class_num;
     private int class_code;
     private int region_code;
