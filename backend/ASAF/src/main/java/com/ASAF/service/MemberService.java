@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Time;
@@ -147,7 +148,7 @@ public class MemberService{
     // 이메일로 프로필 사진 주소 가져오는 메소드
     public String getProfileImagePath(String memberEmail) throws ChangeSetPersister.NotFoundException {
         MemberEntity memberEntity = memberRepository.findByMemberEmail(memberEmail)
-                .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with email: " + memberEmail));
         return memberEntity.getProfile_image();
     }
 
