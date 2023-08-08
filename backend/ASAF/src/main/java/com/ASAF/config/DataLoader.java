@@ -127,8 +127,8 @@
 //            memberDTO.setPhone_number(phoneNumber);
 //
 //
-////            memberDTO.setProfile_image("src/main/resources/static/images/profile_images/default.png");
-//            memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/default.png");
+//            memberDTO.setProfile_image("src/main/resources/static/images/profile_images/default.png");
+////            memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/default.png");
 //            memberDTO.setElectronic_student_id(10000 + i);
 //
 //            if (i <= 544) {
