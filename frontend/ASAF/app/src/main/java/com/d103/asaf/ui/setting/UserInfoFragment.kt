@@ -12,6 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.d103.asaf.SharedViewModel
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.api.MemberService
@@ -47,7 +50,7 @@ class UserInfoFragment: Fragment() {
 //        viewModel.getUserInfo(ApplicationClass.sharedPreferences.getString("memberEmail")!!)
         Log.d(TAG, "onViewCreated: ${sharedViewModel.logInUser.memberEmail}")
         Log.d(TAG, "onViewCreated: ${ApplicationClass.sharedPreferences.getString("memberEmail")}")
-//        initInfo(sharedViewModel.logInUser)
+        initInfo()
 
         //
         binding.fragmentSettingUserinfoButtonUpdate.setOnClickListener {
@@ -65,28 +68,33 @@ class UserInfoFragment: Fragment() {
         _binding = null
     }
 
-    fun initInfo(member : Member){
-        binding.fragmentSettingUserinfoEditTVName.setText(member.memberName)
-        binding.fragmentSettingUserinfoEditTVEmail.setText(member.memberEmail)
-        binding.fragmentSettingUserinfoEditTVPass.setText(member.memberPassword)
-        binding.fragmentSettingUserinfoEditTVBirth.setText(member.birthDate)
-        binding.fragmentSettingUserinfoImageviewProfile.setImageURI(member.profileImage.toUri())
+    fun initInfo(){
+        binding.fragmentSettingUserinfoEditTVName.setText("${ApplicationClass.sharedPreferences.getString("memberName")}")
+        binding.fragmentSettingUserinfoEditTVEmail.setText("${ApplicationClass.sharedPreferences.getString("memberEmail")}")
+        binding.fragmentSettingUserinfoEditTVPass.setText("${ApplicationClass.sharedPreferences.getString("memberPassword")}")
+        binding.fragmentSettingUserinfoEditTVBirth.setText("${ApplicationClass.sharedPreferences.getString("birth_date")}")
+        val imageUrl = "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image"
+        val requestOptions = RequestOptions().transform(CircleCrop())
+        Glide.with(this)
+            .load(imageUrl)
+            .apply(requestOptions)
+            .into(binding.fragmentSettingUserinfoImageviewProfile)
 
-        // information 문자열 split.
-        var Nth: Int? = null
-        var region: String? = null
-        var classNum: Int? = null
-        val info = parseInput(member.memberInfo)
-        if(info != null){
-            // 기수, 지역, 반
-            Nth = info.first
-            region = info.second
-            classNum = info.third
-        }
+//        // information 문자열 split.
+//        var Nth: Int? = null
+//        var region: String? = null
+//        var classNum: Int? = null
+//        val info = parseInput(member.memberInfo)
+//        if(info != null){
+//            // 기수, 지역, 반
+//            Nth = info.first
+//            region = info.second
+//            classNum = info.third
+//        }
 
-        spinnerAdapterNth(Nth.toString())
-        spinnerAdapterRegion(region.toString())
-        spinnerAdapterClassNum(classNum.toString())
+//        spinnerAdapterNth(Nth.toString())
+//        spinnerAdapterRegion(region.toString())
+//        spinnerAdapterClassNum(classNum.toString())
     }
 
     private fun spinnerAdapterNth(nth: String) {

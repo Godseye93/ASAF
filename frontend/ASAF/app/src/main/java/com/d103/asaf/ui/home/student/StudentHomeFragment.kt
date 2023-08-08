@@ -74,7 +74,6 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
     private lateinit var nfcDialog: AlertDialog
 
-
     // 애니메이션 부분
     private lateinit var cardView1: CardView
     private lateinit var cardView2: CardView

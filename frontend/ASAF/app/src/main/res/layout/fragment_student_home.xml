@@ -28,7 +28,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/fragment_student_home_cardView_front"
         android:layout_width="330dp"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:layout_centerInParent="true"
         android:layout_marginTop="48dp"
         android:padding="16dp"
@@ -262,7 +262,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/fragment_student_home_cardView_back"
         android:layout_width="330dp"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:layout_centerInParent="true"
         android:layout_marginTop="48dp"
         android:padding="16dp"
