@@ -123,10 +123,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
                     "${loginResult.memberName}님, 로그인 되었습니다.",
                     Toast.LENGTH_SHORT
                 ).show()
-                if(binding.fragmentLoginSwitchAutologin.isChecked){
-                    ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
-                }
-//                ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
+//                if(binding.fragmentLoginSwitchAutologin.isChecked){
+//                    ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
+                    ////
+//                }
+                ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
+                ApplicationClass.sharedPreferences.autoLoginIsChecked(binding.fragmentLoginSwitchAutologin.isChecked)
+
                 sharedViewModel.logInUser = loginResult
                 Log.d(TAG, "observeViewModel______: ${sharedViewModel.logInUser.memberEmail}")
                 Log.d(TAG, "유저: ${sharedViewModel.logInUser}")

@@ -28,14 +28,14 @@ interface OpService {
 
     // 자리 정보 보내기
     @POST("/seat/complete")
-    suspend fun postSeats(@Body seats: List<DocSeat>) : Boolean
+    suspend fun postSeats(@Body seats: List<DocSeat>) : Response<Boolean>
 
     // 사물함 정보 보내기
     @POST("/locker/complete")
-    suspend fun postLockers(@Body lockers: List<DocLocker>) : Boolean
+    suspend fun postLockers(@Body lockers: List<DocLocker>) : Response<Boolean>
 
     // 서명 정보 보내기
     @POST("/sign/complete")
-    suspend fun postSigns(@Body lockers: List<DocSign>) : Boolean
+    suspend fun postSigns(@Body lockers: List<DocSign>) : Response<Boolean>
 
 }

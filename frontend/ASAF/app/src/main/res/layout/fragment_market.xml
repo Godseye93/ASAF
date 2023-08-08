@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.market.MarketFragment">
 
 
     <TextView
+        android:layout_marginStart="16dp"
         android:id="@+id/marketText"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +19,6 @@
         android:textSize="32sp"
         android:text="중고마켓" />
     <com.d103.asaf.common.component.SearchBar
-
         android:id="@+id/fragment_market_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,11 +28,25 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="32dp"
+        android:id="@+id/fragment_market_recyclerview"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        tools:listitem="@layout/item_market"
         app:layout_constraintTop_toBottomOf="@+id/fragment_market_search_bar"
         app:layout_constraintStart_toStartOf="@+id/marketText"
         />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fragment_market_register_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/defaultMainColor"
+        android:clickable="true"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -59,7 +59,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     /** 알림 생성 메서드 */
-    private fun sendNotification(remoteMessage: RemoteMessage) {
+    fun sendNotification(remoteMessage: RemoteMessage) {
         // RequestCode, Id를 고유값으로 지정하여 알림이 개별 표시
         val uniId: Int = (System.currentTimeMillis() / 7).toInt()
 

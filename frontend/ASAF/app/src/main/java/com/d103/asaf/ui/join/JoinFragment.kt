@@ -59,6 +59,7 @@ class JoinFragment : Fragment() {
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
+                Log.d(TAG, "URI-JoIN: $uri")
                 // 선택한 이미지 URI를 사용하여 이미지뷰에 설정합니다.
                 binding.fragmentJoinImageviewProfile.setImageURI(uri)
                 tempUri = uri
@@ -78,12 +79,16 @@ class JoinFragment : Fragment() {
     ): View? {
         binding = FragmentJoinBinding.inflate(inflater, container, false)
 
-        setupViews()
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // view 초기 설정
+        setupViews()
         // Spinner default 값을 설정하는 메서드를 호출
         setSpinnerDefaultValues()
-
-        return binding.root
     }
 
     private fun setupViews() {
@@ -269,6 +274,7 @@ class JoinFragment : Fragment() {
     }
 
     private fun uriToFilePath(context: Context, uri: Uri): String? {
+        Log.d(TAG, "URI-join:$uri")
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = context.contentResolver.query(uri, projection, null, null, null)
         val columnIndex = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
