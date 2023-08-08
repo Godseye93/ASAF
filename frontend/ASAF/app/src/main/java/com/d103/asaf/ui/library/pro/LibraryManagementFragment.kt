@@ -47,7 +47,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
 ) {
     private val viewModel: LibraryFragmentViewModel by viewModels()
     private var books: MutableList<Book> = mutableListOf()
-    private lateinit var adapter: BookAdapter
+    private var adapter: BookAdapter = BookAdapter(null)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,12 +58,21 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
 
     private fun initList() {
         lifecycleScope.launch {
-            viewModel.draws.collect {
-                books = viewModel.draws.value
+            viewModel.books.collect {
+                if(viewModel.isFirst == false) {
+                    books = it
+                    adapter.submitList(books)
+                }
             }
         }
+        lifecycleScope.launch {
+            viewModel.draws.collect {
+                books = viewModel.draws.value
+                adapter.submitList(books)
+            }
+        }
+
         Log.d("책", "initList: $books")
-        adapter = BookAdapter(null)
         adapter.isDraw = true
         binding.fragmentLibraryRecyclerview.adapter = adapter
         adapter.submitList(books)
@@ -201,6 +210,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
                 CoroutineScope(Dispatchers.IO).launch {
                     // 북 정보를 등록하고 qr 코드에 저장하는 처리
                     postBook(book)
+                    viewModel.loadRemote()
                     // 도서 등록 창 닫기
                     dialog.dismiss()
                 }
@@ -289,5 +299,11 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
         } catch (e: Exception) {
             Log.e("운영도서", "도서 등록  오류: ${e.message}", e)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.isDraw = true
+        viewModel.isFirst = true
     }
 }
