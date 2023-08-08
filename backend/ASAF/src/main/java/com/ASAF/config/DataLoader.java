@@ -55,11 +55,26 @@ public class DataLoader implements CommandLineRunner {
 
             int randomNumber = random.nextInt(10000); // 범위는 0에서 9999 사이
 
-            String randomEmail = String.format("%s%04d@ssafy.com", randomLetters, randomNumber);
-            memberDTO.setMemberEmail(randomEmail);
+            if (i<=24) {
+                String email = String.format("ssafypro%04d@ssafy.com", i);
+                memberDTO.setMemberEmail(email);
+            } else if (i >= 439 && i <= 449) {
+                int suffix = i - 438; // 범위가 1부터 시작하도록 하기 위해 438를 빼줍니다.
+                String email = String.format("ssafy%04d@ssafy.com", suffix);
+                memberDTO.setMemberEmail(email);
+            } else {
+                String randomEmail = String.format("%s%04d@ssafy.com", randomLetters, randomNumber);
+                memberDTO.setMemberEmail(randomEmail);
+            }
 
-            String randomPassword = String.format("%04d", random.nextInt(10000));
-            memberDTO.setMemberPassword(randomPassword);
+            if (i<=24) {
+                memberDTO.setMemberPassword("0000");
+            } else if (i >= 439 && i <= 449) {
+                memberDTO.setMemberPassword("0000");
+            } else {
+                String randomPassword = String.format("%04d", random.nextInt(10000));
+                memberDTO.setMemberPassword(randomPassword);
+            }
 
             List<String> exampleNames = Arrays.asList(
                     "김태희", "박시환", "정지민", "이성민", "조영훈", "장지수",
