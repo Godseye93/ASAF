@@ -102,7 +102,11 @@ public class DataLoader implements CommandLineRunner {
             String phoneNumber = String.format("010-%04d-%04d", 1000 + random.nextInt(9000), 1000 + random.nextInt(9000));
             memberDTO.setPhone_number(phoneNumber);
 
-            memberDTO.setProfile_image("src/main/resources/static/images/profile_images/ssafy" + 1 + "@email.com.png");
+            if (i<=9) {
+                memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/ssafy" + i + "@email.com.png");
+            }else{
+                memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/ssafy" + 1 + "@email.com.png");
+            }
             memberDTO.setElectronic_student_id(10000 + i);
 
             if (i <= 544) {
