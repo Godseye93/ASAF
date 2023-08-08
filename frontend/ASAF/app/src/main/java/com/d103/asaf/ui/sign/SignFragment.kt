@@ -61,7 +61,7 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
     private var subDay = ""
     private var curSign = DocSign()
 
-    // curSign 조립 필요 
+    // curSign 조립 필요
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

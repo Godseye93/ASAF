@@ -21,7 +21,7 @@ class ApplicationClass : Application() {
 //        val API_URL ="http://192.168.100.158:8080/"     // 진욱님
 //        val API_URL ="http://192.168.100.62:8080/"     // 민재님
 //        val API_URL = "http://192.168.100.169:8081/"    // 형진님
-        val API_URL = "http://ubuntu@i9d103.p.ssafy.io:8080/" // EC2
+        val API_URL = "http://ubuntu@i9d103.p.ssafy.io:8081/" // EC2
         lateinit var sharedPreferences: SharedPreferencesUtil
 
 
