@@ -68,6 +68,7 @@ public class BookController {
         return ResponseEntity.ok(result);
     }
 
+    // 대출중인 책 목록 가져오기
     @GetMapping("/borrowed/{classCode}/{regionCode}/{generationCode}/sorted-by-name")
     public ResponseEntity<List<BookDTO>> findBooksInBorrowedStateSortedByName(
             @PathVariable("classCode") int classCode,
