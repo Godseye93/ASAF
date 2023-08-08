@@ -134,7 +134,7 @@ public class MemberService{
                 .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 
 //        String UPLOAD_DIR = "src/main/resources/static/images/profile_images/";
-        String UPLOAD_DIR = "/home/ubuntu/statics/images/profile_images/";
+        String UPLOAD_DIR = "/home/ubuntu/statics/images/profile_images/";git ad
         String fileName = file.getOriginalFilename();
         String filePath = UPLOAD_DIR + memberEmail + "_" + fileName;
         File dest = new File(filePath);
