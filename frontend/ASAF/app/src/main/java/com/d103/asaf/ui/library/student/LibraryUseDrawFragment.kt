@@ -18,6 +18,9 @@ import com.ssafy.template.util.SharedPreferencesUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(FragmentLibraryUseDrawBinding::bind, R.layout.fragment_library_use_draw) {
     companion object {
@@ -34,7 +37,7 @@ class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(Fragm
 
     private var drawInfo: MutableList<String> = mutableListOf()
     private val viewModel: LibraryUseFragmentViewModel by viewModels()
-
+    private val today = todayToString()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // arguments로부터 리스트를 가져와서 변수에 할당합니다.
@@ -47,6 +50,8 @@ class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(Fragm
         binding.apply {
             fragmentLibraryUserDrawTextviewTitle.text = drawInfo[0]
             fragmentLibraryUserDrawTextviewAuthor.text = drawInfo[1]
+            fragmentLibraryUserDrawTextviewIdText.text = ApplicationClass.sharedPreferences.getInt("student_number").toString()
+            fragmentLibraryUserDrawTextviewDrawdateText.text = today.substring(2,10)
             fragmentLibraryUserDrawDrawdayDropdown.dataList.addAll(viewModel.days.value)
             fragmentLibraryUserDrawDrawdayDropdown.dataList.removeAt(2)
             fragmentLibraryUserDrawDrawdayDropdown.dropdownText.text = "3"
@@ -59,13 +64,19 @@ class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(Fragm
                 // 또한 이미 true(대출 중인) 상태라면 boolean으로 false를 반환하면 된다.
                 lifecycleScope.launch {
                     val userId = ApplicationClass.sharedPreferences.getInt("id")
-                    // updateBook(userId, qr에 넣어준 도서 id 정보)
+                    updateBook(drawInfo[3].toInt())
                 }
             }
         }
     }
 
-    private suspend fun updateBook(userId: Int, bookId: Int) {
+    private fun todayToString(): String {
+        val calendar = Calendar.getInstance()
+        val formatter = SimpleDateFormat("yyyy/MM/dd", Locale.KOREA)
+        return formatter.format(calendar.time)
+    }
+
+    private suspend fun updateBook(bookId: Int) {
         try {
             val response = withContext(Dispatchers.IO) {
                 RetrofitUtil.libraryService.updateBook(bookId)

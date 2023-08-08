@@ -55,6 +55,8 @@ class LibraryFragmentViewModel: ViewModel() {
     private var _draws = MutableStateFlow(mutableListOf<Book>())
     val draws = _draws
 
+    var isFirst = true
+
     init {
         loadFirst()
     }
@@ -68,7 +70,7 @@ class LibraryFragmentViewModel: ViewModel() {
         loadCommon()
     }
 
-    private fun loadRemote() {
+    fun loadRemote() {
         // 전체 도서 정보
         viewModelScope.launch {
             try {
@@ -107,6 +109,7 @@ class LibraryFragmentViewModel: ViewModel() {
                             book.trueBorrowStateCount
                         )
                     } ?: mutableListOf<Book>()) as MutableList<Book>
+                    isFirst = false;
                     Log.d("들어오냐", "${_books.value}")
                 } else {
                     Log.d(TAG, "도서 가져오기 네트워크 오류")
