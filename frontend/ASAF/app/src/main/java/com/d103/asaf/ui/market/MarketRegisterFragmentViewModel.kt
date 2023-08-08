@@ -15,6 +15,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
+private const val TAG = "MarketRegisterFragmentV ASAF"
 class MarketRegisterFragmentViewModel : ViewModel() {
 
      var photoRegisterList = mutableListOf<MarketImage>()
@@ -26,17 +27,17 @@ class MarketRegisterFragmentViewModel : ViewModel() {
         return json.toRequestBody("application/json".toMediaTypeOrNull())
     }
 
-     fun post() : Boolean{
-          var flag = false
+     fun post(){
+
          Log.d("마켓 Post", "$marketInfo, $photoIamgeFileList ")
           viewModelScope.launch {
               val response = RetrofitUtil.marketService.post(createMarketRequestBody(marketInfo), photoIamgeFileList)
-//               if(response.isSuccessful){
-                    flag = true
-//               }
+               if(response.isSuccessful){
+                   Log.d(TAG, "post: ${response.body()} ")
+               }
 
           }
-          return flag
+
 
      }
 

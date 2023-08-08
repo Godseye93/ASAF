@@ -12,6 +12,8 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.d103.asaf.MainActivity
 import com.d103.asaf.R
+import com.d103.asaf.common.config.ApplicationClass
+import com.d103.asaf.common.model.Room.NotiMessage
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -51,6 +53,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if(remoteMessage.data.isNotEmpty()){
             //알림생성
             sendNotification(remoteMessage)
+            // ROOM DB 저장
+            val title = remoteMessage.data["title"].toString()
+            val body = remoteMessage.data["body"].toString()
+            val content = body.split("\n")[1]
+            val sender = body.split("\n")[0]
+            val notiMessage = NotiMessage(0, title, content, System.currentTimeMillis(), sender, remoteMessage.data["image"]!!)
+
+            ApplicationClass.notiMessageDatabase.notiMessageDao.saveNotiMessage(notiMessage)
+            Log.d(TAG, "송신자 : ${body.split("\n")[0]}")
+
 //            Log.d(TAG, remoteMessage.data["title"].toString())
 //            Log.d(TAG, remoteMessage.data["body"].toString())
         }else {

@@ -163,12 +163,11 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
                     ApplicationClass.sharedPreferences.getString("memberName")!!
                 )
 
-                if(viewModel.post()){
-                    findNavController().navigateUp()
-                }
-                else{
-                    Toast.makeText(requireContext(), "전송 오류", Toast.LENGTH_SHORT).show()
-                }
+                (viewModel.post())
+                (requireActivity() as MainActivity).showStudentBottomNaviagtionBarFromFragment()
+                findNavController().navigateUp()
+
+
             }
 
 
