@@ -55,7 +55,7 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
                     bookItemReturnSend.isVisible = isDatePassed(book.returnDate)
                     bookItemReturnSend.setOnClickListener {
                         // 알림을 해당 학생에게 보내기
-                        sendNotification(binding)
+                        sendNotification(binding, book)
                         // 색깔을 회색으로
                         bookItemReturnSend.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.isClicked))
                         // 버튼을 비활성화
@@ -91,12 +91,16 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
     }
 
     // 애플리케이션 icon이 자동으로 삽입됨 -> 아이콘을 변경하자
-    private fun sendNotification(binding: ItemBookBinding) {
+    private fun sendNotification(binding: ItemBookBinding, curBook: Book) {
         // FCM 메시지 보내기 함수
         Toast.makeText(binding.root.context, "알림을 보냈습니다.", Toast.LENGTH_SHORT).show()
+        // ----------------노티 정보를 좀 더 담아야함--------------
         val noti = Noti()
         noti.title = "도서 반납 요청"
         noti.content = "빌려간 도서의 반납일이 만료됐습니다.\n 반납 부탁드립니다."
+        noti.notification = true
+        noti.sender = ApplicationClass.sharedPreferences.getInt("id")
+        noti.receiver = curBook.userId
         CoroutineScope(Dispatchers.IO).launch {
             RetrofitUtil.notiService.pushMessage(listOf(noti))
         }

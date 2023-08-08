@@ -23,11 +23,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="2dp"
-                android:layout_weight="0.6"
+                android:layout_weight="0.5"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:textColor="#5533FF"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 tools:text="1" />
 
             <TextView
@@ -40,7 +40,7 @@
                 android:gravity="center"
                 android:text="반"
                 android:textColor="#5533FF"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 tools:text="반" />
 
             <ImageView
