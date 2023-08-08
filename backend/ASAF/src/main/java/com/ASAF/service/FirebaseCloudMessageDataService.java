@@ -157,7 +157,8 @@ public class FirebaseCloudMessageDataService {
     // 2-3 전송 토큰을 받아옵니다.
     private String getAccessToken() throws IOException {
         // 파이어베이스 속성 경로 firebaseConfigPath를 생성합니다.
-        String firebaseConfigPath = "/ASAF_FCM_KEY.json";
+//        String firebaseConfigPath = "/ASAF_FCM_KEY.json";
+        String firebaseConfigPath = "/home/ubuntu/ASAF_FCM_KEY.json";
         // GoogleApi를 사용하기 위해 oAuth2를 이용해 인증한 대상을 나타내는객체
         // 구글 인증 클래스의 인스턴스를 생성하고 파이어베이스 속성경로를 담아 메서드를 실행합니다.
         GoogleCredentials googleCredentials = GoogleCredentials
