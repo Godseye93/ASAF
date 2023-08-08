@@ -61,7 +61,7 @@ public class FirebaseCloudMessageDataService {
 
         String title = noticeEntity.getTitle();
         String content = noticeEntity.getContent();
-        String body = String.format("작성자 : %s \n %s", sender, content);
+        String body = String.format("[%s] \n %s", sender, content);
         String image = profileImage;
         if (noticeEntity.getNotification() == true){
             if (initialDelay <= 0) {
