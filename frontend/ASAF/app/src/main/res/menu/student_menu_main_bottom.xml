@@ -28,7 +28,7 @@
         android:title="중고 거래"/>
 
     <item
-        android:id="@+id/supportFragment"
+        android:id="@+id/signDrawFragment"
         android:enabled="true"
         android:icon="@drawable/ic_sign"
         android:title="교육 지원금"/>

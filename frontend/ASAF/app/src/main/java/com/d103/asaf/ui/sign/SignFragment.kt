@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.drawToBitmap
 import com.d103.asaf.R
+import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentSignBinding
 import com.d103.asaf.databinding.FragmentSignNextBinding
@@ -78,8 +79,12 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
     private fun setUserInfo() {
         val today = todayToString()
         val year = today[0]
+        val name = ApplicationClass.sharedPreferences.getString("memberName")
+        val classCode = SignDrawFragment.myClass?.classCode
+        Log.d("이름", "setUserInfo: $name")
+
         // 유저 정보 모두 필요
-        document = Document(today[1], "박현우", "부울경", "11", "", "", "12", "29")
+        document = Document(today[1], name?:"", SignDrawFragment.regionName, classCode.toString(), "", "", "12", "29")
         Log.d("사인", "setUserInfo: $totDay $attDay")
         binding.apply {
             fragmentSignConfirmTvYear.text = year

@@ -21,7 +21,7 @@ class SharedViewModel : ViewModel() {
      var year : Int = 0
      var month : Int = 0
      var day : Int = 0
-
+     var selectedMarketId  = 0 // 마켓 상세 정보 조회할 때 사용
      val _classInfoList = MutableLiveData<MutableList<Classinfo>>()
 
 
@@ -44,6 +44,12 @@ class SharedViewModel : ViewModel() {
                               Log.d(TAG, "classInfoList:${_classInfoList.value} ")
                               _classInfoList.postValue(responseBody!!)
                               ApplicationClass.mainClassInfo = responseBody
+                              Log.d(TAG, "getClassInfo: ${ApplicationClass.mainClassInfo}")
+                              ApplicationClass.sharedPreferences.addUserInfo(
+                                   responseBody[0].generationCode,
+                                   responseBody[0].regionCode,
+                                   responseBody[0].classNum
+                              )
                          }
                          else{
                               Log.d(TAG, "통신 ERROR : responseBody가 NULL")

@@ -14,4 +14,7 @@ interface AttendenceService {
 
     @GET("classinfo/memberIds")
     suspend fun getStudentsInfo(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int)  : Response<MutableList<Member>>
+
+    @GET("region/{region_code}")
+    suspend fun getRegionName(@Path("region_code") regionCode: Int)  : Response<String>
 }

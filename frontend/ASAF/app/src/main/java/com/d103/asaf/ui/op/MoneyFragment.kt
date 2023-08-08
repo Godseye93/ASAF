@@ -23,6 +23,7 @@ import com.d103.asaf.common.model.dto.DocSign
 import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentMoneyBinding
 import com.d103.asaf.ui.op.LockerFragment
+import com.d103.asaf.ui.op.OpFragment
 import com.d103.asaf.ui.op.OpFragmentViewModel
 import com.d103.asaf.ui.op.adapter.LockerAdapter
 import com.d103.asaf.ui.op.adapter.MoneyAdapter
@@ -53,15 +54,17 @@ class MoneyFragment :
         }
     }
 
-    lateinit var viewModel: OpFragmentViewModel
+    private var viewModel: OpFragmentViewModel = OpFragment.parentViewModel!!
     private lateinit var adapter: MoneyAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.signs.collect { newList ->
-                adapter.submitList(newList)
+        CoroutineScope(Dispatchers.Main).launch {
+            if(isAdded){
+                viewModel.signs.collect { newList ->
+                    adapter.submitList(newList)
+                }
             }
         }
 

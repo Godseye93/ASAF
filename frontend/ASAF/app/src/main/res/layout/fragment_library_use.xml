@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/student_card" />
+        tools:src="@drawable/asaf_real_logo" />
 
     <com.d103.asaf.common.component.CustomToggleButton
         android:id="@+id/book_user_toggle_button"

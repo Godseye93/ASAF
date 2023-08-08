@@ -52,8 +52,8 @@ class LibraryFragmentViewModel: ViewModel() {
     val books = _books
 
     // <!---------------------------- 대출한 리스트 ------------------------------->
-    private var _returns = MutableStateFlow(mutableListOf<Book>())
-    val returns = _returns
+    private var _draws = MutableStateFlow(mutableListOf<Book>())
+    val draws = _draws
 
     init {
         loadFirst()
@@ -73,10 +73,13 @@ class LibraryFragmentViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val drawResponse = withContext(Dispatchers.IO) {
-                    RetrofitUtil.libraryService.getDraws(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
+                    if(ApplicationClass.sharedPreferences.getString("authority") == "교육생")
+                        RetrofitUtil.libraryService.getMyDraws(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode, ApplicationClass.sharedPreferences.getInt("id"))
+                    else
+                        RetrofitUtil.libraryService.getDraws(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
                 if (drawResponse.isSuccessful) {
-                    _returns.value = drawResponse.body() ?: mutableListOf<Book>()
+                    _draws.value = drawResponse.body() ?: mutableListOf<Book>()
                 } else {
                     Log.d(TAG, "대출 도서 가져오기 네트워크 오류")
                 }
@@ -96,19 +99,20 @@ class LibraryFragmentViewModel: ViewModel() {
                             book.bookName,
                             book.author,
                             book.publisher,
-                            Date(Long.MAX_VALUE),
-                            Date(Long.MAX_VALUE),
+                            Long.MAX_VALUE,
+                            Long.MAX_VALUE,
                             book.borrowState,
                             book.borrower,
                             book.bookNameCount,
                             book.trueBorrowStateCount
                         )
                     } ?: mutableListOf<Book>()) as MutableList<Book>
+                    Log.d("들어오냐", "${_books.value}")
                 } else {
                     Log.d(TAG, "도서 가져오기 네트워크 오류")
                 }
             } catch (e: Exception) {
-                Log.d(TAG, " 도서 가져오기 네트워크 오류")
+                Log.d(TAG, " 도서 가져오기 네트워크 오류 $e")
             }
         }
     }
@@ -137,7 +141,7 @@ class LibraryFragmentViewModel: ViewModel() {
     }
 
     // QR코드
-    fun generateQRCode(title: String, author: String, publisher: String): Bitmap? {
+    fun generateQRCode(title: String, author: String, publisher: String, bookId: Int): Bitmap? {
         // Create a QR Code Writer
         val writer = MultiFormatWriter()
 
@@ -149,7 +153,7 @@ class LibraryFragmentViewModel: ViewModel() {
         val height = 500
 
         // Set the barcode content
-        val content = "\"$title\"|<$author>|$publisher"
+        val content = "\"$title\"|<$author>|$publisher|$bookId"
 
         // Set the barcode hints
         val hints = Hashtable<EncodeHintType, Any>()

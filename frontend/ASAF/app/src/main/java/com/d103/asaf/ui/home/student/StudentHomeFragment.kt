@@ -3,43 +3,53 @@ package com.d103.asaf.ui.home.student
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
-import android.app.PendingIntent
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
-import android.nfc.NdefMessage
-import android.nfc.NdefRecord
+import android.content.pm.ActivityInfo
+import android.graphics.Point
 import android.nfc.NfcAdapter
 import android.nfc.Tag
-import android.nfc.tech.IsoDep
 import android.nfc.tech.NfcB
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
+import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.biometric.BiometricManager
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.d103.asaf.MainActivity
 import com.d103.asaf.R
 import com.d103.asaf.SharedViewModel
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.databinding.FragmentStudentHomeBinding
 import androidx.biometric.BiometricPrompt
-import java.util.Locale
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
+import com.d103.asaf.common.util.RetrofitUtil
+import com.google.android.datatransport.runtime.util.PriorityMapping.toInt
+import kotlinx.coroutines.launch
+import java.nio.charset.Charset
+import java.util.Arrays
 
 private const val TAG = "StudentHomeFragment_cjw ASAF"
 // TODO: Rename parameter arguments, choose names that match
@@ -62,9 +72,8 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
     // 지문
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
+    private lateinit var nfcDialog: AlertDialog
 
-    // Add this property at the top of the fragment
-    private var nfcPendingIntent: PendingIntent? = null
 
     // 애니메이션 부분
     private lateinit var cardView1: CardView
@@ -84,18 +93,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        (requireActivity() as MainActivity).showStudentBottomNavigationBar()
-
         initView()
-
-//        // Set up NFC PendingIntent
-//        val nfcIntent = Intent(requireContext(), javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-//        nfcPendingIntent = PendingIntent.getActivity(
-//            requireContext(),
-//            0,
-//            nfcIntent,
-//            PendingIntent.FLAG_UPDATE_CURRENT
-//        )
 
         // 알림? 진동? 페이지
         binding.fragmentStuHomeImagebuttonNotification.setOnClickListener {
@@ -157,7 +155,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
         val nextCard = if (isFirstCardVisible) cardView2 else cardView1
 
         val objectAnimatorFirst =
-            ObjectAnimator.ofFloat(currentCard, View.ROTATION_Y, 0f, 90f)
+            ObjectAnimator.ofFloat(currentCard, View.ROTATION_Y, 0f, -90f)
         objectAnimatorFirst.duration = 500
         objectAnimatorFirst.start()
 
@@ -172,7 +170,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
                 nextCard.visibility = View.VISIBLE
 
                 val objectAnimatorSecond =
-                    ObjectAnimator.ofFloat(nextCard, View.ROTATION_Y, -90f, 0f)
+                    ObjectAnimator.ofFloat(nextCard, View.ROTATION_Y, 90f, 0f)
                 objectAnimatorSecond.duration = 500
                 objectAnimatorSecond.start()
 
@@ -181,9 +179,59 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
         })
     }
 
+    @SuppressLint("SetTextI18n")
     fun initView(){
 
-//        binding.fragmentstuhome
+        Log.d("유저 프로필 !!!!!", "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image")
+        val imageUrl = "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image"
+        val requestOptions = RequestOptions().transform(CircleCrop())
+        Glide.with(this)
+            .load(imageUrl)
+            .apply(requestOptions)
+            .into(binding.fragmentStudentHomeCardViewFrontImage)
+
+        binding.fragmentStudentHomeCardViewFrontCardView1FrontName.text = ApplicationClass.sharedPreferences.getString("memberName")
+        binding.fragmentStudentHomeCardViewFrontCardView1FrontNum.text = ApplicationClass.sharedPreferences.getInt("student_number").toString()
+
+//        Log.d(TAG, "initView~~~~: ${ApplicationClass.sharedPreferences.getInt("Nth")}")
+//        Log.d(TAG, "initView~~~~: ${ApplicationClass.sharedPreferences.getInt("region")}")
+//        Log.d(TAG, "initView~~~~: ${ApplicationClass.sharedPreferences.getInt("classNum")}")
+
+        // 기수
+        stuHomeFragmentViewModel.nthLiveData.observe(viewLifecycleOwner) { newNth ->
+            val nthText = when (newNth) {
+                1 -> "9 기"
+                2 -> "10 기"
+                else -> " - "
+            }
+            binding.fragmentStudentHomeCardViewFrontTextviewNth.text = nthText
+        }
+        // 지역
+        stuHomeFragmentViewModel.regionLiveData.observe(viewLifecycleOwner) { newRegion ->
+            val regionText = when (newRegion) {
+                1 -> "서울"
+                2 -> "구미"
+                3 -> "대전"
+                4 -> "부울경"
+                5 -> "광주"
+                else -> " - "
+            }
+            binding.fragmentStudentHomeCardViewFrontTextviewRegion.text = regionText
+        }
+        // 반
+        stuHomeFragmentViewModel.classNumLiveData.observe(viewLifecycleOwner) { newClassNum ->
+            val classText = when (newClassNum) {
+                0 -> " - "
+                else -> "$newClassNum 반"
+            }
+            binding.fragmentStudentHomeCardViewFrontTextviewClass.text = classText
+        }
+
+        // 카드뷰 뒷면
+        binding.fragmentStudentHomeCardViewBackName.text = ApplicationClass.sharedPreferences.getString("memberName")
+        binding.fragmentStudentHomeCardViewBackInfo.text = "${binding.fragmentStudentHomeCardViewFrontTextviewNth.text} " +
+                "${binding.fragmentStudentHomeCardViewFrontTextviewRegion.text} " +
+                "${binding.fragmentStudentHomeCardViewFrontTextviewClass.text} "
 
         cardView1 = binding.fragmentStudentHomeCardViewFront
         cardView2 = binding.fragmentStudentHomeCardViewBack
@@ -210,65 +258,11 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
     private fun authenticateWithFingerprint() {
         val executor = ContextCompat.getMainExecutor(requireContext())
 
-        val biometricPrompt = BiometricPrompt(
+        biometricPrompt = BiometricPrompt(
             requireActivity(),
             executor,
-            object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                    super.onAuthenticationError(errorCode, errString)
-                    Toast.makeText(
-                        requireContext(),
-                        "Authentication error: $errString",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                    super.onAuthenticationSucceeded(result)
-                    Toast.makeText(
-                        requireContext(),
-                        "Authentication succeeded!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-//                    // 태그 데이터 생성
-//                    val tagData = "95:02:E6:F1"
-//
-//                    // NFC 태그 생성
-//                    val nfcMessage = createNfcMessage(tagData)
-//
-//                    // NFC 태그 전송
-//                    val nfcAdapter = NfcAdapter.getDefaultAdapter(requireContext())
-//                    if (nfcAdapter != null && nfcAdapter.isEnabled) {
-//                        val nfcTechList = arrayOf(arrayOf(IsoDep::class.java.name), arrayOf(NfcB::class.java.name))
-//                        val nfcTechIntent = Intent(requireContext(), javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-//                        val nfcTechPendingIntent = PendingIntent.getActivity(
-//                            requireContext(),
-//                            0,
-//                            nfcTechIntent,
-//                            PendingIntent.FLAG_IMMUTABLE
-//                        )
-//                        nfcAdapter.enableForegroundDispatch(requireActivity(), nfcTechPendingIntent, null, nfcTechList)
-//
-//                        // 이제 사용자가 NFC 기기에 태그를 찍으면 nfcMessage가 전송됩니다.
-//                    } else {
-//                        Toast.makeText(
-//                            requireContext(),
-//                            "NFC가 활성화되지 않았거나 지원되지 않습니다.",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-                }
-
-                override fun onAuthenticationFailed() {
-                    super.onAuthenticationFailed()
-                    Toast.makeText(
-                        requireContext(),
-                        "Authentication failed",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+            callback
+        )
 
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle("지문 인식") // 다이얼로그 타이틀 설정
@@ -278,6 +272,161 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
 
         biometricPrompt.authenticate(promptInfo)
     }
+
+    private val callback = object : BiometricPrompt.AuthenticationCallback() {
+        override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+            super.onAuthenticationError(errorCode, errString)
+            Toast.makeText(
+                requireContext(),
+                "Authentication error: $errString",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+            super.onAuthenticationSucceeded(result)
+            Toast.makeText(
+                requireContext(),
+                "Authentication succeeded!",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            // tagData 생성
+            val tagData = "95:02:E6:F1"
+
+            // NFC 메시지 생성 및 전송
+            sendNFCMessage(tagData)
+            Log.d(TAG, "onAuthenticationSucceeded: $tagData")
+
+            // 가로 모드로 전환
+//            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+
+            // NFC 다이얼로그 띄우기
+            showNfcDialog()
+
+        }
+
+        override fun onAuthenticationFailed() {
+            super.onAuthenticationFailed()
+            Toast.makeText(
+                requireContext(),
+                "Authentication failed",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun sendNFCMessage(tagData: String) {
+        val nfcAdapter = NfcAdapter.getDefaultAdapter(requireContext())
+        if (nfcAdapter != null) {
+            if (!nfcAdapter.isEnabled) {
+                Toast.makeText(requireContext(), "NFC를 활성화해주세요.", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            // Convert the tagData to bytes in ISO 14443-4 format
+            val isoDepData = buildIsoDepData(tagData)
+
+            // Check if NfcB is supported
+            val techList = arrayOf(arrayOf(NfcB::class.java.name))
+
+            // Get the NFC tag from the activity's intent
+            val tagFromIntent = requireActivity().intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
+            if (tagFromIntent != null) {
+                // NfcB tag
+                val nfcBTag = NfcB.get(tagFromIntent)
+                if (nfcBTag != null) {
+                    try {
+                        nfcBTag.connect()
+                        nfcBTag.transceive(isoDepData)
+                        nfcBTag.close()
+
+                        // Handle successful communication with NfcB tag
+                        // TODO: NfcB 통신이 성공적으로 수행된 후의 동작 처리
+                        Toast.makeText(requireContext(), "NfcB 통신 성공", Toast.LENGTH_SHORT).show()
+                    } catch (e: Exception) {
+                        // Handle communication error
+                        // TODO: NfcB 통신 중 오류가 발생한 경우의 처리
+                        Toast.makeText(requireContext(), "NfcB 통신 오류: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "NfcB를 지원하지 않는 카드 또는 기기입니다.", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(requireContext(), "NFC 태그를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(requireContext(), "NFC를 지원하지 않는 기기입니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showNfcDialog() {
+
+        val builder = AlertDialog.Builder(requireContext())
+        val view = layoutInflater.inflate(R.layout.dialog_nfc_card, null)
+        builder.setView(view)
+        nfcDialog = builder.create()
+        nfcDialog.setCancelable(true)
+
+        // 다이얼로그 닫기 버튼 처리
+        val nfcCard = view.findViewById<ConstraintLayout>(R.id.fragment_nfc_card)
+        nfcDialog.setOnCancelListener {
+            nfcDialog.dismiss()
+            disableNFC()
+        }
+        nfcCard.setOnClickListener {
+            nfcDialog.dismiss()
+            disableNFC()
+        }
+
+        // TextView와 ImageView를 찾아서 내용을 수정
+        val nameTextView = view.findViewById<TextView>(R.id.fragment_nfc_card_name)
+        val numberTextView = view.findViewById<TextView>(R.id.fragment_nfc_card_number)
+        val imageImageView = view.findViewById<ImageView>(R.id.fragment_nfc_card_image)
+
+        // 원하는 내용으로 수정
+        nameTextView.text = ApplicationClass.sharedPreferences.getString("memberName")
+        numberTextView.text = ApplicationClass.sharedPreferences.getInt("student_number").toString()
+//        imageImageView.setImageResource(R.drawable.new_image)
+        val imageUrl = "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image"
+        Glide.with(this)
+            .load(imageUrl)
+            .into(imageImageView)
+
+        nfcDialog.show()
+    }
+
+    private fun disableNFC() {
+        val nfcAdapter = NfcAdapter.getDefaultAdapter(requireContext())
+        if (nfcAdapter != null && nfcAdapter.isEnabled) {
+            nfcAdapter.disableForegroundDispatch(requireActivity())
+            nfcAdapter.setNdefPushMessage(null, requireActivity(), requireActivity())
+        }
+    }
+
+    // 태그 데이터를 ISO 14443-4 형식으로 변환하는 도우미 함수
+    private fun buildIsoDepData(tagData: String): ByteArray {
+        // ISO 14443-4 형식에는 어플리케이션 식별자 (AID)와 시리얼 번호가 포함되어야 합니다.
+        val aid = "A0000002471001" // 어플리케이션에 맞는 AID로 변경해야 합니다.
+
+        // ISO 14443-4 형식으로 AID와 시리얼 번호를 연결합니다.
+        val isoDepData = "$aid$tagData".toByteArray(Charset.forName("UTF-8"))
+
+        return isoDepData
+    }
+
+    // 태그가 주어진 기술을 지원하는지 확인하는 도우미 함수
+    private fun tagTechListContains(techList: Array<String>, targetTechList: Array<Array<String>>): Boolean {
+        for (tech in techList) {
+            for (targetTech in targetTechList) {
+                if (Arrays.equals(techList, targetTech)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.R)
     private fun checkBiometricAvailability(): Boolean {
@@ -334,52 +483,6 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
             }
         }
 
-//    private fun createNfcMessage(tagData: String): NdefMessage {
-//        val textRecord = NdefRecord.createTextRecord(null, tagData)
-//        return NdefMessage(arrayOf(textRecord))
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        val nfcAdapter = NfcAdapter.getDefaultAdapter(requireContext())
-//        nfcAdapter?.enableForegroundDispatch(requireActivity(), nfcPendingIntent, null, null)
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        val nfcAdapter = NfcAdapter.getDefaultAdapter(requireContext())
-//        nfcAdapter?.disableForegroundDispatch(requireActivity())
-//    }
-
-    // Implement the onNewIntent method to handle NFC tag discovery
-//    override fun onNewIntent(intent: Intent) {
-//        super.onNewIntent(intent)
-//        // Handle NFC tag discovery here
-//        // Extract the NFC tag data and perform your desired actions
-//
-//        if (NfcAdapter.ACTION_TAG_DISCOVERED == intent.action) {
-//            val tag: Tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG) ?: return
-//
-//            // Check if the tag supports IsoDep technology
-//            val isoDep = IsoDep.get(tag)
-//            if (isoDep != null) {
-//                // Tag supports IsoDep, you can now communicate with the tag using IsoDep technology
-//                // Do your desired actions with the tag
-//            } else {
-//                // Tag does not support IsoDep technology
-//                // Check if the tag supports NfcB technology
-//                val nfcB = NfcB.get(tag)
-//                if (nfcB != null) {
-//                    // Tag supports NfcB, you can now communicate with the tag using NfcB technology
-//                    // Do your desired actions with the tag
-//                } else {
-//                    // Tag does not support IsoDep or NfcB technology
-//                    // Handle the case where the tag technology is not supported
-//                }
-//            }
-//        }
-//    }
-
     private fun bytesToHexString(bytes: ByteArray): String {
         val sb = StringBuilder()
         for (b in bytes) {
@@ -387,4 +490,5 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
         }
         return sb.toString()
     }
+
 }

@@ -28,4 +28,18 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <!-- styles.xml -->
+    <style name="FullScreenDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
+    <!-- 스플래시 화면 -->
+    <style name="Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    </style>
+
 </resources>
