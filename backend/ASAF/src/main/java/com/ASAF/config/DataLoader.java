@@ -1,3 +1,12 @@
+/* 
+master branch로 push 시 수정해야 할 것
+1. 더미데이터 주석 처리.
+1-2. 더미데이터 사용할 땐 이미지 경로 변경
+2. memberService 이미지 save하는 메서드 경로 변경
+3. property create에서 update로 변경
+ */
+
+
 package com.ASAF.config;
 
 import com.ASAF.dto.*;
@@ -55,11 +64,26 @@ public class DataLoader implements CommandLineRunner {
 
             int randomNumber = random.nextInt(10000); // 범위는 0에서 9999 사이
 
-            String randomEmail = String.format("%s%04d@ssafy.com", randomLetters, randomNumber);
-            memberDTO.setMemberEmail(randomEmail);
+            if (i<=24) {
+                String email = String.format("ssafypro%04d@ssafy.com", i);
+                memberDTO.setMemberEmail(email);
+            } else if (i >= 439 && i <= 449) {
+                int suffix = i - 438; // 범위가 1부터 시작하도록 하기 위해 438를 빼줍니다.
+                String email = String.format("ssafy%04d@ssafy.com", suffix);
+                memberDTO.setMemberEmail(email);
+            } else {
+                String randomEmail = String.format("%s%04d@ssafy.com", randomLetters, randomNumber);
+                memberDTO.setMemberEmail(randomEmail);
+            }
 
-            String randomPassword = String.format("%04d", random.nextInt(10000));
-            memberDTO.setMemberPassword(randomPassword);
+            if (i<=24) {
+                memberDTO.setMemberPassword("0000");
+            } else if (i >= 439 && i <= 449) {
+                memberDTO.setMemberPassword("0000");
+            } else {
+                String randomPassword = String.format("%04d", random.nextInt(10000));
+                memberDTO.setMemberPassword(randomPassword);
+            }
 
             List<String> exampleNames = Arrays.asList(
                     "김태희", "박시환", "정지민", "이성민", "조영훈", "장지수",
@@ -102,11 +126,9 @@ public class DataLoader implements CommandLineRunner {
             String phoneNumber = String.format("010-%04d-%04d", 1000 + random.nextInt(9000), 1000 + random.nextInt(9000));
             memberDTO.setPhone_number(phoneNumber);
 
-            if (i<=9) {
-                memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/ssafy" + i + "@email.com.png");
-            }else{
-                memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/ssafy" + 1 + "@email.com.png");
-            }
+
+//            memberDTO.setProfile_image("src/main/resources/static/images/profile_images/default.png");
+            memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/default.png");
             memberDTO.setElectronic_student_id(10000 + i);
 
             if (i <= 544) {
