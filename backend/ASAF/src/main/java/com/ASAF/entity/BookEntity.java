@@ -86,6 +86,10 @@ public class BookEntity {
         classEntity.setClass_code(bookDTO.getClass_code());
         bookEntity.setClass_code(classEntity);
 
+        ClassInfoEntity classInfoEntity = new ClassInfoEntity();
+        classInfoEntity.setClass_num(bookDTO.getClass_num());
+        bookEntity.setClass_num(classInfoEntity);
+
         RegionEntity regionEntity = new RegionEntity();
         regionEntity.setRegion_code(bookDTO.getRegion_code());
         bookEntity.setRegion_code(regionEntity);
