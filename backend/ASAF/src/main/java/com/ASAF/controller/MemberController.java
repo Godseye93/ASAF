@@ -86,9 +86,10 @@ public class MemberController {
 
     // 회원 정보를 수정하는 요청을 처리합니다.
     // 전달받은 DTO 객체를 이용해 회원 정보를 수정하고, 수정된 결과를 ResponseEntity 형태로 반환합니다.
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<MemberDTO> update(@RequestBody MemberDTO memberDTO) {
         memberService.update(memberDTO);
+
         return new ResponseEntity<>(memberDTO, HttpStatus.OK);
     }
 
@@ -157,5 +158,15 @@ public class MemberController {
     public MemberDTO checkOut(@PathVariable int id) {
         return memberService.CheckOut(id);
     }
+
+    @PutMapping("/tokenUpdate")
+    public ResponseEntity<Boolean> updateToken(@RequestParam int id, @RequestParam String token)  {
+        System.out.println(token);
+        MemberDTO dto = memberService.findById(id);
+        dto.setToken(token);
+        memberService.update(dto);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
 
 }
