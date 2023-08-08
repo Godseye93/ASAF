@@ -1,6 +1,7 @@
 package com.d103.asaf.ui.market
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +35,7 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
     private var param2: String? = null
     private val sharedViewModel : SharedViewModel by activityViewModels()
     private val viewModel : MarketDetailFragmentViweModel by viewModels()
-    private lateinit var adapter : MarketPhotoRegisterAdapter
+    private lateinit var adapter : MarketDetailAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,22 +64,12 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
     fun init(){
 
         //adpater 설정
-
-        if(viewModel.marketImageList.value.isNullOrEmpty()){
-            viewModel.setNullImageList()
-        }
-        else{
-            adapter = MarketPhotoRegisterAdapter(viewModel.marketImageList.value!!, requireContext())
-            binding.fragmentMarketDetailRecyclerview.adapter = adapter
-        }
+//        adapter =  MarketDetailAdapter(mutableListOf<MarketImage>(), requireContext())
+//        binding.fragmentMarketDetailRecyclerview.adapter = adapter
+//        adapter.notifyDataSetChanged()
+        viewModel.getMarketDetail(sharedViewModel.selectedMarketId)
 
 
-
-
-
-        if(viewModel.marketDetail.value?.userId == ApplicationClass.sharedPreferences.getInt("id")) {
-            binding.fragmentMarketDetailButtonLayout.visibility = View.VISIBLE
-        }
         // 수정 버튼 클릭 시
         binding.fragmentMarketDetailUpdateButton.setOnClickListener {
 
@@ -88,14 +79,27 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
 
         }
         viewModel.marketDetail.observe(viewLifecycleOwner){
+            adapter = viewModel.marketDetail.value?.let { MarketDetailAdapter(it.images, requireContext()) }!!
+            binding.fragmentMarketDetailRecyclerview.adapter = adapter
+            adapter.notifyDataSetChanged()
+
+            if(viewModel.marketDetail.value?.userid == ApplicationClass.sharedPreferences.getInt("id")) {
+                binding.fragmentMarketDetailButtonLayout.visibility = View.VISIBLE
+            }
+            else{
+                Log.d("유저 아이디", "다름: ${ApplicationClass.sharedPreferences.getInt("id")} ..... ${viewModel.marketDetail.value?.userid }")
+            }
+
+
+
             binding.fragmentMarketDetailContent.text = it.content
             binding.fragmentMarketDetailRegisterTime.text = convertLongToDate(it.registerTime)
             binding.fragmentMarketDetailTitleView.text = it.title
             Glide
                 .with(requireContext())
-                .load(it.profileImage)
+                .load("${ApplicationClass.API_URL}member/${it.profileImage.split("/")[6].split(".")[0]}.com/profile-image")
                 .into(binding.fragmentMarketDetailProfile)
-            binding.fragmentMarketDetailUserName.text = it.userName
+            binding.fragmentMarketDetailUserName.text = it.name
 
         }
     }

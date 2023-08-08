@@ -14,6 +14,7 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
 
@@ -57,10 +58,14 @@ class LoginFragmentViewModel : ViewModel() {
 ////            val response = memberService.login(member)
 //        }
 //    }
-    fun login(email: String, password: String) {
+    fun login(email: String, password: String, token : String) {
         viewModelScope.launch {
             try {
                 _loginResult.value = memberService.login(Member(email, password))
+                Log.d("TOKENTOKEN", "login: $token")
+                val response = RetrofitUtil.memberService.addToken(loginResult.value!!.id, token )
+
+
             } catch (e: Exception) {
                 _loginResult.value = Member()
             }

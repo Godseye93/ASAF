@@ -6,5 +6,5 @@
         android:id="@+id/marketRegisterImageView"
         android:layout_width="156dp"
         android:layout_height="124dp"
-
+        android:src="@drawable/asaf_real_logo"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />

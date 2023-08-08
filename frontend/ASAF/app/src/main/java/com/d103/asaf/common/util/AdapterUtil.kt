@@ -3,6 +3,7 @@ package com.d103.asaf.common.util
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import androidx.recyclerview.widget.DiffUtil
+import com.d103.asaf.common.model.Room.NotiMessage
 import com.d103.asaf.common.model.dto.Market
 import com.d103.asaf.common.model.dto.MarketImage
 import com.d103.asaf.common.model.dto.Member
@@ -51,6 +52,17 @@ class AdapterUtil {
 
             override fun areContentsTheSame(oldItem: Bitmap, newItem: Bitmap): Boolean {
                 return oldItem.sameAs(newItem)
+            }
+
+        }
+        val diffUtilNotiMessage = object : DiffUtil.ItemCallback<NotiMessage>() {
+            override fun areItemsTheSame(oldItem: NotiMessage, newItem: NotiMessage): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+
+            override fun areContentsTheSame(oldItem: NotiMessage, newItem: NotiMessage): Boolean {
+                return oldItem == newItem
             }
 
         }

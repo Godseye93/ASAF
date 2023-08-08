@@ -1,6 +1,7 @@
 package com.d103.asaf.ui.market
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -56,17 +57,18 @@ class MarketFragment : BaseFragment<FragmentMarketBinding>(FragmentMarketBinding
     }
 
     fun init(){
-        // 테스트 데이터
-        test()
-
+        viewModel.getMarketList()
         // 어댑터 연결
         adapter =  MarketAdpater(requireContext())
 
         binding.fragmentMarketRecyclerview.adapter = adapter
+        val layoutManager = LinearLayoutManager(requireContext())
+        binding.fragmentMarketRecyclerview.layoutManager = layoutManager
 
         adapter.itemClickListener = object : MarketAdpater.ItemClickListener{
             override fun onClick(view: View, position: Int, data: Market) {
                 sharedViewModel.selectedMarketId = data.id
+                Log.d("마켓 아이디", "onClick: ${data.id}")
                 findNavController().navigate(R.id.action_marketFragment_to_marketDetailFragment)
                 (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
             }
@@ -74,9 +76,10 @@ class MarketFragment : BaseFragment<FragmentMarketBinding>(FragmentMarketBinding
 
         }
 
-        val layoutManager = LinearLayoutManager(requireContext())
-        binding.fragmentMarketRecyclerview.layoutManager = layoutManager
-        adapter.submitList(testList)
+        viewModel.marketList.observe(viewLifecycleOwner){
+            adapter.submitList(viewModel.marketList.value)
+        }
+
 
 
         // FAB 연결
@@ -87,41 +90,41 @@ class MarketFragment : BaseFragment<FragmentMarketBinding>(FragmentMarketBinding
         }
 
     }
-    fun test(){
-        val testImg1 = "https://images.velog.io/images/sdb016/post/47181c7c-1156-4182-a638-e0ad0b03a3d3/test.png"
-        val test1 = Market(1, 1691131921, "LONG TEST TITLELONG TEST TITLELONG TEST TITLELONG TEST TITLE LONG TEST TITLE1", "TEST CONTENT", 1, testImg1, "TESTER 1 ")
-        val testImg2 = "https://us.123rf.com/450wm/alexwhite/alexwhite1512/alexwhite151204975/49784187-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%95%84%EC%9D%B4%EC%BD%98.jpg"
-        val test2 = Market(1, 1691132081, "TEST TITLE2", "TEST CONTENT", 2, testImg2, "TESTER 2 ")
-        val testImg3 = "https://png.pngtree.com/png-vector/20190411/ourmid/pngtree-vector-business-men-icon-png-image_925963.jpg"
-        val test3 = Market(1, 1690872720000, "TEST TITLE3", "TEST CONTENT", 3, testImg3, "TESTER 3 ")
-        val testImg4= "https://cdn-icons-png.flaticon.com/512/3349/3349798.png"
-        val test4 = Market(1, 1672555920000, "TEST TITLE4", "TEST CONTENT", 4, testImg4, "TESTER 4 ")
-        val testImg5 = "https://cdn.icon-icons.com/icons2/1893/PNG/512/scientistavatar_120780.png"
-        val test5 = Market(1, 1677999120, "TEST TITLE5", "TEST CONTENT", 5, testImg5, "TESTER 5 ")
-
-
-        testList.add(test1)
-        testList.add(test2)
-        testList.add(test3)
-        testList.add(test4)
-        testList.add(test5)
-        testList.add(test1)
-        testList.add(test2)
-        testList.add(test3)
-        testList.add(test4)
-        testList.add(test5)
-        testList.add(test1)
-        testList.add(test2)
-        testList.add(test3)
-        testList.add(test4)
-        testList.add(test5)
-        testList.add(test1)
-        testList.add(test2)
-        testList.add(test3)
-        testList.add(test4)
-        testList.add(test5)
-
-    }
+//    fun test(){
+//        val testImg1 = "https://images.velog.io/images/sdb016/post/47181c7c-1156-4182-a638-e0ad0b03a3d3/test.png"
+//        val test1 = Market(1, 1691131921, "LONG TEST TITLELONG TEST TITLELONG TEST TITLELONG TEST TITLE LONG TEST TITLE1", "TEST CONTENT", 1, testImg1, "TESTER 1 ")
+//        val testImg2 = "https://us.123rf.com/450wm/alexwhite/alexwhite1512/alexwhite151204975/49784187-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%95%84%EC%9D%B4%EC%BD%98.jpg"
+//        val test2 = Market(1, 1691132081, "TEST TITLE2", "TEST CONTENT", 2, testImg2, "TESTER 2 ")
+//        val testImg3 = "https://png.pngtree.com/png-vector/20190411/ourmid/pngtree-vector-business-men-icon-png-image_925963.jpg"
+//        val test3 = Market(1, 1690872720000, "TEST TITLE3", "TEST CONTENT", 3, testImg3, "TESTER 3 ")
+//        val testImg4= "https://cdn-icons-png.flaticon.com/512/3349/3349798.png"
+//        val test4 = Market(1, 1672555920000, "TEST TITLE4", "TEST CONTENT", 4, testImg4, "TESTER 4 ")
+//        val testImg5 = "https://cdn.icon-icons.com/icons2/1893/PNG/512/scientistavatar_120780.png"
+//        val test5 = Market(1, 1677999120, "TEST TITLE5", "TEST CONTENT", 5, testImg5, "TESTER 5 ")
+//
+//
+//        testList.add(test1)
+//        testList.add(test2)
+//        testList.add(test3)
+//        testList.add(test4)
+//        testList.add(test5)
+//        testList.add(test1)
+//        testList.add(test2)
+//        testList.add(test3)
+//        testList.add(test4)
+//        testList.add(test5)
+//        testList.add(test1)
+//        testList.add(test2)
+//        testList.add(test3)
+//        testList.add(test4)
+//        testList.add(test5)
+//        testList.add(test1)
+//        testList.add(test2)
+//        testList.add(test3)
+//        testList.add(test4)
+//        testList.add(test5)
+//
+//    }
 
     companion object {
         /**

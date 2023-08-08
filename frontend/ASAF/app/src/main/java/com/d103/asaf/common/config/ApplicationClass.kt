@@ -1,6 +1,8 @@
 package com.d103.asaf.common.config
 
 import android.app.Application
+import androidx.room.Room
+import com.d103.asaf.common.model.Room.NotiMessageDataBase
 import com.d103.asaf.common.model.dto.Classinfo
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -18,10 +20,10 @@ class ApplicationClass : Application() {
 
     companion object {
        // 서버 주소
-//        val API_URL ="http://192.168.100.158:8080/"     // 진욱님
-        val API_URL ="http://192.168.100.62:8080/"     // 민재님
-//        val API_URL = "http://192.168.100.169:8080/"    // 형진님
-//        val API_URL = "http://ubuntu@i9d103.p.ssafy.io:8080/" // EC2
+//        val API_URL ="http://192.168.100.158:8081/"     // 진욱님
+//        val API_URL ="http://192.168.100.62:8080/"     // 민재님
+        val API_URL = "http://192.168.100.169:8081/"    // 형진님
+//        val API_URL = "http://ubuntu@i9d103.p.ssafy.io:8081/" // EC2
         lateinit var sharedPreferences: SharedPreferencesUtil
 
 
@@ -38,6 +40,9 @@ class ApplicationClass : Application() {
         // 화면 사이즈 정보
         var dpHeight = 0.0F
         var dpWidth = 0.0F
+        lateinit var notiMessageDatabase: NotiMessageDataBase
+
+
     }
 
 
@@ -48,6 +53,11 @@ class ApplicationClass : Application() {
 
         // 레트로핏 인스턴스 생성
         initRetrofitInstance()
+        notiMessageDatabase = Room.databaseBuilder(
+            applicationContext,
+            NotiMessageDataBase::class.java,
+            "noti.db"
+        ).build()
 
         // 화면 사이즈 계산
         val density = resources.displayMetrics.density

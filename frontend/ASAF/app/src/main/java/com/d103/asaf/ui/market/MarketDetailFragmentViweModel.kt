@@ -1,19 +1,22 @@
 package com.d103.asaf.ui.market
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.d103.asaf.common.model.dto.Market
+
+import com.d103.asaf.common.model.dto.MarketDetail
 import com.d103.asaf.common.model.dto.MarketImage
+import com.d103.asaf.common.util.RetrofitUtil
 import kotlinx.coroutines.launch
 
 class MarketDetailFragmentViweModel : ViewModel() {
 
-    private val _marketDetail  =  MutableLiveData<Market>()
+    private val _marketDetail  =  MutableLiveData<MarketDetail>()
 
-    val marketDetail : LiveData<Market>
+    val marketDetail : LiveData<MarketDetail>
         get() = _marketDetail
 
 
@@ -26,7 +29,11 @@ class MarketDetailFragmentViweModel : ViewModel() {
 
     fun getMarketDetail(id : Int){
         viewModelScope.launch {
-
+            val response = RetrofitUtil.marketService.getMarket(id)
+            if(response.isSuccessful){
+                Log.d("마켓 상세정보", "getMarketDetail: ${response.body()}")
+                _marketDetail.value = response.body()
+            }
         }
     }
 
