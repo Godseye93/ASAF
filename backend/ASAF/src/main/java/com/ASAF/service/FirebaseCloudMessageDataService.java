@@ -2,7 +2,6 @@ package com.ASAF.service;
 
 import com.ASAF.dto.FcmDataMessage;
 import com.ASAF.dto.Message;
-import com.ASAF.dto.Notification;
 import com.ASAF.entity.MemberEntity;
 import com.ASAF.entity.NoticeEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,7 +16,6 @@ import okhttp3.*;
 import org.apache.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -42,23 +40,22 @@ public class FirebaseCloudMessageDataService {
         String content = noticeEntity.getContent();
         // 발신인과 내용를 조합해서 전체 내용를 만듭니다.
         String body = String.format("[%s] \n %s", sender, content);
+        String profileImage = "sedaf";
         for (MemberEntity user : users) {
             // 각 유저 정보 & 제목 & 전체 내용을 첨부시켜 sendNotificationToUser 메서드를 실행합니다.
-            sendNotificationToUser(user, title, body);
+            sendNotificationToUser(user, title, body, profileImage);
         }
     }
     // 1-2. 각 유저에게 보낼 공지를 작성
-    private void sendNotificationToUser(MemberEntity user, String title, String body) throws IOException {
+    private void sendNotificationToUser(MemberEntity user, String title, String body, String image) throws IOException {
         // 유저 정보에서 토큰을 가져옵니다.
         String token = user.getToken();
-        // 제목 & 전체 내용 & 이미지를 첨부시킨 notification 인스턴스를 만듭니다.
-        String image = user.getToken();
         // 토큰 & 제목 & 전체 내용 & 이미지를 첨부시켜 sendDataMessageTo메서드를 실행합니다.
-        sendDataMessageTo(token, title, body, "image");
+        sendDataMessageTo(token, title, body, image);
     }
 
     // 1. 예약 발송 컨트롤러에서 실행합니다.
-    public void sendNotificationToUsers_reservation(List<MemberEntity> users, NoticeEntity noticeEntity, String sender, Long sendTime ) throws IOException {
+    public void sendNotificationToUsers_reservation(List<MemberEntity> users, NoticeEntity noticeEntity, String sender, Long sendTime, String profileImage) throws IOException {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         Date sendDate = new Date(sendTime);
         long initialDelay = sendDate.getTime() - System.currentTimeMillis();
@@ -66,18 +63,19 @@ public class FirebaseCloudMessageDataService {
         String title = noticeEntity.getTitle();
         String content = noticeEntity.getContent();
         String body = String.format("작성자 : %s \n %s", sender, content);
+        String image = profileImage;
         if (noticeEntity.getNotification() == true){
             if (initialDelay <= 0) {
                 // 이미 지난 시간인 경우 즉시 전송하도록 예외처리
                 for (MemberEntity user : users) {
-                    sendNotificationToUser(user, title, body);
+                    sendNotificationToUser(user, title, body, image);
                 }
             }else{
                 // 예약 발송
                 scheduler.schedule(() -> {
                     for (MemberEntity user : users) {
                         try {
-                            sendNotificationToUser(user, title, body);
+                            sendNotificationToUser(user, title, body, image);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
