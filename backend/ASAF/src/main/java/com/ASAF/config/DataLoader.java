@@ -401,6 +401,7 @@ public class DataLoader implements CommandLineRunner {
                 Arrays.asList("CISCO 네트워킹", "박나래")
         );
 
+        // 북 더미 생산
         for (int i = 1; i <= 12; i++) {
             if (i <= 10) {
                 for (int j = 1; j <= 30; j++) {
@@ -417,6 +418,7 @@ public class DataLoader implements CommandLineRunner {
                     bookDTO.setBookName(book);
                     bookDTO.setAuthor(author);
                     bookDTO.setPublisher("싸피출판사");
+                    bookDTO.setClass_num(1);
 
                     BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
                     bookRepository.save(bookEntity);
@@ -436,6 +438,7 @@ public class DataLoader implements CommandLineRunner {
                     bookDTO.setBookName(book);
                     bookDTO.setAuthor(author);
                     bookDTO.setPublisher("싸피출판사");
+                    bookDTO.setClass_num(1);
 
                     BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
                     bookRepository.save(bookEntity);
@@ -455,6 +458,7 @@ public class DataLoader implements CommandLineRunner {
                     bookDTO.setBookName(book);
                     bookDTO.setAuthor(author);
                     bookDTO.setPublisher("싸피출판사");
+                    bookDTO.setClass_num(1);
 
                     BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
                     bookRepository.save(bookEntity);
