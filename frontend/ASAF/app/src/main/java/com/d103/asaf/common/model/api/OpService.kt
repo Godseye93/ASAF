@@ -40,9 +40,9 @@ interface OpService {
 
     // 서명 정보 보내기
     @Multipart
-    @POST("/sign/complete")
+    @POST("/sign/upload-image")
     suspend fun postSigns(
-        @Part("signs") sign: MultipartBody.Part,
+        @Part sign: MultipartBody.Part,
         @Part filePart: MultipartBody.Part
     ): Response<Boolean>
 }

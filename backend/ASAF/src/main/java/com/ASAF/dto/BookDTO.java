@@ -1,6 +1,7 @@
 package com.ASAF.dto;
 
 import com.ASAF.entity.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,11 +21,10 @@ public class BookDTO {
     private String bookName;
     private String author;
     private String publisher;
-    private Date borrowDate;
-    private Date returnDate;
+    private Long borrowDate;
+    private Long returnDate;
     private boolean borrowState;
     private String borrower;
-
 
     private int class_num;
     private int class_code;
@@ -106,12 +106,12 @@ public class BookDTO {
         );
     }
 
-    public String getFormattedBorrowDate() {
-        return borrowDate != null ? new SimpleDateFormat("yyyy-MM-dd").format(borrowDate) : null;
+    public Long getFormattedBorrowDate() {
+        return borrowDate;
     }
 
-    public String getFormattedReturnDate() {
-        return returnDate != null ? new SimpleDateFormat("yyyy-MM-dd").format(returnDate) : null;
+    public Long getFormattedReturnDate() {
+        return returnDate;
     }
 
     public boolean getBorrowState() {

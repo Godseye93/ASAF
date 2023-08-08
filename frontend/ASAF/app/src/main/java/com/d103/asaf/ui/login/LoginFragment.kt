@@ -30,11 +30,14 @@ import com.d103.asaf.databinding.FragmentScheduleBinding
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.ui.home.student.StudentHomeFragment
+import com.google.android.gms.tasks.OnCompleteListener
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import kotlin.math.log
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -54,7 +57,22 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
 
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            if (token != null) {
+                ApplicationClass.sharedPreferences.addFCMToken(token)
+            }
+//            Log.d(TAG, msg)1111
+//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+        })
         Log.d(TAG, "FCM: ${ApplicationClass.sharedPreferences.getString("token")}")
         setupViews()
         observeViewModel()
@@ -101,7 +119,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
         binding.fragmentLoginButtonLogin.setOnClickListener {
             val email = binding.fragmentLoginEditTvId.text.toString()
             val password = binding.fragmentLoginEditTvPass.text.toString()
-            viewModel.login(email, password)
+            viewModel.login(email, password, ApplicationClass.sharedPreferences.getString("token")!!)
         }
 
         binding.fragmentLoginTextviewForgetpass.setOnClickListener {
@@ -127,6 +145,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
 //                    ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
                     ////
 //                }
+
+
                 ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
                 ApplicationClass.sharedPreferences.autoLoginIsChecked(binding.fragmentLoginSwitchAutologin.isChecked)
 

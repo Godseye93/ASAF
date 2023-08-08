@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegionController {
     private final RegionService regionService;
     @GetMapping("/{id}")
-    public ResponseEntity<RegionDTO> findById(@PathVariable int id) {
+    public ResponseEntity<String> findById(@PathVariable int id) {
         RegionDTO regionDTO = regionService.findById(id);
-        return new ResponseEntity<>(regionDTO, HttpStatus.OK);
+        return new ResponseEntity<>(regionDTO.getRegion_name(), HttpStatus.OK);
     }
 }

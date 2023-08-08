@@ -25,13 +25,13 @@ public class BookEntity {
 
     private boolean borrowState;
 
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private Date borrowDate;
+//    @Temporal(TemporalType.DATE)
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Long borrowDate;
 
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private Date returnDate;
+//    @Temporal(TemporalType.DATE)
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Long returnDate;
 
     private String borrower;
 
@@ -85,6 +85,10 @@ public class BookEntity {
         ClassEntity classEntity = new ClassEntity();
         classEntity.setClass_code(bookDTO.getClass_code());
         bookEntity.setClass_code(classEntity);
+
+        ClassInfoEntity classInfoEntity = new ClassInfoEntity();
+        classInfoEntity.setClass_num(bookDTO.getClass_num());
+        bookEntity.setClass_num(classInfoEntity);
 
         RegionEntity regionEntity = new RegionEntity();
         regionEntity.setRegion_code(bookDTO.getRegion_code());

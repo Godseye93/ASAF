@@ -1,7 +1,9 @@
 package com.d103.asaf.ui.sign
 
+import android.Manifest
 import android.content.ContentValues
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
@@ -10,6 +12,9 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
 import com.d103.asaf.R
 import com.d103.asaf.common.config.ApplicationClass
@@ -18,6 +23,7 @@ import com.d103.asaf.common.model.dto.DocSign
 import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentSignBinding
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -59,12 +65,19 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
     private var attDay = ""
     private var subMonth = ""
     private var subDay = ""
-    private var curSign = DocSign()
 
-    // curSign 조립 필요
+    val today = todayToString()
+    val year = today[0]
+    val month = today[1]
+    private val name = ApplicationClass.sharedPreferences.getString("memberName")
+    private val classCode = SignDrawFragment.myClass?.classCode
+    private var curSign = SignDrawFragment.myClass?.let { DocSign(0, it.classNum,it.classCode,it.regionCode,it.generationCode,
+        it.userId,"","ddd",month) } ?: DocSign()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("지금사인", "onCreate: $curSign")
         signMonth = requireArguments().getString("signMonth") ?: "1"
         totDay = requireArguments().getString("totDay") ?: "1"
         attDay = requireArguments().getString("attDay") ?: "1"
@@ -87,14 +100,10 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
     }
 
     private fun setUserInfo() {
-        val today = todayToString()
-        val year = today[0]
-        val name = ApplicationClass.sharedPreferences.getString("memberName")
-        val classCode = SignDrawFragment.myClass?.classCode
         Log.d("이름", "setUserInfo: $name")
 
         // 유저 정보 모두 필요
-        document = Document(today[1], name?:"", SignDrawFragment.regionName, classCode.toString(), "", "", "12", "29")
+        document = Document(month, name?:"", SignDrawFragment.regionName, classCode.toString(), "", "", "12", "29")
         Log.d("사인", "setUserInfo: $totDay $attDay")
         binding.apply {
             fragmentSignConfirmTvYear.text = year
@@ -133,30 +142,34 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
         /* 캡쳐 파일 저장 */
         val bitmap =  view.drawToBitmap()
         var fos: OutputStream? = null
-
+        var image: File? = null
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             context?.contentResolver?.also { resolver ->
-
                 val contentValues = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, "$title.png")
-                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                    put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
                     put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
                 }
 
                 val imageUri: Uri? = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                image = File(imagesDir, "$title.png")
+
                 fos = imageUri?.let { resolver.openOutputStream(it) }
-                val image = File(requireContext().cacheDir, "$title.jpg")
-                CoroutineScope(Dispatchers.IO).launch{ uploadSigns(curSign,image) }
             }
         } else {
             val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-            val image = File(imagesDir, "$title.png")
-            CoroutineScope(Dispatchers.IO).launch{ uploadSigns(curSign,image) }
-            fos = FileOutputStream(image)
+            image = File(imagesDir, "$title.png")
+            fos = FileOutputStream(image,false)
         }
+
         Log.d("서명저장", "Request_Capture: ${Environment.DIRECTORY_PICTURES} ${MediaStore.MediaColumns.RELATIVE_PATH}")
         fos?.use {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            CoroutineScope(Dispatchers.IO).launch{
+                uploadSigns(curSign,image!!)
+                if(image != null && (image as File).exists()) (image as File).delete()
+            }
         }
     }
 

@@ -28,4 +28,10 @@ public class ClassInfoService {
                 .map(MemberDTO::fromMemberEntity)
                 .collect(Collectors.toList());
     }
+
+    public ClassInfoDTO saveClassInfo(ClassInfoDTO classInfoDTO) {
+        ClassInfoEntity entity = ClassInfoEntity.toClassInfoEntity(classInfoDTO);
+        ClassInfoEntity savedEntity = classInfoRepository.save(entity);
+        return ClassInfoDTO.toClassInfoDTO(savedEntity);
+    }
 }

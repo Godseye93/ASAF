@@ -63,11 +63,15 @@ public class BookController {
             @PathVariable("region_code") int region_code,
             @PathVariable("generation_code") int generation_code) {
 
+        System.out.println(class_code);
+        System.out.println(region_code);
+        System.out.println(generation_code);
         List<Map<String, Object>> result = bookService.findDistinctBookDTOsWithBookNameCountByClassRegionAndGeneration(class_code, region_code, generation_code);
 
         return ResponseEntity.ok(result);
     }
 
+    // 대출중인 책 목록 가져오기
     @GetMapping("/borrowed/{classCode}/{regionCode}/{generationCode}/sorted-by-name")
     public ResponseEntity<List<BookDTO>> findBooksInBorrowedStateSortedByName(
             @PathVariable("classCode") int classCode,

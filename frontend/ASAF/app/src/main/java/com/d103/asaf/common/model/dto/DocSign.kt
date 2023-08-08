@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName
 
 data class DocSign(
     @SerializedName("sign_id") val id: Int = 0,
-    @SerializedName("doc_id") val docId: Int = 0,
     @SerializedName("class_num") val classNum: Int = 0,
     @SerializedName("class_code") val classCode: Int = 0,
     @SerializedName("region_code") val regionCode: Int = 0,
@@ -23,7 +22,6 @@ data class DocSign(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
-        parcel.readInt(),
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: ""
@@ -31,7 +29,6 @@ data class DocSign(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
-        parcel.writeInt(docId)
         parcel.writeInt(classNum)
         parcel.writeInt(classCode)
         parcel.writeInt(regionCode)
