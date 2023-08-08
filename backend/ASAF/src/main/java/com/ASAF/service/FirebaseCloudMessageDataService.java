@@ -35,12 +35,11 @@ public class FirebaseCloudMessageDataService {
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/ssafy-common-proj/messages:send";
 
     // 1-1. 공지 즉시 발송 컨트롤러에서 실행합니다.
-    public void sendNotificationToUsers(List<MemberEntity> users, NoticeEntity noticeEntity, String sender ) throws IOException {
+    public void sendNotificationToUsers(List<MemberEntity> users, NoticeEntity noticeEntity, String sender, String profileImage) throws IOException {
         String title = noticeEntity.getTitle();
         String content = noticeEntity.getContent();
         // 발신인과 내용를 조합해서 전체 내용를 만듭니다.
         String body = String.format("[%s] \n %s", sender, content);
-        String profileImage = "sedaf";
         for (MemberEntity user : users) {
             // 각 유저 정보 & 제목 & 전체 내용을 첨부시켜 sendNotificationToUser 메서드를 실행합니다.
             sendNotificationToUser(user, title, body, profileImage);
@@ -158,6 +157,7 @@ public class FirebaseCloudMessageDataService {
     private String getAccessToken() throws IOException {
         // 파이어베이스 속성 경로 firebaseConfigPath를 생성합니다.
         String firebaseConfigPath = "/ASAF_FCM_KEY.json";
+//        String firebaseConfigPath = "/home/ubuntu/ASAF_FCM_KEY.json";
         // GoogleApi를 사용하기 위해 oAuth2를 이용해 인증한 대상을 나타내는객체
         // 구글 인증 클래스의 인스턴스를 생성하고 파이어베이스 속성경로를 담아 메서드를 실행합니다.
         GoogleCredentials googleCredentials = GoogleCredentials

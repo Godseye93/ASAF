@@ -1,3 +1,12 @@
+/*
+master branch로 push 시 수정해야 할 것
+1. 더미데이터 주석 처리.
+1-2. 더미데이터 사용할 땐 이미지 경로 변경
+2. memberService 이미지 save하는 메서드 경로 변경
+3. property create에서 update로 변경
+ */
+
+
 package com.ASAF.config;
 
 import com.ASAF.dto.*;
@@ -117,11 +126,9 @@ public class DataLoader implements CommandLineRunner {
             String phoneNumber = String.format("010-%04d-%04d", 1000 + random.nextInt(9000), 1000 + random.nextInt(9000));
             memberDTO.setPhone_number(phoneNumber);
 
-            if (i<=9) {
-                memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/ssafy" + i + "@email.com.png");
-            }else{
-                memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/ssafy" + 1 + "@email.com.png");
-            }
+
+            memberDTO.setProfile_image("src/main/resources/static/images/profile_images/default.png");
+//            memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/default.png");
             memberDTO.setElectronic_student_id(10000 + i);
 
             if (i <= 544) {
