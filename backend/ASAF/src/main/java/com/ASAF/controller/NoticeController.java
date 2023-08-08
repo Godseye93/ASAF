@@ -46,8 +46,10 @@ public class NoticeController {
             String sender = memberService.findById(noticeDTOList.get(0).getSender()).getMemberName();
             // noticeEntity에 공지 내용을 저장한다.
             NoticeEntity noticeEntity = NoticeEntity.toNoticeEntity(noticeDTOList.get(0));
+            // profileImage에 발신인 프로필 이미지를 저장한다.
+            String profileImage =  memberService.findById(noticeDTOList.get(0).getSender()).getProfile_image();
             // 발신인, 수신인, 공지내용을 첨부하여 서비스 메서드를 실행한다.
-            firebaseCloudMessageDataService.sendNotificationToUsers(users,noticeEntity ,sender);
+            firebaseCloudMessageDataService.sendNotificationToUsers(users,noticeEntity ,sender, profileImage);
             return ResponseEntity.ok(true);
         } else {
             System.out.println("실패");
