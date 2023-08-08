@@ -133,8 +133,8 @@ public class MemberService{
         MemberEntity memberEntity = memberRepository.findByMemberEmail(memberEmail)
                 .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 
-//        String UPLOAD_DIR = "src/main/resources/static/images/profile_images/";
-        String UPLOAD_DIR = "/home/ubuntu/statics/images/profile_images/";
+        String UPLOAD_DIR = "src/main/resources/static/images/profile_images/";
+//        String UPLOAD_DIR = "/home/ubuntu/statics/images/profile_images/";
         String fileName = file.getOriginalFilename();
         String filePath = UPLOAD_DIR + memberEmail + "_" + fileName;
         File dest = new File(filePath);
@@ -176,6 +176,7 @@ public class MemberService{
         }
         return null;
     }
+
 
 
 
