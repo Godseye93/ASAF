@@ -112,7 +112,7 @@ class LibraryFragmentViewModel: ViewModel() {
                     isFirst = false;
                     Log.d("들어오냐", "${_books.value}")
                 } else {
-                    Log.d(TAG, "도서 가져오기 네트워크 오류")
+                    Log.d(TAG, "도서 가져오기 네트워크 오류 ${curClass.value.classNum} ${curClass.value.classCode} ${curClass.value.regionCode}, ${curClass.value.generationCode}")
                 }
             } catch (e: Exception) {
                 Log.d(TAG, " 도서 가져오기 오류 $e")

@@ -63,6 +63,7 @@ class MoneyFragment :
         CoroutineScope(Dispatchers.Main).launch {
             if(isAdded){
                 viewModel.signs.collect { newList ->
+                    Log.d("사인불러오기", "onViewCreated: ${viewModel.signs.value}")
                     adapter.submitList(newList)
                 }
             }
