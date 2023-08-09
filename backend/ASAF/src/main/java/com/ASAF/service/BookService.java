@@ -78,29 +78,29 @@ public class BookService {
 
 //     도서 정보 수정
     public BookDTO updateBook(int book_number, BookDTO bookDTO) {
-    BookEntity bookEntity = bookRepository.findById(book_number)
-            .orElseThrow(() -> new NotFoundException("Book not found"));
+        BookEntity bookEntity = bookRepository.findById(book_number)
+                .orElseThrow(() -> new NotFoundException("Book not found"));
 
-    ClassInfoEntity classInfo = classInfoRepository.findById(bookDTO.getClass_num())
-            .orElseThrow(() -> new NotFoundException("ClassInfo not found"));
+        ClassInfoEntity classInfo = classInfoRepository.findById(bookDTO.getClass_num())
+                .orElseThrow(() -> new NotFoundException("ClassInfo not found"));
 
-    ClassEntity classCode = classRepository.findById(bookDTO.getClass_code())
-            .orElseThrow(() -> new NotFoundException("Class not found"));
+        ClassEntity classCode = classRepository.findById(bookDTO.getClass_code())
+                .orElseThrow(() -> new NotFoundException("Class not found"));
 
-    RegionEntity regionCode = regionRepository.findById(bookDTO.getRegion_code())
-            .orElseThrow(() -> new NotFoundException("Region not found"));
+        RegionEntity regionCode = regionRepository.findById(bookDTO.getRegion_code())
+                .orElseThrow(() -> new NotFoundException("Region not found"));
 
-    GenerationEntity generationCode = generationRepository.findById(bookDTO.getGeneration_code())
-            .orElseThrow(() -> new NotFoundException("Generation not found"));
+        GenerationEntity generationCode = generationRepository.findById(bookDTO.getGeneration_code())
+                .orElseThrow(() -> new NotFoundException("Generation not found"));
 
-    MemberEntity member = memberRepository.findById(bookDTO.getId())
-            .orElseThrow(() -> new NotFoundException("Member not found"));
+        MemberEntity member = memberRepository.findById(bookDTO.getId())
+                .orElseThrow(() -> new NotFoundException("Member not found"));
 
     bookDTO.updateEntity(bookEntity, classInfo, classCode, regionCode, generationCode, member);
     bookRepository.save(bookEntity);
 
     return new BookDTO(bookEntity);
-}
+    }
 
 
     // 도서 삭제
