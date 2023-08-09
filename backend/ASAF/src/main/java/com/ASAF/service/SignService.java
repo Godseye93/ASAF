@@ -1,8 +1,10 @@
 package com.ASAF.service;
 
-import com.ASAF.entity.SignEntity;
-import com.ASAF.repository.SignRepository;
+import com.ASAF.dto.SignDTO;
+import com.ASAF.entity.*;
+import com.ASAF.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -10,34 +12,53 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class SignService {
 
     private final SignRepository signRepository;
+    @Autowired
+    private ClassInfoRepository classInfoRepository;
+    @Autowired
+    private ClassRepository classRepository;
+    @Autowired
+    private RegionRepository regionRepository;
+    @Autowired
+    private GenerationRepository generationRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
     // post 정보 받아서 DB에 저장하기
-    public void saveImageUrl(String name, String month, MultipartFile file) throws IOException {
-        SignEntity signEntity = signRepository.findByName(name).orElse(null);
+    public void saveImageUrl(SignDTO signDTO, MultipartFile file) throws IOException {
+        MemberEntity memberEntity = memberRepository.findById(signDTO.getId()).orElseThrow(() -> new RuntimeException("MemberEntity not found for the given userId"));
 
         // 이미지 저장 및 엔티티 업데이트 등의 작업을 수행합니다
         String UPLOAD_DIR = "src/main/resources/static/images/sign_images/";
+        String Real_DIR = "images/sign_images/";
         String fileName = file.getOriginalFilename();
-        String filePath = UPLOAD_DIR + name + "_" + fileName;
+        String filePath = UPLOAD_DIR + signDTO.getName() + "_" + fileName;
+        String realPath = Real_DIR + signDTO.getName() + "_" + fileName;
         File dest = new File(filePath);
         FileCopyUtils.copy(file.getBytes(), dest);
 
-        if (signEntity == null) {
-            // 새로운 엔티티를 생성하여 저장합니다
-            signEntity = new SignEntity();
-            signEntity.setName(name);
-            signEntity.setMonth(month);
-        } else {
-            signEntity.setMonth(month);
-        }
+        ClassInfoEntity classInfoEntity = classInfoRepository.findById(signDTO.getClass_num()).orElse(null);
+        ClassEntity classEntity1 = classRepository.findById(signDTO.getClass_code()).orElse(null);
+        RegionEntity regionEntity1 = regionRepository.findById(signDTO.getRegion_code()).orElse(null);
+        GenerationEntity generationEntity1 = generationRepository.findById(signDTO.getGeneration_code()).orElse(null);
 
-        signEntity.setImage_url(filePath);
+        SignEntity signEntity = new SignEntity();
+        signEntity.setImage_url(realPath);
+        signEntity.setName(signDTO.getName());
+        signEntity.setMonth(signDTO.getMonth());
+        signEntity.setClass_num(classInfoEntity);
+        signEntity.setClass_code(classEntity1);
+        signEntity.setRegion_code(regionEntity1);
+        signEntity.setGeneration_code(generationEntity1);
+        signEntity.setId(memberEntity);
+
         signRepository.save(signEntity);
     }
 
@@ -46,5 +67,13 @@ public class SignService {
         SignEntity signEntity = signRepository.findByName(name)
                 .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
         return signEntity.getImage_url();
+    }
+
+    // 반 별 이미지 정보
+    public List<SignDTO> getSignsByCodes(int class_code, int region_code, int generation_code, String month) {
+        List<SignEntity> signEntities = signRepository.findByClassEntityClassCodeAndRegionEntityRegionCodeAndGenerationEntityGenerationCodeAndMonth(class_code, region_code, generation_code, month);
+        return signEntities.stream()
+                .map(signEntity -> new SignDTO(signEntity))
+                .collect(Collectors.toList());
     }
 }

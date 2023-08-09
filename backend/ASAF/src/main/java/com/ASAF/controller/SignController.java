@@ -1,7 +1,11 @@
 package com.ASAF.controller;
 
+import com.ASAF.dto.SignDTO;
 import com.ASAF.service.SignService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.PropertySource;
+import org.codehaus.jackson.JsonProcessingException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -9,7 +13,10 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.List;
 
 @RequestMapping("/sign")
 @RestController
@@ -20,18 +27,17 @@ public class SignController {
 
     // 클라이언트가 저장 요청했을 때
     @PostMapping("/upload-image")
-    public ResponseEntity<?> uploadImage(@RequestParam("name") String name,
-                                         @RequestParam("month") String month,
-                                         @RequestParam("file") MultipartFile file) {
-        if (file == null || file.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-        }
+    public ResponseEntity<Boolean> uploadImage(@RequestPart("signDTO") String signDTOJson, @RequestPart("ImageFile") MultipartFile imageFile) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        SignDTO signDTO;
+
         try {
-            signService.saveImageUrl(name, month, file);
-            return ResponseEntity.ok(true);
-        } catch (Exception e) {
+            signDTO = objectMapper.readValue(signDTOJson, SignDTO.class);
+            signService.saveImageUrl(signDTO, imageFile);
+            return new ResponseEntity<>(true, HttpStatus.CREATED);
+        } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -54,4 +60,14 @@ public class SignController {
         }
     }
 
+    @GetMapping("/classCodes")
+    public List<SignDTO> getSignsByCodes(@RequestParam("class_code") int class_code,
+                                         @RequestParam("region_code") int region_code,
+                                         @RequestParam("generation_code") int generation_code,
+                                         @RequestParam("month") String month) {
+        System.out.println("통신 확인");
+        List<SignDTO> signs = signService.getSignsByCodes(class_code, region_code, generation_code, month);
+        System.out.println(signs);
+        return signs;
+    }
 }
