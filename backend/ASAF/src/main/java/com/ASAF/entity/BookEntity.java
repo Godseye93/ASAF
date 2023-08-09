@@ -81,6 +81,8 @@ public class BookEntity {
         bookEntity.setAuthor(bookDTO.getAuthor());
         bookEntity.setPublisher(bookDTO.getPublisher());
         bookEntity.setBorrowState(bookDTO.getBorrowState());
+        bookEntity.setBorrowDate(bookDTO.getBorrowDate());
+        bookEntity.setReturnDate(bookDTO.getReturnDate());
 
         ClassEntity classEntity = new ClassEntity();
         classEntity.setClass_code(bookDTO.getClass_code());
