@@ -28,7 +28,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/fragment_student_home_cardView_front"
         android:layout_width="330dp"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:layout_centerInParent="true"
         android:layout_marginTop="48dp"
         android:padding="16dp"
@@ -71,15 +71,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/white"
+                    android:background="@color/ssafyYellow"
+                    android:backgroundTint="@color/ssafyYellow"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="@color/ssafyYellow"
                         android:text="                     "
                         android:textSize="12sp"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -88,15 +88,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="48dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/white"
+                    android:background="@color/ssafyYellow"
+                    android:backgroundTint="@color/ssafyYellow"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="@color/ssafyYellow"
                         android:text="                     "
                         android:textSize="12sp"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -105,15 +105,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="72dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/white"
+                    android:background="@color/ssafyYellow"
+                    android:backgroundTint="@color/ssafyYellow"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="@color/ssafyYellow"
                         android:text="                     "
                         android:textSize="12sp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -190,7 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="9기"
+                    android:text=" - 기"
                     android:textSize="12sp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -220,7 +220,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="구미"
+                    android:text=" - "
                     android:textSize="12sp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -250,7 +250,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="6반"
+                    android:text=" - 반"
                     android:textSize="12sp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -262,7 +262,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/fragment_student_home_cardView_back"
         android:layout_width="330dp"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:layout_centerInParent="true"
         android:layout_marginTop="48dp"
         android:padding="16dp"
@@ -297,15 +297,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/white"
+                    android:background="@color/ssafyYellow"
+                    android:backgroundTint="@color/ssafyYellow"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="@color/ssafyYellow"
                         android:text="                     "
                         android:textSize="12sp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -314,15 +314,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="48dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/white"
+                    android:background="@color/ssafyYellow"
+                    android:backgroundTint="@color/ssafyYellow"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="@color/ssafyYellow"
                         android:text="                     "
                         android:textSize="12sp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -331,15 +331,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="72dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/white"
+                    android:background="@color/ssafyYellow"
+                    android:backgroundTint="@color/ssafyYellow"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="@color/ssafyYellow"
                         android:text="                     "
                         android:textSize="12sp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -370,8 +370,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="김싸피"
-                android:textColor="@color/black"
-                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:textSize="36sp"
                 app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -383,7 +383,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
                 android:text=" -기 -지역 -반 "
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
                 app:layout_constraintEnd_toEndOf="parent"

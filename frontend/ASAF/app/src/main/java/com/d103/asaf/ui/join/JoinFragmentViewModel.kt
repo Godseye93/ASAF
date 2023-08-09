@@ -1,13 +1,18 @@
 package com.d103.asaf.ui.join
 
+import android.net.Uri
 import android.os.Build.VERSION_CODES.P
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.d103.asaf.common.model.dto.Classinfo
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
+import com.d103.asaf.common.util.RetrofitUtil.Companion.memberService
+import com.d103.asaf.ui.sign.SignDrawFragment.Companion.regionCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -24,31 +29,56 @@ class JoinFragmentViewModel : ViewModel() {
     private val _isJoinSuccessful = MutableLiveData(false)
     val isJoinSuccessful: LiveData<Boolean> get() = _isJoinSuccessful
 
+    // 반 배정 성공 여부
+    private val _isSetClassSuccessful = MutableLiveData(false)
+    val isSetClassSuccessful: LiveData<Boolean> get() = _isSetClassSuccessful
 
-    fun signup( member: Member ) {
-        // 회원가입 로직을 처리하는 메서드입니다.
-        // 이 부분에서는 보통 서버와의 통신을 통해 사용자 정보를 등록하는 처리를 수행합니다.
-        // 예시로, 사용자 정보를 출력하기만 하도록 했습니다.
+
+    suspend fun signup(member: Member) {
         val userInfo = "이름: ${member.memberName}, 이메일: ${member.memberEmail}, 비밀번호: ${member.memberPassword}, " +
                 "생년월일: ${member.birthDate}, 추가정보: ${member.memberInfo}"
-//        val member = Member(name, email, password, Date(birth)) // 수정된 생성자 호출
         Log.d(TAG, "signup: $userInfo")
 
-        viewModelScope.launch {
-            try {
-                // RetrofitUtil을 사용하여 서버에 회원가입 요청
-                _isJoinSuccessful.value = RetrofitUtil.memberService.insert(member)
-            } catch (e: Exception) {
-                // 오류 처리 로직
-                Log.d(TAG, "signup: 오류 발생")
-                Log.d(TAG, "signup: $e")
-            }
+        try {
+            _isJoinSuccessful.value = RetrofitUtil.memberService.insert(member)
+        } catch (e: Exception) {
+            Log.d(TAG, "signup: 오류 발생")
+            Log.d(TAG, "signup: $e")
         }
+    }
+
+    suspend fun signedMem(email: String, generationCode: Int, regionCode: Int, classCode: Int): Int {
+        var id = 0
+        try {
+            val response = memberService.getUserInfo(email)
+            if (response.isSuccessful) {
+                val member = response.body()
+                Log.d(TAG, "signedMem: ${member!!.id}")
+                id = member.id
+
+                val classInfoResponse = memberService.setClass(id, generationCode, regionCode, classCode)
+
+                if (classInfoResponse.isSuccessful && classInfoResponse.body()=="true") {
+                    Log.d(TAG, "setClass: 성공 !")
+                } else {
+                    Log.d(TAG, "setClass: 실패 !")
+                    Log.d(TAG, "signedMem: ${classInfoResponse.errorBody()}")
+                    memberService.setClass(id, generationCode, regionCode, classCode)
+                }
+            } else {
+                // 서버 통신 실패
+                Log.d(TAG, "signedMem: 서버 통신 실패")
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "signedMem 에러 발생 : $e")
+        }
+        return id
     }
 
     fun validateInputs(
         member: Member,
-        confirmPassword: String
+        confirmPassword: String,
+        uri: Uri?
 //        name: String,
 //        email: String,
 //        password: String,
@@ -59,17 +89,15 @@ class JoinFragmentViewModel : ViewModel() {
         // 입력 값의 유효성을 검사합니다.
         if (member.memberName.isBlank() || member.memberEmail.isBlank() ||
             member.memberPassword.isBlank() || confirmPassword.isBlank() ||
-            member.birthDate.isBlank() || member.memberInfo.isBlank()) {
+            member.birthDate.isBlank() || member.memberInfo.isBlank() || uri == null) {
             // 입력값 중 하나라도 비어있을 경우 false를 반환합니다.
             return false
         }
-
         // 비밀번호와 확인 비밀번호가 일치하는지 확인합니다.
         if (member.memberPassword != confirmPassword) {
             // 비밀번호와 확인 비밀번호가 일치하지 않을 경우 false를 반환합니다.
             return false
         }
-
         // 모든 유효성 검사를 통과한 경우 true를 반환합니다.
         return true
     }

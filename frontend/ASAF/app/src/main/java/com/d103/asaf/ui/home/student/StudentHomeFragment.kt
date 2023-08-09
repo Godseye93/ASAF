@@ -74,12 +74,15 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
     private lateinit var nfcDialog: AlertDialog
 
-
     // 애니메이션 부분
     private lateinit var cardView1: CardView
     private lateinit var cardView2: CardView
     private lateinit var buttonFlip: ImageView
     private var isFirstCardVisible = true
+
+//    val nthValue = ApplicationClass.sharedPreferences.getInt("Nth")
+//    val regionValue = ApplicationClass.sharedPreferences.getInt("region")
+//    val classCodeValue = ApplicationClass.sharedPreferences.getInt("classCode")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,9 +118,6 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
                 if (ApplicationClass.sharedPreferences.getString("memberEmail").isNullOrEmpty()) {
                     // 로그인 정보가 없는 경우, 로그인 화면으로 이동
                     findNavController().navigate(R.id.action_StudentHomeFragment_to_loginFragment)
-
-                    // 앱 종료
-//                    requireActivity().finish()
                 } else {
                     // 뒤로가기 동작 수행
                     isEnabled = false
@@ -127,6 +127,8 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
                 }
             }
         })
+
+        initView()
     }
 
     companion object {
@@ -182,7 +184,8 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
     @SuppressLint("SetTextI18n")
     fun initView(){
 
-        Log.d("유저 프로필 !!!!!", "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image")
+        Log.d(TAG, "initView: StudentFragment onViewCreated 내부 initView() 실행. ")
+//        Log.d("유저 프로필 !!!!!", "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image")
         val imageUrl = "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image"
         val requestOptions = RequestOptions().transform(CircleCrop())
         Glide.with(this)
@@ -190,48 +193,53 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
             .apply(requestOptions)
             .into(binding.fragmentStudentHomeCardViewFrontImage)
 
-        binding.fragmentStudentHomeCardViewFrontCardView1FrontName.text = ApplicationClass.sharedPreferences.getString("memberName")
-        binding.fragmentStudentHomeCardViewFrontCardView1FrontNum.text = ApplicationClass.sharedPreferences.getInt("student_number").toString()
 
-//        Log.d(TAG, "initView~~~~: ${ApplicationClass.sharedPreferences.getInt("Nth")}")
-//        Log.d(TAG, "initView~~~~: ${ApplicationClass.sharedPreferences.getInt("region")}")
-//        Log.d(TAG, "initView~~~~: ${ApplicationClass.sharedPreferences.getInt("classNum")}")
+        val nthValue = ApplicationClass.sharedPreferences.getInt("Nth")
+        val regionValue = ApplicationClass.sharedPreferences.getString("region")
+        val classCodeValue = ApplicationClass.sharedPreferences.getInt("classCode")
 
-        // 기수
-        stuHomeFragmentViewModel.nthLiveData.observe(viewLifecycleOwner) { newNth ->
-            val nthText = when (newNth) {
-                1 -> "9 기"
-                2 -> "10 기"
-                else -> " - "
-            }
-            binding.fragmentStudentHomeCardViewFrontTextviewNth.text = nthText
-        }
-        // 지역
-        stuHomeFragmentViewModel.regionLiveData.observe(viewLifecycleOwner) { newRegion ->
-            val regionText = when (newRegion) {
-                1 -> "서울"
-                2 -> "구미"
-                3 -> "대전"
-                4 -> "부울경"
-                5 -> "광주"
-                else -> " - "
-            }
-            binding.fragmentStudentHomeCardViewFrontTextviewRegion.text = regionText
-        }
-        // 반
-        stuHomeFragmentViewModel.classNumLiveData.observe(viewLifecycleOwner) { newClassNum ->
-            val classText = when (newClassNum) {
-                0 -> " - "
-                else -> "$newClassNum 반"
-            }
-            binding.fragmentStudentHomeCardViewFrontTextviewClass.text = classText
+        val regionText = when (regionValue?.toInt()) {
+            1 -> "서울"
+            2 -> "구미"
+            3 -> "대전"
+            4 -> "부울경"
+            5 -> "광주"
+            else -> " - "
         }
 
-        // 카드뷰 뒷면
-        binding.fragmentStudentHomeCardViewBackName.text = ApplicationClass.sharedPreferences.getString("memberName")
-        binding.fragmentStudentHomeCardViewBackInfo.text = "${binding.fragmentStudentHomeCardViewFrontTextviewNth.text} " +
-                "${binding.fragmentStudentHomeCardViewFrontTextviewRegion.text} " +
-                "${binding.fragmentStudentHomeCardViewFrontTextviewClass.text} "
+        Log.d(TAG, "initView 텍스트뷰에 찍을 거에요 : $nthValue, $regionValue, $classCodeValue ")
+
+        with(binding) {
+            fragmentStudentHomeCardViewFrontCardView1FrontName.text = ApplicationClass.sharedPreferences.getString("memberName")
+            fragmentStudentHomeCardViewFrontCardView1FrontNum.text = ApplicationClass.sharedPreferences.getInt("student_number").toString()
+
+            // ViewModel에서 값을 가져와서 textView에 갱신
+//            stuHomeFragmentViewModel.nthValue.observe(viewLifecycleOwner) { nthValue ->
+//                binding.fragmentStudentHomeCardViewFrontTextviewNth.text = "$nthValue 기"
+//            }
+//
+//            stuHomeFragmentViewModel.regionValue.observe(viewLifecycleOwner) { regionValue ->
+//                val regionText = when (regionValue.toInt()) {
+//                    1 -> "서울"
+//                    2 -> "구미"
+//                    3 -> "대전"
+//                    4 -> "부울경"
+//                    5 -> "광주"
+//                    else -> " - "
+//                }
+//                binding.fragmentStudentHomeCardViewFrontTextviewRegion.text = "$regionText "
+//            }
+//
+//            stuHomeFragmentViewModel.classCodeValue.observe(viewLifecycleOwner) { classCodeValue ->
+//                binding.fragmentStudentHomeCardViewFrontTextviewClass.text = "$classCodeValue 반"
+//            }
+
+            fragmentStudentHomeCardViewFrontTextviewNth.text = "$nthValue 기"
+            fragmentStudentHomeCardViewFrontTextviewRegion.text = "$regionText "
+            fragmentStudentHomeCardViewFrontTextviewClass.text = "$classCodeValue 반"
+            fragmentStudentHomeCardViewBackInfo.text = " $nthValue 기 $regionText $classCodeValue 반 "
+            fragmentStudentHomeCardViewBackName.text = ApplicationClass.sharedPreferences.getString("memberName")
+        }
 
         cardView1 = binding.fragmentStudentHomeCardViewFront
         cardView2 = binding.fragmentStudentHomeCardViewBack

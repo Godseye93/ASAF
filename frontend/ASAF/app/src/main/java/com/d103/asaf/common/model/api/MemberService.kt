@@ -1,5 +1,6 @@
 package com.d103.asaf.common.model.api
 
+import com.d103.asaf.common.model.dto.Classinfo
 import com.d103.asaf.common.model.dto.Member
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -18,6 +19,18 @@ interface MemberService {
 //    @POST("rest/user")
     @POST("member/save")
     suspend fun insert(@Body body: Member): Boolean
+
+    // 반 배정
+//    @POST("classinfo/create}")
+//    suspend fun setClass(@Body body: List<Int>): Boolean
+    @POST("/classinfo/create")
+    suspend fun setClass(
+        @Query("Id") id: Int,
+        @Query("class_code") classCode: Int,
+        @Query("region_code") regionCode: Int,
+        @Query("generation_code") generationCode: Int
+    ): Response<String>
+
 
     // 중복 확인
     @GET("member/email-check/{memberEmail}")

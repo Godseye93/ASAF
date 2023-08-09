@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,6 +32,7 @@ import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentJoinBinding
 import com.d103.asaf.ui.login.LoginFragment
+import com.d103.asaf.ui.sign.SignDrawFragment.Companion.regionCode
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +55,14 @@ class JoinFragment : Fragment() {
     private val viewModel: JoinFragmentViewModel by viewModels()
 //    private lateinit var loginFragment: LoginFragment
     private lateinit var tempDate: String
+
+    var generationCode : Int = 0
+    var regionCode : Int = 0
+    var classCode : Int = 0
+//    val generationCode = binding.spinnerNth.selectedItem.toString().toInt()
+//    val regionCode = binding.spinnerRegion.selectedItem.toString().toInt()
+//    val classCode = binding.spinnerClassNum.selectedItem.toString().toInt()
+
     private lateinit var tempUri : Uri
     private val STORAGE_PERMISSION_CODE = 1 // 원하는 값으로 변경 가능
     // 이미지 선택을 위한 ActivityResultLauncher 선언
@@ -118,10 +128,13 @@ class JoinFragment : Fragment() {
             val birth = binding.fragmentJoinEditTVBirth.text.toString()
             val information = "${binding.spinnerNth.selectedItem}${binding.spinnerRegion.selectedItem}${binding.spinnerClassNum.selectedItem}"
 
-            val member = Member(name, email, password, birth, information)
-            member.token = ApplicationClass.sharedPreferences.getString("token")!!
-            if (viewModel.validateInputs(member, confirmPassword)) {
+//            val generationCode = binding.spinnerNth.selectedItem.toString().toInt()
+//            val regionCode = binding.spinnerRegion.selectedItem.toString().toInt()
+//            val classCode = binding.spinnerClassNum.selectedItem.toString().toInt()
 
+            val member = Member(name, email, password, birth, information)
+//            member.token = ApplicationClass.sharedPreferences.getString("token")!!
+            if (viewModel.validateInputs(member, confirmPassword, tempUri)) {
                 // 이메일 중복 확인
                 lifecycleScope.launch {
                     val isEmailDuplicated = async { checkDuplicateEmail(email) }.await()
@@ -138,12 +151,28 @@ class JoinFragment : Fragment() {
 
                         // 뷰모델의 회원가입 메서드를 호출합니다.
                         viewModel.signup(member)
+                        Log.d(TAG, "setupViews: 회원가입 되었습니다.")
+                        Toast.makeText(requireContext(), "회원가입 되었습니다.", Toast.LENGTH_SHORT).show()
+
+                        // 반 배정
+                        val tempId = viewModel.signedMem(email,generationCode, regionCode, classCode)
+                        Log.d(TAG, "setupViews: $tempId, $generationCode, $regionCode, $classCode")
+
+//                        viewModel.setClass(tempId, generationCode, regionCode, classCode)
+//                        Log.d(TAG, "setupViews setClass 함수 대입 : $tempId, $generationCode, $regionCode, $classCode")
+
+
+//                        if(viewModel.isSetClassSuccessful.value == false){
+//                            Log.d(TAG, "setupViews setClass 함수 실행 : 반 배정 실패.")
+//                            Toast.makeText(requireContext(), "반 배정 실패 !", Toast.LENGTH_SHORT).show()
+//                        }
+
 
                         // 이미지를 서버로 업로드하는 로직 호출
                         val email = binding.fragmentJoinEditTVEmail.text.toString()
+                        Log.d(TAG, "setupViews: 이미지 null이니? : $tempUri")
                         uploadProfileImage(email, tempUri)
 
-                        Toast.makeText(requireContext(), "회원가입 되었습니다.", Toast.LENGTH_SHORT).show()
                         // login fragment로 이동.
                         findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
                     }
@@ -189,8 +218,8 @@ class JoinFragment : Fragment() {
         }
     }
     private fun setSpinnerAdapters() {
-        val nthOptions = listOf("-", "8", "9", "10") // 기수 옵션들을 리스트로 설정해주세요
-        val regionOptions = listOf("-", "광주", "구미", "대전", "부울경", "서울") // 지역 옵션들을 리스트로 설정해주세요
+        val nthOptions = listOf("-", "9", "10") // 기수 옵션들을 리스트로 설정해주세요
+        val regionOptions = listOf("-", "서울", "구미", "대전", "부울경", "광주") // 지역 옵션들을 리스트로 설정해주세요
         val classNumOptions = listOf("-", "1", "2", "3", "4", "5", "6", "7", "8","9","10") // 반 옵션들을 리스트로 설정해주세요
 
         val nthAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, nthOptions)
@@ -200,6 +229,36 @@ class JoinFragment : Fragment() {
         binding.spinnerNth.adapter = nthAdapter
         binding.spinnerRegion.adapter = regionAdapter
         binding.spinnerClassNum.adapter = classNumAdapter
+
+        binding.spinnerNth.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // Map selected option to corresponding value
+                generationCode = if (position == 0) 0 else position
+//                viewModel.updateGenerationCode(nthValue)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        binding.spinnerRegion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // Map selected option to corresponding value
+                regionCode = if (position == 0) 0 else position
+//                viewModel.updateRegionCode(regionValue)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        binding.spinnerClassNum.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // Map selected option to corresponding value
+                classCode = if (position == 0) 0 else position
+//                viewModel.updateClassCode(classNumValue)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
     }
 
     // 생년월일을 선택하는 달력 다이얼로그를 보여주는 메서드입니다.
@@ -258,12 +317,9 @@ class JoinFragment : Fragment() {
         }
     }
 
-    fun createMultipartFromUri(context: Context, uri: Uri): MultipartBody.Part? {
-        val file: File? = getFileFromUri(context, uri)
-        if (file == null) {
-            // 파일을 가져오지 못한 경우 처리할 로직을 작성하세요.
-            return null
-        }
+    private fun createMultipartFromUri(context: Context, uri: Uri): MultipartBody.Part? {
+        val file: File = getFileFromUri(context, uri) ?: return null
+        // 파일을 가져오지 못한 경우 처리할 로직
         val requestFile: RequestBody = createRequestBodyFromFile(file)
         return MultipartBody.Part.createFormData("file", file.name, requestFile)
     }
@@ -291,19 +347,19 @@ class JoinFragment : Fragment() {
         return RequestBody.create(MEDIA_TYPE_IMAGE, byteArray)
     }
 
-    private fun uploadProfileImage(email: String, imageUri: Uri) {
+    private suspend fun uploadProfileImage(email: String, imageUri: Uri) {
         val file = File(imageUri.path)
         val profileImagePart = createMultipartFromUri(requireContext(), imageUri)
         val emailRequestBody = RequestBody.create(okhttp3.MultipartBody.FORM, email)
 
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             try {
                 Log.d(TAG, "uploadProfileImage: 이미지 확인--------")
                 Log.d(TAG, "uploadProfileImage: $email 로 $profileImagePart 보낸다")
 
                 // 서버에 프로필 이미지 업로드 요청
                 val response = RetrofitUtil.memberService.uploadProfileImage(emailRequestBody, profileImagePart!!)
-                Log.d(TAG, "uploadProfileImage: ${response.errorBody()?.string()}")
+//                Log.d(TAG, "uploadProfileImage: ${response.errorBody()?.string()}")
                 Log.d(TAG, "uploadProfileImage: ${response.body()}")
                 if (response.isSuccessful && response.body() != null && response.body() == true) {
                     // 이미지 업로드 성공 처리
