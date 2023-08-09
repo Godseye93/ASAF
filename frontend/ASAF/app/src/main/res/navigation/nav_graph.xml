@@ -39,7 +39,9 @@
 
         <action
             android:id="@+id/action_libraryManageFragment_to_ProHomeFragment"
-            app:destination="@+id/ProhomeFragment" />
+            app:destination="@+id/ProhomeFragment"
+            app:popUpTo="@id/bookManageMentFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
@@ -60,7 +62,9 @@
 
         <action
             android:id="@+id/action_marketFragment_to_StudentHomeFragment"
-            app:destination="@+id/StudentHomeFragment" />
+            app:destination="@+id/StudentHomeFragment"
+            app:popUpTo="@id/marketFragment"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 
@@ -110,7 +114,9 @@
 
         <action
             android:id="@+id/action_scheduleFragment_to_ProHomeFragment"
-            app:destination="@+id/ProhomeFragment" />
+            app:destination="@+id/ProhomeFragment"
+            app:popUpTo="@id/scheduleFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <!-- Student Bottom Navigation Bar -->
@@ -123,10 +129,14 @@
 
         <action
             android:id="@+id/action_busFragment_to_StudentHomeFragment"
-            app:destination="@+id/StudentHomeFragment" />
+            app:destination="@+id/StudentHomeFragment"
+            app:popUpTo="@id/busFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_busFragment_to_ProHomeFragment"
-            app:destination="@+id/ProhomeFragment" />
+            app:destination="@+id/ProhomeFragment"
+            app:popUpTo="@id/busFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
@@ -140,7 +150,9 @@
 
         <action
             android:id="@+id/action_libraryUseFragment_to_StudentHomeFragment"
-            app:destination="@+id/StudentHomeFragment" />
+            app:destination="@+id/StudentHomeFragment"
+            app:popUpTo="@id/libraryUseFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
@@ -157,7 +169,9 @@
 
         <action
             android:id="@+id/action_supportFragment_to_StudentHomeFragment"
-            app:destination="@+id/StudentHomeFragment" />
+            app:destination="@+id/StudentHomeFragment"
+            app:popUpTo="@id/supportFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
 
@@ -228,7 +242,9 @@
 
         <action
             android:id="@+id/action_signDrawFragment_to_StudentHomeFragment"
-            app:destination="@+id/StudentHomeFragment" />
+            app:destination="@+id/StudentHomeFragment"
+            app:popUpTo="@id/signDrawFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
