@@ -443,25 +443,71 @@ public class DataLoader implements CommandLineRunner {
                     BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
                     bookRepository.save(bookEntity);
                 }
-            } else if (i == 12) {
+            } else {
                 for (int j = 1; j <= 30; j++) {
-                    BookDTO bookDTO = new BookDTO();
-                    List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
-                    String book = bookAuthor.get(0);
-                    String author = bookAuthor.get(1);
+                    if (j<=10) {
+                        BookDTO bookDTO = new BookDTO();
+                        List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
+                        String book = bookAuthor.get(0);
+                        String author = bookAuthor.get(1);
 
-                    bookDTO.setBorrowState(false);
-                    bookDTO.setId(1);
-                    bookDTO.setClass_code(2);
-                    bookDTO.setRegion_code(2);
-                    bookDTO.setGeneration_code(1);
-                    bookDTO.setBookName(book);
-                    bookDTO.setAuthor(author);
-                    bookDTO.setPublisher("싸피출판사");
-                    bookDTO.setClass_num(1);
+                        bookDTO.setBorrowState(false);
+                        bookDTO.setId(1);
+                        bookDTO.setClass_code(2);
+                        bookDTO.setRegion_code(2);
+                        bookDTO.setGeneration_code(1);
+                        bookDTO.setBookName(book);
+                        bookDTO.setAuthor(author);
+                        bookDTO.setPublisher("싸피출판사");
+                        bookDTO.setClass_num(1);
 
-                    BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
-                    bookRepository.save(bookEntity);
+                        BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
+                        bookRepository.save(bookEntity);
+
+                    } else if (j<=20){
+                        BookDTO bookDTO = new BookDTO();
+                        List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
+                        String book = bookAuthor.get(0);
+                        String author = bookAuthor.get(1);
+
+                        bookDTO.setBorrowDate(1691000000L);
+                        bookDTO.setReturnDate(1691111000L);
+
+                        bookDTO.setBorrowState(true);
+                        bookDTO.setId(1);
+                        bookDTO.setClass_code(2);
+                        bookDTO.setRegion_code(2);
+                        bookDTO.setGeneration_code(1);
+                        bookDTO.setBookName(book);
+                        bookDTO.setAuthor(author);
+                        bookDTO.setPublisher("싸피출판사");
+                        bookDTO.setClass_num(1);
+
+                        BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
+                        bookRepository.save(bookEntity);
+
+                    } else {
+                        BookDTO bookDTO = new BookDTO();
+                        List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
+                        String book = bookAuthor.get(0);
+                        String author = bookAuthor.get(1);
+
+                        bookDTO.setBorrowDate(1691000000L);
+                        bookDTO.setReturnDate(2691111000L);
+
+                        bookDTO.setBorrowState(true);
+                        bookDTO.setId(1);
+                        bookDTO.setClass_code(2);
+                        bookDTO.setRegion_code(2);
+                        bookDTO.setGeneration_code(1);
+                        bookDTO.setBookName(book);
+                        bookDTO.setAuthor(author);
+                        bookDTO.setPublisher("싸피출판사");
+                        bookDTO.setClass_num(1);
+
+                        BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
+                        bookRepository.save(bookEntity);
+                    }
                 }
             }
         }
