@@ -35,8 +35,8 @@ public class PostEntity {
     @Column
     private String name;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ImageEntity> images = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ImageEntity> images;
 
     public MemberEntity getMemberEntity() { return id; }
 

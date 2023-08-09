@@ -28,7 +28,6 @@ public class LockerController {
 
     @PostMapping("/complete")
     public ResponseEntity<Boolean> completeLockers(@RequestBody JsonNode jsonNode) {
-        System.out.println("통신 옴");
         System.out.println(jsonNode);
         List<LockerDTO> lockerDTOList = new ArrayList<>();
 
@@ -57,7 +56,6 @@ public class LockerController {
     public List<LockerDTO> getLockersByCodes(@RequestParam("class_code") int class_code,
                                              @RequestParam("region_code") int region_code,
                                              @RequestParam("generation_code") int generation_code) {
-        System.out.println("통신 옴");
         List<LockerDTO> lockers = lockerService.getLockersByCodes(class_code, region_code, generation_code);
         lockers.sort(Comparator.comparingInt(LockerDTO::getLocker_num));
         return lockers;

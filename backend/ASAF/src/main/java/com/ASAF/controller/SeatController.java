@@ -31,7 +31,6 @@ public class SeatController {
     // 자리 배치 완료
     @PostMapping("/complete")
     public ResponseEntity<Boolean> completeSeats(@RequestBody JsonNode jsonNode) {
-        System.out.println("통신 옴");
         System.out.println(jsonNode);
         List<SeatDTO> seatDTOList = new ArrayList<>();
 
