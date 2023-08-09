@@ -4,6 +4,7 @@ master branch로 push 시 수정해야 할 것
 1-2. 더미데이터 사용할 땐 이미지 경로 변경
 2. memberService 이미지 save하는 메서드 경로 변경
 3. property create에서 update로 변경
+4. FirebaseCloudMessagingInitializer에서 String jsonPath = "/home/ubuntu/ASAF_FCM_KEY.json"; 로 변경
  */
 
 
