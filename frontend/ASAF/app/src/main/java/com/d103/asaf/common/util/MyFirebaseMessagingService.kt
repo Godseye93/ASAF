@@ -102,6 +102,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setAutoCancel(true) // 알람클릭시 삭제여부
             .setSound(soundUri)  // 알림 소리
             .setContentIntent(pendingIntent) // 알림 실행 시 Intent
+            .setPriority(NotificationCompat.PRIORITY_HIGH) // 알림 중요도
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 

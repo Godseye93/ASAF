@@ -1,5 +1,6 @@
 package com.d103.asaf.ui.library.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -52,6 +53,7 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
                         sendReturn(book)
                     }
                 } else {
+                    // Log.d("반납일", "bind: ${book.returnDate}")
                     bookItemReturnSend.isVisible = isDatePassed(book.returnDate)
                     bookItemReturnSend.setOnClickListener {
                         // 알림을 해당 학생에게 보내기
@@ -115,6 +117,7 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
     fun isDatePassed(sdate: Long): Boolean {
         val currentDate = Calendar.getInstance().time
         val date = Date(sdate)
+        Log.d("지남", "isDatePassed: $date  $currentDate")
         return date.before(currentDate)
     }
 

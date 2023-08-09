@@ -9,9 +9,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
@@ -27,6 +30,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -60,18 +64,20 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
 
     lateinit var draw: DrawSign
     lateinit var document: Document
-    private var signMonth = ""
-    private var totDay = ""
-    private var attDay = ""
-    private var subMonth = ""
-    private var subDay = ""
+    private var signMonth = arguments?.getString("signMonth") ?: "0"
+    private var totDay = arguments?.getString("totDay") ?: "0"
+    private var attDay = arguments?.getString("attDay") ?: "0"
+    private var subMonth = arguments?.getString("subMonth")
+    private var subDay = arguments?.getString("subDay")
+
     val today = todayToString()
     val year = today[0]
     val month = today[1]
     private val name = ApplicationClass.sharedPreferences.getString("memberName")
     private val classCode = SignDrawFragment.myClass?.classCode
     private var curSign = SignDrawFragment.myClass?.let { DocSign(0, it.classNum,it.classCode,it.regionCode,it.generationCode,
-        it.userId,"","ddd",month) } ?: DocSign()
+        it.userId,"",name?:"",month) } ?: DocSign()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -165,8 +171,26 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
         fos?.use {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
             CoroutineScope(Dispatchers.IO).launch{
-                uploadSigns(curSign,image!!)
-                if(image != null && (image as File).exists()) (image as File).delete()
+                try {
+                    val response = withContext(Dispatchers.IO) {
+                        uploadSigns(curSign,image!!)
+                    }
+                    if (response.isSuccessful) {
+                        Log.d("서명보내기", "requestCapture: 서명 보내기 완료")
+                        try {
+                            if(image != null && (image as File).exists()) (image as File).delete()
+                        }catch (e:Exception) {
+                            Log.e("파일없음", "파일없음 삭제 오류: ${e.message}", e)
+                        }
+
+                    } else {
+                        Handler(Looper.getMainLooper()).post {
+                            Toast.makeText(requireContext(), "서명 보내기 네트워크 오류", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("서명", "서명 오류: ${e.message}", e)
+                }
             }
         }
     }
@@ -182,23 +206,20 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
         val signsJson = Gson().toJson(sign) // Convert signs list to JSON string
 
         val signsRequestBody = signsJson.toRequestBody("application/json".toMediaTypeOrNull())
-        val signsPart = MultipartBody.Part.createFormData("signs", null, signsRequestBody)
+        val filePart = createMultipartFromUri(file)
 
-        val fileRequestBody = file.asRequestBody("image/png".toMediaTypeOrNull())
-        val filePart = MultipartBody.Part.createFormData("file", file.name, fileRequestBody)
-
-        return RetrofitUtil.opService.postSigns(signsPart, filePart)
+        return RetrofitUtil.opService.postSigns(signsRequestBody, filePart)
     }
 
     fun createMultipartFromUri(file: File): MultipartBody.Part {
         val requestFile: RequestBody = createRequestBodyFromFile(file)
-        return MultipartBody.Part.createFormData("file", file.name, requestFile)
+        return MultipartBody.Part.createFormData("ImageFile", file.name, requestFile)
     }
 
     private fun createRequestBodyFromFile(file: File): RequestBody {
-        val MEDIA_TYPE_IMAGE = "image/png".toMediaTypeOrNull()
+        val MEDIA_TYPE_IMAGE = "image/*".toMediaTypeOrNull()
         val inputStream: InputStream = FileInputStream(file)
         val byteArray = inputStream.readBytes()
-        return byteArray.toRequestBody(MEDIA_TYPE_IMAGE)
+        return RequestBody.create(MEDIA_TYPE_IMAGE, byteArray)
     }
 }
