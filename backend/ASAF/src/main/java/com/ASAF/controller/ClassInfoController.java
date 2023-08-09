@@ -57,5 +57,8 @@ public class ClassInfoController {
         }
     }
     // 학생id로 classinfo 데이터 수정하기
-//    @PutMapping("")
+    @PutMapping("/{class_num}")
+    public ClassInfoDTO updateClassInfo(@PathVariable int class_num, @RequestBody ClassInfoDTO classInfoDTO) {
+        return classInfoService.updateClassInfo(class_num, classInfoDTO);
+    }
 }
