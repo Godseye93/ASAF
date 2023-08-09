@@ -27,13 +27,14 @@ class MarketAdpater (var context : Context): ListAdapter<Market, MarketAdpater.I
     inner class ItemViewHolder(var binding : ItemMarketBinding) :  RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data : Market){
+            Log.d("이미지 경로", "${ApplicationClass.API_URL}member/${data.profileImage.split("/")[6].split(".")[0]}.com/profile-image")
             Glide
                 .with(context)
-                .load(data.profileImage)
+                .load("${ApplicationClass.API_URL}member/${data.profileImage.split("/")[6].split(".")[0]}.com/profile-image")
                 .into( binding.marketProfileImage)
             binding.markentPostTitle.text = data.title
             binding.markentPostTitle.isSelected = true
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd ", Locale.getDefault())
             val registerDate = dateFormat.format(Date(data.registerTime))
             binding.marketPostRegisterDate.text = registerDate
 

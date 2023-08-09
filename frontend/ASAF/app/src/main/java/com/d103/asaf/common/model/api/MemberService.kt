@@ -43,6 +43,7 @@ interface MemberService {
     @GET("member/logout")
     suspend fun logout()
 
-    // 회원 정보 수정
-//    @PUT("member/")
+    // 로그인 시 토큰 추가
+    @PUT("member/tokenUpdate")
+    suspend fun addToken(@Query("id") id : Int, @Query("token") token : String ) : Response<Boolean>
 }

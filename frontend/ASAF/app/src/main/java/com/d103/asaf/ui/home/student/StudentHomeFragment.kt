@@ -97,7 +97,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
 
         // 알림? 진동? 페이지
         binding.fragmentStuHomeImagebuttonNotification.setOnClickListener {
-
+            findNavController().navigate(R.id.navigation_noti)
         }
         // 설정 페이지
         binding.fragmentStuHomeImagebuttonUserinfo.setOnClickListener {

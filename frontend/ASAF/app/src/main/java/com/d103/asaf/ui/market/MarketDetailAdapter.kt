@@ -1,38 +1,26 @@
 package com.d103.asaf.ui.market
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.d103.asaf.R
-import com.d103.asaf.common.model.dto.Market
 import com.d103.asaf.common.model.dto.MarketImage
-import com.d103.asaf.common.util.AdapterUtil
-import com.d103.asaf.databinding.ItemMarketPhotoBinding
 
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-
-private const val TAG = "MarketPhotoRegisterAdap ASAF"
-class MarketPhotoRegisterAdapter(private val items: List<MarketImage>, val context: Context) :
-    RecyclerView.Adapter<ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+class MarketDetailAdapter (private val items: List<MarketImage>, val context: Context) :
+    RecyclerView.Adapter<DetailViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder {
         val inflatedVIEW =
             LayoutInflater.from(parent.context).inflate(R.layout.item_market_photo, parent, false)
-        return ViewHolder(inflatedVIEW)
+        return DetailViewHolder(inflatedVIEW)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
 
         val item = items[position]
 
@@ -61,13 +49,11 @@ class MarketPhotoRegisterAdapter(private val items: List<MarketImage>, val conte
     }
 
 }
-class ViewHolder(v:View) :RecyclerView.ViewHolder(v) {
-    private var view:View = v
+class DetailViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+    private var view: View = v
     var image = v.findViewById<ImageView>(R.id.marketRegisterImageView)
 
-    fun bind(listener:View.OnClickListener,item:String) {
+    fun bind(listener: View.OnClickListener, item:String) {
         view.setOnClickListener(listener)
     }
 }
-
-

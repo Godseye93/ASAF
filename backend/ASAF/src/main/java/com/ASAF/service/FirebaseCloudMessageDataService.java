@@ -35,12 +35,11 @@ public class FirebaseCloudMessageDataService {
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/ssafy-common-proj/messages:send";
 
     // 1-1. 공지 즉시 발송 컨트롤러에서 실행합니다.
-    public void sendNotificationToUsers(List<MemberEntity> users, NoticeEntity noticeEntity, String sender ) throws IOException {
+    public void sendNotificationToUsers(List<MemberEntity> users, NoticeEntity noticeEntity, String sender, String profileImage) throws IOException {
         String title = noticeEntity.getTitle();
         String content = noticeEntity.getContent();
         // 발신인과 내용를 조합해서 전체 내용를 만듭니다.
         String body = String.format("[%s] \n %s", sender, content);
-        String profileImage = "sedaf";
         for (MemberEntity user : users) {
             // 각 유저 정보 & 제목 & 전체 내용을 첨부시켜 sendNotificationToUser 메서드를 실행합니다.
             sendNotificationToUser(user, title, body, profileImage);
@@ -62,7 +61,7 @@ public class FirebaseCloudMessageDataService {
 
         String title = noticeEntity.getTitle();
         String content = noticeEntity.getContent();
-        String body = String.format("작성자 : %s \n %s", sender, content);
+        String body = String.format("[%s] \n %s", sender, content);
         String image = profileImage;
         if (noticeEntity.getNotification() == true){
             if (initialDelay <= 0) {

@@ -89,6 +89,7 @@ public class MemberController {
     @PutMapping("/update")
     public ResponseEntity<MemberDTO> update(@RequestBody MemberDTO memberDTO) {
         memberService.update(memberDTO);
+
         return new ResponseEntity<>(memberDTO, HttpStatus.OK);
     }
 
@@ -157,5 +158,15 @@ public class MemberController {
     public MemberDTO checkOut(@PathVariable int id) {
         return memberService.CheckOut(id);
     }
+
+    @PutMapping("/tokenUpdate")
+    public ResponseEntity<Boolean> updateToken(@RequestParam int id, @RequestParam String token)  {
+        System.out.println(token);
+        MemberDTO dto = memberService.findById(id);
+        dto.setToken(token);
+        memberService.update(dto);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
 
 }

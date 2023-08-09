@@ -213,6 +213,8 @@
         tools:layout="@layout/fragment_sign" >
     </fragment>
 
+
+
     <fragment
         android:id="@+id/noti_register_fragment"
         android:name="com.d103.asaf.ui.schedule.NotiRegisterFragment"

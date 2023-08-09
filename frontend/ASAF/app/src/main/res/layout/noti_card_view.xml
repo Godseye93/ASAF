@@ -2,11 +2,11 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-
+    android:layout_height="wrap_content"
     >
 
     <LinearLayout
+        android:id="@+id/fragment_student_noti_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -15,19 +15,37 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rectangle_style">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/sender_profile_image"
-                android:layout_width="92dp"
-                android:layout_height="92dp"
-                android:src="@drawable/testimg" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+               android:gravity="center"
+                >
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/sender_profile_image"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/testimg" />
+                <TextView
+                    android:id="@+id/sender_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="이름"
+
+                    />
+
+            </LinearLayout>
+
 
             <LinearLayout
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/noti_card_registerTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5분전" />
@@ -53,6 +71,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/noti_card_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="오늘은 싸피데이가 있는 날입니다.

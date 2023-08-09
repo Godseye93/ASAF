@@ -78,6 +78,8 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
             binding.fragmentOpImageviewLogo.visibility = View.INVISIBLE
             binding.fragmentOpDropdownMonth.visibility = View.VISIBLE
             binding.fragmentOpImageviewArcprogressbar.visibility = View.VISIBLE
+            // 서명 진행률 주입
+            attendedPercent.value = (viewModel.signs.value.size/viewModel.students.value.size) * 100f
 
             childFragmentManager.beginTransaction()
                 .replace(binding.fragmentOpFramelayoutSeat.id, MoneyFragment.instance(viewModel.signs.value, viewModel))
