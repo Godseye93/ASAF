@@ -19,7 +19,7 @@ data class Book (
     @SerializedName("borrowDate") val borrowDate: Long = Long.MAX_VALUE, // 대출일
     @SerializedName("returnDate") val returnDate: Long = Long.MAX_VALUE, // 반납일
     @SerializedName("borrowState") val borrowState: Boolean = false, // 대출 상태
-    @SerializedName("borrower") val borrower: String? = "", // 대출자
+    @SerializedName("borrower") val borrower: String = "", // 대출자
     @SerializedName("bookNameCount") val bookNameCount: Int = 0, // 총 수량
     @SerializedName("trueBorrowStateCount") val trueBorrowStateCount: Int = 0 // 빌린 수량
 ) : Parcelable {
@@ -51,6 +51,8 @@ data class Book (
         parcel.writeString(publisher)
         parcel.writeLong(borrowDate)
         parcel.writeLong(returnDate)
+//        borrowDate?.let { parcel.writeLong(it) } ?: parcel.writeLong(Long.MAX_VALUE) // Nullable Long 값 쓰기
+//        returnDate?.let { parcel.writeLong(it) } ?: parcel.writeLong(Long.MAX_VALUE)
         parcel.writeByte(if (borrowState) 1 else 0)
         parcel.writeString(borrower)
     }

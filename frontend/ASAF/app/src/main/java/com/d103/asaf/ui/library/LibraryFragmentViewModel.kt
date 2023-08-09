@@ -115,7 +115,7 @@ class LibraryFragmentViewModel: ViewModel() {
                     Log.d(TAG, "도서 가져오기 네트워크 오류")
                 }
             } catch (e: Exception) {
-                Log.d(TAG, " 도서 가져오기 네트워크 오류 $e")
+                Log.d(TAG, " 도서 가져오기 오류 $e")
             }
         }
     }

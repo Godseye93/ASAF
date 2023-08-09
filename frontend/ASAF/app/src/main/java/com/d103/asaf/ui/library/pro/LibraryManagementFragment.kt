@@ -305,5 +305,6 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
         super.onResume()
         adapter.isDraw = true
         viewModel.isFirst = true
+        viewModel.loadRemote()
     }
 }

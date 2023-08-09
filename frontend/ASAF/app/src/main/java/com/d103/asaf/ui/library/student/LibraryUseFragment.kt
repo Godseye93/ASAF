@@ -225,6 +225,7 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
         requestPermissionLauncher.launch(RUNTIME_PERMISSIONS)
     }
 
+    var rangeNotifier: RangeNotifier? = null
     // beacon 초기화
     private fun startScan() {
         val monitorNotifier: MonitorNotifier = object : MonitorNotifier {
@@ -241,7 +242,7 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
             }
         }
 
-        val rangeNotifier = RangeNotifier { beacons, _ ->
+        rangeNotifier = RangeNotifier { beacons, _ ->
             beacons?.run{
                 if (isNotEmpty()) {
                     forEach { beacon ->
@@ -277,7 +278,7 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
         beaconManager.startMonitoring(region)
 
         //detacting되는 해당 region의 beacon정보를 받는 클래스 지정.
-        beaconManager.addRangeNotifier(rangeNotifier) // 비컨이 얼마나 떨어진 '거리' 에 있는지 알려줌
+        beaconManager.addRangeNotifier(rangeNotifier!!) // 비컨이 얼마나 떨어진 '거리' 에 있는지 알려줌
         beaconManager.startRangingBeacons(region)
     }
 
@@ -294,6 +295,11 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
     private fun requestBluetoothActivation() {
         val bleIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
         requestBluetoothActivationLauncher.launch(bleIntent)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        rangeNotifier = null
     }
 
 }
