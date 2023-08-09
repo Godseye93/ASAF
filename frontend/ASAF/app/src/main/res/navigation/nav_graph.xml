@@ -192,7 +192,9 @@
         tools:layout="@layout/fragment_sign_draw" >
         <action
             android:id="@+id/action_signDrawFragment_to_signNextFragment"
-            app:destination="@id/signNextFragment" />
+            app:destination="@id/signNextFragment"
+            app:popUpTo="@id/signDrawFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
@@ -202,7 +204,9 @@
         tools:layout="@layout/fragment_sign_next" >
         <action
             android:id="@+id/action_signNextFragment_to_signFragment"
-            app:destination="@id/signFragment" />
+            app:destination="@id/signFragment"
+            app:popUpTo="@id/signDrawFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
 
