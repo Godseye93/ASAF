@@ -35,7 +35,12 @@
         android:id="@+id/bookManageMentFragment"
         android:name="com.d103.asaf.ui.library.pro.LibraryManagementFragment"
         android:label="LibarayManagement"
-        tools:layout="@layout/fragment_library_management"/>
+        tools:layout="@layout/fragment_library_management" >
+
+        <action
+            android:id="@+id/action_libraryManageFragment_to_ProHomeFragment"
+            app:destination="@+id/ProhomeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/marketFragment"
@@ -46,14 +51,16 @@
         <action
             android:id="@+id/action_marketFragment_to_marketFragmentRegister"
             app:destination="@+id/marketRegisterFragment">
-
         </action>
 
         <action
             android:id="@+id/action_marketFragment_to_marketDetailFragment"
             app:destination="@+id/marketDetailFragment">
-
         </action>
+
+        <action
+            android:id="@+id/action_marketFragment_to_StudentHomeFragment"
+            app:destination="@+id/StudentHomeFragment" />
 
     </fragment>
 
@@ -78,7 +85,11 @@
         android:id="@+id/operationFragment"
         android:name="com.d103.asaf.ui.op.OpFragment"
         android:label="Operation"
-        tools:layout="@layout/fragment_op"/>
+        tools:layout="@layout/fragment_op" >
+        <action
+            android:id="@+id/action_opFragment_to_ProHomeFragment"
+            app:destination="@id/ProhomeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/scheduleFragment"
@@ -96,6 +107,10 @@
                 />
 
         </action>
+
+        <action
+            android:id="@+id/action_scheduleFragment_to_ProHomeFragment"
+            app:destination="@+id/ProhomeFragment" />
     </fragment>
 
     <!-- Student Bottom Navigation Bar -->
@@ -104,7 +119,15 @@
         android:name="com.d103.asaf.ui.bus.BusFragment"
         android:label="Bus"
         tools:layout="@layout/fragment_bus"
-        tools:ignore="DuplicateIds" />
+        tools:ignore="DuplicateIds" >
+
+        <action
+            android:id="@+id/action_busFragment_to_StudentHomeFragment"
+            app:destination="@+id/StudentHomeFragment" />
+        <action
+            android:id="@+id/action_busFragment_to_ProHomeFragment"
+            app:destination="@+id/ProhomeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/libraryUseFragment"
@@ -114,6 +137,10 @@
         <action
             android:id="@+id/action_libraryUseFragment_to_libraryUseReturnFragment"
             app:destination="@id/libraryUseReturnFragment" />
+
+        <action
+            android:id="@+id/action_libraryUseFragment_to_StudentHomeFragment"
+            app:destination="@+id/StudentHomeFragment" />
     </fragment>
 
     <fragment
@@ -126,7 +153,12 @@
         android:id="@+id/supportFragment"
         android:name="com.d103.asaf.ui.sign.SignNextFragment"
         tools:lable="Sign"
-        tools:layout="@layout/fragment_sign_next"/>
+        tools:layout="@layout/fragment_sign_next" >
+
+        <action
+            android:id="@+id/action_supportFragment_to_StudentHomeFragment"
+            app:destination="@+id/StudentHomeFragment" />
+    </fragment>
 
 
     <fragment
@@ -193,6 +225,10 @@
         <action
             android:id="@+id/action_signDrawFragment_to_signNextFragment"
             app:destination="@id/signNextFragment" />
+
+        <action
+            android:id="@+id/action_signDrawFragment_to_StudentHomeFragment"
+            app:destination="@+id/StudentHomeFragment" />
     </fragment>
 
     <fragment
@@ -211,6 +247,10 @@
         android:name="com.d103.asaf.ui.sign.SignFragment"
         android:label="Sign"
         tools:layout="@layout/fragment_sign" >
+
+        <action
+            android:id="@+id/action_signFragment_to_StudentHomeFragment"
+            app:destination="@+id/StudentHomeFragment" />
     </fragment>
 
     <fragment
@@ -283,7 +323,12 @@
         android:id="@+id/fragment_setting_userinfo"
         android:name="com.d103.asaf.ui.setting.UserInfoFragment"
         android:label="UserInfo"
-        tools:layout="@layout/fragment_setting_userinfo" />
+        tools:layout="@layout/fragment_setting_userinfo" >
+
+        <action
+            android:id="@+id/action_UserInfoFragment_to_SettingFragment"
+            app:destination="@+id/fragment_setting" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_setting_privacy_policy"

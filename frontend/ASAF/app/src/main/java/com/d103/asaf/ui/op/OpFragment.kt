@@ -9,9 +9,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import app.futured.donut.DonutSection
 import com.d103.asaf.R
 import com.d103.asaf.SharedViewModel
@@ -45,6 +47,14 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
                 progressBarUpdate()
             }
         }
+
+        // Override the default back button behavior
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Navigate to StudentHomeFragment
+                findNavController().navigate(R.id.action_opFragment_to_ProHomeFragment)
+            }
+        })
     }
 
     private fun initSeat() {

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -50,7 +51,13 @@ class MarketFragment : BaseFragment<FragmentMarketBinding>(FragmentMarketBinding
 
         init()
 
-
+        // Override the default back button behavior
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Navigate to StudentHomeFragment
+                findNavController().navigate(R.id.action_marketFragment_to_StudentHomeFragment)
+            }
+        })
 
 
     }

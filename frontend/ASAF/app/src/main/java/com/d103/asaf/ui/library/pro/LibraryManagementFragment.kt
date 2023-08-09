@@ -14,10 +14,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import co.nedim.maildroidx.MaildroidX
 import co.nedim.maildroidx.MaildroidXType
 import com.d103.asaf.R
@@ -54,6 +56,14 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
         initList()
         initClass()
         initView()
+
+        // Override the default back button behavior
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Navigate to ProHomeFragment
+                findNavController().navigate(R.id.action_libraryManageFragment_to_ProHomeFragment)
+            }
+        })
     }
 
     private fun initList() {

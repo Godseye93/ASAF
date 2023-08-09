@@ -44,24 +44,45 @@ class SharedViewModel : ViewModel() {
                               Log.d(TAG, "classInfoList:${_classInfoList.value} ")
                               _classInfoList.postValue(responseBody!!)
                               ApplicationClass.mainClassInfo = responseBody
-                              Log.d(TAG, "getClassInfo: ${ApplicationClass.mainClassInfo}")
+                              Log.d(TAG, "getClassInfo~~~: ${ApplicationClass.mainClassInfo}")
+
+//                              Log.d(TAG, "getClassInfo~~~: ${responseBody[0].generationCode}")
+//                              Log.d(TAG, "getClassInfo~~~: ${responseBody[0].regionCode}")
+//                              Log.d(TAG, "getClassInfo~~~: ${responseBody[0].classCode}")
+//
+                              val nthText = when (responseBody[0].generationCode) {
+                                   1 -> 9
+                                   2 -> 10
+                                   else -> 0
+                              }
+                              val regionText = when (responseBody[0].regionCode) {
+                                   1 -> "서울"
+                                   2 -> "구미"
+                                   3 -> "대전"
+                                   4 -> "부울경"
+                                   5 -> "광주"
+                                   else -> " - "
+                              }
+                              val classText = when (responseBody[0].classCode) {
+                                   0 -> 0
+                                   else -> responseBody[0].classCode
+                              }
+
                               ApplicationClass.sharedPreferences.addUserInfo(
-                                   responseBody[0].generationCode,
-                                   responseBody[0].regionCode,
-                                   responseBody[0].classNum
+                                   nthText,
+                                   regionText,
+                                   classText
                               )
+
                          }
                          else{
                               Log.d(TAG, "통신 ERROR : responseBody가 NULL")
+                              Log.d(TAG, "getClassInfo: ${response.errorBody()}")
                          }
-
-
                     }
-
                } catch (e : Exception){
                     Log.d(TAG, "통신 에러: ${e.printStackTrace()}")
                }
-
           }
      }
 

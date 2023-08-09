@@ -70,6 +70,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:hint="E-mail"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_setting_userinfo_layout_name">

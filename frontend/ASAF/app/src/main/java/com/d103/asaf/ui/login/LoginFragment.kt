@@ -128,12 +128,17 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
                     ////
 //                }
                 ApplicationClass.sharedPreferences.addUserByEmailAndPwd(loginResult)
+                lifecycleScope.launch{
+                    viewModel.addClassInfo(loginResult.memberEmail)
+                    Log.d(TAG, "observeViewModel: addClassInfo 수행했고, ApplicationClass에 저장했어요. ")
+                }
                 ApplicationClass.sharedPreferences.autoLoginIsChecked(binding.fragmentLoginSwitchAutologin.isChecked)
 
                 sharedViewModel.logInUser = loginResult
                 Log.d(TAG, "observeViewModel______: ${sharedViewModel.logInUser.memberEmail}")
                 Log.d(TAG, "유저: ${sharedViewModel.logInUser}")
                 sharedViewModel.getClassInfo(loginResult)
+
                 Log.d(TAG, "담당 반: ${sharedViewModel.classInfoList.value?.size}")
                 if (loginResult.authority == "교육생") {
                     findNavController().navigate(R.id.action_login_fragment_to_StudentHomeFragment)
