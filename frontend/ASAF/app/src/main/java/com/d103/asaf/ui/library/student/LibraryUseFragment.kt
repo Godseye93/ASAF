@@ -298,8 +298,14 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
     }
 
     override fun onPause() {
+        Log.d(TAG, "onPause: ")
         super.onPause()
-        rangeNotifier = null
+        if(rangeNotifier!=null) beaconManager.removeRangeNotifier(rangeNotifier!!)
     }
 
+    override fun onResume() {
+        Log.d(TAG, "onResume: ")
+        super.onResume()
+        if(rangeNotifier!=null) beaconManager.addRangeNotifier(rangeNotifier!!)
+    }
 }

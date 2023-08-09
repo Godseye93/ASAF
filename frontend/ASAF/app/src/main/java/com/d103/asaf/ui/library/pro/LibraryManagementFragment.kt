@@ -59,7 +59,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
     private fun initList() {
         lifecycleScope.launch {
             viewModel.books.collect {
-                if(viewModel.isFirst == false) {
+                if(viewModel.isFirst == false && adapter.isDraw == false ) {
                     books = it
                     adapter.submitList(books)
                 }

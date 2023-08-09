@@ -117,7 +117,6 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
     fun isDatePassed(sdate: Long): Boolean {
         val currentDate = Calendar.getInstance().time
         val date = Date(sdate)
-        Log.d("지남", "isDatePassed: $date  $currentDate")
         return date.before(currentDate)
     }
 
