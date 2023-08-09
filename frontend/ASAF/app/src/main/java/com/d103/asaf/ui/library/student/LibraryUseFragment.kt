@@ -16,6 +16,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
@@ -56,6 +57,14 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
         initList()
         initView()
         initBeacon()
+
+        // Override the default back button behavior
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Navigate to StudentHomeFragment
+                findNavController().navigate(R.id.action_libraryUseFragment_to_StudentHomeFragment)
+            }
+        })
     }
 
     private fun initList() {

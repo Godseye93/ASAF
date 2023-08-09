@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.navigation.fragment.findNavController
 import com.d103.asaf.R
+import com.d103.asaf.common.config.ApplicationClass
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,5 +59,29 @@ class BusFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+
+        val auth = ApplicationClass.sharedPreferences.getString("authority")
+        if(auth == "교육생"){
+            // Override the default back button behavior
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // Navigate to StudentHomeFragment
+                    findNavController().navigate(R.id.action_busFragment_to_StudentHomeFragment)
+                }
+            })
+        }else{
+            // Override the default back button behavior
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigate(R.id.action_busFragment_to_ProHomeFragment)
+                }
+            })
+        }
     }
 }

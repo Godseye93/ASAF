@@ -8,6 +8,7 @@ import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.R
 import com.d103.asaf.common.config.ApplicationClass
@@ -57,6 +58,14 @@ class SignDrawFragment : BaseFragment<FragmentSignDrawBinding>(FragmentSignDrawB
                 ApplicationClass.sharedPreferences.savePoints(draw?.getSign() ?: listOf())
             }
         }
+
+        // Override the default back button behavior
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Navigate to StudentHomeFragment
+                findNavController().navigate(R.id.action_signDrawFragment_to_StudentHomeFragment)
+            }
+        })
     }
 
     private suspend fun getRegionCode() {

@@ -54,15 +54,21 @@ class SharedPreferencesUtil(context: Context) {
         editor.apply()
     }
 
+    fun changeProfileImage(url : String){
+        val editor = preferences.edit()
+        editor.putString("profile_image", url)
+        editor.apply()
+    }
+
     fun getBoolean(key : String): Boolean {
         return preferences.getBoolean(key, false)
     }
 
-    fun addUserInfo(Nth : Int, region : Int, classNum : Int) {
+    fun addUserInfo(Nth : Int, region : String, classCode : Int) {
         val editor = preferences.edit()
         editor.putInt("Nth", Nth)
-        editor.putInt("region", region)
-        editor.putInt("classNum", classNum)
+        editor.putString("region", region)
+        editor.putInt("classCode", classCode)
 
         editor.apply()
     }
@@ -109,5 +115,11 @@ class SharedPreferencesUtil(context: Context) {
         // 저장된 데이터가 없을 경우 빈 List<Point> 반환
         return emptyList()
     }
+
+//    fun tempEmail(email: String) {
+//        val editor = preferences.edit()
+//
+//        editor.apply()
+//    }
 
 }
