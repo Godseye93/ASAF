@@ -471,8 +471,8 @@ public class DataLoader implements CommandLineRunner {
                         String book = bookAuthor.get(0);
                         String author = bookAuthor.get(1);
 
-                        bookDTO.setBorrowDate(1691000000L);
-                        bookDTO.setReturnDate(1691111000L);
+                        bookDTO.setBorrowDate(1223372036854775807L);
+                        bookDTO.setReturnDate(1623372036854775807L);
 
                         bookDTO.setBorrowState(true);
                         bookDTO.setId(1);
@@ -493,8 +493,8 @@ public class DataLoader implements CommandLineRunner {
                         String book = bookAuthor.get(0);
                         String author = bookAuthor.get(1);
 
-                        bookDTO.setBorrowDate(1691000000L);
-                        bookDTO.setReturnDate(2691111000L);
+                        bookDTO.setBorrowDate(1223372036854775807L);
+                        bookDTO.setReturnDate(2623372036854775807L);
 
                         bookDTO.setBorrowState(true);
                         bookDTO.setId(1);
