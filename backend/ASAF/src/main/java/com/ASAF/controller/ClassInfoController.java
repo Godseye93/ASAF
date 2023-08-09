@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ClassInfoController {
     private final ClassInfoService classInfoService;
 
+    // 학생정보로 반정보 불러오기 /${id}
     @GetMapping("/member/{memberId}")
     public List<ClassInfoDTO> getClassInfoListByMemberId(@PathVariable int memberId) {
         return classInfoService.getClassInfoByMemberId(memberId);
     }
 
+    //반정보로 학생정보목록 불러오기
     @GetMapping("/memberIds")
     public List<MemberDTO> findMemberDTOsByClassRegionAndGeneration(@RequestParam int class_code,
                                                                     @RequestParam int region_code,
@@ -30,6 +32,7 @@ public class ClassInfoController {
         return classInfoService.findMemberDTOsByClassRegionAndGeneration(class_code, region_code, generation_code);
     }
 
+    // 학생id와 반정보를 입력하여 classinfo에 데이터 넣기
     @PostMapping("/create")
     public ResponseEntity<String> createClassInfo(@RequestParam int Id,
                                                   @RequestParam int class_code,
@@ -53,4 +56,6 @@ public class ClassInfoController {
             return new ResponseEntity<>("false", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    // 학생id로 classinfo 데이터 수정하기
+//    @PutMapping("")
 }
