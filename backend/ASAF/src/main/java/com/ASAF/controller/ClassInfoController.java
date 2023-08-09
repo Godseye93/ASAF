@@ -7,8 +7,6 @@ import com.ASAF.entity.GenerationEntity;
 import com.ASAF.entity.RegionEntity;
 import com.ASAF.service.ClassInfoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class ClassInfoController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Boolean> createClassInfo(@RequestParam int Id,
+    public ClassInfoDTO createClassInfo(@RequestParam int Id,
                                         @RequestParam int class_code,
                                         @RequestParam int region_code,
                                         @RequestParam int generation_code) {
@@ -45,8 +43,6 @@ public class ClassInfoController {
         classInfoDTO.setGeneration_code(generation_code);
 
         // DTO를 저장하고 반환된 객체를 반환
-        return new ResponseEntity<>(true, HttpStatus.OK);
+        return classInfoService.saveClassInfo(classInfoDTO);
     }
-
-
 }

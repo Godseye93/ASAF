@@ -27,6 +27,8 @@ pipeline {
     	steps {
         		sh 'sudo cp backend/ASAF/build/libs/*.jar /home/ubuntu/'
  // Change to target directory before running the jar file
+// 앱 종료
+sh 'sudo pkill -f ASAF-0.0.1-SNAPSHOT || true'
 
         // 백그라운드에서 앱 실행
             sh 'nohup sudo java -jar /home/ubuntu/ASAF-0.0.1-SNAPSHOT.jar &'
