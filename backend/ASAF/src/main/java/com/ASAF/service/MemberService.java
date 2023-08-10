@@ -155,9 +155,17 @@ public class MemberService{
     public MemberDTO CheckIn(int id) {
         Optional<MemberEntity> memberEntityOptional = memberRepository.findById(id);
         LocalTime currentTime = LocalTime.now();
+        System.out.println(currentTime);
+
+        // 현재 시간을 long 타입으로 변경
+        long currentTimeMillis = currentTime.toNanoOfDay() / 1_000_000;
+
         if (memberEntityOptional.isPresent()){
             MemberEntity memberEntity = memberEntityOptional.get();
-            memberEntity.setEntryTime(Time.valueOf(currentTime));
+
+            // Time 타입 대신 long 타입으로 변경
+            memberEntity.setEntryTime(currentTimeMillis);
+
             memberEntity.setAttended("입실");
             MemberEntity updatedMemberEntity = memberRepository.save(memberEntity);
             return MemberDTO.toMemberDTO(updatedMemberEntity);
@@ -165,12 +173,14 @@ public class MemberService{
         return null;
     }
 
+
     public MemberDTO CheckOut(int id) {
         Optional<MemberEntity> memberEntityOptional = memberRepository.findById(id);
         LocalTime currentTime = LocalTime.now();
+        long currentTimeMillis = currentTime.toNanoOfDay() / 1_000_000;
         if (memberEntityOptional.isPresent()){
             MemberEntity memberEntity = memberEntityOptional.get();
-            memberEntity.setExitTime(Time.valueOf(currentTime));
+            memberEntity.setEntryTime(currentTimeMillis);
             memberEntity.setAttended("퇴실");
             MemberEntity updatedMemberEntity = memberRepository.save(memberEntity);
             return MemberDTO.toMemberDTO(updatedMemberEntity);
