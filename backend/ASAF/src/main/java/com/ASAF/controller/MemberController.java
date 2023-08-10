@@ -158,4 +158,13 @@ public class MemberController {
         return memberService.CheckOut(id);
     }
 
+    @PutMapping("/tokenUpdate")
+    public ResponseEntity<Boolean> tokenUpdate(@RequestParam int id, @RequestParam String token) {
+        MemberDTO memberDTO = memberService.findById(id);
+        memberDTO.setToken(token);
+        memberService.update(memberDTO);
+        return new ResponseEntity<>(true,HttpStatus.OK);
+    }
 }
+
+
