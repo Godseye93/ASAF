@@ -150,7 +150,7 @@ class MoneyFragment :
     // 저장 후 메일로 보내 주는 코드 추가
     private fun sendEmail(path: String) {
         MaildroidX.Builder()
-            .smtp("smtp.mailtrap.live")
+            .smtp("live.smtp.mailtrap.io")
             .smtpUsername("api")
             .smtpPassword("0647ceab68282d673bdd53a351635833")
             .port("587")

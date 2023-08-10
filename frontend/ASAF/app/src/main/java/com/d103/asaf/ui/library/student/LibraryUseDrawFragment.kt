@@ -59,12 +59,15 @@ class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(Fragm
             fragmentLibraryUserDrawTextviewDrawerText.text = ApplicationClass.sharedPreferences.getString("memberName")
             // put 버튼
             bookDrawBtn.setOnClickListener{
-                // book 정보를 body로 줄필요가 없다! id만 주면 id에 해당하는 책의 상태만 확인해서
-                // 대출여부를 true로 바꾸면 된다.
-                // 또한 이미 true(대출 중인) 상태라면 boolean으로 false를 반환하면 된다.
+                val addDay = fragmentLibraryUserDrawDrawdayDropdown.dropdownText.text.toString().toInt()
+                val userId = ApplicationClass.sharedPreferences.getInt("id")
+                val userName = ApplicationClass.sharedPreferences.getString("memberName")
+                val bookId = drawInfo[3].toInt()
                 lifecycleScope.launch {
-                    //val userId = ApplicationClass.sharedPreferences.getInt("id")
-                    updateBook(drawInfo[3].toInt())
+
+                    val book = Book(id = bookId, borrowDate = addDaysToCurrentDate(0), returnDate = addDaysToCurrentDate(addDay),
+                                    borrowState = true, borrower = userName, userId = userId)
+                    updateDrawBook(bookId, book)
                 }
             }
         }
@@ -76,10 +79,16 @@ class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(Fragm
         return formatter.format(calendar.time)
     }
 
-    private suspend fun updateBook(bookId: Int) {
+    private fun addDaysToCurrentDate(day: Int): Long {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_MONTH, day)
+        return calendar.timeInMillis
+    }
+
+    private suspend fun updateDrawBook(bookId: Int, book: Book) {
         try {
             val response = withContext(Dispatchers.IO) {
-                RetrofitUtil.libraryService.updateBook(bookId)
+                RetrofitUtil.libraryService.updateDrawBook(bookId,book)
             }
             if (response.isSuccessful) {
                 if(response.body() == false) {

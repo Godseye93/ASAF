@@ -20,9 +20,13 @@ interface LibraryService {
     @GET("/book/borrowed/{class_code}/{region_code}/{generation_code}/sorted-by-name")
     suspend fun getDraws(@Path("class_code") classCode : Int, @Path("region_code") regionCode : Int, @Path("generation_code") generationCode : Int) : Response<MutableList<Book>>
 
+//    // 내가 대출 중인 도서
+//    @GET("/book/borrowed/{class_code}/{region_code}/{generation_code}/{user_id}/sorted-by-name")
+//    suspend fun getMyDraws(@Path("class_code") classCode : Int, @Path("region_code") regionCode : Int, @Path("generation_code") generationCode : Int,@Path("user_id") userId: Int) : Response<MutableList<Book>>
+
     // 내가 대출 중인 도서
-    @GET("/book/borrowed/{class_code}/{region_code}/{generation_code}/{user_id}/sorted-by-name")
-    suspend fun getMyDraws(@Path("class_code") classCode : Int, @Path("region_code") regionCode : Int, @Path("generation_code") generationCode : Int,@Path("user_id") userId: Int) : Response<MutableList<Book>>
+    @GET("/book/borrowed/user/{user_id}")
+    suspend fun getMyDraws(@Path("user_id") userId : Int) : Response<MutableList<Book>>
 
 
     // 한권 정보만 가져오기
@@ -49,7 +53,11 @@ interface LibraryService {
 
     // 수정
     @PUT("/book/{book_id}")
-    suspend fun updateBook(@Path("book_id") bookId: Int) : Response<Boolean>
+    suspend fun updateBook(@Path("book_id") bookId: Int, @Body book: Book) : Response<Boolean>
+
+    // 수정
+    @PUT("/book/borrow/{book_number}")
+    suspend fun updateDrawBook(@Path("book_number") bookId: Int, @Body book: Book) : Response<Boolean>
 
     // 삭제
     @DELETE("/book/{book_id}")

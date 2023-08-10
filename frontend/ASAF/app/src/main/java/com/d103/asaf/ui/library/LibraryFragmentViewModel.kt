@@ -76,7 +76,7 @@ class LibraryFragmentViewModel: ViewModel() {
             try {
                 val drawResponse = withContext(Dispatchers.IO) {
                     if(ApplicationClass.sharedPreferences.getString("authority") == "교육생")
-                        RetrofitUtil.libraryService.getMyDraws(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode, ApplicationClass.sharedPreferences.getInt("id"))
+                        RetrofitUtil.libraryService.getMyDraws(ApplicationClass.sharedPreferences.getInt("id"))
                     else
                         RetrofitUtil.libraryService.getDraws(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
                 }
@@ -109,8 +109,7 @@ class LibraryFragmentViewModel: ViewModel() {
                             book.trueBorrowStateCount
                         )
                     } ?: mutableListOf<Book>()) as MutableList<Book>
-                    isFirst = false;
-                    Log.d("들어오냐", "${_books.value}")
+                    isFirst = false
                 } else {
                     Log.d(TAG, "도서 가져오기 네트워크 오류 ${curClass.value.classNum} ${curClass.value.classCode} ${curClass.value.regionCode}, ${curClass.value.generationCode}")
                 }

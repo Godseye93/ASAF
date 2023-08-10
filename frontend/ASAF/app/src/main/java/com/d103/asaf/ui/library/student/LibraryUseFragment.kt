@@ -49,7 +49,7 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
     NavigationListener {
     private val viewModel: LibraryUseFragmentViewModel by viewModels()
     private var books: MutableList<Book> = mutableListOf()
-    private lateinit var adapter: BookAdapter
+    private var adapter = BookAdapter(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,28 +59,50 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
     }
 
     private fun initList() {
+        Log.d(TAG, "initList: ${viewModel.isFirst} ${adapter.isDraw}")
         lifecycleScope.launch {
             viewModel.myDraws.collect {
                 books = viewModel.myDraws.value
+                adapter.isDraw = true
+                adapter.submitList(books)
+                if(isAdded && view != null)requireView().invalidate()
             }
         }
-        adapter = BookAdapter(this)
+        lifecycleScope.launch {
+            viewModel.books.collect {
+                if(viewModel.isFirst == false && adapter.isDraw == false ) {
+                    books = it
+                    adapter.submitList(books)
+                    if(isAdded && view != null) requireView().invalidate()
+                    binding.fragmentLibraryUserRecyclerview.scrollToPosition(0)
+                }
+            }
+        }
+
+        adapter.isDraw = true
         binding.fragmentLibraryUserRecyclerview.adapter = adapter
         adapter.submitList(books)
+        if(isAdded && view != null) requireView().invalidate()
     }
 
     private fun initView() {
         binding.apply {
             bookUserToggleButton.seatText.text = "대출 현황"
             bookUserToggleButton.lockerText.text = "전체 도서 목록"
+            fragmentLibraryUserTextviewSecond.text = "반납일"
+            fragmentLibraryUserTextviewThird.text = "반납하기"
             bookUserToggleButton.moneyText.visibility = View.GONE
 
             bookUserToggleButton.setFirstButtonClickListener {
+                Log.d(TAG, "initView: 눌림")
                 adapter.isDraw = true
                 fragmentLibraryUserTextviewSecond.text = "반납일"
                 fragmentLibraryUserTextviewThird.text = "반납하기"
                 books = viewModel.myDraws.value
+                Log.d(TAG, "나의대출현황: ${books.size}")
                 adapter.submitList(books)
+                if(isAdded && view != null) requireView().invalidate()
+                binding.fragmentLibraryUserRecyclerview.scrollToPosition(0)
             }
 
             bookUserToggleButton.setSecondButtonClickListener {
@@ -88,7 +110,10 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
                 fragmentLibraryUserTextviewSecond.text = "저자"
                 fragmentLibraryUserTextviewThird.text = "수량"
                 books = viewModel.books.value
+                Log.d(TAG, "나의전체현황: ${books.size}")
                 adapter.submitList(books)
+                if(isAdded && view != null) requireView().invalidate()
+                binding.fragmentLibraryUserRecyclerview.scrollToPosition(0)
             }
 
             fragmentLibraryUserSearchBar.setSearchClickListener {
@@ -231,7 +256,7 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
         val monitorNotifier: MonitorNotifier = object : MonitorNotifier {
             override fun didEnterRegion(region: Region) {
                 Handler(Looper.getMainLooper()).post{
-                    Toast.makeText(activity,"비컨 발견", Toast.LENGTH_SHORT).show()
+                    if(activity != null) Toast.makeText(activity,"도서관 근처 입니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -247,12 +272,13 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
                 if (isNotEmpty()) {
                     forEach { beacon ->
                         // 사정거리 내에 있을 경우 이벤트 표시 다이얼로그 팝업
-                        if (beacon.distance <= BEACON_DISTANCE && isDetected == true) {
+                        if (beacon.distance <= BEACON_DISTANCE && isDetected == true && adapter.isDraw == true) {
                             Log.d(TAG, "didRangeBeaconsInRegion: distance 이내.")
                             adapter.nearBy = true // 비콘 근처면 근처라고 변경하고 submitList
                             // 정보 안변하는데 위에 걸로 반영돼서 활성화되는지 확인 필요
                             books = viewModel.myDraws.value
                             adapter.submitList(books)
+                            if(isAdded && view != null) requireView().invalidate()
                             isDetected = false
                             Handler(Looper.getMainLooper()).postDelayed ({
                                 isDetected = true
@@ -298,14 +324,26 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
     }
 
     override fun onPause() {
-        Log.d(TAG, "onPause: ")
         super.onPause()
         if(rangeNotifier!=null) beaconManager.removeRangeNotifier(rangeNotifier!!)
     }
 
+    override fun onStart() {
+        Log.d(TAG, "onStart: ")
+        super.onStart()
+        isDetected = true
+        adapter.isDraw = true
+        adapter.nearBy = false
+        viewModel.isFirst = true
+        if(rangeNotifier!=null) beaconManager.addRangeNotifier(rangeNotifier!!)
+    }
     override fun onResume() {
-        Log.d(TAG, "onResume: ")
         super.onResume()
+        Log.d(TAG, "onResume: ")
+        isDetected = true
+        adapter.isDraw = true
+        adapter.nearBy = false
+        viewModel.isFirst = true
         if(rangeNotifier!=null) beaconManager.addRangeNotifier(rangeNotifier!!)
     }
 }
