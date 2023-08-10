@@ -20,7 +20,10 @@ import javax.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -154,11 +157,10 @@ public class MemberService{
 
     public MemberDTO CheckIn(int id) {
         Optional<MemberEntity> memberEntityOptional = memberRepository.findById(id);
-        LocalTime currentTime = LocalTime.now();
-        System.out.println(currentTime);
+        LocalDateTime currentTime = LocalDateTime.now();
 
         // 현재 시간을 long 타입으로 변경
-        long currentTimeMillis = currentTime.toNanoOfDay() / 1_000_000;
+        long currentTimeMillis = currentTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
         if (memberEntityOptional.isPresent()){
             MemberEntity memberEntity = memberEntityOptional.get();
@@ -176,8 +178,10 @@ public class MemberService{
 
     public MemberDTO CheckOut(int id) {
         Optional<MemberEntity> memberEntityOptional = memberRepository.findById(id);
-        LocalTime currentTime = LocalTime.now();
-        long currentTimeMillis = currentTime.toNanoOfDay() / 1_000_000;
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        // 현재 시간을 long 타입으로 변경
+        long currentTimeMillis = currentTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         if (memberEntityOptional.isPresent()){
             MemberEntity memberEntity = memberEntityOptional.get();
             memberEntity.setEntryTime(currentTimeMillis);
