@@ -198,7 +198,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
 
 
         val nthValue = ApplicationClass.sharedPreferences.getInt("Nth")
-        val regionValue = ApplicationClass.sharedPreferences.getString("region")
+        val regionValue = ApplicationClass.sharedPreferences.getInt("region")
         val classCodeValue = ApplicationClass.sharedPreferences.getInt("classCode")
 
         val regionText = when (regionValue?.toInt()) {

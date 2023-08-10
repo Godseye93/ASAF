@@ -238,7 +238,9 @@
         tools:layout="@layout/fragment_sign_draw" >
         <action
             android:id="@+id/action_signDrawFragment_to_signNextFragment"
-            app:destination="@id/signNextFragment" />
+            app:destination="@id/signNextFragment"
+            app:popUpTo="@id/signDrawFragment"
+            app:popUpToInclusive="true" />
 
         <action
             android:id="@+id/action_signDrawFragment_to_StudentHomeFragment"
