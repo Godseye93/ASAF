@@ -37,10 +37,10 @@ public class SignService {
 
         // 이미지 저장 및 엔티티 업데이트 등의 작업을 수행합니다
         String UPLOAD_DIR = "src/main/resources/static/images/sign_images/";
-        String Real_DIR = "images/sign_images/";
+        String STATIC_DIR = "images/sign_images/";
         String fileName = file.getOriginalFilename();
         String filePath = UPLOAD_DIR + signDTO.getName() + "_" + fileName;
-        String realPath = Real_DIR + signDTO.getName() + "_" + fileName;
+        String imageUrl = STATIC_DIR + signDTO.getName() + "_" + fileName; // 웹 서버가 액세스할 수 있는 이미지 경로
         File dest = new File(filePath);
         FileCopyUtils.copy(file.getBytes(), dest);
 
@@ -50,7 +50,7 @@ public class SignService {
         GenerationEntity generationEntity1 = generationRepository.findById(signDTO.getGeneration_code()).orElse(null);
 
         SignEntity signEntity = new SignEntity();
-        signEntity.setImage_url(realPath);
+        signEntity.setImage_url(imageUrl);
         signEntity.setName(signDTO.getName());
         signEntity.setMonth(signDTO.getMonth());
         signEntity.setClass_num(classInfoEntity);
