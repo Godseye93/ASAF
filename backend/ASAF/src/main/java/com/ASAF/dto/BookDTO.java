@@ -117,4 +117,8 @@ public class BookDTO {
     public boolean getBorrowState() {
         return borrowState;
     }
+
+    public void updateMemberId(BookEntity bookEntity, MemberEntity member) {
+        bookEntity.setId(member);
+    }
 }
