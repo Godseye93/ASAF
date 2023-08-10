@@ -7,11 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.d103.asaf.MainActivity
 import com.d103.asaf.R
+import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.Room.NotiMessage
+import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentStudentNotiBinding
+import com.d103.asaf.ui.schedule.ItemTouchHelperCallback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,6 +39,7 @@ class StudentNotiFragment : BaseFragment<FragmentStudentNotiBinding> (FragmentSt
     private var param2: String? = null
     private val viewModel : StudentNotiFragmentViewModel by viewModels()
     private lateinit var adapter : NotiMessageAdapter
+    private lateinit var itemTouchHelper: ItemTouchHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -44,11 +55,25 @@ class StudentNotiFragment : BaseFragment<FragmentStudentNotiBinding> (FragmentSt
 
     fun init(){
         Log.d("시작", "init: 시작")
+//        TEST DATA
+//        CoroutineScope(Dispatchers.IO).launch {
+//            ApplicationClass.notiMessageDatabase.notiMessageDao.saveNotiMessage(NotiMessage(0,"TEST 1", "TEST 1", System.currentTimeMillis(), "TESTER 1 ", ""))
+//            ApplicationClass.notiMessageDatabase.notiMessageDao.saveNotiMessage(NotiMessage(0,"TEST 2", "TEST 2", System.currentTimeMillis(), "TESTER 2 ", ""))
+//            ApplicationClass.notiMessageDatabase.notiMessageDao.saveNotiMessage(NotiMessage(0,"TEST 3", "TEST 3", System.currentTimeMillis(), "TESTER 3 ", ""))
+//            ApplicationClass.notiMessageDatabase.notiMessageDao.saveNotiMessage(NotiMessage(0,"TEST 4", "TEST 4", System.currentTimeMillis(), "TESTER 4 ", ""))
+//
+//        }
 
-        adapter = NotiMessageAdapter(requireContext())
+
+        adapter = NotiMessageAdapter(requireContext(), this)
         val layoutManager = LinearLayoutManager(requireContext())
         binding.fragmentStudentNotiRecyclerView.layoutManager = layoutManager
         binding.fragmentStudentNotiRecyclerView.adapter = adapter
+
+        // 스와이프
+        val itemTouchHelperCallback = ItemTouchHelperCallback(adapter)
+        itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(binding.fragmentStudentNotiRecyclerView)
 
 
 //        viewModel.getAll()
@@ -56,7 +81,23 @@ class StudentNotiFragment : BaseFragment<FragmentStudentNotiBinding> (FragmentSt
 
 
         viewModel.allNotiMessages.observe(viewLifecycleOwner){
-            adapter.submitList(viewModel.allNotiMessages.value)
+            var sorted = viewModel.allNotiMessages.value?.sortedByDescending {it.sendTime }
+            adapter.submitList(sorted)
+        }
+
+        binding.fragmentStudentNotiImageviewArrowBack.setOnClickListener {
+            findNavController().navigateUp()
+            (requireActivity() as MainActivity).showStudentBottomNaviagtionBarFromFragment()
+        }
+    }
+
+    fun deleteMessage(data  : NotiMessage){
+        try{
+            CoroutineScope(Dispatchers.IO).launch {
+                ApplicationClass.notiMessageDatabase.notiMessageDao.deleteNotiMessage(data)
+            }
+        }catch (e : Exception){
+            Log.d("NOTI DELETE ERROR", "deleteMessage: ${e.message}")
         }
     }
 

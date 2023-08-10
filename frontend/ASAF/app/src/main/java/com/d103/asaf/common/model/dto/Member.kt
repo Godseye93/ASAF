@@ -1,6 +1,7 @@
 package com.d103.asaf.common.model.dto
 
 import com.google.gson.annotations.SerializedName
+import java.sql.Time
 import java.util.Date
 
 data class Member(
@@ -18,8 +19,8 @@ data class Member(
     @SerializedName("team_num") val teamNum: Int,
     var token : String,
     var attended : String,
-    var entryTime : Date?,
-    var exitTime : Date?,
+    var entryTime : Long?,
+    var exitTime : Long?,
     var authority: String = "교육생",
 ){
     // 기본 생성자

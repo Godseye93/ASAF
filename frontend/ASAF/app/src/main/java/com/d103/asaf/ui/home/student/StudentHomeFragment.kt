@@ -45,6 +45,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
+import com.d103.asaf.MainActivity
 import com.d103.asaf.common.util.RetrofitUtil
 import com.google.android.datatransport.runtime.util.PriorityMapping.toInt
 import kotlinx.coroutines.launch
@@ -100,7 +101,9 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
 
         // 알림? 진동? 페이지
         binding.fragmentStuHomeImagebuttonNotification.setOnClickListener {
+            (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
             findNavController().navigate(R.id.navigation_noti)
+
         }
         // 설정 페이지
         binding.fragmentStuHomeImagebuttonUserinfo.setOnClickListener {

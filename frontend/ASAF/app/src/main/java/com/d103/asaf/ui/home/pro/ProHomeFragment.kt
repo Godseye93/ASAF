@@ -210,9 +210,10 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
 
         proHomeFragmentViewModel.studentInfoList.observe(viewLifecycleOwner) {
             var attendedCount  = 0f
+            Log.d(TAG, "학생들: $it")
             adapter.submitList(it)
             for(student : Member in it){
-                if(student.attended == "출석"){
+                if(student.attended == "입실"){
                     attendedCount++;
                 }
 

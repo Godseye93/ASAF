@@ -31,7 +31,7 @@ class UserInfoAdapter(var context : Context) : ListAdapter<Member, UserInfoAdapt
             if(user.attended == "미출석"){
                 binding.attendanceCheckImage.setBackgroundColor(Color.RED)
             }
-            else if(user.attended == "출석"){
+            else if(user.attended == "입실"){
                 binding.attendanceCheckImage.setBackgroundColor(Color.GREEN)
             }
             else {

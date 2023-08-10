@@ -51,24 +51,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
 
         // 토큰 가져오기
-//        MyFirebaseMessagingService().getFirebaseToken()
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//            if (!task.isSuccessful) {
-//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-//                return@OnCompleteListener
-//            }
-//
-//            // Get new FCM registration token
-//            val token = task.result
-//
-//            // Log and toast
-//            Log.d(TAG, "토큰 생성: $token")
-//            if (token != null) {
-//                ApplicationClass.sharedPreferences.addFCMToken(token)
-//            }
-////            Log.d(TAG, msg)1111
-////            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-//        })
+        MyFirebaseMessagingService().getFirebaseToken()
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            Log.d(TAG, "토큰 생성: $token")
+            if (token != null) {
+                ApplicationClass.sharedPreferences.addFCMToken(token)
+            }
+//            Log.d(TAG, msg)1111
+//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+        })
         initDynamicLink()
 
 

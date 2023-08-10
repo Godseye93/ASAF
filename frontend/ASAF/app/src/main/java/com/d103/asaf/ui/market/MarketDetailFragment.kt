@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.d103.asaf.MainActivity
 import com.d103.asaf.R
 import com.d103.asaf.SharedViewModel
 import com.d103.asaf.common.config.ApplicationClass
@@ -68,6 +70,11 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
 //        binding.fragmentMarketDetailRecyclerview.adapter = adapter
 //        adapter.notifyDataSetChanged()
         viewModel.getMarketDetail(sharedViewModel.selectedMarketId)
+
+        binding.fragmentMarketDetailBackButton.setOnClickListener {
+            findNavController().navigateUp()
+
+        }
 
 
         // 수정 버튼 클릭 시

@@ -179,15 +179,19 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
     }
 
     private fun openGalleryForImage() {
-//        val intent = Intent(Intent.ACTION_PICK)
-//        intent.type = "image/*"
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.type = "image/*"
 //
 //        // 이미지를 선택하는 요청을 `ActivityResultLauncher`로 보냅니다.
 //        imagePickerLauncher.launch(intent)
 
-        val intent = Intent(ACTION_GET_CONTENT)
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        intent.type = "*/*"
+//        val intent = Intent(ACTION_GET_CONTENT)
+
+//        intent.type = "image/*"
+//        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+//        intent.addCategory(Intent.CATEGORY_OPENABLE)
+//        intent.type = "image/*"
         selectImagesActivityResult.launch(intent)
     }
 
