@@ -5,10 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.R
 import com.d103.asaf.common.config.ApplicationClass
+import com.d103.asaf.databinding.FragmentBusBinding
+import com.d103.asaf.databinding.FragmentMapBinding
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +29,8 @@ class BusFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    lateinit var binding: FragmentBusBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -38,7 +44,8 @@ class BusFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bus, container, false)
+        binding = FragmentBusBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     companion object {
@@ -64,8 +71,28 @@ class BusFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Get the FrameLayout that will hold the MapFragment
+        val mapContainer = view.findViewById<FrameLayout>(R.id.map_view)
+
+        // Create a new instance of MapFragment
+        val mapFragment = MapFragment()
+
+        // Replace the FrameLayout with MapFragment
+        childFragmentManager.beginTransaction()
+            .replace(R.id.map_view, mapFragment)
+            .commit()
 
 
+        binding.fragmentBusMapSeoulBtn.setOnClickListener {
+            // 서울 버튼 클릭 시 서울에 마커 추가 로직 실행
+            addMarkerToSeoul()
+        }
+
+        binding.fragmentBusMapGumiBtn.setOnClickListener {
+            addMarkerToGumi()
+        }
+
+        // 뒤로가기 눌렸을 때 처리
         val auth = ApplicationClass.sharedPreferences.getString("authority")
         if(auth == "교육생"){
             // Override the default back button behavior
@@ -83,5 +110,18 @@ class BusFragment : Fragment() {
                 }
             })
         }
+    }
+
+    // 서울에 마커 추가하는 함수
+    private fun addMarkerToSeoul() {
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_view) as? MapFragment
+        mapFragment?.addMarkerToSeoul()
+    }
+
+    // 구미에 마커 추가하는 함수
+    private fun addMarkerToGumi() {
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_view) as? MapFragment
+        mapFragment?.addMarkerToGumi()
     }
 }
