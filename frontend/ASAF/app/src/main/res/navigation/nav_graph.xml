@@ -146,7 +146,9 @@
         tools:layout="@layout/fragment_library_use" >
         <action
             android:id="@+id/action_libraryUseFragment_to_libraryUseReturnFragment"
-            app:destination="@id/libraryUseReturnFragment" />
+            app:destination="@id/libraryUseReturnFragment"
+            app:popUpTo="@id/libraryUseFragment"
+            app:popUpToInclusive="true"/>
 
         <action
             android:id="@+id/action_libraryUseFragment_to_StudentHomeFragment"
