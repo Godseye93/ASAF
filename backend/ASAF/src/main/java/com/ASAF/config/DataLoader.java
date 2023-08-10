@@ -558,6 +558,21 @@ public class DataLoader implements CommandLineRunner {
                         bookRepository.save(bookEntity);
                     }
                 }
+                BookDTO bookDTO = new BookDTO();
+
+                bookDTO.setBorrowState(false);
+                bookDTO.setId(1);
+                bookDTO.setClass_code(2);
+                bookDTO.setRegion_code(2);
+                bookDTO.setGeneration_code(1);
+                bookDTO.setBookName("다른종류의 미대출 도서 확인용");
+                bookDTO.setAuthor("장진욱");
+                bookDTO.setPublisher("싸피출판사");
+                bookDTO.setClass_num(1);
+
+                BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
+                bookRepository.save(bookEntity);
+
             }
         }
     }
