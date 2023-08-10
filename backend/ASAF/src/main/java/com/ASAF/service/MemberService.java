@@ -180,7 +180,7 @@ public class MemberService{
         Optional<MemberEntity> memberEntityOptional = memberRepository.findById(id);
         LocalDateTime currentTime = LocalDateTime.now();
 
-        // 현재 시간을 long 타입으로 변경
+        // 현재 시간을 long 타입으로 변경.
         long currentTimeMillis = currentTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         if (memberEntityOptional.isPresent()){
             MemberEntity memberEntity = memberEntityOptional.get();
