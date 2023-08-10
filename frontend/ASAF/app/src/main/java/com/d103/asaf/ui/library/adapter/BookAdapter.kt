@@ -48,7 +48,7 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
                 // SharedPreference user가 학생이라면 버튼 글자를 변경
                 if(ApplicationClass.sharedPreferences.getString("authority") == "교육생") {
                     bookItemReturnSend.text = "반납"
-                    if(nearBy) bookItemReturnSend.isVisible = true
+                    if(nearBy && isDatePassed(book.returnDate)) bookItemReturnSend.isVisible = true
                     bookItemReturnSend.setOnClickListener {
                         sendReturn(book)
                     }
@@ -84,7 +84,7 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
     class BookDiffCallback : DiffUtil.ItemCallback<Book>() {
         override fun areItemsTheSame(oldItem: Book, newItem: Book): Boolean {
             // 식별자 요소를 비교하는게 맞다
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: Book, newItem: Book): Boolean {
@@ -117,7 +117,6 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
     fun isDatePassed(sdate: Long): Boolean {
         val currentDate = Calendar.getInstance().time
         val date = Date(sdate)
-        Log.d("지남", "isDatePassed: $date  $currentDate")
         return date.before(currentDate)
     }
 

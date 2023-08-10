@@ -69,9 +69,10 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
     private fun initList() {
         lifecycleScope.launch {
             viewModel.books.collect {
-                if(viewModel.isFirst == false) {
+                if(viewModel.isFirst == false && adapter.isDraw == false ) {
                     books = it
                     adapter.submitList(books)
+                    binding.fragmentLibraryRecyclerview.scrollToPosition(0)
                 }
             }
         }
@@ -79,6 +80,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
             viewModel.draws.collect {
                 books = viewModel.draws.value
                 adapter.submitList(books)
+                binding.fragmentLibraryRecyclerview.scrollToPosition(0)
             }
         }
 
@@ -100,6 +102,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
                 fragmentLibraryTextviewThird.text = "반납일"
                 books = viewModel.draws.value
                 adapter.submitList(books)
+                binding.fragmentLibraryRecyclerview.scrollToPosition(0)
             }
 
             bookToggleButton.setSecondButtonClickListener {
@@ -108,6 +111,7 @@ class LibraryManagementFragment : BaseFragment<FragmentLibraryManagementBinding>
                 fragmentLibraryTextviewThird.text = "수량"
                 books = viewModel.books.value
                 adapter.submitList(books)
+                binding.fragmentLibraryRecyclerview.scrollToPosition(0)
             }
 
             fragmentLibrarySearchBar.setSearchClickListener {

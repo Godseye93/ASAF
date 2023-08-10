@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
@@ -13,6 +14,7 @@ import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentLibraryUseReturnBinding
 import com.d103.asaf.ui.library.QRCodeScannerDialog
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class LibraryUseReturnFragment : BaseFragment<FragmentLibraryUseReturnBinding>(
@@ -39,6 +41,8 @@ class LibraryUseReturnFragment : BaseFragment<FragmentLibraryUseReturnBinding>(
         } else {
             returnInfo = requireArguments().getParcelable(RETURN) ?: Book()
         }
+        returnInfo.borrowState = false
+        Log.d("도서정보", "onCreate: $returnInfo")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,15 +53,17 @@ class LibraryUseReturnFragment : BaseFragment<FragmentLibraryUseReturnBinding>(
                 findNavController().navigateUp()
             }
             materialButtonYes.setOnClickListener {
-                // returnBook()
+                lifecycleScope.launch{
+                    returnBook(returnInfo.id, returnInfo)
+                }
             }
         }
     }
 
-    private suspend fun returnBook(bookId: Int) {
+    private suspend fun returnBook(bookId: Int, book: Book) {
         try {
             val response = withContext(Dispatchers.IO) {
-                RetrofitUtil.libraryService.updateBook(bookId)
+                RetrofitUtil.libraryService.updateBook(bookId, book)
             }
             if (response.isSuccessful) {
                 if(response.body() == false) {

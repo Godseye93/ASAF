@@ -20,7 +20,6 @@ class ApplicationClass : Application() {
 
     companion object {
        // 서버 주소
-
 //        val API_URL ="http://192.168.100.158:8081/"     // 진욱님
 //        val API_URL ="http://192.168.100.62:8081/"     // 민재님
 //        val API_URL = "http://192.168.100.169:8081/"    // 형진님
