@@ -53,7 +53,7 @@ interface LibraryService {
 
     // 수정
     @PUT("/book/{book_id}")
-    suspend fun updateBook(@Path("book_id") bookId: Int, @Body book: Book) : Response<Boolean>
+    suspend fun updateBook(@Path("book_id") bookId: Int) : Response<Boolean>
 
     // 수정
     @PUT("/book/borrow/{book_number}")

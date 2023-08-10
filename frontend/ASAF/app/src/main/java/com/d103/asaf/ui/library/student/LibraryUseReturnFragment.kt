@@ -49,21 +49,23 @@ class LibraryUseReturnFragment : BaseFragment<FragmentLibraryUseReturnBinding>(
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
             materialButtonNo.setOnClickListener {
-                // 뒤로가기
-                findNavController().navigateUp()
+                findNavController().navigate(R.id.action_libraryUseReturnFragment_to_libraryUseFragment)
             }
             materialButtonYes.setOnClickListener {
                 lifecycleScope.launch{
-                    returnBook(returnInfo.id, returnInfo)
+                    returnBook(returnInfo.id)
                 }
+                findNavController().navigate(R.id.action_libraryUseReturnFragment_to_libraryUseFragment)
             }
+            fragmentLibraryUserReturnTextviewTitle.text = returnInfo.bookName
+            fragmentLibraryUserTextviewAuthor.text = returnInfo.author
         }
     }
 
-    private suspend fun returnBook(bookId: Int, book: Book) {
+    private suspend fun returnBook(bookId: Int) {
         try {
             val response = withContext(Dispatchers.IO) {
-                RetrofitUtil.libraryService.updateBook(bookId, book)
+                RetrofitUtil.libraryService.updateBook(bookId)
             }
             if (response.isSuccessful) {
                 if(response.body() == false) {

@@ -161,7 +161,11 @@
         android:id="@+id/libraryUseReturnFragment"
         android:name="com.d103.asaf.ui.library.student.LibraryUseReturnFragment"
         android:label="LibraryUseReturn"
-        tools:layout="@layout/fragment_library_use_return" />
+        tools:layout="@layout/fragment_library_use_return" >
+        <action
+            android:id="@+id/action_libraryUseReturnFragment_to_libraryUseFragment"
+            app:destination="@id/libraryUseFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/supportFragment"
