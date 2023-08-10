@@ -65,7 +65,14 @@ class LoginFragmentViewModel : ViewModel() {
             try {
                 _loginResult.value = memberService.login(Member(email, password))
                 Log.d("TOKENTOKEN", "login: $token")
-                val response = RetrofitUtil.memberService.addToken(loginResult.value!!.id, token )
+                Log.d(TAG, "loginID: ${loginResult.value?.id}")
+                val response = memberService.addToken(loginResult.value!!.id, token )
+                if(response.isSuccessful){
+                    Log.d(TAG, "토큰 변환 성공: ")
+                }
+                else{
+                    Log.d(TAG, "토큰 변환 실패: ${response.errorBody()}")
+                }
 
 
             } catch (e: Exception) {

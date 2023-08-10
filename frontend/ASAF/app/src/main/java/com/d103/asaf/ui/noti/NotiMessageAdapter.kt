@@ -16,22 +16,32 @@ import com.d103.asaf.common.util.AdapterUtil
 import com.d103.asaf.databinding.ItemMarketBinding
 import com.d103.asaf.databinding.NotiCardViewBinding
 import com.d103.asaf.ui.market.MarketAdpater
+import com.d103.asaf.ui.schedule.ScheduleFragment
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class NotiMessageAdapter (var context : Context) : ListAdapter<NotiMessage, NotiMessageAdapter.ItemViewHolder>(
+class NotiMessageAdapter (var context : Context,var fragment: StudentNotiFragment) : ListAdapter<NotiMessage, NotiMessageAdapter.ItemViewHolder>(
     AdapterUtil.diffUtilNotiMessage
 ) {
-    var hiddenFlag = false
+    // 스와이프한 아이템 삭제
+    fun removeItem(position: Int) {
+        if (position in 0 until itemCount) {
+            val newList = ArrayList(currentList)
+            (fragment as StudentNotiFragment).deleteMessage(currentList[position])
+            newList.removeAt(position)
+            submitList(newList)
+        }
+    }
+
     inner class ItemViewHolder(var binding : NotiCardViewBinding) :  RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data : NotiMessage){
 //            Log.d("이미지", "${"${ApplicationClass.API_URL}member/${data.senderImage.split("/")[6].split(".")[0]}.com/profile-image"} ")
-            Glide
-                .with(context)
-                .load( "${API_URL}member/ssafypro0001@ssafy.com/profile-image")
-                .into( binding.senderProfileImage)
+//            Glide
+//                .with(context)
+//                .load( "${API_URL}member/ssafypro0001@ssafy.com/profile-image")
+//                .into( binding.senderProfileImage)
             binding.notiTitle.text = data.title
             binding.senderName.text = data.sender
             val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분", Locale.getDefault())
@@ -40,13 +50,12 @@ class NotiMessageAdapter (var context : Context) : ListAdapter<NotiMessage, Noti
             binding.notiCardContent.text = data.content
 
             binding.fragmentStudentNotiLayout.setOnClickListener {
-                hiddenFlag = !hiddenFlag
 
-                if(hiddenFlag){
-                    binding.hiddenLayout.visibility = View.VISIBLE
+                if(binding.hiddenLayout.visibility == View.VISIBLE){
+                    binding.hiddenLayout.visibility = View.GONE
                 }
                 else{
-                    binding.hiddenLayout.visibility = View.GONE
+                    binding.hiddenLayout.visibility = View.VISIBLE
                 }
 
 

@@ -132,6 +132,10 @@ class MarketFragment : BaseFragment<FragmentMarketBinding>(FragmentMarketBinding
 //        testList.add(test5)
 //
 //    }
+    override fun onResume() {
+        super.onResume()
+        viewModel.getMarketList()
+    }
 
     companion object {
         /**
