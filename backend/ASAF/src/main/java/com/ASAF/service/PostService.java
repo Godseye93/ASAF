@@ -68,15 +68,18 @@ public class PostService {
         }
     }
     private String storeImage(MultipartFile imageFile, Long post_id) {
-        String storageDirectory = "src/main/resources/static/images/post_images/";
+        String storageDirectory = "/home/ubuntu/statics/images/post_images/";
+        String STATIC_DIR = "images/post_images/";
         String fileName = imageFile.getOriginalFilename();
         String imagePath = null;
+        String imageUrl = null;
 
         try {
             if (imageFile.isEmpty()) {
                 return imagePath;
             }
             imagePath = storageDirectory + post_id + "_" + fileName;
+            imageUrl = STATIC_DIR + post_id + "_" + fileName;
             File dest = new File(imagePath);
             FileCopyUtils.copy(imageFile.getBytes(), dest);
         } catch (IOException e) {
