@@ -68,8 +68,12 @@ public class DataLoader implements CommandLineRunner {
             if (i<=24) {
                 String email = String.format("ssafypro%04d@ssafy.com", i);
                 memberDTO.setMemberEmail(email);
-            } else if (i >= 439 && i <= 449) {
+            } else if (i >= 439 && i <= 447) {
                 int suffix = i - 438; // 범위가 1부터 시작하도록 하기 위해 438를 빼줍니다.
+                String email = String.format("ssafy%04d@ssafy.com", suffix);
+                memberDTO.setMemberEmail(email);
+            } else if (i >= 495 && i <= 509) {
+                int suffix = i - 485; // 범위가 1부터 시작하도록 하기 위해 438를 빼줍니다.
                 String email = String.format("ssafy%04d@ssafy.com", suffix);
                 memberDTO.setMemberEmail(email);
             } else {
@@ -79,7 +83,7 @@ public class DataLoader implements CommandLineRunner {
 
             if (i<=24) {
                 memberDTO.setMemberPassword("0000");
-            } else if (i >= 439 && i <= 449) {
+            } else if (i >= 439 && i <= 559) {
                 memberDTO.setMemberPassword("0000");
             } else {
                 String randomPassword = String.format("%04d", random.nextInt(10000));
@@ -132,7 +136,7 @@ public class DataLoader implements CommandLineRunner {
 //            memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/default.png");
             memberDTO.setElectronic_student_id(10000 + i);
 
-            if (i <= 544) {
+            if (i <= 438) {
                 memberDTO.setMember_info("0000");
             } else {
                 int randomInfoNumber = 101 + random.nextInt(10); // 범위는 101에서 110
@@ -368,20 +372,20 @@ public class DataLoader implements CommandLineRunner {
                 classInfoDTO.setId(i - 14);
                 classInfoDTO.setGeneration_code(2);
                 classInfoDTO.setRegion_code(2);
-            } else if (i<=478) {
+            } else if (i<=508) {
                 classInfoDTO.setClass_code(1);
                 classInfoDTO.setId(i - 14);
                 classInfoDTO.setGeneration_code(1);
                 classInfoDTO.setRegion_code(2);
-            } else if (i<=518) {
-                classInfoDTO.setClass_code(1);
+            } else if (i<=578) {
+                classInfoDTO.setClass_code(2);
                 classInfoDTO.setId(i - 14);
                 classInfoDTO.setGeneration_code(1);
                 classInfoDTO.setRegion_code(2);
             } else {
-                classInfoDTO.setClass_code(1);
+                classInfoDTO.setClass_code(20);
                 classInfoDTO.setId(i - 14);
-                classInfoDTO.setGeneration_code(1);
+                classInfoDTO.setGeneration_code(2);
                 classInfoDTO.setRegion_code(2);
             }
 
@@ -446,7 +450,7 @@ public class DataLoader implements CommandLineRunner {
                 }
             } else {
                 for (int j = 1; j <= 30; j++) {
-                    if (j<=10) {
+                    if (j<=6) {
                         BookDTO bookDTO = new BookDTO();
                         List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
                         String book = bookAuthor.get(0);
@@ -465,7 +469,51 @@ public class DataLoader implements CommandLineRunner {
                         BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
                         bookRepository.save(bookEntity);
 
-                    } else if (j<=20){
+                    } else if (j<=12){
+                        BookDTO bookDTO = new BookDTO();
+                        List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
+                        String book = bookAuthor.get(0);
+                        String author = bookAuthor.get(1);
+
+                        bookDTO.setBorrowDate(1591513808494L);
+                        bookDTO.setReturnDate(1591563808494L);
+
+                        bookDTO.setBorrowState(true);
+                        bookDTO.setId(509);
+                        bookDTO.setClass_code(2);
+                        bookDTO.setRegion_code(2);
+                        bookDTO.setGeneration_code(1);
+                        bookDTO.setBookName(book);
+                        bookDTO.setAuthor(author);
+                        bookDTO.setPublisher("싸피출판사");
+                        bookDTO.setClass_num(1);
+
+                        BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
+                        bookRepository.save(bookEntity);
+
+                    } else if (j<=18){
+                        BookDTO bookDTO = new BookDTO();
+                        List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
+                        String book = bookAuthor.get(0);
+                        String author = bookAuthor.get(1);
+
+                        bookDTO.setBorrowDate(1591513808494L);
+                        bookDTO.setReturnDate(1791563808494L);
+
+                        bookDTO.setBorrowState(true);
+                        bookDTO.setId(509);
+                        bookDTO.setClass_code(2);
+                        bookDTO.setRegion_code(2);
+                        bookDTO.setGeneration_code(1);
+                        bookDTO.setBookName(book);
+                        bookDTO.setAuthor(author);
+                        bookDTO.setPublisher("싸피출판사");
+                        bookDTO.setClass_num(1);
+
+                        BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
+                        bookRepository.save(bookEntity);
+
+                    } else if (j<=24){
                         BookDTO bookDTO = new BookDTO();
                         List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
                         String book = bookAuthor.get(0);
