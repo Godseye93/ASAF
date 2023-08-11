@@ -36,11 +36,20 @@
             android:id="@+id/fragment_join_imageview_profile"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:src="@drawable/rounded_image_listview"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_join_textview_signup" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:text=" ←  클릭해 프로필 사진을 등록하세요. "
+            app:layout_constraintStart_toEndOf="@+id/fragment_join_imageview_profile"
+            app:layout_constraintTop_toTopOf="@+id/fragment_join_imageview_profile" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_join_layout_name"
@@ -48,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
             android:hint="이름"
             app:layout_constraintEnd_toEndOf="parent"
@@ -67,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
             android:hint="E-mail"
             app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
             android:hint="비밀번호"
             app:layout_constraintEnd_toEndOf="parent"
@@ -105,7 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
             android:hint="비밀번호 확인"
             app:layout_constraintEnd_toEndOf="parent"
@@ -133,7 +142,7 @@
                 android:layout_weight="4"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:hint="생년월일">
                 <com.google.android.material.textfield.TextInputEditText
@@ -146,39 +155,19 @@
                 android:id="@+id/fragment_join_button_calendar"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:src="@drawable/baseline_calendar_month_24"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="32dp"
                 android:layout_marginTop="16dp"
                 android:baselineAlignBottom="true"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/fragment_join_layout_information"-->
-<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="32dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_marginEnd="32dp"-->
-<!--            android:hint="지역 / 기수 / 반"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_birth">-->
-
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:id="@+id/fragment_join_editTV_information"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-
         <LinearLayout
             android:id="@+id/fragment_join_layout_information"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="32dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -223,21 +212,58 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_join_layout_student_number"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:hint="학번"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_information">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_join_editTV_student_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_join_layout_phone_number"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:hint="전화번호"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_student_number">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_join_editTV_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fragment_join_button_signup"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="12dp"
             android:backgroundTint="@color/defaultMainColor"
             android:text="      회원가입         →"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_information" />
-
-
+            app:layout_constraintTop_toBottomOf="@+id/fragment_join_layout_phone_number" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

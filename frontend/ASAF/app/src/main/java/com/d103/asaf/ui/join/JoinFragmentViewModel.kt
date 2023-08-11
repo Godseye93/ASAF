@@ -36,7 +36,7 @@ class JoinFragmentViewModel : ViewModel() {
 
     suspend fun signup(member: Member) {
         val userInfo = "이름: ${member.memberName}, 이메일: ${member.memberEmail}, 비밀번호: ${member.memberPassword}, " +
-                "생년월일: ${member.birthDate}, 추가정보: ${member.memberInfo}"
+                "생년월일: ${member.birthDate}, 추가정보: ${member.memberInfo}, 학번: ${member.studentNumber}, 전화번호: ${member.phoneNumber}"
         Log.d(TAG, "signup: $userInfo")
 
         try {
@@ -89,7 +89,8 @@ class JoinFragmentViewModel : ViewModel() {
         // 입력 값의 유효성을 검사합니다.
         if (member.memberName.isBlank() || member.memberEmail.isBlank() ||
             member.memberPassword.isBlank() || confirmPassword.isBlank() ||
-            member.birthDate.isBlank() || member.memberInfo.isBlank() || uri == null) {
+            member.birthDate.isBlank() || member.memberInfo.isBlank() ||
+            member.phoneNumber.isBlank() || member.studentNumber.toString().isBlank() || uri == null) {
             // 입력값 중 하나라도 비어있을 경우 false를 반환합니다.
             return false
         }
