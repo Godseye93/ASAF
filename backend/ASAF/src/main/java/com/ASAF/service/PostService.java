@@ -60,7 +60,7 @@ public class PostService {
                 if (imagePath == null) {
                     throw new RuntimeException("Failed to store image");
                 }
-                imageEntity.setImage_url(imagePath);
+                imageEntity.setImageUri(imagePath);
                 imageEntity.setPost(postEntity);
 
                 imageRepository.save(imageEntity);
@@ -207,7 +207,7 @@ public class PostService {
             PostEntity postEntity = postEntityOptional.get();
 
             for (ImageEntity image : postEntity.getImages()) {
-                Path imagePath = Paths.get(image.getImage_url());
+                Path imagePath = Paths.get(image.getImageUri());
                 try {
                     Files.deleteIfExists(imagePath);
                 } catch (IOException e) {
@@ -240,7 +240,7 @@ public class PostService {
             if (imagePath == null) {
                 throw new RuntimeException("Failed to store image");
             }
-            imageEntity.setImage_url(imagePath);
+            imageEntity.setImageUri(imagePath);
             imageEntity.setPost(postEntity);
             newImages.add(imageEntity);
         }
