@@ -1,15 +1,16 @@
+// PostEntity.java
 package com.ASAF.entity;
 
-import com.ASAF.dto.PostDTO;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "post")
+@ToString(exclude = "images")
 public class PostEntity {
 
     @Id
@@ -25,9 +26,7 @@ public class PostEntity {
     @Column
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "id")
-    private MemberEntity id;
+    private int id;
 
     @Column
     private String profile_image;
@@ -35,9 +34,6 @@ public class PostEntity {
     @Column
     private String name;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post")
     private List<ImageEntity> images;
-
-    public MemberEntity getMemberEntity() { return id; }
-
 }

@@ -17,5 +17,6 @@ public class ImageDTO {
     public ImageDTO(ImageEntity imageEntity) {
         this.image_id = imageEntity.getImage_id();
         this.image_url = imageEntity.getImage_url();
+        this.post_id = imageEntity.getPost().getPost_id();
     }
 }

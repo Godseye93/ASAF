@@ -67,22 +67,6 @@ public class SignController {
                                          @RequestParam("month") String month) throws ChangeSetPersister.NotFoundException {
         System.out.println("통신 확인");
         List<SignDTO> signs = signService.getSignsByCodes(class_code, region_code, generation_code, month);
-
-        for (SignDTO signDTO : signs) {
-            String imagePath = signService.getImageUrlPath(signDTO.getName());
-            try {
-                Resource image = new UrlResource(Paths.get(imagePath).toUri());
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.IMAGE_JPEG);
-                headers.setContentDisposition(ContentDisposition.builder("inline")
-                        .filename(image.getFilename())
-                        .build());
-                signDTO.setImage_url(image.getURL().toString());
-            } catch (Exception e) {
-                // 이미지를 찾거나 로드하는 데 문제가 발생했을 경우 적절한 오류 처리를 하십시오.
-            }
-        }
         return signs;
     }
-
 }
