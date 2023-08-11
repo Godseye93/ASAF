@@ -133,9 +133,11 @@ public class MemberController {
     // 프로필 이미지 가져오기
     @GetMapping("/{memberEmail}/profile-image")
     public ResponseEntity<Resource> getProfileImage(@PathVariable String memberEmail) {
+        System.out.println("뜨나");
         try {
             String imagePath = memberService.getProfileImagePath(memberEmail);
             Resource image = new UrlResource(Paths.get(imagePath).toUri());
+            System.out.println(Paths.get(imagePath).toUri());
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_JPEG);
             headers.setContentDisposition(ContentDisposition.builder("inline")
@@ -146,6 +148,7 @@ public class MemberController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+
     }
 
     @PostMapping("/checkin/{id}")
