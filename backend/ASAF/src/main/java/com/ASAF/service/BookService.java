@@ -197,6 +197,11 @@ public class BookService {
 
         if (bookEntityOptional.isPresent()) {
             BookEntity bookEntity = bookEntityOptional.get();
+            BookDTO originalBookDTO = new BookDTO(bookEntity);
+
+            if (originalBookDTO.getBorrowState() == bookDTO.getBorrowState()) {
+                return null;
+            }
 
             // 도서 대출 정보 업데이트
             bookEntity.setBorrower(bookDTO.getBorrower());
