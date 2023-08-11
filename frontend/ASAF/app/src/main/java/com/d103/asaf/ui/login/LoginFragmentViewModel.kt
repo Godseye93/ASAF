@@ -110,7 +110,7 @@ class LoginFragmentViewModel : ViewModel() {
                     val passwordResetBody = "기존 비밀번호 : \n\n\n ${member.memberPassword}"
 //                    sendEmail(email, passwordResetSubject, passwordResetBody)
                     _toastMessage.postValue("비밀번호를 이메일로 전송했습니다.") // Toast 메시지 설정
-                    sendEmail()
+                    sendEmail("기존 비밀번호 : ${member.memberPassword}")
                     _passwordFindResult.postValue(true)
                     Log.d(TAG, "findPassword: 기존에 있던 회원입니다 !!!! ${email} ${name} ${member.memberPassword}")
                 } else {
@@ -126,7 +126,7 @@ class LoginFragmentViewModel : ViewModel() {
     }
 
     // 저장 후 메일로 보내 주는 코드 추가
-    private fun sendEmail() {
+    private fun sendEmail( s : String) {
         MaildroidX.Builder()
             .smtp("live.smtp.mailtrap.io")
             .smtpUsername("api")
@@ -136,7 +136,7 @@ class LoginFragmentViewModel : ViewModel() {
             .to("wpwo98@naver.com")
             .from("mailtrap@asaf.live")
             .subject("hello")
-            .body("body")
+            .body(s)
 //            .attachment(path)
             .isStartTLSEnabled(true)
             .mail()

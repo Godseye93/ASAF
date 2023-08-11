@@ -21,26 +21,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.MainActivity
-import com.d103.asaf.R
-import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentJoinBinding
-import com.d103.asaf.ui.login.LoginFragment
 import com.d103.asaf.ui.sign.SignDrawFragment.Companion.regionCode
-import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.selects.select
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -48,7 +40,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
 import java.util.Calendar
-import java.util.Date
 
 private const val TAG = "JoinFragment_cjw"
 class JoinFragment : Fragment() {
@@ -138,7 +129,10 @@ class JoinFragment : Fragment() {
             if (viewModel.validateInputs(member, confirmPassword, tempUri)) {
                 // 이메일 중복 확인
                 lifecycleScope.launch {
-                    val isEmailDuplicated = async { checkDuplicateEmail(email) }.await()
+                    val isEmailDuplicated =
+                        withContext(Dispatchers.Default) {
+                            checkDuplicateEmail(email)
+                        }
 
                     if (!isEmailDuplicated) {
                         // 이메일이 중복되는 경우
@@ -148,28 +142,24 @@ class JoinFragment : Fragment() {
                         // 이미지를 서버로 업로드하는 로직 호출
                         Log.d(TAG, "setupViews: 이미지 null이니? : $tempUri")
 
-                        if(tempUri != null){
-                            uploadProfileImage(email, tempUri!!)
-                            // 이메일이 중복되지 않는 경우
-                            // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
-                            // viewModel.signup(name, email, password, birth, information)
-                            Log.d(TAG, "onSignupButtonClick: 사용 가능한 이메일입니다.")
+                        uploadProfileImage(email, tempUri!!)
+                        // 이메일이 중복되지 않는 경우
+                        // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
+                        // viewModel.signup(name, email, password, birth, information)
+                        Log.d(TAG, "onSignupButtonClick: 사용 가능한 이메일입니다.")
 
-                            // 뷰모델의 회원가입 메서드를 호출합니다.
-                            viewModel.signup(member)
-                            Log.d(TAG, "setupViews: 회원가입 되었습니다.")
-                            Toast.makeText(requireContext(), "회원가입 되었습니다.", Toast.LENGTH_SHORT).show()
+                        // 뷰모델의 회원가입 메서드를 호출합니다.
+                        viewModel.signup(member)
+                        Log.d(TAG, "setupViews: 회원가입 되었습니다.")
+                        Toast.makeText(requireContext(), "회원가입 되었습니다.", Toast.LENGTH_SHORT).show()
 
-                            // 반 배정
-                            val tempId = viewModel.signedMem(email,generationCode, regionCode, classCode)
-                            Log.d(TAG, "setupViews: $tempId, $generationCode, $regionCode, $classCode")
+                        // 반 배정
+                        val tempId = viewModel.signedMem(email,generationCode, regionCode, classCode)
+                        Log.d(TAG, "setupViews: $tempId, $generationCode, $regionCode, $classCode")
 
-                            // login fragment로 이동.
+                        // login fragment로 이동.
 //                            findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
-                            findNavController().navigateUp()
-                        }else{
-                            Toast.makeText(requireContext(), "프로필 사진을 등록하세요.", Toast.LENGTH_SHORT).show()
-                        }
+                        findNavController().navigateUp()
                     }
                 }
             } else {
@@ -300,15 +290,15 @@ class JoinFragment : Fragment() {
 
     // Modify checkDuplicateNickname to checkDuplicateEmail
     private suspend fun checkDuplicateEmail(email: String): Boolean {
-        try {
+        return try {
             // RetrofitUtil을 사용하여 서버에 이메일 중복 확인 요청
-            return RetrofitUtil.memberService.emailCheck(email)
+            RetrofitUtil.memberService.emailCheck(email)
         } catch (e: Exception) {
             // 예외 처리 로직
             Log.d(TAG, "checkDuplicateEmail: 오류 발생")
             Log.d(TAG, "checkDuplicateEmail: $e")
             // 예외 발생 시에도 false 값을 반환하여 이메일 중복으로 처리
-            return false
+            false
         }
     }
 
@@ -362,6 +352,10 @@ class JoinFragment : Fragment() {
                 } else {
                     // 이미지 업로드 실패 처리
                     Log.e(TAG, "uploadProfileImage: 이미지 업로드 실패")
+                    // 서버에 프로필 이미지 업로드 요청
+                    val response1 = RetrofitUtil.memberService.uploadProfileImage(emailRequestBody, profileImagePart!!)
+//                    Log.d(TAG, "uploadProfileImage: ${response1.body()}")
+
                 }
             } catch (e: Exception) {
                 // 예외 처리 로직
