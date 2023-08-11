@@ -1,5 +1,6 @@
 package com.d103.asaf.ui.market
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -102,10 +103,15 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
             binding.fragmentMarketDetailContent.text = it.content
             binding.fragmentMarketDetailRegisterTime.text = convertLongToDate(it.registerTime)
             binding.fragmentMarketDetailTitleView.text = it.title
+            val imageSplit = viewModel.marketDetail.value?.profileImage?.split("/")!!
+            val path =  "http://i9d103.p.ssafy.io" + "/" + imageSplit[4] + "/" + imageSplit[5] + "/" + imageSplit[6]
             Glide
                 .with(requireContext())
-                .load("${ApplicationClass.API_URL}member/${it.profileImage.split("/")[6].split(".")[0]}.com/profile-image")
+                .load(path)
                 .into(binding.fragmentMarketDetailProfile)
+
+
+
             binding.fragmentMarketDetailUserName.text = it.name
 
         }

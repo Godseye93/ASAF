@@ -27,10 +27,12 @@ class MarketAdpater (var context : Context): ListAdapter<Market, MarketAdpater.I
     inner class ItemViewHolder(var binding : ItemMarketBinding) :  RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data : Market){
+            val imageSplit = data.profileImage.split("/")
+            val path =  "http://i9d103.p.ssafy.io" + "/" + imageSplit[4] + "/" + imageSplit[5] + "/" + imageSplit[6]
             Log.d("이미지 경로", "${ApplicationClass.API_URL}member/${data.profileImage.split("/")[6].split(".")[0]}.com/profile-image")
             Glide
                 .with(context)
-                .load("${ApplicationClass.API_URL}member/${data.profileImage.split("/")[6].split(".")[0]}.com/profile-image")
+                .load(path)
                 .into( binding.marketProfileImage)
             binding.markentPostTitle.text = data.title
             binding.markentPostTitle.isSelected = true
