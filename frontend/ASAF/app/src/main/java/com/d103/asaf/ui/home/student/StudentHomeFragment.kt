@@ -202,14 +202,16 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
         val regionValue = ApplicationClass.sharedPreferences.getString("region")
         val classCodeValue = ApplicationClass.sharedPreferences.getInt("classCode")
 
-        val regionText = when (regionValue?.toInt()) {
-            1 -> "서울"
-            2 -> "구미"
-            3 -> "대전"
-            4 -> "부울경"
-            5 -> "광주"
-            else -> " - "
-        }
+        val regionText = regionValue
+
+//        val regionText = when (regionValue?.toInt()) {
+//            1 -> "서울"
+//            2 -> "구미"
+//            3 -> "대전"
+//            4 -> "부울경"
+//            5 -> "광주"
+//            else -> " - "
+//        }
 
         Log.d(TAG, "initView 텍스트뷰에 찍을 거에요 : $nthValue, $regionValue, $classCodeValue ")
 

@@ -34,6 +34,7 @@ import com.d103.asaf.ui.library.Constants.RUNTIME_PERMISSIONS
 import com.d103.asaf.ui.library.QRCodeScannerDialog
 import com.d103.asaf.ui.library.adapter.BookAdapter
 import com.d103.asaf.ui.library.adapter.NavigationListener
+import com.d103.asaf.ui.op.OpFragmentViewModel
 import com.d103.asaf.ui.sign.SignFragment
 import kotlinx.coroutines.launch
 import org.altbeacon.beacon.BeaconManager
@@ -48,12 +49,18 @@ import java.util.Locale
 private const val TAG = "교육생 도서관"
 class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibraryUseBinding::bind, R.layout.fragment_library_use),
     NavigationListener {
+
+    companion object {
+        var parentViewModel : LibraryUseFragmentViewModel? = null
+    }
+
     private val viewModel: LibraryUseFragmentViewModel by viewModels()
     private var books: MutableList<Book> = mutableListOf()
     private var adapter = BookAdapter(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        parentViewModel = viewModel
         initList()
         initView()
         initBeacon()
@@ -74,7 +81,7 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
                 books = viewModel.myDraws.value
                 adapter.isDraw = true
                 adapter.submitList(books)
-                if(isAdded && view != null)requireView().invalidate()
+                if(isAdded && view != null) requireView().invalidate()
             }
         }
         lifecycleScope.launch {
@@ -283,15 +290,17 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
                         // 사정거리 내에 있을 경우 이벤트 표시 다이얼로그 팝업
                         if (beacon.distance <= BEACON_DISTANCE && isDetected == true && adapter.isDraw == true) {
                             Log.d(TAG, "didRangeBeaconsInRegion: distance 이내.")
-                            adapter.nearBy = true // 비콘 근처면 근처라고 변경하고 submitList
                             // 정보 안변하는데 위에 걸로 반영돼서 활성화되는지 확인 필요
                             books = viewModel.myDraws.value
+                            adapter = BookAdapter(this@LibraryUseFragment)
+                            adapter.isDraw = true
+                            adapter.nearBy = true // 비콘 근처면 근처라고 변경하고 submitList
+                            if(isAdded) binding.fragmentLibraryUserRecyclerview.adapter = adapter
                             adapter.submitList(books)
-                            if(isAdded && view != null) requireView().invalidate()
-                            isDetected = false
-                            Handler(Looper.getMainLooper()).postDelayed ({
-                                isDetected = true
-                            },10000)
+                            if(rangeNotifier!=null) beaconManager.removeRangeNotifier(rangeNotifier!!)
+//                            Handler(Looper.getMainLooper()).postDelayed ({
+//                                beaconManager.addRangeNotifier(rangeNotifier!!)
+//                            },10000)
                         } else {
                             Log.d(TAG, "didRangeBeaconsInRegion: distance 이외.")
                         }

@@ -13,6 +13,7 @@ import com.d103.asaf.common.model.dto.Book
 import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentLibraryUseReturnBinding
 import com.d103.asaf.ui.library.QRCodeScannerDialog
+import com.d103.asaf.ui.op.OpFragmentViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -31,6 +32,7 @@ class LibraryUseReturnFragment : BaseFragment<FragmentLibraryUseReturnBinding>(
         }
     }
 
+    private var viewModel:LibraryUseFragmentViewModel = LibraryUseFragment.parentViewModel!!
     private var returnInfo:Book = Book()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,31 +51,38 @@ class LibraryUseReturnFragment : BaseFragment<FragmentLibraryUseReturnBinding>(
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
             materialButtonNo.setOnClickListener {
-                // 뒤로가기
-                findNavController().navigateUp()
+                findNavController().navigate(R.id.action_libraryUseReturnFragment_to_libraryUseFragment)
             }
             materialButtonYes.setOnClickListener {
+                returnInfo.borrowState = false
                 lifecycleScope.launch{
                     returnBook(returnInfo.id, returnInfo)
                 }
+                findNavController().navigate(R.id.action_libraryUseReturnFragment_to_libraryUseFragment)
             }
+            fragmentLibraryUserReturnTextviewTitle.text = returnInfo.bookName
+            fragmentLibraryUserTextviewAuthor.text = returnInfo.author
+
         }
     }
 
-    private suspend fun returnBook(bookId: Int, book: Book) {
+    private suspend fun returnBook(bookId: Int, returnInfo: Book) {
         try {
             val response = withContext(Dispatchers.IO) {
-                RetrofitUtil.libraryService.updateBook(bookId, book)
+                RetrofitUtil.libraryService.updateDrawBook(bookId, returnInfo)
             }
             if (response.isSuccessful) {
-                if(response.body() == false) {
-                    Toast.makeText(requireContext(), "이미 반납된 도서입니다.", Toast.LENGTH_SHORT).show()
+                if(response.body() != null) {
+                    Toast.makeText(requireContext(), "반납이 완료 됐습니다.", Toast.LENGTH_SHORT).show()
+                    viewModel.loadRemote()
                 }
                 else {
-                    Toast.makeText(requireContext(), "반납이 완료 됐습니다.", Toast.LENGTH_SHORT).show()
-                    findNavController().navigateUp()
+                    Toast.makeText(requireContext(), "이미 반납된 도서입니다.", Toast.LENGTH_SHORT).show()
                 }
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             } else {
+                Toast.makeText(requireContext(), "이미 반납된 도서입니다.", Toast.LENGTH_SHORT).show()
+                requireActivity().onBackPressedDispatcher.onBackPressed()
                 Log.d("학생도서", "도서 반납 네트워크 오류")
             }
         } catch (e: Exception) {

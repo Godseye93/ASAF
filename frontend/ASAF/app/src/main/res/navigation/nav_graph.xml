@@ -146,7 +146,9 @@
         tools:layout="@layout/fragment_library_use" >
         <action
             android:id="@+id/action_libraryUseFragment_to_libraryUseReturnFragment"
-            app:destination="@id/libraryUseReturnFragment" />
+            app:destination="@id/libraryUseReturnFragment"
+            app:popUpTo="@id/libraryUseFragment"
+            app:popUpToInclusive="true"/>
 
         <action
             android:id="@+id/action_libraryUseFragment_to_StudentHomeFragment"
@@ -159,7 +161,11 @@
         android:id="@+id/libraryUseReturnFragment"
         android:name="com.d103.asaf.ui.library.student.LibraryUseReturnFragment"
         android:label="LibraryUseReturn"
-        tools:layout="@layout/fragment_library_use_return" />
+        tools:layout="@layout/fragment_library_use_return" >
+        <action
+            android:id="@+id/action_libraryUseReturnFragment_to_libraryUseFragment"
+            app:destination="@id/libraryUseFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/supportFragment"
@@ -238,7 +244,9 @@
         tools:layout="@layout/fragment_sign_draw" >
         <action
             android:id="@+id/action_signDrawFragment_to_signNextFragment"
-            app:destination="@id/signNextFragment" />
+            app:destination="@id/signNextFragment"
+            app:popUpTo="@id/signDrawFragment"
+            app:popUpToInclusive="true" />
 
         <action
             android:id="@+id/action_signDrawFragment_to_StudentHomeFragment"
