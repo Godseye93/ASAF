@@ -14,12 +14,12 @@ public class ImageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long image_id;
+    private Long id;
 
     @Column
-    private String image_url;
+    private String imageUri;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "postId")
     private PostEntity post;
 }
