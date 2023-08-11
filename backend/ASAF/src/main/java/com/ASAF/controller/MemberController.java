@@ -136,6 +136,7 @@ public class MemberController {
         try {
             String imagePath = memberService.getProfileImagePath(memberEmail);
             Resource image = new UrlResource(Paths.get(imagePath).toUri());
+            System.out.println(Paths.get(imagePath).toUri());
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_JPEG);
             headers.setContentDisposition(ContentDisposition.builder("inline")
