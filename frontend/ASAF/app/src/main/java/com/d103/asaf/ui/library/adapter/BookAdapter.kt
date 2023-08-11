@@ -48,7 +48,8 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
                 // SharedPreference user가 학생이라면 버튼 글자를 변경
                 if(ApplicationClass.sharedPreferences.getString("authority") == "교육생") {
                     bookItemReturnSend.text = "반납"
-                    if(nearBy && isDatePassed(book.returnDate)) bookItemReturnSend.isVisible = true
+                    bookItemReturnSend.isVisible = nearBy && isDatePassed(book.returnDate)
+
                     bookItemReturnSend.setOnClickListener {
                         sendReturn(book)
                     }

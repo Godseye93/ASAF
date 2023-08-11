@@ -73,14 +73,16 @@ class LibraryUseReturnFragment : BaseFragment<FragmentLibraryUseReturnBinding>(
             }
             if (response.isSuccessful) {
                 if(response.body() != null) {
-                    Toast.makeText(requireContext(), "이미 반납된 도서입니다.", Toast.LENGTH_SHORT).show()
-                }
-                else {
                     Toast.makeText(requireContext(), "반납이 완료 됐습니다.", Toast.LENGTH_SHORT).show()
                     viewModel.loadRemote()
-                    findNavController().navigateUp()
                 }
+                else {
+                    Toast.makeText(requireContext(), "이미 반납된 도서입니다.", Toast.LENGTH_SHORT).show()
+                }
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             } else {
+                Toast.makeText(requireContext(), "이미 반납된 도서입니다.", Toast.LENGTH_SHORT).show()
+                requireActivity().onBackPressedDispatcher.onBackPressed()
                 Log.d("학생도서", "도서 반납 네트워크 오류")
             }
         } catch (e: Exception) {
