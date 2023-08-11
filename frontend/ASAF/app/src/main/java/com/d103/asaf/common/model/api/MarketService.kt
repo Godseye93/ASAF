@@ -26,5 +26,5 @@ interface MarketService {
     suspend fun getAll() : Response<MutableList<Market>>
 
     @GET("post/{postId}")
-    suspend fun getMarket(@Path("postId") id : Int) : Response<MarketDetail>
+    suspend fun getMarket(@Path("postId") id : Long) : Response<MarketDetail>
 }

@@ -29,7 +29,7 @@ class MarketDetailFragmentViweModel : ViewModel() {
 
     fun getMarketDetail(id : Int){
         viewModelScope.launch {
-            val response = RetrofitUtil.marketService.getMarket(id)
+            val response = RetrofitUtil.marketService.getMarket(id.toLong())
             if(response.isSuccessful){
                 Log.d("마켓 상세정보", "getMarketDetail: ${response.body()}")
                 _marketDetail.value = response.body()
@@ -37,8 +37,5 @@ class MarketDetailFragmentViweModel : ViewModel() {
         }
     }
 
-    fun setNullImageList(){
-        val data = MarketImage(Uri.parse("https://cdn-icons-png.flaticon.com/512/75/75519.png"))
-        marketImageList.value?.add(data)
-    }
+
 }
