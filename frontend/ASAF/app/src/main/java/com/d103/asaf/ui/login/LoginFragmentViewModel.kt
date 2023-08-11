@@ -26,13 +26,13 @@ import com.gun0912.tedpermission.provider.TedPermissionProvider.context
 private const val TAG = "LoginFragmentViewModel_cjw"
 class LoginFragmentViewModel : ViewModel() {
 
-
     // 가상의 로그인 결과를 MutableLiveData로 표현 (실제로는 서버와의 통신 등이 필요)
     private val _loginResult = MutableLiveData<Member>()
     val loginResult: LiveData<Member> get() = _loginResult
 
     private val _toastMessage = MutableLiveData<String>()
     val toastMessage: LiveData<String> get() = _toastMessage
+
 
 //    fun login(email: String, password: String) {
 //        viewModelScope.launch(Dispatchers.IO) {
@@ -76,16 +76,11 @@ class LoginFragmentViewModel : ViewModel() {
                 else{
                     Log.d(TAG, "토큰 변환 실패: ${response.errorBody()}")
                 }
-
-
             } catch (e: Exception) {
                 _loginResult.value = Member()
             }
         }
-
     }
-
-
 
     // 예시를 위한 임시 가상의 로그인 메서드
     private fun performFakeLogin(email: String, password: String): Boolean {

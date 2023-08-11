@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="장 진 욱"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+        <TextView
+            style="@style/explain_text"
+            android:id="@+id/list_item_developer_tvLink"
+            android:layout_marginStart="16dp"
+            android:text="@string/jjw_git"
+            android:autoLink="web" />
+        <TextView
+            style="@style/explain_text"
+            android:id="@+id/list_item_developer_tvCopyright"
+            android:layout_marginStart="16dp"
+            android:text="@string/jjw_contact" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="김 형 진"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+        <TextView
+            style="@style/explain_text"
+            android:id="@+id/list_item_developer_tvLink2"
+            android:layout_marginStart="16dp"
+            android:text="@string/khj_git"
+            android:autoLink="web" />
+        <TextView
+            style="@style/explain_text"
+            android:id="@+id/list_item_developer_tvCopyright2"
+            android:layout_marginStart="16dp"
+            android:text="@string/khj_contact" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="권 민 재"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+        <TextView
+            style="@style/explain_text"
+            android:id="@+id/list_item_developer_tvLink3"
+            android:layout_marginStart="16dp"
+            android:text="@string/kmj_git"
+            android:autoLink="web" />
+        <TextView
+            style="@style/explain_text"
+            android:id="@+id/list_item_developer_tvCopyright3"
+            android:layout_marginStart="16dp"
+            android:text="@string/kmj_contact" />
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
