@@ -31,10 +31,16 @@ public class BookController {
         return bookService.updateBook(book_number, bookDTO);
     }
 
-    // 도서 대출 (id, borrdowdate, returndate, drawstate, borrower)
+    // 도서 대출, 반납하기
     @PutMapping("/borrow/{book_number}")
-    public BookDTO borrowBook(@PathVariable int book_number, @RequestBody BookDTO bookDTO) {
-        return bookService.borrowBook(book_number, bookDTO);
+    public ResponseEntity<BookDTO> borrowBook(@PathVariable int book_number, @RequestBody BookDTO bookDTO) {
+        BookDTO result = bookService.borrowBook(book_number, bookDTO);
+
+        if (result == null) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            return ResponseEntity.ok(result);
+        }
     }
 
     // 도서 정보 삭제
