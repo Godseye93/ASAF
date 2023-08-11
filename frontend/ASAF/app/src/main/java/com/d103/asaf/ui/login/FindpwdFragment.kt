@@ -67,7 +67,7 @@ class FindpwdFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.passwordFindResult.observe(viewLifecycleOwner, Observer { passwordFindResult ->
             if (passwordFindResult) {
-                Toast.makeText(context, "비밀번호가 이메일로 전송되었습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "등록된 이메일로 비밀번호가 전송되었습니다.", Toast.LENGTH_SHORT).show()
                 findNavController().navigateUp()
             } else {
                 Toast.makeText(context, "일치하는 정보가 없습니다.", Toast.LENGTH_SHORT).show()
