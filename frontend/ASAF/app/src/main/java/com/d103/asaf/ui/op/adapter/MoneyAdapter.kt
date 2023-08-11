@@ -26,7 +26,7 @@ class MoneyAdapter : androidx.recyclerview.widget.ListAdapter<DocSign, MoneyAdap
 
     inner class MoneyViewHolder(private val binding: ItemMoneyBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(sign: DocSign) {
-            val realImg = "http://192.168.100.62:8080/${sign.imageUrl}"
+            val realImg = "http://i9d103.p.ssafy.io/${sign.imageUrl}"
             // 이미지 누르면 확대되는 기능 set
             // 이미지를 money리스트 정보에서 가져오기
             binding.apply {
