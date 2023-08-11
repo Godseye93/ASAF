@@ -76,10 +76,10 @@ public class MemberEntity {
     private String attended = "미출석";
 
     @Column
-    private Time entryTime;
+    private long entryTime;
 
     @Column
-    private Time exitTime;
+    private long exitTime;
 
     // 'UserEntity'와 'RoleEntity' 사이에 다대다 관계를 정의합니다.
     // 여기서 fetch타입을 EAGER로 설정하면, UserEntity를 로딩할 때 관련된 RoleEntity도 함께 로딩됩니다.

@@ -51,6 +51,8 @@ data class Book (
         parcel.writeString(publisher)
         parcel.writeLong(borrowDate)
         parcel.writeLong(returnDate)
+//        borrowDate?.let { parcel.writeLong(it) } ?: parcel.writeLong(Long.MAX_VALUE) // Nullable Long 값 쓰기
+//        returnDate?.let { parcel.writeLong(it) } ?: parcel.writeLong(Long.MAX_VALUE)
         parcel.writeByte(if (borrowState) 1 else 0)
         parcel.writeString(borrower)
     }

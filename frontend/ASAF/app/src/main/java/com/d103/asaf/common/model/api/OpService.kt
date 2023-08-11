@@ -27,8 +27,8 @@ interface OpService {
     suspend fun getLockers(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int) : Response<MutableList<DocLocker>>
 
     // 서명 정보 가져오기
-    @GET("/sign")
-    suspend fun getSigns(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int) : Response<MutableList<DocSign>>
+    @GET("/sign/classCodes")
+    suspend fun getSigns(@Query("class_code") classCode : Int, @Query("region_code") regionCode : Int, @Query("generation_code") generationCode : Int, @Query("month") month : String) : Response<MutableList<DocSign>>
 
     // 자리 정보 보내기
     @POST("/seat/complete")
@@ -42,7 +42,7 @@ interface OpService {
     @Multipart
     @POST("/sign/upload-image")
     suspend fun postSigns(
-        @Part sign: MultipartBody.Part,
-        @Part filePart: MultipartBody.Part
+        @Part("signDTO") sign: RequestBody,
+        @Part ImageFile: MultipartBody.Part
     ): Response<Boolean>
 }

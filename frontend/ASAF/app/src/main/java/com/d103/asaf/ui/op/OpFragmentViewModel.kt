@@ -171,10 +171,11 @@ class OpFragmentViewModel(): ViewModel() {
 
     private suspend fun fetchSigns() {
         val signResponse = withContext(Dispatchers.IO) {
-            RetrofitUtil.opService.getSigns(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
+            RetrofitUtil.opService.getSigns(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode, addZero(curMonth.value))
         }
         if (signResponse.isSuccessful) {
             _signs.value = signResponse.body() ?: mutableListOf<DocSign>()
+            loadSignUrls()
         } else {
             Log.d(TAG, "사인 가져오기 네트워크 오류")
         }
@@ -279,6 +280,11 @@ class OpFragmentViewModel(): ViewModel() {
     //
     fun setDocLocker(temp: MutableList<DocLocker>) {
         _docLockers.value = setLockerPositions(temp)
+    }
+
+    private fun addZero(curM: Int): String {
+        if(curM < 10) return "0$curM"
+        else return "$curM"
     }
 
 //    private val _seat : MutableStateFlow<List<String>> = MutableStateFlow(emptyList())

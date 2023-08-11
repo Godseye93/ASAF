@@ -190,4 +190,30 @@ public class BookService {
 
         return bookDTOList;
     }
+
+    // 책 대출하기
+    public BookDTO borrowBook(int book_number, BookDTO bookDTO) {
+        Optional<BookEntity> bookEntityOptional = bookRepository.findById(book_number);
+
+        if (bookEntityOptional.isPresent()) {
+            BookEntity bookEntity = bookEntityOptional.get();
+
+            // 도서 대출 정보 업데이트
+            bookEntity.setBorrower(bookDTO.getBorrower());
+            bookEntity.setBorrowDate(bookDTO.getBorrowDate());
+            bookEntity.setReturnDate(bookDTO.getReturnDate());
+            bookEntity.setBorrowState(bookDTO.getBorrowState());
+
+            MemberEntity member = memberRepository.findById(bookDTO.getId())
+                    .orElseThrow(() -> new NotFoundException("Member not found"));
+            bookDTO.updateMemberId(bookEntity, member);
+
+            // 업데이트 된 데이터 저장
+            bookRepository.save(bookEntity);
+
+            return new BookDTO(bookEntity);
+        } else {
+            throw new NotFoundException("Book with book_number " + book_number + " not found");
+        }
+    }
 }

@@ -31,6 +31,12 @@ public class BookController {
         return bookService.updateBook(book_number, bookDTO);
     }
 
+    // 도서 대출 (id, borrdowdate, returndate, drawstate, borrower)
+    @PutMapping("/borrow/{book_number}")
+    public BookDTO borrowBook(@PathVariable int book_number, @RequestBody BookDTO bookDTO) {
+        return bookService.borrowBook(book_number, bookDTO);
+    }
+
     // 도서 정보 삭제
     @DeleteMapping("/{book_number}")
     public ResponseEntity<String> deleteBook(@PathVariable int book_number) {
