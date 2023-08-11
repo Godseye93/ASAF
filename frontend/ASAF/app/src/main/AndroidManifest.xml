@@ -30,7 +30,7 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_asaf"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
@@ -51,6 +51,9 @@
         <meta-data
             android:name="android.nfc.action.TECH_DISCOVERED"
             android:resource="@xml/nfc_tech_filter" />
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="43faaa202fe058c04ba0e649b4aed08a" />
 
         <activity
             android:name=".MainActivity"

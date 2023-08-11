@@ -31,6 +31,8 @@ class LibraryUseFragmentViewModel: ViewModel() {
     private var _days = MutableStateFlow(listOf(1,2,3,4,5,6,7));
     val days = _days
 
+    var isFirst = true
+
     init {
         loadFirst()
     }
@@ -49,12 +51,54 @@ class LibraryUseFragmentViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
-                    RetrofitUtil.libraryService.getMyDraws(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode, curClass.value.userId)
+                    RetrofitUtil.libraryService.getMyDraws(curClass.value.userId)
                 }
                 if (response.isSuccessful) {
                     _myDraws.value = response.body() ?: mutableListOf<Book>()
+                    Log.d(TAG, "loadRemote: 내가대출한도서 ${_myDraws.value}")
+                } else {
+                    Log.d(TAG, "모든 대출 도서 가져오기 네트워크 오류 $response")
+                }
+            } catch (e: Exception) {
+                Log.d(TAG, " 도서 가져오기 네트워크 오류")
+            }
+        }
+
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitUtil.libraryService.getBooks(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
+                }
+                if (response.isSuccessful) {
+                    _books.value = response.body() ?: mutableListOf<Book>()
                 } else {
                     Log.d(TAG, "내 대출 도서 가져오기 네트워크 오류")
+                }
+
+                val allResponse = withContext(Dispatchers.IO) {
+                    RetrofitUtil.libraryService.getBooks(curClass.value.classCode, curClass.value.regionCode, curClass.value.generationCode)
+                }
+                if (allResponse.isSuccessful) {
+                    _books.value = (allResponse.body()?.map { book ->
+                        Book(
+                            book.id,
+                            book.classNum,
+                            book.classCode,
+                            book.regionCode,
+                            book.generationCode,
+                            book.userId,
+                            book.bookName,
+                            book.author,
+                            book.publisher,
+                            Long.MAX_VALUE,
+                            Long.MAX_VALUE,
+                            book.borrowState,
+                            book.borrower,
+                            book.bookNameCount,
+                            book.trueBorrowStateCount
+                        )
+                    } ?: mutableListOf<Book>()) as MutableList<Book>
+                    isFirst = false
                 }
             } catch (e: Exception) {
                 Log.d(TAG, " 도서 가져오기 네트워크 오류")

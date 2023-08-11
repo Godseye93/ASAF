@@ -23,10 +23,10 @@ class StudentNotiFragmentViewModel : ViewModel() {
         emit(data)
     }
 
-    fun getAll(){
-        CoroutineScope(Dispatchers.IO).launch {
-            _notiList.value =  ApplicationClass.notiMessageDatabase.notiMessageDao.getAll()
-        }
-
-    }
+//    fun getAll(){
+//        CoroutineScope(Dispatchers.IO).launch {
+//            _notiList.value =  ApplicationClass.notiMessageDatabase.notiMessageDao.getAll()
+//        }
+//
+//    }
 }

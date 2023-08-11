@@ -1,7 +1,10 @@
 package com.d103.asaf
 
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -9,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -32,6 +36,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import com.ssafy.template.util.SharedPreferencesUtil
 import com.tbuonomo.morphbottomnavigation.MorphBottomNavigationView
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import java.sql.Date
 
 private const val TAG = "MainActivity"
@@ -49,26 +55,28 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         setupNavHost()
         setSupportActionBar(findViewById(com.airbnb.lottie.R.id.action_bar));
 
+        // 해시키 가져오기
+        getKeyHash()
 
         // 토큰 가져오기
-//        MyFirebaseMessagingService().getFirebaseToken()
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//            if (!task.isSuccessful) {
-//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-//                return@OnCompleteListener
-//            }
-//
-//            // Get new FCM registration token
-//            val token = task.result
-//
-//            // Log and toast
-//            Log.d(TAG, "토큰 생성: $token")
-//            if (token != null) {
-//                ApplicationClass.sharedPreferences.addFCMToken(token)
-//            }
-////            Log.d(TAG, msg)1111
-////            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-//        })
+        MyFirebaseMessagingService().getFirebaseToken()
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            Log.d(TAG, "토큰 생성: $token")
+            if (token != null) {
+                ApplicationClass.sharedPreferences.addFCMToken(token)
+            }
+//            Log.d(TAG, msg)1111
+//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+        })
         initDynamicLink()
 
 
@@ -180,7 +188,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
-
+    fun getKeyHash() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
+            for (signature in packageInfo.signingInfo.apkContentsSigners) {
+                try {
+                    val md = MessageDigest.getInstance("SHA")
+                    md.update(signature.toByteArray())
+                    Log.d("getKeyHash", "key hash: ${Base64.encodeToString(md.digest(), Base64.NO_WRAP)}")
+                } catch (e: NoSuchAlgorithmException) {
+                    Log.w("getKeyHash", "Unable to get MessageDigest. signature=$signature", e)
+                }
+            }
+        }
+    }
 
 
 }

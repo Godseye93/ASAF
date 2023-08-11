@@ -54,7 +54,10 @@
                     android:id="@+id/noti_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="9시 까지 출석 체크 하세요" />
+                    android:text="9시 까지 출석 체크 하세요"
+                    android:textSize="24sp"
+                    android:layout_marginTop="8dp"
+                    />
 
 
             </LinearLayout>
@@ -66,17 +69,19 @@
             android:id="@+id/hiddenLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:background="@drawable/round_corner_background"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <TextView
+                android:gravity="center"
                 android:id="@+id/noti_card_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="오늘은 싸피데이가 있는 날입니다.
 모두들 빠르게 출석체크를 하고 자리에 착석해주시기 바랍니다.
 아아아아ㅏ아아"
+                android:minHeight="100dp"
                 />
 
         </LinearLayout>

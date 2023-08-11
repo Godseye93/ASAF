@@ -56,6 +56,7 @@ class FindpwdFragment : Fragment() {
 
             // ViewModel에 비밀번호 찾기 요청 보내기
             viewModel.findPassword(name, email, birth, information)
+            observeViewModel()
         }
 
         binding.fragmentFindpwdButtonBack.setOnClickListener {
@@ -67,8 +68,9 @@ class FindpwdFragment : Fragment() {
         viewModel.passwordFindResult.observe(viewLifecycleOwner, Observer { passwordFindResult ->
             if (passwordFindResult) {
                 Toast.makeText(context, "비밀번호가 이메일로 전송되었습니다.", Toast.LENGTH_SHORT).show()
+                findNavController().navigateUp()
             } else {
-                Toast.makeText(context, "비밀번호 찾기에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "일치하는 정보가 없습니다.", Toast.LENGTH_SHORT).show()
             }
         })
     }

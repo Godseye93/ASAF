@@ -7,12 +7,14 @@ import com.ASAF.service.PostService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -62,9 +64,32 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public PostDTO getpost(@PathVariable Long postId) {
-        return postService.getpost(postId);
+    public ResponseEntity<PostDTO> getPost(@PathVariable Long postId) {
+        PostDTO postDTO = postService.getpost(postId);
+        List<ImageDTO> imageDTOList = postDTO.getImages();
+
+        for (ImageDTO imageDTO : imageDTOList) {
+            String imagePath = imageDTO.getImage_url();
+            try {
+                Resource image = (Resource) new UrlResource(Paths.get(imagePath).toUri());
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.IMAGE_JPEG);
+                headers.setContentDisposition(ContentDisposition.builder("inline")
+                        .filename(String.valueOf(image.getClass()))
+                        .build());
+
+                ResponseEntity<Resource> responseImage = new ResponseEntity<>(image, headers, HttpStatus.OK);
+                imageDTO.setImage_url(String.valueOf(responseImage.getBody().getClass()));
+            } catch (MalformedURLException e) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+        }
+        postDTO.setImages(imageDTOList);
+        return ResponseEntity.ok(postDTO);
     }
+
 
     @DeleteMapping("/delete/{postId}")
     public ResponseEntity<Void> deletePost(@PathVariable Long postId) {

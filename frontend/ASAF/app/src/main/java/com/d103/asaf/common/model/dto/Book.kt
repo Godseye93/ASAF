@@ -18,7 +18,7 @@ data class Book (
     @SerializedName("publisher") val publisher: String = "", // 출판사
     @SerializedName("borrowDate") val borrowDate: Long = Long.MAX_VALUE, // 대출일
     @SerializedName("returnDate") val returnDate: Long = Long.MAX_VALUE, // 반납일
-    @SerializedName("borrowState") val borrowState: Boolean = false, // 대출 상태
+    @SerializedName("borrowState") var borrowState: Boolean = false, // 대출 상태
     @SerializedName("borrower") val borrower: String? = "", // 대출자
     @SerializedName("bookNameCount") val bookNameCount: Int = 0, // 총 수량
     @SerializedName("trueBorrowStateCount") val trueBorrowStateCount: Int = 0 // 빌린 수량

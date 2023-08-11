@@ -69,17 +69,17 @@ public class PostService {
     }
     private String storeImage(MultipartFile imageFile, Long post_id) {
         String storageDirectory = "/home/ubuntu/statics/images/post_images/";
-        String STATIC_DIR = "images/post_images/";
+//        String STATIC_DIR = "images/post_images/";
         String fileName = imageFile.getOriginalFilename();
         String imagePath = null;
-        String imageUrl = null;
+//        String imageUrl = null;
 
         try {
             if (imageFile.isEmpty()) {
                 return imagePath;
             }
             imagePath = storageDirectory + post_id + "_" + fileName;
-            imageUrl = STATIC_DIR + post_id + "_" + fileName;
+//            imageUrl = STATIC_DIR + post_id + "_" + fileName;
             File dest = new File(imagePath);
             FileCopyUtils.copy(imageFile.getBytes(), dest);
         } catch (IOException e) {
@@ -162,7 +162,6 @@ public class PostService {
         postDTO.setImages(imageDTOS);
 
         if (postDTO.getProfile_image() != null && !postDTO.getProfile_image().isEmpty()) {
-            postDTO.setProfile_image(convertImagePathToBase64(postDTO.getProfile_image()));
         } else {
             postDTO.setProfile_image(null);
         }
@@ -171,7 +170,6 @@ public class PostService {
             List<ImageDTO> convertedImages = new ArrayList<>();
             for (ImageDTO imageDTO : postDTO.getImages()) {
                 if (imageDTO.getImage_url() != null) {
-                    imageDTO.setImage_url(convertImagePathToBase64(imageDTO.getImage_url()));
                     convertedImages.add(imageDTO);
                 }
             }
@@ -179,21 +177,7 @@ public class PostService {
         } else {
             postDTO.setImages(null);
         }
-        System.out.println("-----------------" +postDTO);
         return postDTO;
-    }
-    private String convertImagePathToBase64(String imagePath) {
-        try {
-            File file = new File(imagePath);
-            FileInputStream fis = new FileInputStream(file);
-            byte[] fileContent = new byte[(int) file.length()];
-            fis.read(fileContent);
-            fis.close();
-            return Base64.getEncoder().encodeToString(fileContent);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     // 게시글 삭제
