@@ -142,28 +142,24 @@ class JoinFragment : Fragment() {
                         // 이미지를 서버로 업로드하는 로직 호출
                         Log.d(TAG, "setupViews: 이미지 null이니? : $tempUri")
 
-//                        if(tempUri != null){
-                            uploadProfileImage(email, tempUri!!)
-                            // 이메일이 중복되지 않는 경우
-                            // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
-                            // viewModel.signup(name, email, password, birth, information)
-                            Log.d(TAG, "onSignupButtonClick: 사용 가능한 이메일입니다.")
+                        uploadProfileImage(email, tempUri!!)
+                        // 이메일이 중복되지 않는 경우
+                        // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
+                        // viewModel.signup(name, email, password, birth, information)
+                        Log.d(TAG, "onSignupButtonClick: 사용 가능한 이메일입니다.")
 
-                            // 뷰모델의 회원가입 메서드를 호출합니다.
-                            viewModel.signup(member)
-                            Log.d(TAG, "setupViews: 회원가입 되었습니다.")
-                            Toast.makeText(requireContext(), "회원가입 되었습니다.", Toast.LENGTH_SHORT).show()
+                        // 뷰모델의 회원가입 메서드를 호출합니다.
+                        viewModel.signup(member)
+                        Log.d(TAG, "setupViews: 회원가입 되었습니다.")
+                        Toast.makeText(requireContext(), "회원가입 되었습니다.", Toast.LENGTH_SHORT).show()
 
-                            // 반 배정
-                            val tempId = viewModel.signedMem(email,generationCode, regionCode, classCode)
-                            Log.d(TAG, "setupViews: $tempId, $generationCode, $regionCode, $classCode")
+                        // 반 배정
+                        val tempId = viewModel.signedMem(email,generationCode, regionCode, classCode)
+                        Log.d(TAG, "setupViews: $tempId, $generationCode, $regionCode, $classCode")
 
-                            // login fragment로 이동.
+                        // login fragment로 이동.
 //                            findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
-                            findNavController().navigateUp()
-//                        }else{
-//                            Toast.makeText(requireContext(), "프로필 사진을 등록하세요.", Toast.LENGTH_SHORT).show()
-//                        }
+                        findNavController().navigateUp()
                     }
                 }
             } else {
