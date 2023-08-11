@@ -34,6 +34,7 @@ import com.d103.asaf.ui.library.Constants.RUNTIME_PERMISSIONS
 import com.d103.asaf.ui.library.QRCodeScannerDialog
 import com.d103.asaf.ui.library.adapter.BookAdapter
 import com.d103.asaf.ui.library.adapter.NavigationListener
+import com.d103.asaf.ui.op.OpFragmentViewModel
 import com.d103.asaf.ui.sign.SignFragment
 import kotlinx.coroutines.launch
 import org.altbeacon.beacon.BeaconManager
@@ -48,12 +49,18 @@ import java.util.Locale
 private const val TAG = "교육생 도서관"
 class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibraryUseBinding::bind, R.layout.fragment_library_use),
     NavigationListener {
+
+    companion object {
+        var parentViewModel : LibraryUseFragmentViewModel? = null
+    }
+
     private val viewModel: LibraryUseFragmentViewModel by viewModels()
     private var books: MutableList<Book> = mutableListOf()
     private var adapter = BookAdapter(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        parentViewModel = viewModel
         initList()
         initView()
         initBeacon()
@@ -291,9 +298,9 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
                             if(isAdded) binding.fragmentLibraryUserRecyclerview.adapter = adapter
                             adapter.submitList(books)
                             if(rangeNotifier!=null) beaconManager.removeRangeNotifier(rangeNotifier!!)
-                            Handler(Looper.getMainLooper()).postDelayed ({
-                                beaconManager.addRangeNotifier(rangeNotifier!!)
-                            },10000)
+//                            Handler(Looper.getMainLooper()).postDelayed ({
+//                                beaconManager.addRangeNotifier(rangeNotifier!!)
+//                            },10000)
                         } else {
                             Log.d(TAG, "didRangeBeaconsInRegion: distance 이외.")
                         }
@@ -346,7 +353,7 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
         adapter.isDraw = true
         adapter.nearBy = false
         viewModel.isFirst = true
-        if(rangeNotifier==null) beaconManager.addRangeNotifier(rangeNotifier!!)
+        if(rangeNotifier!=null) beaconManager.addRangeNotifier(rangeNotifier!!)
     }
     override fun onResume() {
         super.onResume()
@@ -355,6 +362,6 @@ class LibraryUseFragment : BaseFragment<FragmentLibraryUseBinding>(FragmentLibra
         adapter.isDraw = true
         adapter.nearBy = false
         viewModel.isFirst = true
-        if(rangeNotifier==null) beaconManager.addRangeNotifier(rangeNotifier!!)
+        if(rangeNotifier!=null) beaconManager.addRangeNotifier(rangeNotifier!!)
     }
 }

@@ -70,8 +70,13 @@ class BookAdapter(private val navigationListener: NavigationListener?) : android
                 bookItemTitle.text = book.bookName
                 bookItemTitle.isSelected = true
                 if(isDraw) {
-                    bookItemDrawer.text = book.borrower
-                    bookItemReturn.text = dateToString(book.returnDate)
+                    if(ApplicationClass.sharedPreferences.getString("authority") == "교육생") {
+                        bookItemDrawer.text = dateToString(book.returnDate)
+                        bookItemReturn.text = ""
+                    } else {
+                        bookItemDrawer.text = book.borrower
+                        bookItemReturn.text = dateToString(book.returnDate)
+                    }
                 } else {
                     bookItemDrawer.text = book.author
                     bookItemReturn.text = "${book.bookNameCount-book.trueBorrowStateCount} / ${book.bookNameCount}"

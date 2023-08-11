@@ -46,7 +46,7 @@ class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(Fragm
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.d("도서빌리기인포", "onViewCreated: $drawInfo")
         binding.apply {
             fragmentLibraryUserDrawTextviewTitle.text = drawInfo[0]
             fragmentLibraryUserDrawTextviewAuthor.text = drawInfo[1]
@@ -91,14 +91,15 @@ class LibraryUseDrawFragment : BaseFragment<FragmentLibraryUseDrawBinding>(Fragm
                 RetrofitUtil.libraryService.updateDrawBook(bookId,book)
             }
             if (response.isSuccessful) {
-                if(response.body() == false) {
-                    Toast.makeText(requireContext(), "이미 대출 중인 도서입니다.", Toast.LENGTH_SHORT).show()
+                if((response.body() as Book).borrowState == true ) {
+                    Toast.makeText(requireContext(), "대출이 완료 됐습니다.", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    Toast.makeText(requireContext(), "대출이 완료 됐습니다.", Toast.LENGTH_SHORT).show()
-                    val dialogFragment = parentFragmentManager.findFragmentById(R.id.dialog_framelayout) as QRCodeScannerDialog
-                    dialogFragment.dismissDialog()
+                    Toast.makeText(requireContext(), "이미 대출 중인 도서입니다.", Toast.LENGTH_SHORT).show()
                 }
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+//                val dialogFragment = parentFragmentManager.findFragmentById(R.id.dialog_framelayout) as QRCodeScannerDialog
+//                dialogFragment.dismissDialog()
             } else {
                 Log.d("학생도서", "도서 대출 네트워크 오류")
             }
