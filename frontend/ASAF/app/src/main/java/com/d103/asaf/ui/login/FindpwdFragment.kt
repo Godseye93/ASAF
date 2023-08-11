@@ -101,8 +101,8 @@ class FindpwdFragment : Fragment() {
         }
     }
     private fun setSpinnerAdapters() {
-        val nthOptions = listOf("-", "8", "9", "10") // 기수 옵션들을 리스트로 설정해주세요
-        val regionOptions = listOf("-", "광주", "구미", "대전", "부울경", "서울") // 지역 옵션들을 리스트로 설정해주세요
+        val nthOptions = listOf("-", "9", "10") // 기수 옵션들을 리스트로 설정해주세요
+        val regionOptions = listOf("-", "서울", "구미", "대전", "부울경", "광주") // 지역 옵션들을 리스트로 설정해주세요
         val classNumOptions = listOf("-", "1", "2", "3", "4", "5", "6", "7", "8","9","10") // 반 옵션들을 리스트로 설정해주세요
 
         val nthAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, nthOptions)
@@ -136,14 +136,6 @@ class FindpwdFragment : Fragment() {
             month,
             day
         )
-
-        // fragment_join_editTV_birth를 비활성화합니다.
-//        binding.fragmentJoinEditTVBirth.isEnabled = false
-
-//        datePickerDialog.setOnDismissListener {
-//            // 달력이 닫힐 때 다시 EditText를 활성화합니다.
-//            binding.fragmentJoinEditTVBirth.isEnabled = true
-//        }
 
         datePickerDialog.show()
     }

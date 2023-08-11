@@ -6,6 +6,7 @@ import com.ASAF.repository.PostRepository;
 import com.ASAF.service.PostService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.*;
@@ -63,31 +64,38 @@ public class PostController {
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
+//    @GetMapping("/{postId}")
+//    public ResponseEntity<PostDTO> getPost(@PathVariable Long postId) {
+//        PostDTO postDTO = postService.getpost(postId);
+//        List<ImageDTO> imageDTOList = postDTO.getImages();
+//
+//        for (ImageDTO imageDTO : imageDTOList) {
+//            String imagePath = imageDTO.getImage_url();
+//            try {
+//                Resource image = (Resource) new UrlResource(Paths.get(imagePath).toUri());
+//                HttpHeaders headers = new HttpHeaders();
+//                headers.setContentType(MediaType.IMAGE_JPEG);
+//                headers.setContentDisposition(ContentDisposition.builder("inline")
+//                        .filename(String.valueOf(image.getClass()))
+//                        .build());
+//
+//                ResponseEntity<Resource> responseImage = new ResponseEntity<>(image, headers, HttpStatus.OK);
+//                imageDTO.setImage_url(String.valueOf(responseImage.getBody().getClass()));
+//            } catch (MalformedURLException e) {
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//            } catch (Exception e) {
+//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//            }
+//        }
+//        postDTO.setImages(imageDTOList);
+//        System.out.println("-----------------postDTO"+postDTO);
+//        return ResponseEntity.ok(postDTO);
+//    }
+
     @GetMapping("/{postId}")
-    public ResponseEntity<PostDTO> getPost(@PathVariable Long postId) {
-        PostDTO postDTO = postService.getpost(postId);
-        List<ImageDTO> imageDTOList = postDTO.getImages();
-
-        for (ImageDTO imageDTO : imageDTOList) {
-            String imagePath = imageDTO.getImage_url();
-            try {
-                Resource image = (Resource) new UrlResource(Paths.get(imagePath).toUri());
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.IMAGE_JPEG);
-                headers.setContentDisposition(ContentDisposition.builder("inline")
-                        .filename(String.valueOf(image.getClass()))
-                        .build());
-
-                ResponseEntity<Resource> responseImage = new ResponseEntity<>(image, headers, HttpStatus.OK);
-                imageDTO.setImage_url(String.valueOf(responseImage.getBody().getClass()));
-            } catch (MalformedURLException e) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-            }
-        }
-        postDTO.setImages(imageDTOList);
-        return ResponseEntity.ok(postDTO);
+    public ResponseEntity<PostDTO> getPostById(@PathVariable Long postId) {
+        PostDTO postDTO = postService.getPostById(postId);
+        return new ResponseEntity<>(postDTO, HttpStatus.OK);
     }
 
 

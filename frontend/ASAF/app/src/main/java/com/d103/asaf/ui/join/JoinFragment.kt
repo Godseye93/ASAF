@@ -18,8 +18,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -63,7 +65,7 @@ class JoinFragment : Fragment() {
 //    val regionCode = binding.spinnerRegion.selectedItem.toString().toInt()
 //    val classCode = binding.spinnerClassNum.selectedItem.toString().toInt()
 
-    private lateinit var tempUri : Uri
+    private var tempUri : Uri? = null
     private val STORAGE_PERMISSION_CODE = 1 // 원하는 값으로 변경 가능
     // 이미지 선택을 위한 ActivityResultLauncher 선언
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -127,13 +129,12 @@ class JoinFragment : Fragment() {
             val confirmPassword = binding.fragmentJoinEditTVPassConfirm.text.toString()
             val birth = binding.fragmentJoinEditTVBirth.text.toString()
             val information = "${binding.spinnerNth.selectedItem}${binding.spinnerRegion.selectedItem}${binding.spinnerClassNum.selectedItem}"
+            val studentNumber = binding.fragmentJoinEditTVStudentNumber.text.toString()
+            val phoneNumber = binding.fragmentJoinEditTVPhoneNumber.text.toString()
 
-//            val generationCode = binding.spinnerNth.selectedItem.toString().toInt()
-//            val regionCode = binding.spinnerRegion.selectedItem.toString().toInt()
-//            val classCode = binding.spinnerClassNum.selectedItem.toString().toInt()
-
-            val member = Member(name, email, password, birth, information)
+            val member = Member(studentNumber.toInt(), name, email, password, birth, information, phoneNumber)
 //            member.token = ApplicationClass.sharedPreferences.getString("token")!!
+
             if (viewModel.validateInputs(member, confirmPassword, tempUri)) {
                 // 이메일 중복 확인
                 lifecycleScope.launch {
@@ -144,37 +145,31 @@ class JoinFragment : Fragment() {
                         Log.d(TAG, "onSignupButtonClick: 중복된 이메일이 존재합니다.")
                         Toast.makeText(requireContext(), "이미 등록된 이메일입니다.", Toast.LENGTH_SHORT).show()
                     } else {
-                        // 이메일이 중복되지 않는 경우
-                        // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
-                        // viewModel.signup(name, email, password, birth, information)
-                        Log.d(TAG, "onSignupButtonClick: 사용 가능한 이메일입니다.")
-
-                        // 뷰모델의 회원가입 메서드를 호출합니다.
-                        viewModel.signup(member)
-                        Log.d(TAG, "setupViews: 회원가입 되었습니다.")
-                        Toast.makeText(requireContext(), "회원가입 되었습니다.", Toast.LENGTH_SHORT).show()
-
-                        // 반 배정
-                        val tempId = viewModel.signedMem(email,generationCode, regionCode, classCode)
-                        Log.d(TAG, "setupViews: $tempId, $generationCode, $regionCode, $classCode")
-
-//                        viewModel.setClass(tempId, generationCode, regionCode, classCode)
-//                        Log.d(TAG, "setupViews setClass 함수 대입 : $tempId, $generationCode, $regionCode, $classCode")
-
-
-//                        if(viewModel.isSetClassSuccessful.value == false){
-//                            Log.d(TAG, "setupViews setClass 함수 실행 : 반 배정 실패.")
-//                            Toast.makeText(requireContext(), "반 배정 실패 !", Toast.LENGTH_SHORT).show()
-//                        }
-
-
                         // 이미지를 서버로 업로드하는 로직 호출
-                        val email = binding.fragmentJoinEditTVEmail.text.toString()
                         Log.d(TAG, "setupViews: 이미지 null이니? : $tempUri")
-                        uploadProfileImage(email, tempUri)
 
-                        // login fragment로 이동.
-                        findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
+                        if(tempUri != null){
+                            uploadProfileImage(email, tempUri!!)
+                            // 이메일이 중복되지 않는 경우
+                            // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
+                            // viewModel.signup(name, email, password, birth, information)
+                            Log.d(TAG, "onSignupButtonClick: 사용 가능한 이메일입니다.")
+
+                            // 뷰모델의 회원가입 메서드를 호출합니다.
+                            viewModel.signup(member)
+                            Log.d(TAG, "setupViews: 회원가입 되었습니다.")
+                            Toast.makeText(requireContext(), "회원가입 되었습니다.", Toast.LENGTH_SHORT).show()
+
+                            // 반 배정
+                            val tempId = viewModel.signedMem(email,generationCode, regionCode, classCode)
+                            Log.d(TAG, "setupViews: $tempId, $generationCode, $regionCode, $classCode")
+
+                            // login fragment로 이동.
+//                            findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
+                            findNavController().navigateUp()
+                        }else{
+                            Toast.makeText(requireContext(), "프로필 사진을 등록하세요.", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             } else {

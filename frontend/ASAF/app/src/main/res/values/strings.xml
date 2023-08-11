@@ -27,4 +27,21 @@
         <item>11월</item>
         <item>12월</item>
     </string-array>
+
+
+    <string name="jjw_contact">jjw@123.com</string>
+    <string name="khj_contact">khj@123.com</string>
+    <string name="kmj_contact">kmj-4567</string>
+    <string name="phw_contact">phw@123.com</string>
+    <string name="kjs_contact">kjs-4567</string>
+    <string name="cjw_contact">cjw-4567</string>
+
+    <string name="jjw_git">https://jjw_git</string>
+    <string name="khj_git">https://khj_git</string>
+    <string name="kmj_git">https://kmj_git</string>
+    <string name="phw_git">https://phw_git</string>
+    <string name="kjs_git">https://kjs_git</string>
+    <string name="cjw_git">https://cjw_git</string>
+
+
 </resources>

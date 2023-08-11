@@ -9,6 +9,7 @@ import com.ASAF.repository.ImageRepository;
 import com.ASAF.repository.MemberRepository;
 import com.ASAF.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -47,7 +47,7 @@ public class PostService {
         postEntity.setTitle(postDTO.getTitle());
         postEntity.setRegister_time(postDTO.getRegister_time());
         postEntity.setContent(postDTO.getContent());
-        postEntity.setId(memberEntity);
+        postEntity.setId(postDTO.getId());
         postEntity.setProfile_image(memberEntity.getProfile_image());
         postEntity.setName(memberEntity.getMemberName());
         // 게시글 저장
@@ -67,9 +67,9 @@ public class PostService {
             }
         }
     }
-    private String storeImage(MultipartFile imageFile, Long post_id) {
+    private String storeImage(MultipartFile imageFile, long post_id) {
         String storageDirectory = "/home/ubuntu/statics/images/post_images/";
-//        String STATIC_DIR = "images/post_images/";
+//        String storageDirectory = "src/main/resources/static/images/post_images/";
         String fileName = imageFile.getOriginalFilename();
         String imagePath = null;
 //        String imageUrl = null;
@@ -79,7 +79,6 @@ public class PostService {
                 return imagePath;
             }
             imagePath = storageDirectory + post_id + "_" + fileName;
-//            imageUrl = STATIC_DIR + post_id + "_" + fileName;
             File dest = new File(imagePath);
             FileCopyUtils.copy(imageFile.getBytes(), dest);
         } catch (IOException e) {
@@ -144,39 +143,59 @@ public class PostService {
         return result;
     }
 
-    // 특정 게시글 get 요청
-    public PostDTO getpost(Long postId) {
+//    // 특정 게시글 get 요청
+//    public PostDTO getpost(Long postId) {
+//        PostEntity postEntity = postRepository.findById(postId)
+//                .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
+////        log.info("포스트아이디 -------------------------------------------");
+//        System.out.println("포스트아이디 -------------------------------------------");
+//        System.out.println("///////////" + postEntity);
+//        List<ImageEntity> imageEntities = imageRepository.findByPost(postEntity);
+////        log.info("이미지엔티티 -----------------------------------------------");
+//        System.out.println("이미지엔티티 -----------------------------------------------");
+//        List<ImageDTO> imageDTOS = new ArrayList<>();
+//        if (imageEntities != null) {
+//            for (ImageEntity imageEntity : imageEntities) {
+//                ImageDTO imageDTO = new ImageDTO(imageEntity);
+//                imageDTOS.add(imageDTO);
+//            }
+//        }
+//        System.out.println("-----------iMAGE " +imageDTOS);
+//        PostDTO postDTO = new PostDTO(postEntity);
+//        postDTO.setImages(imageDTOS);
+//        if (postDTO.getProfile_image() != null && !postDTO.getProfile_image().isEmpty()) {
+//        } else {
+//            postDTO.setProfile_image(null);
+//        }
+//
+//        if (!postDTO.getImages().isEmpty()) {
+//            List<ImageDTO> convertedImages = new ArrayList<>();
+//            for (ImageDTO imageDTO : postDTO.getImages()) {
+//                if (imageDTO.getImage_url() != null) {
+//                    convertedImages.add(imageDTO);
+//                }
+//            }
+//            postDTO.setImages(convertedImages);
+//        } else {
+//            postDTO.setImages(null);
+//        }
+//        return postDTO;
+//    }
+
+    public PostDTO getPostById(Long postId) {
         PostEntity postEntity = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
-
-        List<ImageEntity> imageEntities = imageRepository.findByPostId(postId);
-
-        List<ImageDTO> imageDTOS = new ArrayList<>();
-        if (imageEntities != null) {
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+        List<ImageEntity> imageEntities = imageRepository.findByPost(postEntity);
+        List<ImageDTO> imageDTOs = new ArrayList<>();
+        if (imageEntities != null) { // 이미지 데이터가 있으면 추가합니다.
             for (ImageEntity imageEntity : imageEntities) {
                 ImageDTO imageDTO = new ImageDTO(imageEntity);
-                imageDTOS.add(imageDTO);
+                imageDTOs.add(imageDTO);
             }
         }
         PostDTO postDTO = new PostDTO(postEntity);
-        postDTO.setImages(imageDTOS);
+        postDTO.setImages(imageDTOs);
 
-        if (postDTO.getProfile_image() != null && !postDTO.getProfile_image().isEmpty()) {
-        } else {
-            postDTO.setProfile_image(null);
-        }
-
-        if (!postDTO.getImages().isEmpty()) {
-            List<ImageDTO> convertedImages = new ArrayList<>();
-            for (ImageDTO imageDTO : postDTO.getImages()) {
-                if (imageDTO.getImage_url() != null) {
-                    convertedImages.add(imageDTO);
-                }
-            }
-            postDTO.setImages(convertedImages);
-        } else {
-            postDTO.setImages(null);
-        }
         return postDTO;
     }
 

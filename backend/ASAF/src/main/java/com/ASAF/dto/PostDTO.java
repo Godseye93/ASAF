@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class PostDTO {
-    private long post_id;
+    private Long post_id;
     private long register_time;
     private String title;
     private String content;
@@ -29,6 +29,6 @@ public class PostDTO {
         this.content = postEntity.getContent();
         this.profile_image = postEntity.getProfile_image();
         this.name = postEntity.getName();
-        this.id = postEntity.getMemberEntity().getId();
+        this.id = postEntity.getId();
     }
 }

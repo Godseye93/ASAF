@@ -37,8 +37,14 @@ public class BookController {
         BookDTO result = bookService.borrowBook(book_number, bookDTO);
 
         if (result == null) {
+            System.out.println("null값");
+            System.out.println(book_number);
+            System.out.println(bookDTO);
             return ResponseEntity.badRequest().build();
         } else {
+            System.out.println("제대로 데이터 들어감");
+            System.out.println(book_number);
+            System.out.println(bookDTO);
             return ResponseEntity.ok(result);
         }
     }
