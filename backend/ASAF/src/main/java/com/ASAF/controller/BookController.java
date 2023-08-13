@@ -31,10 +31,22 @@ public class BookController {
         return bookService.updateBook(book_number, bookDTO);
     }
 
-    // 도서 대출 (id, borrdowdate, returndate, drawstate, borrower)
+    // 도서 대출, 반납하기
     @PutMapping("/borrow/{book_number}")
-    public BookDTO borrowBook(@PathVariable int book_number, @RequestBody BookDTO bookDTO) {
-        return bookService.borrowBook(book_number, bookDTO);
+    public ResponseEntity<BookDTO> borrowBook(@PathVariable int book_number, @RequestBody BookDTO bookDTO) {
+        BookDTO result = bookService.borrowBook(book_number, bookDTO);
+
+        if (result == null) {
+            System.out.println("null값");
+            System.out.println(book_number);
+            System.out.println(bookDTO);
+            return ResponseEntity.badRequest().build();
+        } else {
+            System.out.println("제대로 데이터 들어감");
+            System.out.println(book_number);
+            System.out.println(bookDTO);
+            return ResponseEntity.ok(result);
+        }
     }
 
     // 도서 정보 삭제

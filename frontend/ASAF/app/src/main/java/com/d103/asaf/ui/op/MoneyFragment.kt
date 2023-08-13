@@ -74,17 +74,17 @@ class MoneyFragment :
         // 이미지 합치기
         binding.fragmentMoneyImageComb.setOnClickListener {
             val picturesDirectory =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
             val absolutePath = picturesDirectory.absolutePath
             lifecycleScope.launch {
-                createCombinedImageFromUrls(viewModel.signUrls.value, absolutePath, 100)
+                createCombinedImageFromUrls(viewModel.signUrls.value, "$absolutePath/combinded.png", 100)
             }
         }
     }
 
     // 이미지 주소 리스트로부터 이미지 파일 생성
     suspend fun createCombinedImageFromUrls(imageUrls: List<String>, filePath: String, spacing: Int) {
-        val bitmapList = imageUrls.mapNotNull { getBitmapFromUrl(it) }
+        val bitmapList = imageUrls.mapNotNull { getBitmapFromUrl("http://i9d103.p.ssafy.io/$it") }
 
         // 비트맵들을 수직으로 합치기 (간격 추가)
         val combinedBitmap = combineBitmapsVertically(bitmapList, spacing)
@@ -93,8 +93,6 @@ class MoneyFragment :
         combinedBitmap?.let {
             saveBitmapToFile(it, filePath)
             sendEmail(filePath)
-            // 전송 후 삭제
-            deleteFile(filePath)
         }
     }
 
@@ -133,6 +131,7 @@ class MoneyFragment :
     fun saveBitmapToFile(bitmap: Bitmap, filePath: String) {
         try {
             val file = File(filePath)
+            if(file.exists()) deleteFile(filePath)
             val bos = BufferedOutputStream(FileOutputStream(file))
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos)
             bos.flush()
@@ -157,8 +156,8 @@ class MoneyFragment :
             .type(MaildroidXType.HTML)
             .to("kieanupark@gmail.com")
             .from("mailtrap@asaf.live")
-            .subject("hello")
-            .body("body")
+            .subject("합쳐진 서명")
+            .body("합쳐진 서명 파일 입니다.")
             .attachment(path)
             .isStartTLSEnabled(true)
             .mail()

@@ -86,7 +86,7 @@ public class MemberController {
 
     // 회원 정보를 수정하는 요청을 처리합니다.
     // 전달받은 DTO 객체를 이용해 회원 정보를 수정하고, 수정된 결과를 ResponseEntity 형태로 반환합니다.
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<MemberDTO> update(@RequestBody MemberDTO memberDTO) {
         memberService.update(memberDTO);
         return new ResponseEntity<>(memberDTO, HttpStatus.OK);
@@ -133,9 +133,11 @@ public class MemberController {
     // 프로필 이미지 가져오기
     @GetMapping("/{memberEmail}/profile-image")
     public ResponseEntity<Resource> getProfileImage(@PathVariable String memberEmail) {
+        System.out.println("뜨나");
         try {
             String imagePath = memberService.getProfileImagePath(memberEmail);
             Resource image = new UrlResource(Paths.get(imagePath).toUri());
+            System.out.println(Paths.get(imagePath).toUri());
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_JPEG);
             headers.setContentDisposition(ContentDisposition.builder("inline")
@@ -146,6 +148,7 @@ public class MemberController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+
     }
 
     @PostMapping("/checkin/{id}")

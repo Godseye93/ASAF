@@ -56,6 +56,7 @@ class FindpwdFragment : Fragment() {
 
             // ViewModel에 비밀번호 찾기 요청 보내기
             viewModel.findPassword(name, email, birth, information)
+            observeViewModel()
         }
 
         binding.fragmentFindpwdButtonBack.setOnClickListener {
@@ -66,9 +67,10 @@ class FindpwdFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.passwordFindResult.observe(viewLifecycleOwner, Observer { passwordFindResult ->
             if (passwordFindResult) {
-                Toast.makeText(context, "비밀번호가 이메일로 전송되었습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "등록된 이메일로 비밀번호가 전송되었습니다.", Toast.LENGTH_SHORT).show()
+                findNavController().navigateUp()
             } else {
-                Toast.makeText(context, "비밀번호 찾기에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "일치하는 정보가 없습니다.", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -99,8 +101,8 @@ class FindpwdFragment : Fragment() {
         }
     }
     private fun setSpinnerAdapters() {
-        val nthOptions = listOf("-", "8", "9", "10") // 기수 옵션들을 리스트로 설정해주세요
-        val regionOptions = listOf("-", "광주", "구미", "대전", "부울경", "서울") // 지역 옵션들을 리스트로 설정해주세요
+        val nthOptions = listOf("-", "9", "10") // 기수 옵션들을 리스트로 설정해주세요
+        val regionOptions = listOf("-", "서울", "구미", "대전", "부울경", "광주") // 지역 옵션들을 리스트로 설정해주세요
         val classNumOptions = listOf("-", "1", "2", "3", "4", "5", "6", "7", "8","9","10") // 반 옵션들을 리스트로 설정해주세요
 
         val nthAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, nthOptions)
@@ -134,14 +136,6 @@ class FindpwdFragment : Fragment() {
             month,
             day
         )
-
-        // fragment_join_editTV_birth를 비활성화합니다.
-//        binding.fragmentJoinEditTVBirth.isEnabled = false
-
-//        datePickerDialog.setOnDismissListener {
-//            // 달력이 닫힐 때 다시 EditText를 활성화합니다.
-//            binding.fragmentJoinEditTVBirth.isEnabled = true
-//        }
 
         datePickerDialog.show()
     }

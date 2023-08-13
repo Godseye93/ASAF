@@ -51,6 +51,9 @@
         <meta-data
             android:name="android.nfc.action.TECH_DISCOVERED"
             android:resource="@xml/nfc_tech_filter" />
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="43faaa202fe058c04ba0e649b4aed08a" />
 
         <activity
             android:name=".MainActivity"

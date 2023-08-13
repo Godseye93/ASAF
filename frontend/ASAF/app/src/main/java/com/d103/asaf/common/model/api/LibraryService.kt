@@ -55,9 +55,9 @@ interface LibraryService {
     @PUT("/book/{book_id}")
     suspend fun updateBook(@Path("book_id") bookId: Int) : Response<Boolean>
 
-    // 수정
+    // 대출(반납) 수정
     @PUT("/book/borrow/{book_number}")
-    suspend fun updateDrawBook(@Path("book_number") bookId: Int, @Body book: Book) : Response<Boolean>
+    suspend fun updateDrawBook(@Path("book_number") bookId: Int, @Body book: Book) : Response<Book>
 
     // 삭제
     @DELETE("/book/{book_id}")

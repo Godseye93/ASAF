@@ -14,15 +14,17 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import co.nedim.maildroidx.MaildroidX
+import co.nedim.maildroidx.MaildroidXType
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.common.util.RetrofitUtil.Companion.attendenceService
 import com.d103.asaf.ui.sign.SignDrawFragment.Companion.regionCode
+import com.gun0912.tedpermission.provider.TedPermissionProvider.context
 
 private const val TAG = "LoginFragmentViewModel_cjw"
 class LoginFragmentViewModel : ViewModel() {
-
 
     // 가상의 로그인 결과를 MutableLiveData로 표현 (실제로는 서버와의 통신 등이 필요)
     private val _loginResult = MutableLiveData<Member>()
@@ -30,6 +32,7 @@ class LoginFragmentViewModel : ViewModel() {
 
     private val _toastMessage = MutableLiveData<String>()
     val toastMessage: LiveData<String> get() = _toastMessage
+
 
 //    fun login(email: String, password: String) {
 //        viewModelScope.launch(Dispatchers.IO) {
@@ -73,16 +76,11 @@ class LoginFragmentViewModel : ViewModel() {
                 else{
                     Log.d(TAG, "토큰 변환 실패: ${response.errorBody()}")
                 }
-
-
             } catch (e: Exception) {
                 _loginResult.value = Member()
             }
         }
-
     }
-
-
 
     // 예시를 위한 임시 가상의 로그인 메서드
     private fun performFakeLogin(email: String, password: String): Boolean {
@@ -109,17 +107,16 @@ class LoginFragmentViewModel : ViewModel() {
                     && member.birthDate == birth && member.memberInfo == information) {
                     // 일치하는 회원 정보가 있으면 이메일로 비밀번호 전송 성공
                     val passwordResetSubject = "비밀번호 재설정 요청"
-                    val passwordResetBody = "안녕하세요, 비밀번호 재설정을 위한 링크가 아래에 있습니다.\n\nhttps://example.com/reset_password?email=$email"
+                    val passwordResetBody = "기존 비밀번호 : \n\n\n ${member.memberPassword}"
 //                    sendEmail(email, passwordResetSubject, passwordResetBody)
-//                    Toast.makeText(context, "비밀번호를 이메일로 전송했습니다.", Toast.LENGTH_LONG).show()
                     _toastMessage.postValue("비밀번호를 이메일로 전송했습니다.") // Toast 메시지 설정
-                    // sendEmail(email, passwordResetSubject, passwordResetBody)
+                    sendEmail("기존 비밀번호 : ${member.memberPassword}")
                     _passwordFindResult.postValue(true)
                     Log.d(TAG, "findPassword: 기존에 있던 회원입니다 !!!! ${email} ${name} ${member.memberPassword}")
                 } else {
                     // 일치하는 회원 정보가 없음
                     _passwordFindResult.postValue(false)
-
+                    Log.d(TAG, "findPassword: 정보 일치하지 않음")
                 }
             } else {
                 // 서버 통신 실패
@@ -128,23 +125,25 @@ class LoginFragmentViewModel : ViewModel() {
         }
     }
 
-//    private fun sendEmail(path: String) {
-//        MaildroidX.Builder()
-//            .smtp("smtp.mailtrap.live")
-//            .smtpUsername("api")
-//            .smtpPassword("0647ceab68282d673bdd53a351635833")
-//            .port("587")
-//            .type(MaildroidXType.HTML)
-//            .to("kieanupark@gmail.com")
-//            .from("mailtrap@asaf.live")
-//            .subject("hello")
-//            .body("body")
+    // 저장 후 메일로 보내 주는 코드 추가
+    private fun sendEmail( s : String) {
+        MaildroidX.Builder()
+            .smtp("live.smtp.mailtrap.io")
+            .smtpUsername("api")
+            .smtpPassword("0647ceab68282d673bdd53a351635833")
+            .port("587")
+            .type(MaildroidXType.HTML)
+            .to("wpwo98@naver.com")
+            .from("mailtrap@asaf.live")
+            .subject("hello")
+            .body(s)
 //            .attachment(path)
-//            .isStartTLSEnabled(true)
-//            .mail()
-//
-//        Log.d("메일", "sendEmail: 보냄")
-//    }
+            .isStartTLSEnabled(true)
+            .mail()
+
+        Log.d("메일", "sendEmail: 보냄")
+    }
+
 
     suspend fun addClassInfo(email: String) {
         var id = 0
