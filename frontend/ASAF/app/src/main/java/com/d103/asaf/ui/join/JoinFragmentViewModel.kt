@@ -56,7 +56,7 @@ class JoinFragmentViewModel : ViewModel() {
                 Log.d(TAG, "signedMem: ${member!!.id}")
                 id = member.id
 
-                val classInfoResponse = memberService.setClass(id, generationCode, regionCode, classCode)
+                val classInfoResponse = memberService.setClass(id, classCode, regionCode, generationCode)
 
                 if (classInfoResponse.isSuccessful && classInfoResponse.body()=="true") {
                     Log.d(TAG, "setClass: 성공 !")
