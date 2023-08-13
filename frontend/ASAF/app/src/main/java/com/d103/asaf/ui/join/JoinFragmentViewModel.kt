@@ -1,9 +1,12 @@
 package com.d103.asaf.ui.join
 
+import android.content.Context
 import android.net.Uri
 import android.os.Build.VERSION_CODES.P
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +18,12 @@ import com.d103.asaf.common.util.RetrofitUtil.Companion.memberService
 import com.d103.asaf.ui.sign.SignDrawFragment.Companion.regionCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileInputStream
+import java.io.InputStream
 import java.util.Date
 
 private const val TAG = "JoinFragmentViewModel_cjw"
@@ -79,12 +88,6 @@ class JoinFragmentViewModel : ViewModel() {
         member: Member,
         confirmPassword: String,
         uri: Uri?
-//        name: String,
-//        email: String,
-//        password: String,
-//        confirmPassword: String,
-//        birth: String,
-//        information: String
     ): Boolean {
         // 입력 값의 유효성을 검사합니다.
         if (member.memberName.isBlank() || member.memberEmail.isBlank() ||
@@ -94,13 +97,77 @@ class JoinFragmentViewModel : ViewModel() {
             // 입력값 중 하나라도 비어있을 경우 false를 반환합니다.
             return false
         }
+        // 이메일 형식이 유효한지 검사합니다.
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(member.memberEmail).matches()) {
+            return false
+        }
         // 비밀번호와 확인 비밀번호가 일치하는지 확인합니다.
         if (member.memberPassword != confirmPassword) {
             // 비밀번호와 확인 비밀번호가 일치하지 않을 경우 false를 반환합니다.
+            return false
+        }
+        // 학번이 유효한지 검사합니다.
+        if (member.studentNumber == 0) {
+            return false
+        }
+        // 핸드폰 번호가 유효한지 검사합니다.
+        if (member.phoneNumber.length != 11) {
             return false
         }
         // 모든 유효성 검사를 통과한 경우 true를 반환합니다.
         return true
     }
 
+    suspend fun uploadProfileImage(context: Context, email: String, imageUri: Uri) {
+        val file = File(imageUri.path)
+        val multipartImage = createRequestBodyFromFile(context, file)
+
+        val profileImagePart = createMultipartFromUri(context, imageUri)
+        val emailRequestBody = RequestBody.create(okhttp3.MultipartBody.FORM, email)
+
+        try {
+            // RetrofitUtil을 사용하여 서버에 프로필 이미지 업로드 요청
+            val response = memberService.uploadProfileImage(emailRequestBody, profileImagePart!!)
+            if (response.isSuccessful && response.body() != null && response.body() == true) {
+                // 이미지 업로드 성공 처리
+                Log.d(TAG, "uploadProfileImage: 이미지 업로드 성공")
+            } else {
+                // 이미지 업로드 실패 처리
+                Log.e(TAG, "uploadProfileImage: 이미지 업로드 실패")
+            }
+        } catch (e: Exception) {
+            // 예외 처리 로직
+            Log.e(TAG, "uploadProfileImage: Error", e)
+        }
+    }
+
+    private fun createMultipartFromUri(context: Context, uri: Uri): MultipartBody.Part? {
+        val file: File = getFileFromUri(context, uri) ?: return null
+        // 파일을 가져오지 못한 경우 처리할 로직
+        val requestFile: RequestBody = createRequestBodyFromFile(context, file)
+        return MultipartBody.Part.createFormData("file", file.name, requestFile)
+    }
+
+    private fun getFileFromUri(context: Context, uri: Uri): File? {
+        val filePath = uriToFilePath(context, uri)
+        return if (filePath != null) File(filePath) else null
+    }
+
+    private fun uriToFilePath(context: Context, uri: Uri): String? {
+        Log.d(TAG, "URI-join:$uri")
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = context.contentResolver.query(uri, projection, null, null, null)
+        val columnIndex = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor?.moveToFirst()
+        val filePath = cursor?.getString(columnIndex!!)
+        cursor?.close()
+        return filePath
+    }
+
+    private fun createRequestBodyFromFile(context: Context, file: File): RequestBody {
+        val MEDIA_TYPE_IMAGE = "image/png".toMediaTypeOrNull()
+        val inputStream: InputStream = FileInputStream(file)
+        val byteArray = inputStream.readBytes()
+        return RequestBody.create(MEDIA_TYPE_IMAGE, byteArray)
+    }
 }

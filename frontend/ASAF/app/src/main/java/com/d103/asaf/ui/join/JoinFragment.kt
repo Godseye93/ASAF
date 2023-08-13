@@ -23,6 +23,7 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.MainActivity
@@ -143,29 +144,38 @@ class JoinFragment : Fragment() {
                         Log.d(TAG, "setupViews: 이미지 null이니? : $tempUri")
 
                         uploadProfileImage(email, tempUri!!)
-                        // 이메일이 중복되지 않는 경우
-                        // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
-                        // viewModel.signup(name, email, password, birth, information)
-                        Log.d(TAG, "onSignupButtonClick: 사용 가능한 이메일입니다.")
+//                        viewModel.uploadProfileImage(requireContext(), email, tempUri!!)
 
-                        // 뷰모델의 회원가입 메서드를 호출합니다.
-                        viewModel.signup(member)
-                        Log.d(TAG, "setupViews: 회원가입 되었습니다.")
-                        Toast.makeText(requireContext(), "회원가입 되었습니다.", Toast.LENGTH_SHORT).show()
+//                        if(resultStr == "Success"){
+                            // 이메일이 중복되지 않는 경우
+                            // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
+                            // viewModel.signup(name, email, password, birth, information)
+                            Log.d(TAG, "onSignupButtonClick: 사용 가능한 이메일입니다.")
 
-                        // 반 배정
-                        val tempId = viewModel.signedMem(email,generationCode, regionCode, classCode)
-                        Log.d(TAG, "setupViews: $tempId, $generationCode, $regionCode, $classCode")
+                            // 뷰모델의 회원가입 메서드를 호출합니다.
+                            viewModel.signup(member)
+                            Log.d(TAG, "setupViews: 회원가입 되었습니다.")
+                            Toast.makeText(requireContext(), "회원가입 되었습니다.", Toast.LENGTH_SHORT).show()
 
-                        // login fragment로 이동.
+                            // 반 배정
+                            val tempId = viewModel.signedMem(email,generationCode, regionCode, classCode)
+                            Log.d(TAG, "setupViews: $tempId, $generationCode, $regionCode, $classCode")
+
+                            // login fragment로 이동.
 //                            findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
-                        findNavController().navigateUp()
+                            findNavController().navigateUp()
+//                        }else if(resultStr == "Fail"){
+//                            Toast.makeText(requireContext(), "다시 시도하세요.", Toast.LENGTH_SHORT).show()
+//                        }else{
+//                            Toast.makeText(requireContext(), "다시 시도하세요.", Toast.LENGTH_SHORT).show()
+//                        }
+
                     }
                 }
             } else {
                 // 입력 값이 유효하지 않을 경우, 필요한 에러 메시지를 표시하거나 처리해줍니다.
                 Log.d(TAG, "setupViews: 똑바로 다 입력하세요 ~~")
-                Toast.makeText(requireContext(), "모든 항목을 입력하세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "모든 항목을 정확히 입력하세요. \n이메일, 전화번호(11자리) 등", Toast.LENGTH_SHORT).show()
 
             }
         }
@@ -273,13 +283,6 @@ class JoinFragment : Fragment() {
         datePickerDialog.show()
     }
 
-    private fun hideBottomBar() {
-        // MainActivity의 hideBottomNavigationBar() 메서드를 호출하여 사용합니다.
-        if (activity is MainActivity) {
-            (activity as MainActivity).hideBottomNavigationBarFromFragment()
-        }
-    }
-
     private fun openGalleryForImage() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
@@ -332,37 +335,70 @@ class JoinFragment : Fragment() {
         return RequestBody.create(MEDIA_TYPE_IMAGE, byteArray)
     }
 
+//    private suspend fun uploadProfileImage(email: String, imageUri: Uri) {
+//        val file = File(imageUri.path)
+//        val profileImagePart = createMultipartFromUri(requireContext(), imageUri)
+//        val emailRequestBody = RequestBody.create(okhttp3.MultipartBody.FORM, email)
+//
+//        lifecycleScope.launch {
+//            try {
+//                Log.d(TAG, "uploadProfileImage: 이미지 확인--------")
+//                Log.d(TAG, "uploadProfileImage: $email 로 $profileImagePart 보낸다")
+//
+//                // 서버에 프로필 이미지 업로드 요청
+//                val response = RetrofitUtil.memberService.uploadProfileImage(emailRequestBody, profileImagePart!!)
+////                Log.d(TAG, "uploadProfileImage: ${response.errorBody()?.string()}")
+//                Log.d(TAG, "uploadProfileImage: ${response.body()}")
+//                if (response.isSuccessful && response.body() != null && response.body() == true) {
+//                    // 이미지 업로드 성공 처리
+//                    Log.d(TAG, "uploadProfileImage: 이미지 업로드 성공")
+//                } else {
+//                    // 이미지 업로드 실패 처리
+//                    Log.e(TAG, "uploadProfileImage: 이미지 업로드 실패")
+//                    // 서버에 프로필 이미지 업로드 요청
+//                    val response1 = RetrofitUtil.memberService.uploadProfileImage(emailRequestBody, profileImagePart!!)
+////                    Log.d(TAG, "uploadProfileImage: ${response1.body()}")
+//
+//                }
+//            } catch (e: Exception) {
+//                // 예외 처리 로직
+//                Log.e(TAG, "uploadProfileImage: Error", e)
+//            }
+//        }
+//    }
+
     private suspend fun uploadProfileImage(email: String, imageUri: Uri) {
-        val file = File(imageUri.path)
         val profileImagePart = createMultipartFromUri(requireContext(), imageUri)
         val emailRequestBody = RequestBody.create(okhttp3.MultipartBody.FORM, email)
 
-        lifecycleScope.launch {
-            try {
-                Log.d(TAG, "uploadProfileImage: 이미지 확인--------")
-                Log.d(TAG, "uploadProfileImage: $email 로 $profileImagePart 보낸다")
+        if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+            val job = lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    Log.d(TAG, "uploadProfileImage: 이미지 확인--------")
+                    Log.d(TAG, "uploadProfileImage: $email 로 $profileImagePart 보낸다")
 
-                // 서버에 프로필 이미지 업로드 요청
-                val response = RetrofitUtil.memberService.uploadProfileImage(emailRequestBody, profileImagePart!!)
-//                Log.d(TAG, "uploadProfileImage: ${response.errorBody()?.string()}")
-                Log.d(TAG, "uploadProfileImage: ${response.body()}")
-                if (response.isSuccessful && response.body() != null && response.body() == true) {
-                    // 이미지 업로드 성공 처리
-                    Log.d(TAG, "uploadProfileImage: 이미지 업로드 성공")
-                } else {
-                    // 이미지 업로드 실패 처리
-                    Log.e(TAG, "uploadProfileImage: 이미지 업로드 실패")
                     // 서버에 프로필 이미지 업로드 요청
-                    val response1 = RetrofitUtil.memberService.uploadProfileImage(emailRequestBody, profileImagePart!!)
-//                    Log.d(TAG, "uploadProfileImage: ${response1.body()}")
-
+                    val response = RetrofitUtil.memberService.uploadProfileImage(emailRequestBody, profileImagePart!!)
+                    Log.d(TAG, "uploadProfileImage: ${response.body()}")
+                    if (response.isSuccessful && response.body() != null && response.body() == true) {
+                        // 이미지 업로드 성공 처리
+                        Log.d(TAG, "uploadProfileImage: 이미지 업로드 성공")
+                    } else {
+                        // 이미지 업로드 실패 처리
+                        Log.e(TAG, "uploadProfileImage: 이미지 업로드 실패")
+                    }
+                } catch (e: Exception) {
+                    // 예외 처리 로직
+                    Log.e(TAG, "uploadProfileImage: Error", e)
                 }
-            } catch (e: Exception) {
-                // 예외 처리 로직
-                Log.e(TAG, "uploadProfileImage: Error", e)
             }
+
+            job.join() // 코루틴이 끝까지 실행될 때까지 대기
         }
     }
+
+
+
 
     private fun checkAndRequestStoragePermission() {
         if (ContextCompat.checkSelfPermission(

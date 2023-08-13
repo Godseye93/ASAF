@@ -143,4 +143,5 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/libDaumMapAndroid.jar')
 
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
 }
