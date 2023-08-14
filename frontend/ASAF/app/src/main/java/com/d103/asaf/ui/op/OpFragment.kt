@@ -21,6 +21,7 @@ import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.Classinfo
 import com.d103.asaf.databinding.FragmentOpBinding
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -38,6 +39,14 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parentViewModel = viewModel
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.signProgress.collect {
+                attendedPercent.value = if(viewModel.students.value.size != 0) {
+                    (viewModel.signs.value.size/viewModel.students.value.size) * 100f
+                } else 0f
+            }
+        }
+
         initSeat()
         initMonth()
         initClass()
