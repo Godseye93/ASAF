@@ -291,6 +291,9 @@
         <action
             android:id="@+id/action_signFragment_to_StudentHomeFragment"
             app:destination="@+id/StudentHomeFragment" />
+        <action
+            android:id="@+id/action_signFragment_to_signDrawFragment"
+            app:destination="@id/signDrawFragment" />
     </fragment>
 
 
