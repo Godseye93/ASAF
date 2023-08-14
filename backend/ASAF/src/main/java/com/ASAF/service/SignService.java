@@ -39,7 +39,7 @@ public class SignService {
         String UPLOAD_DIR = "/home/ubuntu/statics/images/sign_images/";
 //        String UPLOAD_DIR = "src/main/resources/static/images/sign_images/";
         String real_DIR = "images/sign_images/";
-        String fileName = file.getOriginalFilename();
+        String fileName = signDTO.getMonth() + "_" + file.getOriginalFilename();
         String filePath = UPLOAD_DIR + signDTO.getName() + "_" + fileName;
         String realPath = real_DIR + signDTO.getName() + "_" + fileName;
         File dest = new File(filePath);
@@ -56,7 +56,7 @@ public class SignService {
         }
 
         SignEntity signEntity = new SignEntity();
-        signEntity.setImage_url(realPath);
+        signEntity.setImage_url(filePath);
         signEntity.setName(signDTO.getName());
         signEntity.setMonth(signDTO.getMonth());
         signEntity.setClass_num(classInfoEntity);
