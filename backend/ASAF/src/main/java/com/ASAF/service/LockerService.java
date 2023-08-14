@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -82,6 +83,18 @@ public class LockerService {
         return lockerEntities.stream()
                 .map(lockerEntity -> new LockerDTO(lockerEntity))
                 .collect(Collectors.toList());
+    }
+
+    // 개인 사물함 정보
+    public LockerDTO getLockerByUser(int class_code, int region_code, int generation_code, int id) {
+        Optional<LockerEntity> lockerEntityOptional = lockerRepository.findByClassCodeAndRegionCodeANdGenerationCodeAndId(class_code, region_code, generation_code, id);
+
+        if (lockerEntityOptional.isPresent()) {
+            LockerEntity lockerEntity = lockerEntityOptional.get();
+            return new LockerDTO(lockerEntity);
+        } else {
+            throw new RuntimeException("Locker" + id + "not found");
+        }
     }
 
     // 각 반의 사물함 정보

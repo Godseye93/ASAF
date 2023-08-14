@@ -141,6 +141,7 @@ class ProHomeFragment : BaseFragment<FragmentProHomeBinding>(FragmentProHomeBind
                 }
                 2 -> {
                     binding.fragmentProHomeCustomtoggleButton.moneyText.visibility = View.GONE
+                    binding.fragmentProHomeCustomtoggleButton.lockerText.visibility = View.VISIBLE
                     binding.fragmentProHomeCustomtoggleButton.seatText.setText("${it.get(0)?.classCode} 반")
                     binding.fragmentProHomeCustomtoggleButton.lockerText.setText("${it.get(1)?.classCode} 반")
 

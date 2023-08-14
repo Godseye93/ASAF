@@ -17,6 +17,7 @@ import com.d103.asaf.SharedViewModel
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.MarketImage
+import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentMarketDetailBinding
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -80,11 +81,15 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
 
         // 수정 버튼 클릭 시
         binding.fragmentMarketDetailUpdateButton.setOnClickListener {
-
+            viewModel.marketDetail.value?.let { it1 -> sharedViewModel.InsertMarketDetail(it1) }
+            findNavController().navigate(R.id.action_marketDetailFragment_to_marketUpdateFragment)
+            (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
         }
         // 삭제 버튼 클릭 시
         binding.fragmentMarketDetailDeleteButton.setOnClickListener {
-
+           viewModel.delete()
+            findNavController().navigateUp()
+            (requireActivity() as MainActivity).showStudentBottomNaviagtionBarFromFragment()
         }
         viewModel.marketDetail.observe(viewLifecycleOwner){
             adapter = viewModel.marketDetail.value?.let { MarketDetailAdapter(it.images, requireContext()) }!!
