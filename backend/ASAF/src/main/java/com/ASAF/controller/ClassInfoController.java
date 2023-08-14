@@ -32,6 +32,14 @@ public class ClassInfoController {
         return classInfoService.findMemberDTOsByClassRegionAndGeneration(class_code, region_code, generation_code);
     }
 
+    // 반정보로 프로를 제외한 학생정보 목록 불러오기
+    @GetMapping("/pro/memberIds")
+    public List<MemberDTO> findMemberDTOsByClassRegionAndGenerationpro(@RequestParam int class_code,
+                                                                    @RequestParam int region_code,
+                                                                    @RequestParam int generation_code) {
+        return classInfoService.findMemberDTOsByClassRegionAndGenerationpro(class_code, region_code, generation_code);
+    }
+
     // 학생id와 반정보를 입력하여 classinfo에 데이터 넣기
     @PostMapping("/create")
     public ResponseEntity<String> createClassInfo(@RequestParam int Id,
