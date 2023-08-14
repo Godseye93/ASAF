@@ -48,7 +48,7 @@ class MarketPhotoRegisterAdapter(private val items: List<MarketImage>, val conte
         return items.size
     }
 
-    private fun showImageDialog(image: Uri) {
+    private fun showImageDialog(image: String) {
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.dialog_market_register_image)
         val imageView = dialog.findViewById<ImageView>(R.id.imageView)

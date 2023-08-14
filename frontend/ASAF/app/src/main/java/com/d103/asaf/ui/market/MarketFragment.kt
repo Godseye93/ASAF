@@ -1,6 +1,8 @@
 package com.d103.asaf.ui.market
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -96,7 +98,32 @@ class MarketFragment : BaseFragment<FragmentMarketBinding>(FragmentMarketBinding
             (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
         }
 
+        //searchBAR
+        binding.fragmentMarketSearchBar.setSearchClickListener {
+            binding.fragmentMarketSearchBar.searchEditText.text.clear()
+        }
+        binding.fragmentMarketSearchBar.searchEditText.addTextChangedListener(searchWatcher)
+
     }
+    private val searchWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            // 텍스트가 변경되기 전에 호출됩니다.
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            MarketSearch(s.toString())
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+
+        }
+    }
+
+    private fun MarketSearch(title: String) {
+        val filteredMarkets = viewModel.marketList.value?.filter { it -> it.title.contains(title) }
+        adapter.submitList(filteredMarkets)
+    }
+
 //    fun test(){
 //        val testImg1 = "https://images.velog.io/images/sdb016/post/47181c7c-1156-4182-a638-e0ad0b03a3d3/test.png"
 //        val test1 = Market(1, 1691131921, "LONG TEST TITLELONG TEST TITLELONG TEST TITLELONG TEST TITLE LONG TEST TITLE1", "TEST CONTENT", 1, testImg1, "TESTER 1 ")
