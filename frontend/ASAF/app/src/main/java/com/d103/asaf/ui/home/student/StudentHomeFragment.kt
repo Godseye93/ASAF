@@ -195,14 +195,17 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
 
         viewModel.nthValue.observe(viewLifecycleOwner) {
             binding.fragmentStudentHomeCardViewFrontTextviewNth.text = "${viewModel.nthValue.value} 기"
+            binding.fragmentStudentHomeCardViewBackInfo.text = " ${viewModel.nthValue.value} 기 ${viewModel.regionValue.value} ${viewModel.classCodeValue.value} 반 "
         }
 
         viewModel.regionValue.observe(viewLifecycleOwner) {
             binding.fragmentStudentHomeCardViewFrontTextviewRegion.text = "${viewModel.regionValue.value}"
+            binding.fragmentStudentHomeCardViewBackInfo.text = " ${viewModel.nthValue.value} 기 ${viewModel.regionValue.value} ${viewModel.classCodeValue.value} 반 "
         }
 
         viewModel.classCodeValue.observe(viewLifecycleOwner) {
             binding.fragmentStudentHomeCardViewFrontTextviewClass.text = "${viewModel.classCodeValue.value} 반"
+            binding.fragmentStudentHomeCardViewBackInfo.text = " ${viewModel.nthValue.value} 기 ${viewModel.regionValue.value} ${viewModel.classCodeValue.value} 반 "
         }
 
         Log.d(TAG, "initView: StudentFragment onViewCreated 내부 initView() 실행. ")
@@ -258,7 +261,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
 //            fragmentStudentHomeCardViewFrontTextviewNth.text = "$nthValue 기"
 //            fragmentStudentHomeCardViewFrontTextviewRegion.text = "$regionText "
 //            fragmentStudentHomeCardViewFrontTextviewClass.text = "$classCodeValue 반"
-            fragmentStudentHomeCardViewBackInfo.text = " ${viewModel.nthValue.value} 기 $regionText ${viewModel.classCodeValue.value} 반 "
+//            fragmentStudentHomeCardViewBackInfo.text = " ${viewModel.nthValue.value} 기 $regionText ${viewModel.classCodeValue.value} 반 "
             fragmentStudentHomeCardViewBackName.text = ApplicationClass.sharedPreferences.getString("memberName")
         }
 
