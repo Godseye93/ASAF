@@ -75,7 +75,7 @@ public class FirebaseCloudMessageDataService {
         Message message = new Message();
         message.setToken(targetTokens);
         message.setData(map);
-
+        System.out.println("----------------" + message);
         FcmDataMessage fcmMessage = new FcmDataMessage(false, message);
         return objectMapper.writeValueAsString(fcmMessage);
     }
