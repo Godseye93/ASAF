@@ -14,6 +14,7 @@ class StudentHomeFragmentViewModel : ViewModel(){
     var nthValue = MutableLiveData<Int>()
     var regionValue = MutableLiveData<String>()
     var classCodeValue = MutableLiveData<Int>()
+    var curMySeat = MutableLiveData<Int>()
 
     suspend fun addClassInfo(email: String) {
         var id = 0
@@ -50,6 +51,19 @@ class StudentHomeFragmentViewModel : ViewModel(){
         } catch (e: Exception) {
 
         }
-
     }
+    // 개별자리가져오기
+//    suspend fun loadMySeat() {
+//        try {
+//            // 개별 자리 가져오기
+//            //val response = withContext(Dispatchers.IO) { RetrofitUtil.opService.getUserInfo(email)}
+//            if (response.isSuccessful) {
+//                curMySeat = response.body()
+//            } else {
+//                // 서버 통신 실패
+//            }
+//        } catch (e: Exception) {
+//
+//        }
+//    }
 }

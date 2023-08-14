@@ -396,6 +396,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
                 <include
+                    android:id="@+id/fragment_student_home_card_back"
                     layout="@layout/fragment_student_home_back"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
