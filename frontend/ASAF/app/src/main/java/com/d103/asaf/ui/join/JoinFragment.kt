@@ -29,6 +29,7 @@ import androidx.navigation.fragment.findNavController
 import com.d103.asaf.MainActivity
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
+import com.d103.asaf.common.util.RetrofitUtil.Companion.memberService
 import com.d103.asaf.databinding.FragmentJoinBinding
 import com.d103.asaf.ui.sign.SignDrawFragment.Companion.regionCode
 import kotlinx.coroutines.Dispatchers
@@ -309,6 +310,7 @@ class JoinFragment : Fragment() {
         val file: File = getFileFromUri(context, uri) ?: return null
         // 파일을 가져오지 못한 경우 처리할 로직
         val requestFile: RequestBody = createRequestBodyFromFile(file)
+        Log.d(TAG, "createMultipartFromUri: ${file.name}")
         return MultipartBody.Part.createFormData("file", file.name, requestFile)
     }
 
@@ -372,13 +374,14 @@ class JoinFragment : Fragment() {
         val emailRequestBody = RequestBody.create(okhttp3.MultipartBody.FORM, email)
 
         if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+            Log.d(TAG, "uploadProfileImage: $emailRequestBody, ${profileImagePart.toString()}")
             val job = lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     Log.d(TAG, "uploadProfileImage: 이미지 확인--------")
                     Log.d(TAG, "uploadProfileImage: $email 로 $profileImagePart 보낸다")
 
                     // 서버에 프로필 이미지 업로드 요청
-                    val response = RetrofitUtil.memberService.uploadProfileImage(emailRequestBody, profileImagePart!!)
+                    val response = memberService.uploadProfileImage(emailRequestBody, profileImagePart!!)
                     Log.d(TAG, "uploadProfileImage: ${response.body()}")
                     if (response.isSuccessful && response.body() != null && response.body() == true) {
                         // 이미지 업로드 성공 처리
@@ -417,6 +420,7 @@ class JoinFragment : Fragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
