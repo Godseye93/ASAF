@@ -89,7 +89,7 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
         subDay = requireArguments().getString("subDay") ?: "1"
 
         curSign = SignDrawFragment.myClass?.let { DocSign(0, it.classNum,it.classCode,it.regionCode,it.generationCode,
-            it.userId,"",name?:"",signMonth) } ?: DocSign()
+            it.userId,"",name?:"",addZero(signMonth)) } ?: DocSign()
 
         Log.d("지금사인", "onCreate: $curSign")
     }
@@ -231,5 +231,10 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
         val inputStream: InputStream = FileInputStream(file)
         val byteArray = inputStream.readBytes()
         return RequestBody.create(MEDIA_TYPE_IMAGE, byteArray)
+    }
+
+    private fun addZero(curM: String): String {
+        if(curM.length < 2) return "0$curM"
+        else return "$curM"
     }
 }

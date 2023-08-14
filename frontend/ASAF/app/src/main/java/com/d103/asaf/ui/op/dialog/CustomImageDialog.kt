@@ -14,6 +14,8 @@ class CustomImageDialog(context: Context, imageUrl: String) : AlertDialog(contex
     private val imageView: ImageView
     private val scaleGestureDetector: ScaleGestureDetector
     private val gestureDetector: GestureDetector
+    var downX = 0f // 드래그 시작 X 좌표
+    var downY = 0f // 드래그 시작 Y 좌표
 
     init {
         val dialogView = layoutInflater.inflate(R.layout.dialog_sign_image, null)
@@ -33,6 +35,21 @@ class CustomImageDialog(context: Context, imageUrl: String) : AlertDialog(contex
         // ScaleGestureDetector와 GestureDetector를 함께 사용하여 이미지뷰를 확대 및 축소할 수 있게 함
         scaleGestureDetector.onTouchEvent(event)
         gestureDetector.onTouchEvent(event)
+
+        // 드래그 기능 추가
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                val currentX = event.rawX
+                val currentY = event.rawY
+                downX = currentX - imageView.translationX
+                downY = currentY - imageView.translationY
+            }
+            MotionEvent.ACTION_MOVE -> {
+                imageView.translationX = event.rawX - downX
+                imageView.translationY = event.rawY - downY
+            }
+        }
+
         return super.onTouchEvent(event)
     }
 
