@@ -69,4 +69,18 @@ public class ClassInfoController {
     public ClassInfoDTO updateClassInfo(@PathVariable int class_num, @RequestBody ClassInfoDTO classInfoDTO) {
         return classInfoService.updateClassInfo(class_num, classInfoDTO);
     }
+
+    //학생id로 classinfo 데이터 삭제하기
+    @DeleteMapping("/{memberId}")
+    public ResponseEntity<String> removeClassInfo(@PathVariable int memberId) {
+        try {
+            classInfoService.removeClassInfoByMemberId(memberId);
+
+            // 삭제가 성공적으로 이루어졌다면 'true'와 함께 상태 코드 200(OK) 반환
+            return new ResponseEntity<>("true", HttpStatus.OK);
+        } catch (Exception e) {
+            // 예외가 발생하면 'false'와 함께 상태 코드 500(Internal Server Error) 반환
+            return new ResponseEntity<>("false", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
