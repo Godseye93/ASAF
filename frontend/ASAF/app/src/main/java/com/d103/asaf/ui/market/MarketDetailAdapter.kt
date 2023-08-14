@@ -54,9 +54,10 @@ class MarketDetailAdapter (private val items: List<MarketImage>, val context: Co
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.dialog_market_register_image)
         val imageView = dialog.findViewById<ImageView>(R.id.imageView)
-
+        val imageSplit = image.split("/")
+        val path =  "http://i9d103.p.ssafy.io" + "/" + imageSplit[4] + "/" + imageSplit[5] + "/" + imageSplit[6]
         Glide.with(context)
-            .load(image)
+            .load(path)
             .into(imageView)
 
         dialog.show()
