@@ -30,6 +30,14 @@ public class ClassInfoService {
                 .collect(Collectors.toList());
     }
 
+    public List<MemberDTO> findMemberDTOsByClassRegionAndGenerationpro(int class_code, int region_code, int generation_code) {
+        List<MemberEntity> memberEntities = classInfoRepository.findMembersByClassRegionAndGeneration(class_code, region_code, generation_code);
+        return memberEntities.stream()
+                .map(MemberDTO::fromMemberEntity)
+                .filter(memberDTO -> !memberDTO.getAuthority().equals("프로"))
+                .collect(Collectors.toList());
+    }
+
     public ClassInfoDTO saveClassInfo(ClassInfoDTO classInfoDTO) {
         ClassInfoEntity entity = ClassInfoEntity.toClassInfoEntity(classInfoDTO);
         ClassInfoEntity savedEntity = classInfoRepository.save(entity);
