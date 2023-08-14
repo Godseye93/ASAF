@@ -7,6 +7,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -59,4 +60,7 @@ interface MemberService {
     // 로그인 시 토큰 추가
     @PUT("member/tokenUpdate")
     suspend fun addToken(@Query("id") id : Int, @Query("token") token : String ) : Response<Boolean>
+
+    @DELETE("member/{memberId}")
+    fun removeMember(@Path("memberId") memberId: Int): Call<Void>
 }

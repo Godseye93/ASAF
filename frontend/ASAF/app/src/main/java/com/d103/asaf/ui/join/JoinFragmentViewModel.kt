@@ -72,7 +72,7 @@ class JoinFragmentViewModel : ViewModel() {
                 } else {
                     Log.d(TAG, "setClass: 실패 !")
                     Log.d(TAG, "signedMem: ${classInfoResponse.errorBody()}")
-                    memberService.setClass(id, generationCode, regionCode, classCode)
+                    memberService.setClass(id, classCode, regionCode, generationCode)
                 }
             } else {
                 // 서버 통신 실패

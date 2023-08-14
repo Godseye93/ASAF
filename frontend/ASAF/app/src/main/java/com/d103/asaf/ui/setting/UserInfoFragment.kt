@@ -2,16 +2,19 @@ package com.d103.asaf.ui.setting
 
 import android.Manifest
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,6 +37,7 @@ import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.common.util.RetrofitUtil.Companion.memberService
 import com.d103.asaf.databinding.FragmentSettingUserinfoBinding
 import com.d103.asaf.ui.join.JoinFragmentViewModel
+import com.d103.asaf.ui.sign.SignDrawFragment.Companion.regionCode
 import com.ssafy.template.util.SharedPreferencesUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +57,10 @@ class UserInfoFragment: Fragment() {
     private val userInfoViewModel: UserInfoFragmentViewModel by viewModels()
     private var tempMember : Member = Member()
 
+    var generationCode : Int = 0
+    var regionCode : Int = 0
+    var classCode : Int = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,11 +75,19 @@ class UserInfoFragment: Fragment() {
 
         val tempEmail = ApplicationClass.sharedPreferences.getString("memberEmail")
         lifecycleScope.launch{
-            tempMember = userInfoViewModel.getUserInfo(tempEmail!!)
+            tempMember = userInfoViewModel.getUserInfo(tempEmail!!,)
             Log.d(TAG, "onViewCreated____: $tempMember")
         }
 
+        if(ApplicationClass.sharedPreferences.getString("authority") != "교육생"){
+            binding.fragmentSettingUserinfoLayoutInformation.visibility = View.GONE
+        }else{
+            binding.fragmentSettingUserinfoLayoutInformation.visibility = View.VISIBLE
+        }
+
         initInfo()
+
+        setSpinnerDefaultValues()
 
         //
         binding.fragmentSettingUserinfoButtonUpdate.setOnClickListener {
@@ -88,6 +104,16 @@ class UserInfoFragment: Fragment() {
                     "${binding.fragmentSettingUserinfoSpinnerRegion.selectedItem}" +
                     "${binding.fragmentSettingUserinfoSpinnerClassNum.selectedItem}"
 
+            val regionName = when(regionCode) {
+                1 -> "서울"
+                2 -> "구미"
+                3 -> "대전"
+                4 -> "부울경"
+                5 -> "광주"
+                else -> " - "
+            }
+
+
             if(newName.isBlank() || newEmail.isBlank() || newBirth.isBlank()
                 || newPhoneNumber.isBlank() || newStudentNumber.isBlank() || newInformation.isBlank()){
                 Toast.makeText(requireContext(), "모든 값을 입력하세요.", Toast.LENGTH_SHORT).show()
@@ -103,7 +129,9 @@ class UserInfoFragment: Fragment() {
                     else{
                         if (newName != tempMember.memberName || newEmail != tempMember.memberEmail || newBirth != tempMember.birthDate
                             || newPhoneNumber != tempMember.phoneNumber || newStudentNumber != tempMember.studentNumber.toString()
-                            || newInformation != tempMember.memberInfo ) {
+                            || newInformation != tempMember.memberInfo || generationCode != ApplicationClass.sharedPreferences.getInt("Nth")
+                            || regionName != ApplicationClass.sharedPreferences.getString("region")
+                            || classCode != ApplicationClass.sharedPreferences.getInt("classCode")) {
 
                             tempMember.apply {
                                 memberName = newName
@@ -116,12 +144,16 @@ class UserInfoFragment: Fragment() {
 
                             // update 실행
                             lifecycleScope.launch{
-                                userInfoViewModel.updateUser(tempMember)
+                                userInfoViewModel.updateUser(tempMember, classCode, regionCode, generationCode)
                                 Log.d(TAG, "onViewCreated: update 실행 !!!!! ")
                                 Log.d(TAG, "onViewCreated: $tempMember")
 
+                                val tempId = userInfoViewModel.updateInfo(tempMember.id, generationCode, regionCode, classCode)
+                                Log.d(TAG, "onViewCreated: $tempId, $generationCode, $regionCode, $classCode ")
+
                                 ApplicationClass.sharedPreferences.deleteUser()
                                 ApplicationClass.sharedPreferences.addUserByEmailAndPwd(tempMember)
+                                ApplicationClass.sharedPreferences.addUserInfo(generationCode, regionCode.toString(), classCode)
                             }
                             Toast.makeText(requireContext(), "회원 정보가 수정 되었습니다.", Toast.LENGTH_SHORT).show()
                             findNavController().navigateUp()
@@ -156,6 +188,35 @@ class UserInfoFragment: Fragment() {
 
         setSpinnerAdapters()
     }
+
+    private fun setSpinnerDefaultValues() {
+        // Spinner 초기값 설정
+        val selectedNth = ApplicationClass.sharedPreferences.getInt("Nth")
+        val selectedRegion = ApplicationClass.sharedPreferences.getString("region")
+        val selectedClassNum = ApplicationClass.sharedPreferences.getInt("classCode")
+
+        // '기수' Spinner의 default 값 설정
+        val nthAdapter = binding.fragmentSettingUserinfoSpinnerNth.adapter as? ArrayAdapter<String>
+        nthAdapter?.let {
+            val tempNum = selectedNth + 8
+            val defaultPosition = it.getPosition(tempNum.toString())
+            binding.fragmentSettingUserinfoSpinnerNth.setSelection(defaultPosition)
+        }
+
+        // '지역' Spinner의 default 값 설정
+        val regionAdapter = binding.fragmentSettingUserinfoSpinnerRegion.adapter as? ArrayAdapter<String>
+        regionAdapter?.let {
+            val defaultPosition = it.getPosition(selectedRegion)
+            binding.fragmentSettingUserinfoSpinnerRegion.setSelection(defaultPosition)
+        }
+
+        // '반' Spinner의 default 값 설정
+        val classNumAdapter = binding.fragmentSettingUserinfoSpinnerClassNum.adapter as? ArrayAdapter<String>
+        classNumAdapter?.let {
+            val defaultPosition = it.getPosition(selectedClassNum.toString())
+            binding.fragmentSettingUserinfoSpinnerClassNum.setSelection(defaultPosition)
+        }
+    }
     private fun setSpinnerAdapters() {
         val nthOptions = listOf("-", "9", "10") // 기수 옵션들을 리스트로 설정해주세요
         val regionOptions = listOf("-", "서울", "구미", "대전", "부울경", "광주") // 지역 옵션들을 리스트로 설정해주세요
@@ -170,13 +231,43 @@ class UserInfoFragment: Fragment() {
         binding.fragmentSettingUserinfoSpinnerClassNum.adapter = classNumAdapter
 
         // Spinner 초기값 설정
-        val selectedNth = ApplicationClass.sharedPreferences.getInt("Nth")
-        val selectedRegion = ApplicationClass.sharedPreferences.getString("region")
-        val selectedClassNum = ApplicationClass.sharedPreferences.getInt("classCode")
+//        val selectedNth = ApplicationClass.sharedPreferences.getInt("Nth")
+//        val selectedRegion = ApplicationClass.sharedPreferences.getString("region")
+//        val selectedClassNum = ApplicationClass.sharedPreferences.getInt("classCode")
+//
+//        binding.fragmentSettingUserinfoSpinnerNth.setSelection(nthAdapter.getPosition(selectedNth.toString()))
+//        binding.fragmentSettingUserinfoSpinnerRegion.setSelection(regionAdapter.getPosition(selectedRegion))
+//        binding.fragmentSettingUserinfoSpinnerClassNum.setSelection(classNumAdapter.getPosition(selectedClassNum.toString()))
 
-        binding.fragmentSettingUserinfoSpinnerNth.setSelection(nthAdapter.getPosition(selectedNth.toString()))
-        binding.fragmentSettingUserinfoSpinnerRegion.setSelection(regionAdapter.getPosition(selectedRegion))
-        binding.fragmentSettingUserinfoSpinnerClassNum.setSelection(classNumAdapter.getPosition(selectedClassNum.toString()))
+        binding.fragmentSettingUserinfoSpinnerNth.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // Map selected option to corresponding value
+                generationCode = if (position == 0) 0 else position
+//                viewModel.updateGenerationCode(nthValue)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        binding.fragmentSettingUserinfoSpinnerRegion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // Map selected option to corresponding value
+                regionCode = if (position == 0) 0 else position
+//                viewModel.updateRegionCode(regionValue)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        binding.fragmentSettingUserinfoSpinnerClassNum.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // Map selected option to corresponding value
+                classCode = if (position == 0) 0 else position
+//                viewModel.updateClassCode(classNumValue)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
     }
 
 }
