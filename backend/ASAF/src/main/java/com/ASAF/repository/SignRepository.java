@@ -13,4 +13,6 @@ public interface SignRepository extends JpaRepository<SignEntity, Long> {
 
     @Query("SELECT s FROM SignEntity s WHERE s.class_code.class_code = :classCode AND s.region_code.region_code = :regionCode AND s.generation_code.generation_code = :generationCode AND s.month = :month")
     List<SignEntity> findByClassEntityClassCodeAndRegionEntityRegionCodeAndGenerationEntityGenerationCodeAndMonth(@Param("classCode") int classCode, @Param("regionCode") int regionCode, @Param("generationCode") int generationCode, @Param("month") String month);
+
+    List<SignEntity> findByNameAndMonth(String name, String month);
 }

@@ -50,6 +50,11 @@ public class SignService {
         RegionEntity regionEntity1 = regionRepository.findById(signDTO.getRegion_code()).orElse(null);
         GenerationEntity generationEntity1 = generationRepository.findById(signDTO.getGeneration_code()).orElse(null);
 
+        List<SignEntity> existingSigns = signRepository.findByNameAndMonth(signDTO.getName(), signDTO.getMonth());
+        if (!existingSigns.isEmpty()) {
+            signRepository.deleteAll(existingSigns);
+        }
+
         SignEntity signEntity = new SignEntity();
         signEntity.setImage_url(realPath);
         signEntity.setName(signDTO.getName());
@@ -70,7 +75,7 @@ public class SignService {
         return signEntity.getImage_url();
     }
 
-    // 반 별 이미지 정보
+    // 서명서 이미지, 이름 반환
     public List<SignDTO> getSignsByCodes(int class_code, int region_code, int generation_code, String month) {
         List<SignEntity> signEntities = signRepository.findByClassEntityClassCodeAndRegionEntityRegionCodeAndGenerationEntityGenerationCodeAndMonth(class_code, region_code, generation_code, month);
         return signEntities.stream()
