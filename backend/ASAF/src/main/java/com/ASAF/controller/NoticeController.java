@@ -71,7 +71,9 @@ public class NoticeController {
             for (NoticeDTO data : noticeDTOList) {
                 System.out.println(data.getRegisterTime());
                 // users 에 각 수신인 정보를 저장한다.
-                users.add(MemberEntity.toMemberEntity(memberService.findById(data.getReceiver())));
+                if(data.getReceiver() != data.getSender()) {
+                    users.add(MemberEntity.toMemberEntity(memberService.findById(data.getReceiver())));
+                }
                 System.out.println(MemberEntity.toMemberEntity(memberService.findById(data.getReceiver())).getMemberName());
             }
             // sender에 발신인 이름을 저장한다.
