@@ -140,13 +140,13 @@ public class FirebaseCloudMessageDataService {
             }else{
                 // 예약 발송
                 scheduler.schedule(() -> {
-                    for (MemberEntity user : users) {
-                        try {
-                            sendNotificationToTokens(tokens, title, body, profileImage);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+
+                    try {
+                        sendNotificationToTokens(tokens, title, body, profileImage);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
+
                 }, initialDelay, TimeUnit.MILLISECONDS);
             }
         }
