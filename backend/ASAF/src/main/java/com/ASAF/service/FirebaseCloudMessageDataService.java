@@ -38,20 +38,55 @@ public class FirebaseCloudMessageDataService {
     public void sendNotificationToUsers(List<MemberEntity> users, NoticeEntity noticeEntity, String sender, String profileImage) throws IOException {
         String title = noticeEntity.getTitle();
         String content = noticeEntity.getContent();
-        // 발신인과 내용를 조합해서 전체 내용를 만듭니다.
         String body = String.format("[%s] \n %s", sender, content);
+
+        // 사람들의 토큰을 tokens 리스트에 저장한다.
+        List<String> tokens = new ArrayList<>();
         for (MemberEntity user : users) {
-            // 각 유저 정보 & 제목 & 전체 내용을 첨부시켜 sendNotificationToUser 메서드를 실행합니다.
-            sendNotificationToUser(user, title, body, profileImage);
+            tokens.add(user.getToken());
+        }
+
+        if (!tokens.isEmpty()) {
+            sendNotificationToTokens(tokens, title, body, profileImage);
         }
     }
-    // 1-2. 각 유저에게 보낼 공지를 작성
-    private void sendNotificationToUser(MemberEntity user, String title, String body, String image) throws IOException {
-        // 유저 정보에서 토큰을 가져옵니다.
-        String token = user.getToken();
-        // 토큰 & 제목 & 전체 내용 & 이미지를 첨부시켜 sendDataMessageTo메서드를 실행합니다.
-        sendDataMessageTo(token, title, body, image);
+
+    public void sendNotificationToTokens(List<String> targetTokens, String title, String body, String img) throws IOException {
+        String message = makeDataMessage(targetTokens, title, body, img);
+        logger.info("message : {}", message);
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .post(requestBody)
+                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+                .build();
+        Response response = client.newCall(request).execute();
     }
+
+    private String makeDataMessage(List<String> targetTokens, String title, String body, String img) throws JsonProcessingException, IOException {
+        // Implement changes for data payload
+        Map<String, String> map = new HashMap<>();
+        map.put("title", title);
+        map.put("body", body);
+        map.put("image", img);
+
+        Message message = new Message();
+        message.setToken(targetTokens);
+        message.setData(map);
+
+        FcmDataMessage fcmMessage = new FcmDataMessage(false, message);
+        return objectMapper.writeValueAsString(fcmMessage);
+    }
+
+    // 1-2. 각 유저에게 보낼 공지를 작성
+//    private void sendNotificationToUser(MemberEntity user, String title, String body, String image) throws IOException {
+//        // 유저 정보에서 토큰을 가져옵니다.
+//        String token = user.getToken();
+//        // 토큰 & 제목 & 전체 내용 & 이미지를 첨부시켜 sendDataMessageTo메서드를 실행합니다.
+//        sendDataMessageTo(token, title, body, image);
+//    }
 
     // 1. 예약 발송 컨트롤러에서 실행합니다.
     public void sendNotificationToUsers_reservation(List<MemberEntity> users, NoticeEntity noticeEntity, String sender, Long sendTime, String profileImage) throws IOException {
@@ -63,18 +98,21 @@ public class FirebaseCloudMessageDataService {
         String content = noticeEntity.getContent();
         String body = String.format("[%s] \n %s", sender, content);
         String image = profileImage;
+        List<String> tokens = new ArrayList<>();
+        for (MemberEntity user : users) {
+            tokens.add(user.getToken());
+        }
+
         if (noticeEntity.getNotification() == true){
             if (initialDelay <= 0) {
                 // 이미 지난 시간인 경우 즉시 전송하도록 예외처리
-                for (MemberEntity user : users) {
-                    sendNotificationToUser(user, title, body, image);
-                }
+                sendNotificationToTokens(tokens, title, body, profileImage);
             }else{
                 // 예약 발송
                 scheduler.schedule(() -> {
                     for (MemberEntity user : users) {
                         try {
-                            sendNotificationToUser(user, title, body, image);
+                            sendNotificationToTokens(tokens, title, body, profileImage);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -93,7 +131,7 @@ public class FirebaseCloudMessageDataService {
      * @throws IOException
      */
     // 2-1 토큰, 제목, 전체 내용, 이미지를 사용해 Firebase Cloud Messaging 으로 최종 요청합니다.
-    public void sendDataMessageTo(String targetToken, String title, String body, String img) throws IOException {
+    public void sendDataMessageTo(List<String> targetToken, String title, String body, String img) throws IOException {
         // makeDataMessage를 사용하여 메시지를 생성합니다..
         String message = makeDataMessage(targetToken, title, body, img);
         logger.info("message : {}", message);
@@ -127,26 +165,26 @@ public class FirebaseCloudMessageDataService {
      * @throws JsonProcessingException
      */
     // 2-2 토큰, 제목, 전체 내용, 이미지를 조합해 메시지를 만듭니다.
-    private String makeDataMessage(String targetToken, String title, String body, String img) throws JsonProcessingException, IOException {
-        // HashMap라는 내장 클래스를 사용해서 map 인스턴스를 만듭니다. dir와 흡사합니다.
-        Map<String,String> map = new HashMap<>();
-        // map 인스턴스에 key와 value로 제목, 전체 내용, 이미지를 넣어줍니다.
-        map.put("title", title);
-        map.put("body", body);
-        map.put("image", img);
-
-        // 미리 정의 해둔 메시지 인스턴스를 만듭니다.
-        Message message = new Message();
-        // 메시지의 토큰값을 설정합니다.
-        message.setToken(targetToken);
-        // 메시지의 데이터값을 설정합니다.
-        message.setData(map);
-
-        // 미리 정의 해둔 FcmDataMessage 인스턴스 fcmMessage를 만듭니다.
-        FcmDataMessage fcmMessage = new FcmDataMessage(false, message);
-        // fcmMessage를 첨부하여 내장 클래스의 인스턴스인 objectMapper의 writeValueAsString 메서드를 실행합니다.
-        return objectMapper.writeValueAsString(fcmMessage);
-    }
+//    private String makeDataMessage(String targetToken, String title, String body, String img) throws JsonProcessingException, IOException {
+//        // HashMap라는 내장 클래스를 사용해서 map 인스턴스를 만듭니다. dir와 흡사합니다.
+//        Map<String,String> map = new HashMap<>();
+//        // map 인스턴스에 key와 value로 제목, 전체 내용, 이미지를 넣어줍니다.
+//        map.put("title", title);
+//        map.put("body", body);
+//        map.put("image", img);
+//
+//        // 미리 정의 해둔 메시지 인스턴스를 만듭니다.
+//        Message message = new Message();
+//        // 메시지의 토큰값을 설정합니다.
+//        message.setToken(targetToken);
+//        // 메시지의 데이터값을 설정합니다.
+//        message.setData(map);
+//
+//        // 미리 정의 해둔 FcmDataMessage 인스턴스 fcmMessage를 만듭니다.
+//        FcmDataMessage fcmMessage = new FcmDataMessage(false, message);
+//        // fcmMessage를 첨부하여 내장 클래스의 인스턴스인 objectMapper의 writeValueAsString 메서드를 실행합니다.
+//        return objectMapper.writeValueAsString(fcmMessage);
+//    }
 
     /**
      * FCM에 push 요청을 보낼 때 인증을 위해 Header에 포함시킬 AccessToken 생성
