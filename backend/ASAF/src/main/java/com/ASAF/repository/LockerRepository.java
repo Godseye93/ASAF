@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LockerRepository extends JpaRepository<LockerEntity, Long> {
     @Query("SELECT l FROM LockerEntity l JOIN l.class_code cc JOIN l.region_code rc JOIN l.generation_code gc WHERE cc.class_code = :class_code AND rc.region_code = :region_code AND gc.generation_code = :generation_code")
@@ -27,4 +28,11 @@ public interface LockerRepository extends JpaRepository<LockerEntity, Long> {
 
     @Query("SELECT MAX(l.locker_id) FROM LockerEntity l")
     Long findMaxLockerId();
+
+    @Query("SELECT l FROM LockerEntity l JOIN l.class_code cc JOIN l.region_code rc JOIN l.generation_code gc JOIN l.id li WHERE cc.class_code = :class_code AND rc.region_code = :region_code AND gc.generation_code = :generation_code AND li.id = :id")
+    Optional<LockerEntity> findByClassCodeAndRegionCodeANdGenerationCodeAndId(
+            @Param("class_code") int class_code,
+            @Param("region_code") int region_code,
+            @Param("generation_code") int generation_code,
+            @Param("id") int id);
 }
