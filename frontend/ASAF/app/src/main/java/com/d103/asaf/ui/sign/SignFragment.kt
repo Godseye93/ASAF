@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
+import androidx.navigation.fragment.findNavController
 import com.d103.asaf.R
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.config.BaseFragment
@@ -72,21 +73,25 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
 
     val today = todayToString()
     val year = today[0]
-    val month = today[1]
+    //val month = signMonth
     private val name = ApplicationClass.sharedPreferences.getString("memberName")
     private val classCode = SignDrawFragment.myClass?.classCode
-    private var curSign = SignDrawFragment.myClass?.let { DocSign(0, it.classNum,it.classCode,it.regionCode,it.generationCode,
-        it.userId,"",name?:"",month) } ?: DocSign()
+    private var curSign = DocSign()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("지금사인", "onCreate: $curSign")
+
         signMonth = requireArguments().getString("signMonth") ?: "1"
         totDay = requireArguments().getString("totDay") ?: "1"
         attDay = requireArguments().getString("attDay") ?: "1"
         subMonth = requireArguments().getString("subMonth") ?: "1"
         subDay = requireArguments().getString("subDay") ?: "1"
+
+        curSign = SignDrawFragment.myClass?.let { DocSign(0, it.classNum,it.classCode,it.regionCode,it.generationCode,
+            it.userId,"",name?:"",signMonth) } ?: DocSign()
+
+        Log.d("지금사인", "onCreate: $curSign")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,6 +99,8 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
 
         draw = binding.fragmentSignConfirmDraw
         draw.setSign(SignDrawFragment.draw?.getSign() ?: listOf(),"SignFragment")
+
+        Log.d("보내는사인", "보내는사인: $curSign")
 
         initView()
         initEvent()
@@ -107,7 +114,7 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
         Log.d("이름", "setUserInfo: $name")
 
         // 유저 정보 모두 필요
-        document = Document(month, name?:"", SignDrawFragment.regionName, classCode.toString(), "", "", "12", "29")
+        document = Document(signMonth, name?:"", SignDrawFragment.regionName, classCode.toString(), "", "", "12", "29")
         Log.d("사인", "setUserInfo: $totDay $attDay")
         binding.apply {
             fragmentSignConfirmTvYear.text = year
@@ -133,6 +140,7 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
         binding.fragmentSignConfirmBtnSave.setOnClickListener {
             //Request_Capture(binding.fragmentSignConfirmDocument, current_time + "_capture");
             requestCapture(binding.fragmentSignConfirmDocument, "${document.campus}_${document.class_}반_${document.name}",curSign)
+            findNavController().navigate(R.id.action_signFragment_to_signDrawFragment)
         }
     }
 

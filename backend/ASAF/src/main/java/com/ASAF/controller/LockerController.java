@@ -52,6 +52,19 @@ public class LockerController {
         return lockerService.getAllLockers();
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<LockerDTO> getLockerByUser(@RequestParam int class_code,
+                                                     @RequestParam int region_code,
+                                                     @RequestParam int generation_code,
+                                                     @RequestParam int id) {
+        try {
+            LockerDTO lockerDTO = lockerService.getLockerByUser(class_code, region_code, generation_code, id);
+            return ResponseEntity.ok(lockerDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
     @GetMapping("/classCodes")
     public List<LockerDTO> getLockersByCodes(@RequestParam("class_code") int class_code,
                                              @RequestParam("region_code") int region_code,

@@ -79,7 +79,21 @@
         android:id="@+id/marketDetailFragment"
         android:name="com.d103.asaf.ui.market.MarketDetailFragment"
         android:label="MarketDetail"
-        tools:layout="@layout/fragment_market_detail"/>
+        tools:layout="@layout/fragment_market_detail">
+
+        <action
+            android:id="@+id/action_marketDetailFragment_to_marketUpdateFragment"
+            app:destination="@id/marketUpdateFragment" />
+
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/marketUpdateFragment"
+        android:name="com.d103.asaf.ui.market.MarketUpdateFragment"
+        android:label="MarketUpdate"
+        tools:layout="@layout/fragment_market_update"/>
     <fragment
         android:id="@+id/navigation_noti"
         android:name="com.d103.asaf.ui.noti.StudentNotiFragment"
@@ -277,6 +291,9 @@
         <action
             android:id="@+id/action_signFragment_to_StudentHomeFragment"
             app:destination="@+id/StudentHomeFragment" />
+        <action
+            android:id="@+id/action_signFragment_to_signDrawFragment"
+            app:destination="@id/signDrawFragment" />
     </fragment>
 
 
