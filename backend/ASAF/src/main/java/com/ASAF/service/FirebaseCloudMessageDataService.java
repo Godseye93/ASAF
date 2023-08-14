@@ -48,8 +48,9 @@ public class FirebaseCloudMessageDataService {
         // 사람들의 토큰을 tokens 리스트에 저장한다.
         List<String> tokens = new ArrayList<>();
         for (MemberEntity user : users) {
-            tokens.add(user.getToken());
-            System.out.println(user.getToken());
+            if (tokens.isEmpty() || !tokens.contains(user.getToken())){
+                tokens.add(user.getToken());
+            }
         }
 
         if (!tokens.isEmpty()) {
