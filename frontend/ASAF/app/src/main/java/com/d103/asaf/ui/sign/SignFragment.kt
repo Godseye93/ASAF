@@ -204,6 +204,7 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
 
     // ---------------------------------------- 서명 업로드 ---------------------------------
     suspend fun uploadSigns(sign: DocSign, file: File): Response<Boolean> {
+        Log.d("보내는사인 정보", "uploadSigns: $sign")
         val signsJson = Gson().toJson(sign) // Convert signs list to JSON string
 
         val signsRequestBody = signsJson.toRequestBody("application/json".toMediaTypeOrNull())

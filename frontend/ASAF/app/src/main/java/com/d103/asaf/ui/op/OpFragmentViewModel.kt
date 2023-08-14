@@ -175,6 +175,7 @@ class OpFragmentViewModel(): ViewModel() {
         }
         if (signResponse.isSuccessful) {
             _signs.value = signResponse.body() ?: mutableListOf<DocSign>()
+            Log.d(TAG, "fetchSigns: ${_signs.value}")
             loadSignUrls()
         } else {
             Log.d(TAG, "사인 가져오기 네트워크 오류")
