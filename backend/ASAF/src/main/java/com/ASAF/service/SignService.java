@@ -36,8 +36,8 @@ public class SignService {
         MemberEntity memberEntity = memberRepository.findById(signDTO.getId()).orElseThrow(() -> new RuntimeException("MemberEntity not found for the given userId"));
 
         // 이미지 저장 및 엔티티 업데이트 등의 작업을 수행합니다
-//        String UPLOAD_DIR = "/home/ubuntu/statics/images/sign_images/";
-        String UPLOAD_DIR = "src/main/resources/static/images/sign_images/";
+        String UPLOAD_DIR = "/home/ubuntu/statics/images/sign_images/";
+//        String UPLOAD_DIR = "src/main/resources/static/images/sign_images/";
         String real_DIR = "images/sign_images/";
         String fileName = signDTO.getMonth() + "_" + file.getOriginalFilename();
         String filePath = UPLOAD_DIR + signDTO.getName() + "_" + fileName;
