@@ -14,7 +14,7 @@ public class Message {
     private List<String> token;
     private Map<String, String> data;
 
-    public Message() {}
+	public Message() {}
 
 	public Message(Notification notification, List<String> token) {
 		super();

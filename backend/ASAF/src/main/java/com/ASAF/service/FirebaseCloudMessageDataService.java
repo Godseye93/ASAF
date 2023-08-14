@@ -12,6 +12,11 @@ import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import com.google.firebase.messaging.BatchResponse;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.MulticastMessage;
 import okhttp3.*;
 import org.apache.http.HttpHeaders;
 import org.slf4j.Logger;
@@ -44,6 +49,7 @@ public class FirebaseCloudMessageDataService {
         List<String> tokens = new ArrayList<>();
         for (MemberEntity user : users) {
             tokens.add(user.getToken());
+            System.out.println(user.getToken());
         }
 
         if (!tokens.isEmpty()) {
@@ -52,33 +58,54 @@ public class FirebaseCloudMessageDataService {
     }
 
     public void sendNotificationToTokens(List<String> targetTokens, String title, String body, String img) throws IOException {
-        String message = makeDataMessage(targetTokens, title, body, img);
-        logger.info("message : {}", message);
-        OkHttpClient client = new OkHttpClient();
-        RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
-        Request request = new Request.Builder()
-                .url(API_URL)
-                .post(requestBody)
-                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
-                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+//        String message = makeDataMessage(targetTokens, title, body, img);
+//        System.out.println("message : {}"  +  message);
+//        OkHttpClient client = new OkHttpClient();
+//        RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
+//        Request request = new Request.Builder()
+//                .url(API_URL)
+//                .post(requestBody)
+//                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+//                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+//                .build();
+//        Response response = client.newCall(request).execute();
+
+
+        MulticastMessage message = MulticastMessage.builder()
+                .putData("title", title)
+                .putData("body", body)
+                .putData("image", img)
+                .addAllTokens(targetTokens)
                 .build();
-        Response response = client.newCall(request).execute();
+
+        try {
+            BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+            System.out.println("Multicast 메시지를 보냄: " + response.getSuccessCount() + "개의 메시지가 성공");
+            System.out.println("Multicast 메시지 실패: " + response.getFailureCount() + "개의 메시지 실패");
+        }  catch (FirebaseMessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private String makeDataMessage(List<String> targetTokens, String title, String body, String img) throws JsonProcessingException, IOException {
-        // Implement changes for data payload
-        Map<String, String> map = new HashMap<>();
-        map.put("title", title);
-        map.put("body", body);
-        map.put("image", img);
-
-        Message message = new Message();
-        message.setToken(targetTokens);
-        message.setData(map);
-        System.out.println("----------------" + message);
-        FcmDataMessage fcmMessage = new FcmDataMessage(false, message);
-        return objectMapper.writeValueAsString(fcmMessage);
-    }
+//    private String makeDataMessage(List<String> targetTokens, String title, String body, String img) throws JsonProcessingException, IOException {
+//        // Implement changes for data payload
+//        Map<String, String> map = new HashMap<>();
+//        map.put("title", title);
+//        map.put("body", body);
+//        map.put("image", img);
+//
+//        MulticastMessage message = MulticastMessage.builder()
+//                        .putData("title", title)
+//                                .putData("body", body)
+//                                        .putData("image", img)
+//                                                .addAllTokens(targetTokens)
+//                                                        .build();
+////        message.setToken(targetTokens);
+////        message.setData(map);
+//        System.out.println("----------------" + message);
+//        FcmDataMessage fcmMessage = new FcmDataMessage(false, message);
+//        return objectMapper.writeValueAsString(fcmMessage);
+//    }
 
     // 1-2. 각 유저에게 보낼 공지를 작성
 //    private void sendNotificationToUser(MemberEntity user, String title, String body, String image) throws IOException {
@@ -131,29 +158,29 @@ public class FirebaseCloudMessageDataService {
      * @throws IOException
      */
     // 2-1 토큰, 제목, 전체 내용, 이미지를 사용해 Firebase Cloud Messaging 으로 최종 요청합니다.
-    public void sendDataMessageTo(List<String> targetToken, String title, String body, String img) throws IOException {
-        // makeDataMessage를 사용하여 메시지를 생성합니다..
-        String message = makeDataMessage(targetToken, title, body, img);
-        logger.info("message : {}", message);
-        // 내장 클래스 OkHttpClient의 인스턴스 client를 생성합니다..
-        OkHttpClient client = new OkHttpClient();
-        // 내장 클래스 RequestBody의 인스턴스 requestBody를 생성합니다..
-        // message를 첨부하여 requestBody의 메소드 create를 실행합니다.
-        RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
-        // 내장 클래스 Request의 인스턴스 request를 생성합니다.
-        // request의 url을 Firebasestorage Clouding Message의 주소,
-        // post를 requestBody,
-        // addHeader에 전송 토큰을 넣고 빌드합니다. 전송 토큰은 미리 정의해 둔 메서드의 리턴값으로 받아옵니다.
-        Request request = new Request.Builder()
-                .url(API_URL)
-                .post(requestBody)
-                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
-                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
-                .build();
-        // 내장클래스 Response의 인스턴스 response를 생성하고 request를 담아 내장 메서드 execute()를 실행합니다.
-        Response response = client.newCall(request).execute();
-//        System.out.println(response.body().string());
-    }
+//    public void sendDataMessageTo(List<String> targetToken, String title, String body, String img) throws IOException {
+//        // makeDataMessage를 사용하여 메시지를 생성합니다..
+//        String message = makeDataMessage(targetToken, title, body, img);
+//        logger.info("message : {}", message);
+//        // 내장 클래스 OkHttpClient의 인스턴스 client를 생성합니다..
+//        OkHttpClient client = new OkHttpClient();
+//        // 내장 클래스 RequestBody의 인스턴스 requestBody를 생성합니다..
+//        // message를 첨부하여 requestBody의 메소드 create를 실행합니다.
+//        RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
+//        // 내장 클래스 Request의 인스턴스 request를 생성합니다.
+//        // request의 url을 Firebasestorage Clouding Message의 주소,
+//        // post를 requestBody,
+//        // addHeader에 전송 토큰을 넣고 빌드합니다. 전송 토큰은 미리 정의해 둔 메서드의 리턴값으로 받아옵니다.
+//        Request request = new Request.Builder()
+//                .url(API_URL)
+//                .post(requestBody)
+//                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+//                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+//                .build();
+//        // 내장클래스 Response의 인스턴스 response를 생성하고 request를 담아 내장 메서드 execute()를 실행합니다.
+//        Response response = client.newCall(request).execute();
+////        System.out.println(response.body().string());
+//    }
 
     /**
      * FCM 알림 메시지 생성
