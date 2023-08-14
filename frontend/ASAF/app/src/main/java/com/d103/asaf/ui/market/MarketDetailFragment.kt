@@ -1,5 +1,6 @@
 package com.d103.asaf.ui.market
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import com.d103.asaf.SharedViewModel
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.MarketImage
+import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentMarketDetailBinding
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -79,11 +81,15 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
 
         // 수정 버튼 클릭 시
         binding.fragmentMarketDetailUpdateButton.setOnClickListener {
-
+            viewModel.marketDetail.value?.let { it1 -> sharedViewModel.InsertMarketDetail(it1) }
+            findNavController().navigate(R.id.action_marketDetailFragment_to_marketUpdateFragment)
+            (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
         }
         // 삭제 버튼 클릭 시
         binding.fragmentMarketDetailDeleteButton.setOnClickListener {
-
+           viewModel.delete()
+            findNavController().navigateUp()
+            (requireActivity() as MainActivity).showStudentBottomNaviagtionBarFromFragment()
         }
         viewModel.marketDetail.observe(viewLifecycleOwner){
             adapter = viewModel.marketDetail.value?.let { MarketDetailAdapter(it.images, requireContext()) }!!
@@ -102,10 +108,15 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
             binding.fragmentMarketDetailContent.text = it.content
             binding.fragmentMarketDetailRegisterTime.text = convertLongToDate(it.registerTime)
             binding.fragmentMarketDetailTitleView.text = it.title
+            val imageSplit = viewModel.marketDetail.value?.profileImage?.split("/")!!
+            val path =  "http://i9d103.p.ssafy.io" + "/" + imageSplit[4] + "/" + imageSplit[5] + "/" + imageSplit[6]
             Glide
                 .with(requireContext())
-                .load("${ApplicationClass.API_URL}member/${it.profileImage.split("/")[6].split(".")[0]}.com/profile-image")
+                .load(path)
                 .into(binding.fragmentMarketDetailProfile)
+
+
+
             binding.fragmentMarketDetailUserName.text = it.name
 
         }

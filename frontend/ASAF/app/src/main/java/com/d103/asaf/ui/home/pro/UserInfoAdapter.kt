@@ -26,8 +26,13 @@ class UserInfoAdapter(var context : Context) : ListAdapter<Member, UserInfoAdapt
 
         fun bind(user : Member){
             Log.d("유저 프로필", "${ApplicationClass.API_URL}member/${user.profileImage.split("/")[6].split(".")[0]}.com/profile-image")
+            Log.d("유저 프로필", "${ApplicationClass.API_URL}${user.profileImage}")
+            Log.d("유저 프로필", "${ApplicationClass.API_URL}${user.profileImage}")
             binding.userName.text = user.memberName
-            Glide.with(context).load("${ApplicationClass.API_URL}member/${user.profileImage.split("/")[6].split(".")[0]}.com/profile-image").into(binding.userProfileImage)
+
+            val imageSplit = user.profileImage.split("/")
+            val path =  "http://i9d103.p.ssafy.io" + "/" + imageSplit[4] + "/" + imageSplit[5] + "/" + imageSplit[6]
+            Glide.with(context).load(path).into(binding.userProfileImage)
             if(user.attended == "미출석"){
                 binding.attendanceCheckImage.setBackgroundColor(Color.RED)
             }
@@ -47,6 +52,7 @@ class UserInfoAdapter(var context : Context) : ListAdapter<Member, UserInfoAdapt
         }
 
     }
+
 
 
 

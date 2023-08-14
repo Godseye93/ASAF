@@ -1,11 +1,13 @@
 package com.d103.asaf.common.model.api
 
+import androidx.room.Delete
 import com.d103.asaf.common.model.dto.Market
 import com.d103.asaf.common.model.dto.MarketDetail
 import com.d103.asaf.common.model.dto.Member
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -26,5 +28,8 @@ interface MarketService {
     suspend fun getAll() : Response<MutableList<Market>>
 
     @GET("post/{postId}")
-    suspend fun getMarket(@Path("postId") id : Int) : Response<MarketDetail>
+    suspend fun getMarket(@Path("postId") id : Long) : Response<MarketDetail>
+
+    @DELETE("post/delete/{postId}")
+    suspend fun delete(@Path("postId") id : Long) : Response<Boolean>
 }

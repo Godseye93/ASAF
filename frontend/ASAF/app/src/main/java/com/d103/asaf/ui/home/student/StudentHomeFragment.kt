@@ -81,6 +81,9 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
     private lateinit var buttonFlip: ImageView
     private var isFirstCardVisible = true
 
+    // 뷰모델
+    private val viewModel: StudentHomeFragmentViewModel by viewModels()
+
 //    val nthValue = ApplicationClass.sharedPreferences.getInt("Nth")
 //    val regionValue = ApplicationClass.sharedPreferences.getInt("region")
 //    val classCodeValue = ApplicationClass.sharedPreferences.getInt("classCode")
@@ -96,7 +99,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.d(TAG, "프로필 이미지: ${ApplicationClass.sharedPreferences.getString("profile_image")}")
         initView()
 
         // 알림? 진동? 페이지
@@ -186,6 +189,24 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
 
     @SuppressLint("SetTextI18n")
     fun initView(){
+        lifecycleScope.launch{
+            viewModel.addClassInfo(ApplicationClass.sharedPreferences.getString("memberEmail")!!)
+        }
+
+        viewModel.nthValue.observe(viewLifecycleOwner) {
+            binding.fragmentStudentHomeCardViewFrontTextviewNth.text = "${viewModel.nthValue.value} 기"
+            binding.fragmentStudentHomeCardViewBackInfo.text = " ${viewModel.nthValue.value} 기 ${viewModel.regionValue.value} ${viewModel.classCodeValue.value} 반 "
+        }
+
+        viewModel.regionValue.observe(viewLifecycleOwner) {
+            binding.fragmentStudentHomeCardViewFrontTextviewRegion.text = "${viewModel.regionValue.value}"
+            binding.fragmentStudentHomeCardViewBackInfo.text = " ${viewModel.nthValue.value} 기 ${viewModel.regionValue.value} ${viewModel.classCodeValue.value} 반 "
+        }
+
+        viewModel.classCodeValue.observe(viewLifecycleOwner) {
+            binding.fragmentStudentHomeCardViewFrontTextviewClass.text = "${viewModel.classCodeValue.value} 반"
+            binding.fragmentStudentHomeCardViewBackInfo.text = " ${viewModel.nthValue.value} 기 ${viewModel.regionValue.value} ${viewModel.classCodeValue.value} 반 "
+        }
 
         Log.d(TAG, "initView: StudentFragment onViewCreated 내부 initView() 실행. ")
 //        Log.d("유저 프로필 !!!!!", "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image")
@@ -197,25 +218,20 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
             .apply(requestOptions)
             .into(binding.fragmentStudentHomeCardViewFrontImage)
 
+        viewModel.nthValue.postValue(ApplicationClass.sharedPreferences.getInt("Nth"))
+        viewModel.regionValue.postValue(ApplicationClass.sharedPreferences.getString("region"))
+        viewModel.classCodeValue.postValue(ApplicationClass.sharedPreferences.getInt("classCode"))
 
-        val nthValue = ApplicationClass.sharedPreferences.getInt("Nth")
-        val regionValue = ApplicationClass.sharedPreferences.getString("region")
-        val classCodeValue = ApplicationClass.sharedPreferences.getInt("classCode")
+        // Log.d("기수", "initView: $nthValue")
 
-        val regionText = regionValue
+        val regionText = viewModel.regionValue.value
 
-//        val regionText = when (regionValue?.toInt()) {
-//            1 -> "서울"
-//            2 -> "구미"
-//            3 -> "대전"
-//            4 -> "부울경"
-//            5 -> "광주"
-//            else -> " - "
-//        }
+     
 
-        Log.d(TAG, "initView 텍스트뷰에 찍을 거에요 : $nthValue, $regionValue, $classCodeValue ")
+        // Log.d(TAG, "initView 텍스트뷰에 찍을 거에요 : $nthValue, $regionValue, $classCodeValue ")
 
         with(binding) {
+
             fragmentStudentHomeCardViewFrontCardView1FrontName.text = ApplicationClass.sharedPreferences.getString("memberName")
             fragmentStudentHomeCardViewFrontCardView1FrontNum.text = ApplicationClass.sharedPreferences.getInt("student_number").toString()
 
@@ -240,10 +256,10 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
 //                binding.fragmentStudentHomeCardViewFrontTextviewClass.text = "$classCodeValue 반"
 //            }
 
-            fragmentStudentHomeCardViewFrontTextviewNth.text = "$nthValue 기"
-            fragmentStudentHomeCardViewFrontTextviewRegion.text = "$regionText "
-            fragmentStudentHomeCardViewFrontTextviewClass.text = "$classCodeValue 반"
-            fragmentStudentHomeCardViewBackInfo.text = " $nthValue 기 $regionText $classCodeValue 반 "
+//            fragmentStudentHomeCardViewFrontTextviewNth.text = "$nthValue 기"
+//            fragmentStudentHomeCardViewFrontTextviewRegion.text = "$regionText "
+//            fragmentStudentHomeCardViewFrontTextviewClass.text = "$classCodeValue 반"
+//            fragmentStudentHomeCardViewBackInfo.text = " ${viewModel.nthValue.value} 기 $regionText ${viewModel.classCodeValue.value} 반 "
             fragmentStudentHomeCardViewBackName.text = ApplicationClass.sharedPreferences.getString("memberName")
         }
 

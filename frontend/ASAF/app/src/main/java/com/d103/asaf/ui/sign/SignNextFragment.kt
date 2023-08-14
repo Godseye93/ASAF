@@ -57,6 +57,7 @@ class SignNextFragment : BaseFragment<FragmentSignNextBinding>(FragmentSignNextB
                 val subMonth = fragmentSignNextDropdownFourthMonth.dropdownText.text.toString()
                 val subDay = fragmentSignNextDropdownFourthDay.dropdownText.text.toString()
                 val fragment = SignFragment.instance(signMonth, totDay, attDay, subMonth, subDay)
+                Log.d("보내는사인넥스트", "$signMonth ")
                 findNavController().navigate(R.id.action_signNextFragment_to_signFragment, fragment.arguments)
             }
         }

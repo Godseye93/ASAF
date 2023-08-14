@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import kotlin.math.log
@@ -91,6 +92,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
                     )
                     if (response.isSuccessful) {
                         val responseBody = response.body()
+                        Log.d(TAG, "반 정보: ${response.body()}")
                         if (!responseBody.isNullOrEmpty()) {
                             sharedViewModel.postClassInfoList(responseBody)
                             ApplicationClass.mainClassInfo = responseBody
@@ -161,6 +163,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
 
                 Log.d(TAG, "담당 반: ${sharedViewModel.classInfoList.value?.size}")
                 if (loginResult.authority == "교육생") {
+
                     findNavController().navigate(R.id.action_login_fragment_to_StudentHomeFragment)
                 } else {
                     findNavController().navigate(R.id.action_loginFragment_to_ProhomeFragment)

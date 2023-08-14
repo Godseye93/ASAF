@@ -23,11 +23,13 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.d103.asaf.MainActivity
 import com.d103.asaf.R
+import com.d103.asaf.SharedViewModel
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.Market
@@ -64,9 +66,13 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
     private var param1: String? = null
     private var param2: String? = null
     private val viewModel : MarketRegisterFragmentViewModel by viewModels()
+    private val sharedViewModel : SharedViewModel by activityViewModels()
     private val PICK_IMAGE_REQUEST = 1
     private val STORAGE_PERMISSION_CODE = 2 // 원하는 값으로 변경 가능
     private lateinit var adapter : MarketPhotoRegisterAdapter
+//    private val userProfileImage =
+    private val userName =  ApplicationClass.sharedPreferences.getString("memberName")
+
     private  val selectImagesActivityResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -117,13 +123,14 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        sharedViewModel.userImage = ApplicationClass.sharedPreferences.getString("profile_image")!!
         Log.d(TAG, "onViewCreated: 다시불림?")
         init()
 
     }
 
     fun init() {
+
         // 뒤로 가기 버튼
         binding.fragmentMarketRegisterBackButton.setOnClickListener {
             (requireActivity() as MainActivity).showStudentBottomNaviagtionBarFromFragment()
@@ -155,12 +162,13 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
                 Toast.makeText(requireContext(), "내용을 채워주세요", Toast.LENGTH_SHORT).show()
             }
             else{
+                Log.d(TAG, "프로필: ${ApplicationClass.sharedPreferences.getString("profile_image")} ")
                 viewModel.marketInfo = Market(System.currentTimeMillis(),
                     binding.fragmentMarketRegisterTitleEdittext.text.toString(),
                     binding.marketDetailEdittext.text.toString(),
                     ApplicationClass.sharedPreferences.getInt("id"),
-                    ApplicationClass.sharedPreferences.getString("profile_image")!!,
-                    ApplicationClass.sharedPreferences.getString("memberName")!!
+                    sharedViewModel.userImage,
+                    userName!!
                 )
 
                 (viewModel.post())

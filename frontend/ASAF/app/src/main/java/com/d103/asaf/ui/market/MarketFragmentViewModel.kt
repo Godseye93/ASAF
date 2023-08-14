@@ -1,5 +1,6 @@
 package com.d103.asaf.ui.market
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,6 +22,10 @@ class MarketFragmentViewModel : ViewModel() {
             if(response.isSuccessful){
                 if(!response.body().isNullOrEmpty()){
                     _marketList.value = response.body()
+                    Log.d("마켓 리스트", "1 ; ${_marketList.value} ")
+                }
+                else{
+                    _marketList.value = mutableListOf<Market>()
                 }
             }
             else{

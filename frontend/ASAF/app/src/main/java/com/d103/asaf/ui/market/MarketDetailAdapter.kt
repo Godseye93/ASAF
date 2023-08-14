@@ -3,6 +3,7 @@ package com.d103.asaf.ui.market
 import android.app.Dialog
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,9 +24,22 @@ class MarketDetailAdapter (private val items: List<MarketImage>, val context: Co
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
 
         val item = items[position]
+        Log.d("사진 주소", "${item.imageUri} ")
+        val imageSplit = item.imageUri.split("/")
+        val path =  "http://i9d103.p.ssafy.io" + "/" + imageSplit[4] + "/" + imageSplit[5] + "/" + imageSplit[6]
+        Log.d("사진 주소 2", "onBindViewHolder: $path")
+        try{
+            Glide.with(context).load(path)
+                .into(holder.image)
+        }
+        catch (e : Exception){
 
-        Glide.with(context).load(item.imageUri)
-            .into(holder.image)
+            Glide.with(context).load("https://cdn-icons-png.flaticon.com/512/75/75519.png")
+                .into(holder.image)
+
+
+        }
+
 
         holder.image.setOnClickListener {
             showImageDialog(item.imageUri)
@@ -36,13 +50,14 @@ class MarketDetailAdapter (private val items: List<MarketImage>, val context: Co
         return items.size
     }
 
-    private fun showImageDialog(image: Uri) {
+    private fun showImageDialog(image: String) {
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.dialog_market_register_image)
         val imageView = dialog.findViewById<ImageView>(R.id.imageView)
-
+        val imageSplit = image.split("/")
+        val path =  "http://i9d103.p.ssafy.io" + "/" + imageSplit[4] + "/" + imageSplit[5] + "/" + imageSplit[6]
         Glide.with(context)
-            .load(image)
+            .load(path)
             .into(imageView)
 
         dialog.show()
