@@ -128,7 +128,9 @@ public class FirebaseCloudMessageDataService {
         String image = profileImage;
         List<String> tokens = new ArrayList<>();
         for (MemberEntity user : users) {
-            tokens.add(user.getToken());
+            if (tokens.isEmpty() || !tokens.contains(user.getToken())){
+                tokens.add(user.getToken());
+            }
         }
 
         if (noticeEntity.getNotification() == true){
