@@ -10,12 +10,13 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 @ToString
 public class ImageDTO {
-    private Long image_id;
-    private String image_url;
-    private Long post_id;
+    private Long id;
+    private String imageUri;
+    private Long postId;
 
     public ImageDTO(ImageEntity imageEntity) {
-        this.image_id = imageEntity.getImage_id();
-        this.image_url = imageEntity.getImage_url();
+        this.id = imageEntity.getId();
+        this.imageUri = imageEntity.getImageUri();
+        this.postId = imageEntity.getPost().getPost_id();
     }
 }

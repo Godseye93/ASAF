@@ -37,10 +37,11 @@ public class SignService {
 
         // 이미지 저장 및 엔티티 업데이트 등의 작업을 수행합니다
         String UPLOAD_DIR = "/home/ubuntu/statics/images/sign_images/";
-        String STATIC_DIR = "images/sign_images/";
+//        String UPLOAD_DIR = "src/main/resources/static/images/sign_images/";
+        String real_DIR = "images/sign_images/";
         String fileName = file.getOriginalFilename();
         String filePath = UPLOAD_DIR + signDTO.getName() + "_" + fileName;
-        String imageUrl = STATIC_DIR + signDTO.getName() + "_" + fileName; // 웹 서버가 액세스할 수 있는 이미지 경로
+        String realPath = real_DIR + signDTO.getName() + "_" + fileName;
         File dest = new File(filePath);
         FileCopyUtils.copy(file.getBytes(), dest);
 
@@ -49,8 +50,13 @@ public class SignService {
         RegionEntity regionEntity1 = regionRepository.findById(signDTO.getRegion_code()).orElse(null);
         GenerationEntity generationEntity1 = generationRepository.findById(signDTO.getGeneration_code()).orElse(null);
 
+        List<SignEntity> existingSigns = signRepository.findByNameAndMonth(signDTO.getName(), signDTO.getMonth());
+        if (!existingSigns.isEmpty()) {
+            signRepository.deleteAll(existingSigns);
+        }
+
         SignEntity signEntity = new SignEntity();
-        signEntity.setImage_url(filePath);
+        signEntity.setImage_url(realPath);
         signEntity.setName(signDTO.getName());
         signEntity.setMonth(signDTO.getMonth());
         signEntity.setClass_num(classInfoEntity);
@@ -69,7 +75,7 @@ public class SignService {
         return signEntity.getImage_url();
     }
 
-    // 반 별 이미지 정보
+    // 서명서 이미지, 이름 반환
     public List<SignDTO> getSignsByCodes(int class_code, int region_code, int generation_code, String month) {
         List<SignEntity> signEntities = signRepository.findByClassEntityClassCodeAndRegionEntityRegionCodeAndGenerationEntityGenerationCodeAndMonth(class_code, region_code, generation_code, month);
         return signEntities.stream()

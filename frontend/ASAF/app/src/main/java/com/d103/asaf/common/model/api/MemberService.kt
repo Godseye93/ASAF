@@ -4,6 +4,7 @@ import com.d103.asaf.common.model.dto.Classinfo
 import com.d103.asaf.common.model.dto.Member
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -19,10 +20,8 @@ interface MemberService {
 //    @POST("rest/user")
     @POST("member/save")
     suspend fun insert(@Body body: Member): Boolean
-
-    // 반 배정
-//    @POST("classinfo/create}")
-//    suspend fun setClass(@Body body: List<Int>): Boolean
+    
+    // 반배정
     @POST("/classinfo/create")
     suspend fun setClass(
         @Query("Id") id: Int,
@@ -31,14 +30,12 @@ interface MemberService {
         @Query("generation_code") generationCode: Int
     ): Response<String>
 
-
     // 중복 확인
     @GET("member/email-check/{memberEmail}")
     suspend fun emailCheck(@Path("memberEmail") memberEmail: String): Boolean
 
     @GET("member/email/{memberEmail}")
     suspend fun getUserInfo(@Path("memberEmail") memberEmail: String): Response<Member>
-
 
     // 이미지 업로드 메서드
     @Multipart
@@ -51,6 +48,9 @@ interface MemberService {
     // 로그인
     @POST("member/login")
     suspend fun login(@Body body: Member) : Member
+
+    @PUT("member/update")
+    fun updateMember(@Body memberDTO: Member): Call<Member>
 
     // 로그아웃
     @GET("member/logout")

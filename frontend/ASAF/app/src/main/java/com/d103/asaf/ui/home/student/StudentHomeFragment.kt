@@ -190,6 +190,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
         Log.d(TAG, "initView: StudentFragment onViewCreated 내부 initView() 실행. ")
 //        Log.d("유저 프로필 !!!!!", "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image")
         val imageUrl = "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image"
+        Log.d(TAG, "initView: $imageUrl")
         val requestOptions = RequestOptions().transform(CircleCrop())
         Glide.with(this)
             .load(imageUrl)
@@ -198,8 +199,10 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
 
 
         val nthValue = ApplicationClass.sharedPreferences.getInt("Nth")
-        val regionValue = ApplicationClass.sharedPreferences.getString("region")
+        val regionValue = ApplicationClass.sharedPreferences.getInt("region")
         val classCodeValue = ApplicationClass.sharedPreferences.getInt("classCode")
+
+//        val regionText = regionValue
 
         val regionText = when (regionValue?.toInt()) {
             1 -> "서울"

@@ -178,6 +178,7 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
                     if (response.isSuccessful) {
                         Log.d("서명보내기", "requestCapture: 서명 보내기 완료")
                         try {
+                            Log.d("서명보내기이미지", "requestCapture: $image")
                             if(image != null && (image as File).exists()) (image as File).delete()
                         }catch (e:Exception) {
                             Log.e("파일없음", "파일없음 삭제 오류: ${e.message}", e)

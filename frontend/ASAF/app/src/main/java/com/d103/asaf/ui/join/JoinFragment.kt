@@ -18,27 +18,23 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.MainActivity
-import com.d103.asaf.R
-import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
+import com.d103.asaf.common.util.RetrofitUtil.Companion.memberService
 import com.d103.asaf.databinding.FragmentJoinBinding
-import com.d103.asaf.ui.login.LoginFragment
 import com.d103.asaf.ui.sign.SignDrawFragment.Companion.regionCode
-import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.selects.select
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -46,7 +42,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
 import java.util.Calendar
-import java.util.Date
 
 private const val TAG = "JoinFragment_cjw"
 class JoinFragment : Fragment() {
@@ -63,7 +58,7 @@ class JoinFragment : Fragment() {
 //    val regionCode = binding.spinnerRegion.selectedItem.toString().toInt()
 //    val classCode = binding.spinnerClassNum.selectedItem.toString().toInt()
 
-    private lateinit var tempUri : Uri
+    private var tempUri : Uri? = null
     private val STORAGE_PERMISSION_CODE = 1 // 원하는 값으로 변경 가능
     // 이미지 선택을 위한 ActivityResultLauncher 선언
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -127,23 +122,28 @@ class JoinFragment : Fragment() {
             val confirmPassword = binding.fragmentJoinEditTVPassConfirm.text.toString()
             val birth = binding.fragmentJoinEditTVBirth.text.toString()
             val information = "${binding.spinnerNth.selectedItem}${binding.spinnerRegion.selectedItem}${binding.spinnerClassNum.selectedItem}"
+            val studentNumber = binding.fragmentJoinEditTVStudentNumber.text.toString()
+            val phoneNumber = binding.fragmentJoinEditTVPhoneNumber.text.toString()
 
-//            val generationCode = binding.spinnerNth.selectedItem.toString().toInt()
-//            val regionCode = binding.spinnerRegion.selectedItem.toString().toInt()
-//            val classCode = binding.spinnerClassNum.selectedItem.toString().toInt()
-
-            val member = Member(name, email, password, birth, information)
+            val member = Member(studentNumber.toInt(), name, email, password, birth, information, phoneNumber)
 //            member.token = ApplicationClass.sharedPreferences.getString("token")!!
+
             if (viewModel.validateInputs(member, confirmPassword, tempUri)) {
                 // 이메일 중복 확인
                 lifecycleScope.launch {
-                    val isEmailDuplicated = async { checkDuplicateEmail(email) }.await()
+                    val isEmailDuplicated =
+                        withContext(Dispatchers.Default) {
+                            checkDuplicateEmail(email)
+                        }
 
                     if (!isEmailDuplicated) {
                         // 이메일이 중복되는 경우
                         Log.d(TAG, "onSignupButtonClick: 중복된 이메일이 존재합니다.")
                         Toast.makeText(requireContext(), "이미 등록된 이메일입니다.", Toast.LENGTH_SHORT).show()
                     } else {
+                        // 이미지를 서버로 업로드하는 로직 호출
+                        Log.d(TAG, "setupViews: 이미지 null이니? : $tempUri")
+
                         // 이메일이 중복되지 않는 경우
                         // 회원가입 로직을 처리하고, 뷰를 변경하거나 다른 작업을 수행할 수 있습니다.
                         // viewModel.signup(name, email, password, birth, information)
@@ -158,29 +158,16 @@ class JoinFragment : Fragment() {
                         val tempId = viewModel.signedMem(email,generationCode, regionCode, classCode)
                         Log.d(TAG, "setupViews: $tempId, $generationCode, $regionCode, $classCode")
 
-//                        viewModel.setClass(tempId, generationCode, regionCode, classCode)
-//                        Log.d(TAG, "setupViews setClass 함수 대입 : $tempId, $generationCode, $regionCode, $classCode")
+                        uploadProfileImage(email, tempUri!!)
 
+                        findNavController().navigateUp()
 
-//                        if(viewModel.isSetClassSuccessful.value == false){
-//                            Log.d(TAG, "setupViews setClass 함수 실행 : 반 배정 실패.")
-//                            Toast.makeText(requireContext(), "반 배정 실패 !", Toast.LENGTH_SHORT).show()
-//                        }
-
-
-                        // 이미지를 서버로 업로드하는 로직 호출
-                        val email = binding.fragmentJoinEditTVEmail.text.toString()
-                        Log.d(TAG, "setupViews: 이미지 null이니? : $tempUri")
-                        uploadProfileImage(email, tempUri)
-
-                        // login fragment로 이동.
-                        findNavController().navigate(R.id.action_joinFragment_to_loginFragment)
                     }
                 }
             } else {
                 // 입력 값이 유효하지 않을 경우, 필요한 에러 메시지를 표시하거나 처리해줍니다.
                 Log.d(TAG, "setupViews: 똑바로 다 입력하세요 ~~")
-                Toast.makeText(requireContext(), "모든 항목을 입력하세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "모든 항목을 정확히 입력하세요. \n이메일, 전화번호(11자리) 등", Toast.LENGTH_SHORT).show()
 
             }
         }
@@ -288,13 +275,6 @@ class JoinFragment : Fragment() {
         datePickerDialog.show()
     }
 
-    private fun hideBottomBar() {
-        // MainActivity의 hideBottomNavigationBar() 메서드를 호출하여 사용합니다.
-        if (activity is MainActivity) {
-            (activity as MainActivity).hideBottomNavigationBarFromFragment()
-        }
-    }
-
     private fun openGalleryForImage() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
@@ -305,15 +285,15 @@ class JoinFragment : Fragment() {
 
     // Modify checkDuplicateNickname to checkDuplicateEmail
     private suspend fun checkDuplicateEmail(email: String): Boolean {
-        try {
+        return try {
             // RetrofitUtil을 사용하여 서버에 이메일 중복 확인 요청
-            return RetrofitUtil.memberService.emailCheck(email)
+            RetrofitUtil.memberService.emailCheck(email)
         } catch (e: Exception) {
             // 예외 처리 로직
             Log.d(TAG, "checkDuplicateEmail: 오류 발생")
             Log.d(TAG, "checkDuplicateEmail: $e")
             // 예외 발생 시에도 false 값을 반환하여 이메일 중복으로 처리
-            return false
+            false
         }
     }
 
@@ -321,6 +301,7 @@ class JoinFragment : Fragment() {
         val file: File = getFileFromUri(context, uri) ?: return null
         // 파일을 가져오지 못한 경우 처리할 로직
         val requestFile: RequestBody = createRequestBodyFromFile(file)
+        Log.d(TAG, "createMultipartFromUri: ${file.name}")
         return MultipartBody.Part.createFormData("file", file.name, requestFile)
     }
 
@@ -348,30 +329,33 @@ class JoinFragment : Fragment() {
     }
 
     private suspend fun uploadProfileImage(email: String, imageUri: Uri) {
-        val file = File(imageUri.path)
         val profileImagePart = createMultipartFromUri(requireContext(), imageUri)
         val emailRequestBody = RequestBody.create(okhttp3.MultipartBody.FORM, email)
 
-        lifecycleScope.launch {
-            try {
-                Log.d(TAG, "uploadProfileImage: 이미지 확인--------")
-                Log.d(TAG, "uploadProfileImage: $email 로 $profileImagePart 보낸다")
+        if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+            Log.d(TAG, "uploadProfileImage: $emailRequestBody, ${profileImagePart.toString()}")
+            val job = lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    Log.d(TAG, "uploadProfileImage: 이미지 확인--------")
+                    Log.d(TAG, "uploadProfileImage: $email 로 $profileImagePart 보낸다")
 
-                // 서버에 프로필 이미지 업로드 요청
-                val response = RetrofitUtil.memberService.uploadProfileImage(emailRequestBody, profileImagePart!!)
-//                Log.d(TAG, "uploadProfileImage: ${response.errorBody()?.string()}")
-                Log.d(TAG, "uploadProfileImage: ${response.body()}")
-                if (response.isSuccessful && response.body() != null && response.body() == true) {
-                    // 이미지 업로드 성공 처리
-                    Log.d(TAG, "uploadProfileImage: 이미지 업로드 성공")
-                } else {
-                    // 이미지 업로드 실패 처리
-                    Log.e(TAG, "uploadProfileImage: 이미지 업로드 실패")
+                    // 서버에 프로필 이미지 업로드 요청
+                    val response = memberService.uploadProfileImage(emailRequestBody, profileImagePart!!)
+                    Log.d(TAG, "uploadProfileImage: ${response.body()}")
+                    if (response.isSuccessful && response.body() != null && response.body() == true) {
+                        // 이미지 업로드 성공 처리
+                        Log.d(TAG, "uploadProfileImage: 이미지 업로드 성공")
+                    } else {
+                        // 이미지 업로드 실패 처리
+                        Log.e(TAG, "uploadProfileImage: 이미지 업로드 실패")
+                    }
+                } catch (e: Exception) {
+                    // 예외 처리 로직
+                    Log.e(TAG, "uploadProfileImage: Error", e)
                 }
-            } catch (e: Exception) {
-                // 예외 처리 로직
-                Log.e(TAG, "uploadProfileImage: Error", e)
             }
+
+            job.join() // 코루틴이 끝까지 실행될 때까지 대기
         }
     }
 
@@ -392,6 +376,7 @@ class JoinFragment : Fragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

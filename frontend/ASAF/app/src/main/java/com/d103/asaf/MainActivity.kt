@@ -180,6 +180,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onDestroy()
     }
 
+    override fun onStop() {
+        super.onStop()
+        cleanupResources()
+    }
+
     private fun cleanupResources() {
         // 여기에 정리 작업을 구현
         // 예: 파일 닫기, 네트워크 연결 해제, 등등...

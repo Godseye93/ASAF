@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("/sign")
 @RestController
@@ -60,6 +61,7 @@ public class SignController {
         }
     }
 
+    // 서명서 이미지, 이름 반환
     @GetMapping("/classCodes")
     public List<SignDTO> getSignsByCodes(@RequestParam("class_code") int class_code,
                                          @RequestParam("region_code") int region_code,
@@ -67,22 +69,10 @@ public class SignController {
                                          @RequestParam("month") String month) throws ChangeSetPersister.NotFoundException {
         System.out.println("통신 확인");
         List<SignDTO> signs = signService.getSignsByCodes(class_code, region_code, generation_code, month);
-
-        for (SignDTO signDTO : signs) {
-            String imagePath = signService.getImageUrlPath(signDTO.getName());
-            try {
-                Resource image = new UrlResource(Paths.get(imagePath).toUri());
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.IMAGE_JPEG);
-                headers.setContentDisposition(ContentDisposition.builder("inline")
-                        .filename(image.getFilename())
-                        .build());
-                signDTO.setImage_url(image.getURL().toString());
-            } catch (Exception e) {
-                // 이미지를 찾거나 로드하는 데 문제가 발생했을 경우 적절한 오류 처리를 하십시오.
-            }
-        }
+        // 이름순으로 정렬
+        signs = signs.stream()
+                .sorted(Comparator.comparing(SignDTO::getName))
+                .collect(Collectors.toList());
         return signs;
     }
-
 }
