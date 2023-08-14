@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,6 +73,18 @@ public class SeatService {
         return seatEntities.stream()
                 .map(seatEntity -> new SeatDTO(seatEntity))
                 .collect(Collectors.toList());
+    }
+
+    // 개인 자리 정보
+    public SeatDTO getSeatByUser(int class_code, int region_code, int generation_code, int id) {
+        Optional<SeatEntity> seatEntityOptional = seatRepository.findByClassCodeAndRegionCodeAndGenerationCodeAndId(class_code, region_code, generation_code, id);
+
+        if (seatEntityOptional.isPresent()) {
+            SeatEntity seatEntity = seatEntityOptional.get();
+            return new SeatDTO(seatEntity);
+        } else {
+            throw new RuntimeException("Seat for student" + id + "not found");
+        }
     }
 
     public List<SeatDTO> getSeatsByCodes(int class_code, int region_code, int generation_code) {

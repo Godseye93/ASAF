@@ -22,6 +22,7 @@ import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.common.util.RetrofitUtil.Companion.attendenceService
 import com.d103.asaf.ui.sign.SignDrawFragment.Companion.regionCode
 import com.gun0912.tedpermission.provider.TedPermissionProvider.context
+import kotlinx.coroutines.withContext
 
 private const val TAG = "LoginFragmentViewModel_cjw"
 class LoginFragmentViewModel : ViewModel() {
@@ -148,21 +149,20 @@ class LoginFragmentViewModel : ViewModel() {
     suspend fun addClassInfo(email: String) {
         var id = 0
         try {
-            val response = memberService.getUserInfo(email)
+            val response = withContext(Dispatchers.IO) {memberService.getUserInfo(email)}
             Log.d(TAG, "addClassInfo 1 : ${response.body()}")
 
             if (response.isSuccessful) {
                 val member = response.body()
                 id = member!!.id
                 Log.d(TAG, "addClassInfo 2 : $id")
-                val classInfoResponse = attendenceService.getClassInfo(id)
+                val classInfoResponse = withContext(Dispatchers.IO) {attendenceService.getClassInfo(id)}
                 Log.d(TAG, "addClassInfo 리스트에 뭐 담기는지 확인 : $classInfoResponse")
-                val responseGenerationCode = classInfoResponse.body()!![0].generationCode
-                val responseRegionCode = classInfoResponse.body()!![0].regionCode
-                val responseClassCode = classInfoResponse.body()!![0].classCode
-                Log.d(TAG, "addClassInfo 3 : $responseGenerationCode, $responseRegionCode, $responseClassCode ")
                 if (classInfoResponse.isSuccessful) {
                     Log.d(TAG, "addClassInfo getClass: 성공 !")
+                    val responseGenerationCode = classInfoResponse.body()!![0].generationCode
+                    val responseRegionCode = classInfoResponse.body()!![0].regionCode
+                    val responseClassCode = classInfoResponse.body()!![0].classCode
                     ApplicationClass.sharedPreferences.addUserInfo(
                         responseGenerationCode,responseRegionCode.toString(),responseClassCode
                     )
