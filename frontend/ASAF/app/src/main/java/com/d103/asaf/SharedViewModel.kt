@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.dto.Classinfo
+import com.d103.asaf.common.model.dto.MarketDetail
 import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.Exception
 
 private const val TAG = "SharedViewModel ASAF"
@@ -23,19 +25,26 @@ class SharedViewModel : ViewModel() {
      var day : Int = 0
      var selectedMarketId  = 0 // 마켓 상세 정보 조회할 때 사용
      val _classInfoList = MutableLiveData<MutableList<Classinfo>>()
-
-
+     lateinit var marketDetail : MarketDetail
+     lateinit var userImage : String
      val classInfoList : LiveData<MutableList<Classinfo>>
           get() = _classInfoList
 
      var logInUser : Member = Member()
+
+
+     fun InsertMarketDetail(data : MarketDetail){
+          marketDetail = data
+     }
 
      fun getClassInfo(user : Member){
           viewModelScope.launch {
 
                try {
                     Log.d(TAG, "userID: ${user.id}")
-                    val response = RetrofitUtil.attendenceService.getClassInfo(user.id)
+                    val response = withContext(Dispatchers.IO){
+                         RetrofitUtil.attendenceService.getClassInfo(user.id)
+                    }
                     if(response.isSuccessful){
                          val responseBody = response.body()
                          if(!responseBody.isNullOrEmpty()){
