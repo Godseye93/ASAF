@@ -218,8 +218,6 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
             .apply(requestOptions)
             .into(binding.fragmentStudentHomeCardViewFrontImage)
 
-
-
         viewModel.nthValue.postValue(ApplicationClass.sharedPreferences.getInt("Nth"))
         viewModel.regionValue.postValue(ApplicationClass.sharedPreferences.getString("region"))
         viewModel.classCodeValue.postValue(ApplicationClass.sharedPreferences.getInt("classCode"))

@@ -75,4 +75,7 @@ public class ClassInfoService {
             throw new RuntimeException("ClassInfoEntity with class_num " + class_num + " not found");
         }
     }
+    public void removeClassInfoByMemberId(int memberId) {
+        classInfoRepository.removeClassInfoByMemberId(memberId);
+    }
 }

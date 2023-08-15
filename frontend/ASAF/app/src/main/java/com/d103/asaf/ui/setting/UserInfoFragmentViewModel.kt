@@ -39,7 +39,7 @@ class UserInfoFragmentViewModel : ViewModel() {
         return mem
     }
 
-    suspend fun updateUser(member: Member) {
+    suspend fun updateUser(member: Member, classCode : Int, regionCode : Int, generationCode : Int) {
         viewModelScope.launch {
             try {
                 memberService.updateMember(member).enqueue(object : Callback<Member> {
@@ -62,6 +62,29 @@ class UserInfoFragmentViewModel : ViewModel() {
                 // Handle exception here if needed
             }
         }
+    }
+
+    suspend fun updateInfo(id: Int, generationCode: Int, regionCode: Int, classCode: Int): Int {
+        try {
+            memberService.removeMember(id)
+
+            val classInfoResponse = memberService.setClass(id, classCode, regionCode, generationCode)
+            if (classInfoResponse.isSuccessful && classInfoResponse.body()=="true") {
+                Log.d(TAG, "setClass: 성공 !")
+            } else {
+                Log.d(TAG, "setClass: 실패 !")
+                Log.d(TAG, "signedMem2: ${classInfoResponse.errorBody()}")
+                val classInfoResponse2 = memberService.setClass(id, generationCode, regionCode, classCode)
+                if(classInfoResponse2.isSuccessful && classInfoResponse2.body()=="true"){
+                    Log.d(TAG, "updateInfo: setClass2 : 성공2 !")
+                }else{
+                    Log.d(TAG, "updateInfo: setClass2 : 실패2 !")
+                }
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "signedMem 에러 발생 : $e")
+        }
+        return id
     }
 
 
