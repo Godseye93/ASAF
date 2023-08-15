@@ -24,13 +24,13 @@ class SplashActivity : AppCompatActivity() {
 
         val splashAnim: LottieAnimationView = findViewById(R.id.loading_image)
 
-        // raw 리소스 폴더에 있는 Lottie 애니메이션 파일의 이름들을 리스트로 가져옵니다.
-        val animationNames = mutableListOf(R.raw.female, R.raw.male)
+//        // raw 리소스 폴더에 있는 Lottie 애니메이션 파일의 이름들을 리스트로 가져옵니다.
+//        val animationNames = mutableListOf(R.raw.female, R.raw.male)
+//
+//        // 랜덤하게 Lottie 애니메이션 파일을 선택합니다.
+//        animationNames.shuffle()
 
-        // 랜덤하게 Lottie 애니메이션 파일을 선택합니다.
-        animationNames.shuffle()
-
-        splashAnim.setAnimation(animationNames[0])
+        splashAnim.setAnimation(R.raw.asafsplash)
 
         splashAnim.playAnimation() // 애니메이션 재생
 
@@ -39,6 +39,6 @@ class SplashActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }, 1500)
+        }, 1200)
     }
 }
