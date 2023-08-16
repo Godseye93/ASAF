@@ -42,8 +42,10 @@ public class SignService {
         String fileName = signDTO.getMonth() + "_" + file.getOriginalFilename();
         String filePath = UPLOAD_DIR + signDTO.getName() + "_" + fileName;
         String realPath = real_DIR + signDTO.getName() + "_" + fileName;
-        File dest = new File(filePath);
+//        File dest = new File(filePath);
+        File dest = new File(realPath);
         FileCopyUtils.copy(file.getBytes(), dest);
+
 
         ClassInfoEntity classInfoEntity = classInfoRepository.findById(signDTO.getClass_num()).orElse(null);
         ClassEntity classEntity1 = classRepository.findById(signDTO.getClass_code()).orElse(null);
