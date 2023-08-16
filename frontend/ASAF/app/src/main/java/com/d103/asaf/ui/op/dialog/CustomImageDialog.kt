@@ -36,32 +36,22 @@ class CustomImageDialog(context: Context, imageUrl: String) : AlertDialog(contex
         // ScaleGestureDetector와 GestureDetector를 함께 사용하여 이미지뷰를 확대 및 축소할 수 있게 함
         scaleGestureDetector.onTouchEvent(event)
         gestureDetector.onTouchEvent(event)
-        var originalImageX = imageView.translationX
-        var originalImageY = imageView.translationY
+
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                downX = event.rawX
-                downY = event.rawY
-                originalImageX = imageView.translationX
-                originalImageY = imageView.translationY
+                downX = imageView.translationX - event.rawX
+                downY = imageView.translationY - event.rawY
             }
             MotionEvent.ACTION_MOVE -> {
-                val offsetX = event.rawX - downX
-                val offsetY = event.rawY - downY
-
-                val newX = originalImageX + offsetX
-                val newY = originalImageY + offsetY
-
-                val maxX = (imageView.width * imageView.scaleX - imageView.width)/2
-                val maxY = (imageView.height * imageView.scaleY - imageView.height)/2
-                imageView.translationX = newX.coerceIn(-maxX, maxX)
-                imageView.translationY = newY.coerceIn(-maxY, maxY)
-
-                // Log.d("터치", "onTouchEvent: ${imageView.translationX} : ${imageView.translationY}")
+                val maxX = (imageView.width * imageView.scaleX - imageView.width) / 2
+                val maxY = (imageView.height * imageView.scaleY - imageView.height) / 2
+                // (event.rawX + downX)를 별도의 변수에 저장해서 corceIn 하면 정상작동 안함.. why?
+                imageView.translationX = (event.rawX + downX).coerceIn(-maxX, maxX)
+                imageView.translationY = (event.rawY + downY).coerceIn(-maxY, maxY)
             }
         }
 
-        return super.onTouchEvent(event)
+        return true
     }
 
     inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
@@ -69,7 +59,7 @@ class CustomImageDialog(context: Context, imageUrl: String) : AlertDialog(contex
 
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             scaleFactor *= detector.scaleFactor
-            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 10.0f))
+            scaleFactor = Math.max(1f, Math.min(scaleFactor, 10.0f))
             imageView.scaleX = scaleFactor
             imageView.scaleY = scaleFactor
             return true
