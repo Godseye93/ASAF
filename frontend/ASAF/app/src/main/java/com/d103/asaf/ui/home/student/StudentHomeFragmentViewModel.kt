@@ -44,7 +44,8 @@ class StudentHomeFragmentViewModel : ViewModel(){
                     ApplicationClass.sharedPreferences.addUserInfo(
                         nthValue.value!!,regionValue.value!!, classCodeValue.value!!
                     )
-                    loadMySeat(classCodeValue.value!!, classInfoResponse.body()!![0].regionCode, nthValue.value!!, id)
+
+                    loadMySeat(classCodeValue.value!!, classInfoResponse.body()!![0].regionCode, ApplicationClass.mainClassInfo[0].generationCode, id)
                 } else {
                 }
             } else {
