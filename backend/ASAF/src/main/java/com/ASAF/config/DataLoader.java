@@ -386,38 +386,38 @@ public class DataLoader implements CommandLineRunner {
                 "김태경", "하지은", "최지원", "강민규"
         );
 
-        for (int i = 3; i <= 82; i++) {
-            String name = exampleNames.get(i-1);
+        for (int i = 1; i <= 80; i++) {
+            String name = realNames.get(i-1);
             LockerDTO lockerDTO = new LockerDTO();
-            lockerDTO.setLocker_num(i-439);
+            lockerDTO.setLocker_num(i);
             lockerDTO.setName(name);
-            lockerDTO.setClass_num(i+14);
+            lockerDTO.setClass_num(i+2);
             lockerDTO.setClass_code(1);
             lockerDTO.setRegion_code(2);
             lockerDTO.setGeneration_code(1);
-            lockerDTO.setId(i);
+            lockerDTO.setId(i+2);
 
             LockerEntity lockerEntity = LockerEntity.toLockerEntity(lockerDTO);
             lockerRepository.save(lockerEntity);
         }
 
         List<String> exampleNames = Arrays.asList(
-                "김태희", "박시환", "정지민", "이성민", "조영훈", "장지수",
-                "송해솔", "유지안", "주아린", "박세준", "양주원", "최예린",
-                "황소희", "서시은", "임하윤", "이한나", "강주영", "한승훈",
-                "조민서", "신수도"
+                "차선호", "김희웅", "이영준", "김제준", "최영태", "최혜원",
+                "김은하", "박성욱", "오희주", "이현섭", "장성운", "최희주",
+                "김준성", "최재원", "박현우", "장진욱", "권민재", "김형진",
+                "김도연", "김진영"
         );
 
         for (int i = 1; i <= 20; i++) {
-            String name = realNames.get(i-3);
+            String name = realNames.get(i-1);
             SeatDTO seatDTO = new SeatDTO();
-            seatDTO.setSeat_num(i-3);
+            seatDTO.setSeat_num(i);
             seatDTO.setName(name);
-            seatDTO.setClass_num(3);
+            seatDTO.setClass_num(i+2);
             seatDTO.setClass_code(1);
             seatDTO.setRegion_code(2);
             seatDTO.setGeneration_code(1);
-            seatDTO.setId(i-2);
+            seatDTO.setId(i+2);
 
             SeatEntity seatEntity = SeatEntity.toSeatEntity(seatDTO);
             seatRepository.save(seatEntity);
