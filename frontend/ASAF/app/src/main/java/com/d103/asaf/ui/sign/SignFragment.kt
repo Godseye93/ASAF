@@ -121,7 +121,7 @@ class SignFragment : BaseFragment<FragmentSignBinding>(FragmentSignBinding::bind
             fragmentSignConfirmTvMonth1.text = signMonth
             fragmentSignConfirmTvMonth2.text = signMonth
             fragmentSignConfirmTvMonth3.text = signMonth
-            fragmentSignConfirmTvMonth4.text = signMonth
+            fragmentSignConfirmTvMonth4.text = subMonth
 
             fragmentSignConfirmTvDay.text = subDay
             fragmentSignConfirmTvCampus.text = document.campus // 캠퍼스 정보
