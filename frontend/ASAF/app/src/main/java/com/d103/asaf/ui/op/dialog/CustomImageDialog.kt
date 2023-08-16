@@ -50,8 +50,8 @@ class CustomImageDialog(context: Context, imageUrl: String) : AlertDialog(contex
                 imageView.translationY = (event.rawY + downY).coerceIn(-maxY, maxY)
             }
         }
-
-        return true
+        // return true로 하면 dialog 바깥눌러도 안꺼짐
+        return super.onTouchEvent(event)
     }
 
     inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
