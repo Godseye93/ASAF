@@ -1,6 +1,7 @@
 package com.ASAF.entity;
 
 import com.ASAF.dto.LockerDTO;
+import com.ASAF.dto.LockerDTO;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -54,6 +55,34 @@ public class LockerEntity {
     }
     public MemberEntity getMemberEntity() {
         return id;
+    }
+
+    public static LockerEntity toLockerEntity(LockerDTO lockerDTO) {
+        LockerEntity lockerEntity = new LockerEntity();
+
+        lockerEntity.setLocker_num(lockerDTO.getLocker_num());
+        lockerEntity.setName(lockerDTO.getName());
+
+        ClassEntity classEntity = new ClassEntity();
+        classEntity.setClass_code(lockerDTO.getClass_code());
+        lockerEntity.setClass_code(classEntity);
+
+        ClassInfoEntity classInfoEntity = new ClassInfoEntity();
+        classInfoEntity.setClass_num(lockerDTO.getClass_num());
+        lockerEntity.setClass_num(classInfoEntity);
+
+        RegionEntity regionEntity = new RegionEntity();
+        regionEntity.setRegion_code(lockerDTO.getRegion_code());
+        lockerEntity.setRegion_code(regionEntity);
+
+        GenerationEntity generationEntity = new GenerationEntity();
+        generationEntity.setGeneration_code(lockerDTO.getGeneration_code());
+        lockerEntity.setGeneration_code(generationEntity);
+
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setId(lockerDTO.getId());
+        lockerEntity.setId(memberEntity);
+        return lockerEntity;
     }
 }
 

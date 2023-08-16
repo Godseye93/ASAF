@@ -32,10 +32,12 @@ public class DataLoader implements CommandLineRunner {
     private final BusRepository busRepository;
     private final BookRepository bookRepository;
     private final ClassInfoRepository classInfoRepository;
+    private final SeatRepository seatRepository;
+    private final LockerRepository lockerRepository;
 
 
 
-    public DataLoader(MemberRepository memberRepository, RegionRepository regionRepository, GenerationRepository generationRepository, ClassRepository classRepository, BusRepository busRepository, BookRepository bookRepository, ClassInfoRepository classInfoRepository) {
+    public DataLoader(MemberRepository memberRepository, RegionRepository regionRepository, GenerationRepository generationRepository, ClassRepository classRepository, BusRepository busRepository, BookRepository bookRepository, ClassInfoRepository classInfoRepository, SeatRepository seatRepository, LockerRepository lockerRepository) {
         this.memberRepository = memberRepository;
         this.regionRepository = regionRepository;
         this.generationRepository = generationRepository;
@@ -43,6 +45,8 @@ public class DataLoader implements CommandLineRunner {
         this.busRepository = busRepository;
         this.bookRepository = bookRepository;
         this.classInfoRepository = classInfoRepository;
+        this.seatRepository = seatRepository;
+        this.lockerRepository = lockerRepository;
     }
 
     @Override
@@ -129,7 +133,7 @@ public class DataLoader implements CommandLineRunner {
 
             List<String> realNames = Arrays.asList(
                     "차선호", "김희웅", "이영준", "김제준", "최영태", "최혜원",
-                    "김은하", "박성욱", "오희준", "이현섭", "장성운", "최희주",
+                    "김은하", "박성욱", "오희주", "이현섭", "장성운", "최희주",
                     "김준성", "최재원", "박현우", "장진욱", "권민재", "김형진",
                     "김도연", "김진영", "이현근", "황하음", "정예원", "손준배",
                     "김주용", "황신운", "박준후", "정진욱", "전수림", "김수민",
@@ -648,6 +652,56 @@ public class DataLoader implements CommandLineRunner {
 //                bookRepository.save(bookEntity);
 
             }
+        }
+
+        List<String> seatNames = Arrays.asList(
+                "차선호", "김희웅", "이영준", "김제준", "최영태",
+                "최혜원", "김은하", "박성욱", "오희주", "이현섭",
+                "장성운", "최희주", "김준성", "최재원", "박현우",
+                "장진욱", "권민재", "김형진", "김도연", "김진영");
+
+        for (int i = 439; i <= 458; i++) {
+            String name = seatNames.get(i-439);
+            SeatDTO seatDTO = new SeatDTO();
+            seatDTO.setSeat_num(i-439);
+            seatDTO.setName(name);
+            seatDTO.setClass_num(i+14);
+            seatDTO.setClass_code(1);
+            seatDTO.setRegion_code(2);
+            seatDTO.setGeneration_code(1);
+            seatDTO.setId(i);
+
+            SeatEntity seatEntity = SeatEntity.toSeatEntity(seatDTO);
+            seatRepository.save(seatEntity);
+        }
+
+        List<String> lockerNames = Arrays.asList(
+                "차선호", "김희웅", "이영준", "김제준", "최영태", "최혜원",
+                "김은하", "박성욱", "오희주", "이현섭", "장성운", "최희주",
+                "김준성", "최재원", "박현우", "장진욱", "권민재", "김형진",
+                "김도연", "김진영", "이현근", "황하음", "정예원", "손준배",
+                "정선재", "권민우", "심은진", "서지호", "김수찬",	"강승현",
+                "김주용", "황신운", "박준후", "정진욱", "전수림", "김수민",
+                "김민수", "김유정", "진희솜", "박단비", "박민아", "정재욱",
+                "김정환", "김근우", "천병찬", "채경호", "김상진", "김슬기",
+                "신지훈", "성연석", "송민철", "신제형", "이정훈", "하수빈",
+                "이우철", "유영서", "서동현", "김선영",	"박종욱",
+                "서은진", "이서현", "방진성", "이연지", "정예진"
+        );
+
+        for (int i = 439; i <= 502; i++) {
+            String name = lockerNames.get(i-439);
+            LockerDTO lockerDTO = new LockerDTO();
+            lockerDTO.setLocker_num(i-439);
+            lockerDTO.setName(name);
+            lockerDTO.setClass_num(i+14);
+            lockerDTO.setClass_code(1);
+            lockerDTO.setRegion_code(2);
+            lockerDTO.setGeneration_code(1);
+            lockerDTO.setId(i);
+
+            LockerEntity lockerEntity = LockerEntity.toLockerEntity(lockerDTO);
+            lockerRepository.save(lockerEntity);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.ASAF.entity;
 
+import com.ASAF.dto.SeatDTO;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -53,5 +54,33 @@ public class SeatEntity {
     }
     public MemberEntity getMemberEntity() {
         return id;
+    }
+    
+    public static SeatEntity toSeatEntity(SeatDTO seatDTO) {
+        SeatEntity seatEntity = new SeatEntity();
+        
+        seatEntity.setSeat_num(seatDTO.getSeat_num());
+        seatEntity.setName(seatDTO.getName());
+
+        ClassEntity classEntity = new ClassEntity();
+        classEntity.setClass_code(seatDTO.getClass_code());
+        seatEntity.setClass_code(classEntity);
+
+        ClassInfoEntity classInfoEntity = new ClassInfoEntity();
+        classInfoEntity.setClass_num(seatDTO.getClass_num());
+        seatEntity.setClass_num(classInfoEntity);
+
+        RegionEntity regionEntity = new RegionEntity();
+        regionEntity.setRegion_code(seatDTO.getRegion_code());
+        seatEntity.setRegion_code(regionEntity);
+
+        GenerationEntity generationEntity = new GenerationEntity();
+        generationEntity.setGeneration_code(seatDTO.getGeneration_code());
+        seatEntity.setGeneration_code(generationEntity);
+
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setId(seatDTO.getId());
+        seatEntity.setId(memberEntity);
+        return seatEntity;
     }
 }
