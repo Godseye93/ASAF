@@ -56,7 +56,8 @@ public class SignService {
         }
 
         SignEntity signEntity = new SignEntity();
-        signEntity.setImage_url(filePath);
+//        signEntity.setImage_url(filePath);
+        signEntity.setImage_url(realPath);
         signEntity.setName(signDTO.getName());
         signEntity.setMonth(signDTO.getMonth());
         signEntity.setClass_num(classInfoEntity);
