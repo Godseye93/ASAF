@@ -1,6 +1,7 @@
 package com.d103.asaf.ui.op.dialog
 
 import android.content.Context
+import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
@@ -36,20 +37,20 @@ class CustomImageDialog(context: Context, imageUrl: String) : AlertDialog(contex
         scaleGestureDetector.onTouchEvent(event)
         gestureDetector.onTouchEvent(event)
 
-        // 드래그 기능 추가
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                val currentX = event.rawX
-                val currentY = event.rawY
-                downX = currentX - imageView.translationX
-                downY = currentY - imageView.translationY
+                downX = imageView.translationX - event.rawX
+                downY = imageView.translationY - event.rawY
             }
             MotionEvent.ACTION_MOVE -> {
-                imageView.translationX = event.rawX - downX
-                imageView.translationY = event.rawY - downY
+                val maxX = (imageView.width * imageView.scaleX - imageView.width) / 2
+                val maxY = (imageView.height * imageView.scaleY - imageView.height) / 2
+                // (event.rawX + downX)를 별도의 변수에 저장해서 corceIn 하면 정상작동 안함.. why?
+                imageView.translationX = (event.rawX + downX).coerceIn(-maxX, maxX)
+                imageView.translationY = (event.rawY + downY).coerceIn(-maxY, maxY)
             }
         }
-
+        // return true로 하면 dialog 바깥눌러도 안꺼짐
         return super.onTouchEvent(event)
     }
 
@@ -58,7 +59,7 @@ class CustomImageDialog(context: Context, imageUrl: String) : AlertDialog(contex
 
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             scaleFactor *= detector.scaleFactor
-            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 10.0f))
+            scaleFactor = Math.max(1f, Math.min(scaleFactor, 10.0f))
             imageView.scaleX = scaleFactor
             imageView.scaleY = scaleFactor
             return true
@@ -70,6 +71,8 @@ class CustomImageDialog(context: Context, imageUrl: String) : AlertDialog(contex
             // 더블 탭 이벤트 처리 (원래 크기로 복원)
             imageView.scaleX = 1.0f
             imageView.scaleY = 1.0f
+            imageView.x = 0.0f
+            imageView.y = 0.0f
             return true
         }
     }

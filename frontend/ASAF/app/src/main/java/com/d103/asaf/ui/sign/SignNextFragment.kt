@@ -46,10 +46,10 @@ class SignNextFragment : BaseFragment<FragmentSignNextBinding>(FragmentSignNextB
                 dataList.removeAt(currentDay-1)
             }
             fragmentSignNextDropdownFourthMonth.apply {
-                dropdownText.text = currentMonth.toString()
+                dropdownText.text = (currentMonth+1).toString()
                 dropdownTextPost.text = "월"
                 dataList.addAll(dataMonth)
-                dataList.removeAt(currentMonth-1)
+                dataList.removeAt(currentMonth)
             }
             fragmentSignNextDropdownFourthDay.apply {
                 dropdownText.text = currentDay.toString()

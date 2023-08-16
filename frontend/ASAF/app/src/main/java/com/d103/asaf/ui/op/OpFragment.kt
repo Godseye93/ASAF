@@ -68,12 +68,12 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
 
     private fun initSeat() {
         binding.fragmentOpDropdownMonth.visibility = View.GONE
-        handler.postDelayed({
+        handler.post{
             binding.fragmentOpImageviewFront.visibility = View.VISIBLE
             childFragmentManager.beginTransaction()
                 .replace(binding.fragmentOpFramelayoutSeat.id,SeatFragment.instance(viewModel.position.value, viewModel.seat.value, viewModel))
                 .commit()
-        }, 100)
+        }
     }
 
     private fun initClickListener() {

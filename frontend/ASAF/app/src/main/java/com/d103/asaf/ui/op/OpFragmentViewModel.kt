@@ -184,7 +184,9 @@ class OpFragmentViewModel(): ViewModel() {
             Log.d(TAG, "fetchSigns: ${_signs.value}")
             loadSignUrls()
         } else {
-            Log.d(TAG, "사인 가져오기 네트워크 오류")
+            Log.d(TAG, "사인 가져오기 네트워크 오류 $signResponse")
+            Log.d(TAG, "fetchSigns: $curClass")
+            _signs.value = mutableListOf<DocSign>()
         }
     }
 
@@ -203,7 +205,7 @@ class OpFragmentViewModel(): ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             curClass.collect { newClass ->
                 // GET해서 가져온 정보 업데이트 (자리 / 사물함 / 서명)
-                Log.d(TAG, "initCollect: 클래스바뀜")
+                Log.d(TAG, "initCollect: 클래스바뀜 ${curClass.value}")
                 loadRemoteOnce()
             }
         }

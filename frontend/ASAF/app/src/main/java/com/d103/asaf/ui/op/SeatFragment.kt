@@ -175,7 +175,7 @@ class SeatFragment() :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 targetView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                setSeat()
+                if(isAdded) setSeat()
                 Log.d("포지션", "$position")
                 Log.d("리버스포지션", "$reversePosition")
             }
@@ -192,7 +192,7 @@ class SeatFragment() :
         val shuffled = subPosition.shuffled()
 
         for(i in 0 until seatNum) position[i] = shuffled[i]
-        setSeat()
+        if(isAdded) setSeat()
     }
 
     fun setSeat() {
