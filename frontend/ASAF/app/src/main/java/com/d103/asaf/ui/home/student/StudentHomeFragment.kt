@@ -83,6 +83,8 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
     // 뷰모델
     private val viewModel: StudentHomeFragmentViewModel by viewModels()
 
+    private var seatViews = arrayOf<ImageView>()
+
 //    val nthValue = ApplicationClass.sharedPreferences.getInt("Nth")
 //    val regionValue = ApplicationClass.sharedPreferences.getInt("region")
 //    val classCodeValue = ApplicationClass.sharedPreferences.getInt("classCode")
@@ -192,6 +194,12 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
             viewModel.addClassInfo(ApplicationClass.sharedPreferences.getString("memberEmail")!!)
         }
 
+        seatViews = Array(25) { index -> binding.root.findViewById<ImageView>(resources.getIdentifier("stu_home_back_stu${index + 1}", "id", requireActivity().packageName))}
+
+        viewModel.curMySeat.observe(viewLifecycleOwner) {
+            seatViews[viewModel.curMySeat.value?.plus(1) ?: 1].setImageResource(R.drawable.baseline_person_4_24_red)
+        }
+
         viewModel.nthValue.observe(viewLifecycleOwner) {
             binding.fragmentStudentHomeCardViewFrontTextviewNth.text = "${viewModel.nthValue.value} 기"
             binding.fragmentStudentHomeCardViewBackInfo.text = " ${viewModel.nthValue.value} 기 ${viewModel.regionValue.value} ${viewModel.classCodeValue.value} 반 "
@@ -218,7 +226,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
             .into(binding.fragmentStudentHomeCardViewFrontImage)
 
         viewModel.nthValue.postValue(ApplicationClass.sharedPreferences.getInt("Nth"))
-        viewModel.regionValue.postValue(ApplicationClass.sharedPreferences.getString("region"))
+//        viewModel.regionValue.postValue(ApplicationClass.sharedPreferences.getString("region"))
         viewModel.classCodeValue.postValue(ApplicationClass.sharedPreferences.getInt("classCode"))
 
         // Log.d("기수", "initView: $nthValue")
