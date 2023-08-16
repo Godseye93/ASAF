@@ -39,6 +39,7 @@ class MarketDetailAdapter (private val items: List<MarketImage>, val context: Co
 
 
         }
+        holder.cancelBtn.visibility = View.GONE
 
 
         holder.image.setOnClickListener {
@@ -67,7 +68,7 @@ class MarketDetailAdapter (private val items: List<MarketImage>, val context: Co
 class DetailViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     private var view: View = v
     var image = v.findViewById<ImageView>(R.id.marketRegisterImageView)
-
+    var cancelBtn = v.findViewById<ImageView>(R.id.imageRegisterCancelBtn)
     fun bind(listener: View.OnClickListener, item:String) {
         view.setOnClickListener(listener)
     }
