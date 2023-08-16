@@ -142,14 +142,14 @@
             android:gravity="center"
             android:visibility="gone"
             >
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/fragment_market_detail_updateButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/defaultMainColor"
-                android:layout_marginEnd="32dp"
-                android:text="수정"
-                app:cornerRadius="10dp" />
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:id="@+id/fragment_market_detail_updateButton"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:backgroundTint="@color/defaultMainColor"-->
+<!--                android:layout_marginEnd="32dp"-->
+<!--                android:text="수정"-->
+<!--                app:cornerRadius="10dp" />-->
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/fragment_market_detail_deleteButton"

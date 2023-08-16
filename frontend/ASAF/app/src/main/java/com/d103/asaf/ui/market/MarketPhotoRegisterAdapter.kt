@@ -24,7 +24,8 @@ import java.util.Date
 import java.util.Locale
 
 private const val TAG = "MarketPhotoRegisterAdap ASAF"
-class MarketPhotoRegisterAdapter(private val items: List<MarketImage>, val context: Context) :
+class MarketPhotoRegisterAdapter(private val items: List<MarketImage>, val context: Context,  private val clickListener: OnImageClickListener) :
+
     RecyclerView.Adapter<ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflatedVIEW =
@@ -41,6 +42,9 @@ class MarketPhotoRegisterAdapter(private val items: List<MarketImage>, val conte
 
         holder.image.setOnClickListener {
             showImageDialog(item.imageUri)
+        }
+        holder.cancelBtn.setOnClickListener {
+            clickListener.onCancelClick(position)
         }
     }
 
@@ -64,7 +68,7 @@ class MarketPhotoRegisterAdapter(private val items: List<MarketImage>, val conte
 class ViewHolder(v:View) :RecyclerView.ViewHolder(v) {
     private var view:View = v
     var image = v.findViewById<ImageView>(R.id.marketRegisterImageView)
-
+    var cancelBtn = v.findViewById<ImageView>(R.id.imageRegisterCancelBtn)
     fun bind(listener:View.OnClickListener,item:String) {
         view.setOnClickListener(listener)
     }

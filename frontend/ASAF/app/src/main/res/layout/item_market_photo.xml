@@ -15,10 +15,10 @@
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <ImageView
+        android:id="@+id/imageRegisterCancelBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/baseline_cancel_24"
-        android:visibility="gone"
         />
 
 </LinearLayout>
