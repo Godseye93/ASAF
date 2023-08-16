@@ -23,7 +23,7 @@ public class PostEntity {
     @Column
     private String title;
 
-    @Column
+    @Column(length = 10000)
     private String content;
 
     private int id;
