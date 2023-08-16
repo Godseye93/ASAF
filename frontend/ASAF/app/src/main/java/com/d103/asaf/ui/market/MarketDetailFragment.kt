@@ -80,11 +80,11 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
 
 
         // 수정 버튼 클릭 시
-        binding.fragmentMarketDetailUpdateButton.setOnClickListener {
-            viewModel.marketDetail.value?.let { it1 -> sharedViewModel.InsertMarketDetail(it1) }
-            findNavController().navigate(R.id.action_marketDetailFragment_to_marketUpdateFragment)
-            (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
-        }
+//        binding.fragmentMarketDetailUpdateButton.setOnClickListener {
+//            viewModel.marketDetail.value?.let { it1 -> sharedViewModel.InsertMarketDetail(it1) }
+//            findNavController().navigate(R.id.action_marketDetailFragment_to_marketUpdateFragment)
+//            (requireActivity() as MainActivity).hideBottomNavigationBarFromFragment()
+//        }
         // 삭제 버튼 클릭 시
         binding.fragmentMarketDetailDeleteButton.setOnClickListener {
            viewModel.delete()

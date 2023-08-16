@@ -35,6 +35,9 @@ class MarketRegisterFragmentViewModel : ViewModel() {
                if(response.isSuccessful){
                    Log.d(TAG, "post: ${response.body()} ")
                }
+              else{
+                   Log.d(TAG, "post: ${response}")
+              }
 
           }
 

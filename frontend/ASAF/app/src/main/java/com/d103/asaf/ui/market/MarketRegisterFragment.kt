@@ -11,6 +11,8 @@ import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -45,6 +47,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -61,7 +64,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [MarketRegisterFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(FragmentMarketRegisterBinding::bind, R.layout.fragment_market_register) {
+class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(FragmentMarketRegisterBinding::bind, R.layout.fragment_market_register) ,OnImageClickListener{
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -131,6 +134,8 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
 
     fun init() {
 
+        Log.d(TAG, "init:${ApplicationClass.sharedPreferences.getString("profile_image")}  ${ApplicationClass.sharedPreferences.getInt("id")}")
+
         // 뒤로 가기 버튼
         binding.fragmentMarketRegisterBackButton.setOnClickListener {
             (requireActivity() as MainActivity).showStudentBottomNaviagtionBarFromFragment()
@@ -139,7 +144,7 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
         }
 
         //adpater 설정
-        adapter = MarketPhotoRegisterAdapter(viewModel.photoRegisterList, requireContext())
+        adapter = MarketPhotoRegisterAdapter(viewModel.photoRegisterList, requireContext(), this)
         binding.fragmentMarketRegisterRecyclerview.adapter = adapter
 
 
@@ -163,6 +168,7 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
             }
             else{
                 Log.d(TAG, "프로필: ${ApplicationClass.sharedPreferences.getString("profile_image")} ")
+                Log.d(TAG, "프로필 2: ${sharedViewModel.userImage}")
                 viewModel.marketInfo = Market(System.currentTimeMillis(),
                     binding.fragmentMarketRegisterTitleEdittext.text.toString(),
                     binding.marketDetailEdittext.text.toString(),
@@ -171,10 +177,9 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
                     userName!!
                 )
 
-                (viewModel.post())
-                (requireActivity() as MainActivity).showStudentBottomNaviagtionBarFromFragment()
+                viewModel.post()
                 findNavController().navigateUp()
-
+                (requireActivity() as MainActivity).showStudentBottomNaviagtionBarFromFragment()
 
             }
 
@@ -185,6 +190,17 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
 
 
     }
+    override fun onImageClick(position: Int) {
+        val item = viewModel.photoRegisterList[position]
+//        showImageDialog(item.imageUri)
+    }
+
+    override fun onCancelClick(position: Int) {
+        viewModel.photoRegisterList.removeAt(position)
+        viewModel.photoIamgeFileList.removeAt(position)
+        adapter.notifyDataSetChanged()
+    }
+
 
     private fun openGalleryForImage() {
         val intent = Intent(Intent.ACTION_PICK)
@@ -262,6 +278,39 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
         }
     }
 
+//    fun createImageFileFromUri(context: Context, uri: Uri): File? {
+//        try {
+//            val contentResolver: ContentResolver = context.contentResolver
+//
+//            // Get file name from MediaStore
+//            val projection = arrayOf(MediaStore.Images.Media.DISPLAY_NAME)
+//            val cursor = contentResolver.query(uri, projection, null, null, null)
+//            cursor?.use {
+//                if (it.moveToFirst()) {
+//                    val fileName = it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
+//                    val tempFile = File(context.cacheDir, fileName)
+//                    val outputStream = FileOutputStream(tempFile)
+//
+//                    val inputStream: InputStream? = contentResolver.openInputStream(uri)
+//                    inputStream?.use { input ->
+//                        val buffer = ByteArray(4 * 1024) // Adjust buffer size as needed
+//                        var bytesRead: Int
+//                        while (input.read(buffer).also { bytesRead = it } != -1) {
+//                            outputStream.write(buffer, 0, bytesRead)
+//                        }
+//                    }
+//
+//                    outputStream.close()
+//                    return tempFile
+//                }
+//            }
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        }
+//        return null
+//    }
+
+    //version 2
     fun createImageFileFromUri(context: Context, uri: Uri): File? {
         try {
             val contentResolver: ContentResolver = context.contentResolver
@@ -273,16 +322,14 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
                 if (it.moveToFirst()) {
                     val fileName = it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
                     val tempFile = File(context.cacheDir, fileName)
+
+                    val resizedBitmap = resizeImage(uri, 720, 480) // 이 부분 추가
+
                     val outputStream = FileOutputStream(tempFile)
 
-                    val inputStream: InputStream? = contentResolver.openInputStream(uri)
-                    inputStream?.use { input ->
-                        val buffer = ByteArray(4 * 1024) // Adjust buffer size as needed
-                        var bytesRead: Int
-                        while (input.read(buffer).also { bytesRead = it } != -1) {
-                            outputStream.write(buffer, 0, bytesRead)
-                        }
-                    }
+                    val byteArray = bitmapToByteArray(resizedBitmap) // 비트맵을 바이트 배열로 변환
+
+                    outputStream.write(byteArray)
 
                     outputStream.close()
                     return tempFile
@@ -292,6 +339,73 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
             e.printStackTrace()
         }
         return null
+    }
+    fun resizeImage(uri: Uri, targetWidth: Int, targetHeight: Int): Bitmap? {
+        try {
+            val inputStream = context?.contentResolver?.openInputStream(uri)
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true
+            BitmapFactory.decodeStream(inputStream, null, options)
+            inputStream?.close()
+
+            val scaleFactor = calculateInSampleSize(options, targetWidth, targetHeight)
+
+            val newOptions = BitmapFactory.Options()
+            newOptions.inSampleSize = scaleFactor
+            val newInputStream = context?.contentResolver?.openInputStream(uri)
+            val resizedBitmap = BitmapFactory.decodeStream(newInputStream, null, newOptions)
+            newInputStream?.close()
+
+            val rotation = getRotationFromExif(context, uri) // Exif 회전 정보 가져오기
+            val matrix = Matrix()
+            matrix.postRotate(rotation.toFloat()) // 회전 정보 적용
+            return resizedBitmap?.let { Bitmap.createBitmap(it, 0, 0, resizedBitmap.width, resizedBitmap.height, matrix, true) }
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Error while resizing image: ${e.message}")
+            return null
+        }
+    }
+
+    fun bitmapToByteArray(bitmap: Bitmap?): ByteArray {
+        val stream = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 80, stream) // 이미지를 JPEG 형식으로 압축
+        return stream.toByteArray()
+    }
+    fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+        val height = options.outHeight
+        val width = options.outWidth
+        var inSampleSize = 1
+
+        if (height > reqHeight || width > reqWidth) {
+            val halfHeight: Int = height / 2
+            val halfWidth: Int = width / 2
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2
+            }
+        }
+
+        return inSampleSize
+    }
+
+
+    fun getRotationFromExif(context: Context?, uri: Uri): Int {
+        var rotation = 0
+        try {
+            val exif = context?.contentResolver?.openInputStream(uri)?.let { ExifInterface(it) }
+            val orientation = exif?.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+            when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_90 -> rotation = 90
+                ExifInterface.ORIENTATION_ROTATE_180 -> rotation = 180
+                ExifInterface.ORIENTATION_ROTATE_270 -> rotation = 270
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting exif rotation: ${e.message}")
+        }
+        return rotation
     }
 
 

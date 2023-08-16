@@ -3,6 +3,7 @@ package com.d103.asaf.ui.sign
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.d103.asaf.R
 import com.d103.asaf.common.config.BaseFragment
@@ -18,6 +19,13 @@ class SignNextFragment : BaseFragment<FragmentSignNextBinding>(FragmentSignNextB
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Navigate to StudentHomeFragment
+                findNavController().navigate(R.id.action_signNextFragment_to_SignDrawFragment)
+            }
+        })
+
         binding.apply {
             fragmentSignNextDropdownFirst.apply {
                 dropdownText.text = currentMonth.toString()

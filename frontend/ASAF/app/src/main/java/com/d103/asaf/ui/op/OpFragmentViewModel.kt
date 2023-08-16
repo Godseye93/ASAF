@@ -78,6 +78,8 @@ class OpFragmentViewModel(): ViewModel() {
     // 실제 학생 수 (사용되는  사물함 수)
     var realLockerNum = 0
 
+    var signProgress = MutableStateFlow(0f)
+
     // <!---------------------------- 서명 함수 ------------------------------->
 //    val testSrc = "https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd"
 //    private val _moneys = MutableStateFlow(MutableList(25) { testSrc })
@@ -110,7 +112,11 @@ class OpFragmentViewModel(): ViewModel() {
                 fetchSeats()
                 fetchLockers()
                 fetchSigns()
-
+                signProgress.emit(
+                    if(_students.value.size != 0){
+                        (_signs.value.size/_students.value.size) * 100f
+                    } else 0f
+                )
                 // 이후 작업은 모두 완료된 후 실행
                 // loadSeats()
                 // loadLockers()
@@ -175,6 +181,7 @@ class OpFragmentViewModel(): ViewModel() {
         }
         if (signResponse.isSuccessful) {
             _signs.value = signResponse.body() ?: mutableListOf<DocSign>()
+            Log.d(TAG, "fetchSigns: ${_signs.value}")
             loadSignUrls()
         } else {
             Log.d(TAG, "사인 가져오기 네트워크 오류")

@@ -1,5 +1,6 @@
 package com.d103.asaf
 
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -50,6 +51,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val viewModel : SharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 액티비티를 세로모드로 고정
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         binding.bottomNaviPro.visibility = View.GONE
         binding.bottomNaviStudent.visibility = View.GONE
         setupNavHost()
@@ -182,7 +187,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onStop() {
         super.onStop()
-        cleanupResources()
+
     }
 
     private fun cleanupResources() {

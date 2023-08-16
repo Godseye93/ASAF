@@ -32,10 +32,12 @@ public class DataLoader implements CommandLineRunner {
     private final BusRepository busRepository;
     private final BookRepository bookRepository;
     private final ClassInfoRepository classInfoRepository;
+    private final SeatRepository seatRepository;
+    private final LockerRepository lockerRepository;
 
 
 
-    public DataLoader(MemberRepository memberRepository, RegionRepository regionRepository, GenerationRepository generationRepository, ClassRepository classRepository, BusRepository busRepository, BookRepository bookRepository, ClassInfoRepository classInfoRepository) {
+    public DataLoader(MemberRepository memberRepository, RegionRepository regionRepository, GenerationRepository generationRepository, ClassRepository classRepository, BusRepository busRepository, BookRepository bookRepository, ClassInfoRepository classInfoRepository, SeatRepository seatRepository, LockerRepository lockerRepository) {
         this.memberRepository = memberRepository;
         this.regionRepository = regionRepository;
         this.generationRepository = generationRepository;
@@ -43,6 +45,8 @@ public class DataLoader implements CommandLineRunner {
         this.busRepository = busRepository;
         this.bookRepository = bookRepository;
         this.classInfoRepository = classInfoRepository;
+        this.seatRepository = seatRepository;
+        this.lockerRepository = lockerRepository;
     }
 
     @Override
@@ -65,14 +69,28 @@ public class DataLoader implements CommandLineRunner {
 
             int randomNumber = random.nextInt(10000); // 범위는 0에서 9999 사이
 
+            List<String> gumi1Class = Arrays.asList(
+                    "cktjsgh", "rlagmldnd", "dldudwns", "rlawpwns", "chldudxo", "chlgPdnjs",
+                    "rladmsgk", "qkrtjddnr", "dhgmlwn", "dlgustjq", "wkdtjddns", "chlgmlwn",
+                    "rlawnstjd", "chlwodnjs", "qkrgusdn", "wkdwlsdnr", "rnjsalswo", "rlagudwls",
+                    "rlaehdus", "rlawlsdud", "dlgusrms", "ghkdgkdma", "wjddpdnjs", "thswnsqo",
+                    "rlawndyd", "ghkdtlsdns", "qkrwnsdn", "wjdwlsdnr", "wjstnfla", "rlatnals",
+                    "dldncjf", "dbdudtj", "tjehdgus", "rlatjsdud", "qkrwhddnr",
+                    "tjdmswls", "dltjgusm", "qkdwlstjd", "dlduswl", "wjddPwls",
+                    "wjdtjswo", "rnjsalsdn", "tladmswls", "tjwlgh", "rlatncks", "rkdtmdgus",
+                    "rlaalstn", "rladbwjd", "wlsgmltha", "qkreksql", "qkralsdk", "wjdwodnr",
+                    "rlawjdghks", "rlarmsdn", "cjsqudcks", "corudgh", "rlatkdwls", "rlatmfrl",
+                    "tlswlgns", "tjddustjr", "thdalscjf", "tlswpgud", "dlwjdgns", "gktnqls"
+            );
+
             if (i<=24) {
                 String email = String.format("ssafypro%04d@ssafy.com", i);
                 memberDTO.setMemberEmail(email);
-            } else if (i >= 439 && i <= 447) {
-                int suffix = i - 438; // 범위가 1부터 시작하도록 하기 위해 438를 빼줍니다.
-                String email = String.format("ssafy%04d@ssafy.com", suffix);
+            } else if (i >= 439 && i <= 502) {
+                int number = i - 438; // 범위가 1부터 시작하도록 하기 위해 438를 빼줍니다.
+                String email = gumi1Class.get(number-1) + "@ssafy.com";
                 memberDTO.setMemberEmail(email);
-            } else if (i >= 495 && i <= 509) {
+            } else if (i >= 502 && i <= 509) {
                 int suffix = i - 485; // 범위가 1부터 시작하도록 하기 위해 438를 빼줍니다.
                 String email = String.format("ssafy%04d@ssafy.com", suffix);
                 memberDTO.setMemberEmail(email);
@@ -113,9 +131,29 @@ public class DataLoader implements CommandLineRunner {
                     "김태경", "하지은", "최지원", "강민규", "석하림", "조미진"
             );
 
-            int randomIndex = random.nextInt(exampleNames.size());
-            String randomName = exampleNames.get(randomIndex);
-            memberDTO.setMemberName(randomName);
+            List<String> realNames = Arrays.asList(
+                    "차선호", "김희웅", "이영준", "김제준", "최영태", "최혜원",
+                    "김은하", "박성욱", "오희주", "이현섭", "장성운", "최희주",
+                    "김준성", "최재원", "박현우", "장진욱", "권민재", "김형진",
+                    "김도연", "김진영", "이현근", "황하음", "정예원", "손준배",
+                    "김주용", "황신운", "박준후", "정진욱", "전수림", "김수민",
+                    "이우철", "유영서", "서동현", "김선영",	"박종욱",
+                    "서은진", "이서현", "방진성", "이연지", "정예진",
+                    "정선재", "권민우", "심은진", "서지호", "김수찬",	"강승현",
+                    "김민수", "김유정", "진희솜", "박단비", "박민아", "정재욱",
+                    "김정환", "김근우", "천병찬", "채경호", "김상진", "김슬기",
+                    "신지훈", "성연석", "송민철", "신제형", "이정훈", "하수빈"
+            );
+
+            if (i >= 439 && i <= 502) {
+                int number = i - 439;
+                String name = realNames.get(number);
+                memberDTO.setMemberName(name);
+            }else {
+                int randomIndex = random.nextInt(exampleNames.size());
+                String randomName = exampleNames.get(randomIndex);
+                memberDTO.setMemberName(randomName);
+            }
 
             if (i <= 24) {
                 memberDTO.setStudent_number("00000");
@@ -132,12 +170,52 @@ public class DataLoader implements CommandLineRunner {
             memberDTO.setPhone_number(phoneNumber);
 
 
+            if (i >= 439 && i <= 502) {
+                int number = i - 438;
+                String name = realNames.get(number-1);
+                memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/" + name + ".png");
+            }else{
+                memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/default.png");
+            }
 //            memberDTO.setProfile_image("src/main/resources/static/images/profile_images/default.png");
-            memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/default.png");
-            memberDTO.setElectronic_student_id(10000 + i);
 
+
+            memberDTO.setElectronic_student_id(10000 + i);
             if (i <= 438) {
                 memberDTO.setMember_info("0000");
+            } else if (i <= 444) {
+                String memberInfo = "D101";
+                memberDTO.setMember_info(memberInfo);
+            } else if (i <= 450) {
+                String memberInfo = "D102";
+                memberDTO.setMember_info(memberInfo);
+            } else if (i <= 456) {
+                String memberInfo = "D103";
+                memberDTO.setMember_info(memberInfo);
+            } else if (i <= 462) {
+                String memberInfo = "D104";
+                memberDTO.setMember_info(memberInfo);
+            } else if (i <= 468) {
+                String memberInfo = "D105";
+                memberDTO.setMember_info(memberInfo);
+            } else if (i <= 473) {
+                String memberInfo = "D106";
+                memberDTO.setMember_info(memberInfo);
+            } else if (i <= 478) {
+                String memberInfo = "D107";
+                memberDTO.setMember_info(memberInfo);
+            } else if (i <= 484) {
+                String memberInfo = "D108";
+                memberDTO.setMember_info(memberInfo);
+            } else if (i <= 490) {
+                String memberInfo = "D109";
+                memberDTO.setMember_info(memberInfo);
+            } else if (i <= 496) {
+                String memberInfo = "D110";
+                memberDTO.setMember_info(memberInfo);
+            } else if (i <= 502) {
+                String memberInfo = "D111";
+                memberDTO.setMember_info(memberInfo);
             } else {
                 int randomInfoNumber = 101 + random.nextInt(10); // 범위는 101에서 110
                 String memberInfo = "D" + randomInfoNumber;
@@ -372,7 +450,7 @@ public class DataLoader implements CommandLineRunner {
                 classInfoDTO.setId(i - 14);
                 classInfoDTO.setGeneration_code(2);
                 classInfoDTO.setRegion_code(2);
-            } else if (i<=508) {
+            } else if (i<=516) {
                 classInfoDTO.setClass_code(1);
                 classInfoDTO.setId(i - 14);
                 classInfoDTO.setGeneration_code(1);
@@ -558,22 +636,72 @@ public class DataLoader implements CommandLineRunner {
                         bookRepository.save(bookEntity);
                     }
                 }
-                BookDTO bookDTO = new BookDTO();
-
-                bookDTO.setBorrowState(false);
-                bookDTO.setId(1);
-                bookDTO.setClass_code(2);
-                bookDTO.setRegion_code(2);
-                bookDTO.setGeneration_code(1);
-                bookDTO.setBookName("다른종류의 미대출 도서 확인용");
-                bookDTO.setAuthor("장진욱");
-                bookDTO.setPublisher("싸피출판사");
-                bookDTO.setClass_num(1);
-
-                BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
-                bookRepository.save(bookEntity);
+//                BookDTO bookDTO = new BookDTO();
+//
+//                bookDTO.setBorrowState(false);
+//                bookDTO.setId(1);
+//                bookDTO.setClass_code(2);
+//                bookDTO.setRegion_code(2);
+//                bookDTO.setGeneration_code(1);
+//                bookDTO.setBookName("다른종류의 미대출 도서 확인용");
+//                bookDTO.setAuthor("장진욱");
+//                bookDTO.setPublisher("싸피출판사");
+//                bookDTO.setClass_num(1);
+//
+//                BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
+//                bookRepository.save(bookEntity);
 
             }
+        }
+
+        List<String> seatNames = Arrays.asList(
+                "차선호", "김희웅", "이영준", "김제준", "최영태",
+                "최혜원", "김은하", "박성욱", "오희주", "이현섭",
+                "장성운", "최희주", "김준성", "최재원", "박현우",
+                "장진욱", "권민재", "김형진", "김도연", "김진영");
+
+        for (int i = 439; i <= 458; i++) {
+            String name = seatNames.get(i-439);
+            SeatDTO seatDTO = new SeatDTO();
+            seatDTO.setSeat_num(i-439);
+            seatDTO.setName(name);
+            seatDTO.setClass_num(i+14);
+            seatDTO.setClass_code(1);
+            seatDTO.setRegion_code(2);
+            seatDTO.setGeneration_code(1);
+            seatDTO.setId(i);
+
+            SeatEntity seatEntity = SeatEntity.toSeatEntity(seatDTO);
+            seatRepository.save(seatEntity);
+        }
+
+        List<String> lockerNames = Arrays.asList(
+                "차선호", "김희웅", "이영준", "김제준", "최영태", "최혜원",
+                "김은하", "박성욱", "오희주", "이현섭", "장성운", "최희주",
+                "김준성", "최재원", "박현우", "장진욱", "권민재", "김형진",
+                "김도연", "김진영", "이현근", "황하음", "정예원", "손준배",
+                "정선재", "권민우", "심은진", "서지호", "김수찬",	"강승현",
+                "김주용", "황신운", "박준후", "정진욱", "전수림", "김수민",
+                "김민수", "김유정", "진희솜", "박단비", "박민아", "정재욱",
+                "김정환", "김근우", "천병찬", "채경호", "김상진", "김슬기",
+                "신지훈", "성연석", "송민철", "신제형", "이정훈", "하수빈",
+                "이우철", "유영서", "서동현", "김선영",	"박종욱",
+                "서은진", "이서현", "방진성", "이연지", "정예진"
+        );
+
+        for (int i = 439; i <= 502; i++) {
+            String name = lockerNames.get(i-439);
+            LockerDTO lockerDTO = new LockerDTO();
+            lockerDTO.setLocker_num(i-439);
+            lockerDTO.setName(name);
+            lockerDTO.setClass_num(i+14);
+            lockerDTO.setClass_code(1);
+            lockerDTO.setRegion_code(2);
+            lockerDTO.setGeneration_code(1);
+            lockerDTO.setId(i);
+
+            LockerEntity lockerEntity = LockerEntity.toLockerEntity(lockerDTO);
+            lockerRepository.save(lockerEntity);
         }
     }
 }

@@ -68,7 +68,6 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
     private var param1: String? = null
     private var param2: String? = null
     private val sharedViewModel : SharedViewModel by activityViewModels()
-    private val stuHomeFragmentViewModel: StudentHomeFragmentViewModel by viewModels()
 
     // 지문
     private lateinit var biometricPrompt: BiometricPrompt
@@ -217,8 +216,6 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
             .load(imageUrl)
             .apply(requestOptions)
             .into(binding.fragmentStudentHomeCardViewFrontImage)
-
-
 
         viewModel.nthValue.postValue(ApplicationClass.sharedPreferences.getInt("Nth"))
         viewModel.regionValue.postValue(ApplicationClass.sharedPreferences.getString("region"))

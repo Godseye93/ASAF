@@ -34,6 +34,7 @@
         android:layout_height="0dp"
         tools:listitem="@layout/item_market"
         app:layout_constraintTop_toBottomOf="@+id/fragment_market_search_bar"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_market_register_btn"
         app:layout_constraintStart_toStartOf="@+id/marketText"
         />
 
@@ -42,7 +43,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/defaultMainColor"
         android:clickable="true"
         android:src="@android:drawable/ic_input_add"
