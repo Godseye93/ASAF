@@ -61,9 +61,11 @@ class StudentHomeFragmentViewModel : ViewModel(){
             val response = withContext(Dispatchers.IO) { RetrofitUtil.opService.getSeat(ccode, rcode, gcode, uid)}
             if (response.isSuccessful) {
                 curMySeat.postValue(response.body()?.seatNum ?: 0)
+                Log.d(TAG, "loadMySeat: $curMySeat")
             } else {
                 // 서버 통신 실패
                 Log.d(TAG, "loadMySeat: 개별 자리 네트워크 에러 $response")
+                curMySeat.postValue(0)
             }
         } catch (e: Exception) {
             Log.d(TAG, "loadMySeat: 개별 자리 에러")

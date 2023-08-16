@@ -197,7 +197,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
         seatViews = Array(25) { index -> binding.root.findViewById<ImageView>(resources.getIdentifier("stu_home_back_stu${index + 1}", "id", requireActivity().packageName))}
 
         viewModel.curMySeat.observe(viewLifecycleOwner) {
-            seatViews[viewModel.curMySeat.value?.plus(1) ?: 1].setImageResource(R.drawable.baseline_person_4_24_red)
+            seatViews[viewModel.curMySeat.value ?: 0].setImageResource(R.drawable.baseline_person_4_24_red)
         }
 
         viewModel.nthValue.observe(viewLifecycleOwner) {
