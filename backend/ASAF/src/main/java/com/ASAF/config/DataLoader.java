@@ -58,16 +58,17 @@ public class DataLoader implements CommandLineRunner {
 
         Random random = new Random();
         // 멤버 더미데이터
-        for (int i = 1; i <= 1024; i++) {
+        for (int i = 1; i <= 102; i++) {
             // 더미 데이터 생성을 위한 MemberDTO 객체 설정
             MemberDTO memberDTO = new MemberDTO();
 
-            String randomLetters = random.ints(6, 'a', 'z' + 1) // 범위는 a에서 z 사이
-                    .mapToObj(n -> (char) n)
-                    .map(Object::toString)
-                    .collect(Collectors.joining());
-
-            int randomNumber = random.nextInt(10000); // 범위는 0에서 9999 사이
+            List<String> gumipro = Arrays.asList("ssafypro0001@ssafy.com", "ssafypro0002@ssafy.com");
+            List<String> gumi2Class = Arrays.asList(
+                    "rlaxogml", "qkrtlghks", "wjdwlals", "dltjdals", "whdudgns", "wldwltn",
+                    "thdgothf", "dbwldks", "wndkfls", "qkrtpwns", "didwndnjs", "chldPfls",
+                    "ghkdthgml", "tjtldms", "dlagkdbs", "dlgkssk", "rkdwndud", "gkstmdgns",
+                    "whalstj", "tlstneh"
+            );
 
             List<String> gumi1Class = Arrays.asList(
                     "cktjsgh", "rlagmldnd", "dldudwns", "rlawpwns", "chldudxo", "chlgPdnjs",
@@ -80,55 +81,35 @@ public class DataLoader implements CommandLineRunner {
                     "wjdtjswo", "rnjsalsdn", "tladmswls", "tjwlgh", "rlatncks", "rkdtmdgus",
                     "rlaalstn", "rladbwjd", "wlsgmltha", "qkreksql", "qkralsdk", "wjdwodnr",
                     "rlawjdghks", "rlarmsdn", "cjsqudcks", "corudgh", "rlatkdwls", "rlatmfrl",
-                    "tlswlgns", "tjddustjr", "thdalscjf", "tlswpgud", "dlwjdgns", "gktnqls"
+                    "tlswlgns", "tjddustjr", "thdalscjf", "tlswpgud", "dlwjdgns", "gktnqls",
+                    "skadPdnjs", "gksehddud", "ghkdtndud", "tlsdmsrud", "cjstmdals", "wlswodbs",
+                    "rladbfkl", "shrkdud", "rkdmsrud", "wkdghdus", "dhrdydwo", "rladudwns",
+                    "rlaxorud", "gkwldms", "chlwldnjs", "rkdalsrb"
+
             );
 
-            if (i<=24) {
-                String email = String.format("ssafypro%04d@ssafy.com", i);
+
+            if (i<=2) {
+                String email = gumipro.get(i-1);
                 memberDTO.setMemberEmail(email);
-            } else if (i >= 439 && i <= 502) {
-                int number = i - 438; // 범위가 1부터 시작하도록 하기 위해 438를 빼줍니다.
+            } else if (i <= 82) {
+                int number = i - 2;
                 String email = gumi1Class.get(number-1) + "@ssafy.com";
                 memberDTO.setMemberEmail(email);
-            } else if (i >= 502 && i <= 509) {
-                int suffix = i - 485; // 범위가 1부터 시작하도록 하기 위해 438를 빼줍니다.
-                String email = String.format("ssafy%04d@ssafy.com", suffix);
+            } else {
+                int number = i - 82;
+                String email = gumi2Class.get(number - 1) + "@ssafy.com";
                 memberDTO.setMemberEmail(email);
-            } else {
-                String randomEmail = String.format("%s%04d@ssafy.com", randomLetters, randomNumber);
-                memberDTO.setMemberEmail(randomEmail);
             }
+            memberDTO.setMemberPassword("0000");
 
-            if (i<=24) {
-                memberDTO.setMemberPassword("0000");
-            } else if (i >= 439 && i <= 559) {
-                memberDTO.setMemberPassword("0000");
-            } else {
-                String randomPassword = String.format("%04d", random.nextInt(10000));
-                memberDTO.setMemberPassword(randomPassword);
-            }
+            List<String> gumiproName = Arrays.asList("정수빈", "박민하");
 
             List<String> exampleNames = Arrays.asList(
                     "김태희", "박시환", "정지민", "이성민", "조영훈", "장지수",
                     "송해솔", "유지안", "주아린", "박세준", "양주원", "최예린",
                     "황소희", "서시은", "임하윤", "이한나", "강주영", "한승훈",
-                    "조민서", "신수도", "유희진", "남지원", "문혜림", "임예원",
-                    "진서희", "최윤표", "류은주", "이승호", "김하영", "박동원",
-                    "강지숙", "남승연", "서연우", "최인준", "임민준", "유경민",
-                    "박서은", "양예지", "조원서", "문도현", "김준희", "이가령",
-                    "송미수", "진윤창", "장태호", "허민진", "홍승환", "이우승",
-                    "성민기", "유민서", "박재원", "김상준", "서주리", "오재후",
-                    "류선영", "조영규", "노경아", "정윤재", "한나리", "권수현",
-                    "전수진", "신예진", "나연서", "김성우", "이자인", "박희주",
-                    "송지원", "류하림", "안서연", "조성윤", "원승주", "장지윤",
-                    "김유진", "황수민", "이우진", "정하은", "조민지", "류재영",
-                    "김주리", "조혜준", "배육희", "최은영", "한유경", "김윤선",
-                    "허다영", "이나리", "서민수", "표선미", "장혜진", "조우찬",
-                    "강민경", "황진우", "김상영", "오지연", "임성훈", "김채원",
-                    "윤소희", "박상윤", "이승연", "김현우", "전지민", "서영수",
-                    "남예원", "한동영", "황수영", "신은경", "천승민", "진재윤",
-                    "김유리", "노가영", "가은경", "장호연", "옥용재", "김영준",
-                    "김태경", "하지은", "최지원", "강민규", "석하림", "조미진"
+                    "조민서", "신수도"
             );
 
             List<String> realNames = Arrays.asList(
@@ -137,28 +118,35 @@ public class DataLoader implements CommandLineRunner {
                     "김준성", "최재원", "박현우", "장진욱", "권민재", "김형진",
                     "김도연", "김진영", "이현근", "황하음", "정예원", "손준배",
                     "김주용", "황신운", "박준후", "정진욱", "전수림", "김수민",
-                    "이우철", "유영서", "서동현", "김선영",	"박종욱",
+                    "이우철", "유영서", "서동현", "김선영", "박종욱",
                     "서은진", "이서현", "방진성", "이연지", "정예진",
                     "정선재", "권민우", "심은진", "서지호", "김수찬",	"강승현",
                     "김민수", "김유정", "진희솜", "박단비", "박민아", "정재욱",
                     "김정환", "김근우", "천병찬", "채경호", "김상진", "김슬기",
-                    "신지훈", "성연석", "송민철", "신제형", "이정훈", "하수빈"
+                    "신지훈", "성연석", "송민철", "신제형", "이정훈", "하수빈",
+                    "남예원", "한동영", "황수영", "신은경", "천승민", "진재윤",
+                    "김유리", "노가영", "가은경", "장호연", "옥용재", "김영준",
+                    "김태경", "하지은", "최지원", "강민규"
             );
 
-            if (i >= 439 && i <= 502) {
-                int number = i - 439;
-                String name = realNames.get(number);
+            if (i<=2) {
+                String name = gumiproName.get(i-1);
                 memberDTO.setMemberName(name);
-            }else {
-                int randomIndex = random.nextInt(exampleNames.size());
-                String randomName = exampleNames.get(randomIndex);
-                memberDTO.setMemberName(randomName);
+            } else if (i <= 82) {
+                int number = i - 2;
+                String name = realNames.get(number-1);
+                memberDTO.setMemberName(name);
+            } else {
+                int number = i - 82;
+                String name = exampleNames.get(number - 1);
+                memberDTO.setMemberName(name);
             }
 
-            if (i <= 24) {
+
+            if (i <= 2) {
                 memberDTO.setStudent_number("00000");
             } else {
-                String studentNumber = String.format("%05d", i - 24);
+                String studentNumber = String.format("092" + "%03d", i - 2);
                 memberDTO.setStudent_number(studentNumber);
             }
 
@@ -170,70 +158,82 @@ public class DataLoader implements CommandLineRunner {
             memberDTO.setPhone_number(phoneNumber);
 
 
-            if (i >= 439 && i <= 502) {
-                int number = i - 438;
-                String name = realNames.get(number-1);
+            if (i <= 2) {
+                String name = gumiproName.get(i-1);
                 memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/" + name + ".png");
-            }else{
-                memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/default.png");
+            } else if (i <= 82) {
+                String name = realNames.get(i-3);
+                memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/" + name + ".png");
+            } else {
+                String name = exampleNames.get(i-83);
+                memberDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/" + name + ".png");
+
             }
-//            memberDTO.setProfile_image("src/main/resources/static/images/profile_images/default.png");
+            memberDTO.setProfile_image("src/main/resources/static/images/profile_images/default.png");
 
 
             memberDTO.setElectronic_student_id(10000 + i);
-            if (i <= 438) {
+            if (i <= 2) {
                 memberDTO.setMember_info("0000");
-            } else if (i <= 444) {
+            } else if (i <= 8) {
                 String memberInfo = "D101";
                 memberDTO.setMember_info(memberInfo);
-            } else if (i <= 450) {
+            } else if (i <= 14) {
                 String memberInfo = "D102";
                 memberDTO.setMember_info(memberInfo);
-            } else if (i <= 456) {
+            } else if (i <= 20) {
                 String memberInfo = "D103";
                 memberDTO.setMember_info(memberInfo);
-            } else if (i <= 462) {
+            } else if (i <= 26) {
                 String memberInfo = "D104";
                 memberDTO.setMember_info(memberInfo);
-            } else if (i <= 468) {
+            } else if (i <= 32) {
                 String memberInfo = "D105";
                 memberDTO.setMember_info(memberInfo);
-            } else if (i <= 473) {
+            } else if (i <= 37) {
                 String memberInfo = "D106";
                 memberDTO.setMember_info(memberInfo);
-            } else if (i <= 478) {
+            } else if (i <= 42) {
                 String memberInfo = "D107";
                 memberDTO.setMember_info(memberInfo);
-            } else if (i <= 484) {
+            } else if (i <= 48) {
                 String memberInfo = "D108";
                 memberDTO.setMember_info(memberInfo);
-            } else if (i <= 490) {
+            } else if (i <= 54) {
                 String memberInfo = "D109";
                 memberDTO.setMember_info(memberInfo);
-            } else if (i <= 496) {
+            } else if (i <= 60) {
                 String memberInfo = "D110";
                 memberDTO.setMember_info(memberInfo);
-            } else if (i <= 502) {
+            } else if (i <= 66) {
                 String memberInfo = "D111";
                 memberDTO.setMember_info(memberInfo);
-            } else {
-                int randomInfoNumber = 101 + random.nextInt(10); // 범위는 101에서 110
-                String memberInfo = "D" + randomInfoNumber;
+
+            } else if (i <= 72) {
+                String memberInfo = "D112";
                 memberDTO.setMember_info(memberInfo);
+            } else if (i <= 78) {
+                String memberInfo = "D113";
+                memberDTO.setMember_info(memberInfo);
+            } else if (i <= 82){
+                String memberInfo = "D114";
+                memberDTO.setMember_info(memberInfo);
+            } else {
+                memberDTO.setMember_info("0000");
             }
+
             memberDTO.setToken("fE_q5sa_RNKy7QkzhDar42:APA91bGHed0OzNm8ETlcMbzCFVNyXxs1moHW641-CQEN7PebBUjRKboMR8zg_HQfJuZiGFzShUDGD40zMWApLgZeBTFJckPfwN5za_LGm1txmE4EVcj8XqNDH81Vny__FwOwrLLM58Rh");
             memberDTO.setAttended("미출석");
-            if (i <= 24) {
+            if (i <= 2) {
                 memberDTO.setAuthority("프로");
             } else {
                 memberDTO.setAuthority("교육생");
             }
 
-
-            // MemberDTO를 MemberEntity로 변환해서 저장
             MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO);
             memberRepository.save(memberEntity);
         }
+
 
         // 반 더미데이터
         for (int i = 1; i <= 20; i++) {
@@ -283,187 +283,27 @@ public class DataLoader implements CommandLineRunner {
         }
 
         // 학급 더미데이터
-        for (int i = 1; i <= 1038; i++) {
+        for (int i = 1; i <= 102; i++) {
             ClassInfoDTO classInfoDTO = new ClassInfoDTO();
-            if (i <= 2) {
-                classInfoDTO.setClass_code(i);
-                classInfoDTO.setId(1);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 4) {
-                classInfoDTO.setClass_code(i);
-                classInfoDTO.setId(2);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 6) {
-                classInfoDTO.setClass_code(i);
-                classInfoDTO.setId(3);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 8) {
-                classInfoDTO.setClass_code(i);
-                classInfoDTO.setId(4);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 10) {
-                classInfoDTO.setClass_code(i);
-                classInfoDTO.setId(5);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 12) {
-                classInfoDTO.setClass_code(i);
-                classInfoDTO.setId(6);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 14) {
-                classInfoDTO.setClass_code(i);
-                classInfoDTO.setId(7);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 16) {
-                classInfoDTO.setClass_code(i);
-                classInfoDTO.setId(8);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 18) {
-                classInfoDTO.setClass_code(i);
-                classInfoDTO.setId(9);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 20) {
-                classInfoDTO.setClass_code(i);
-                classInfoDTO.setId(10);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 30) {
-                classInfoDTO.setClass_code(i-20);
-                classInfoDTO.setId(i-10);
-                classInfoDTO.setGeneration_code(1);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 33) {
-                classInfoDTO.setClass_code(i - 30);
-                classInfoDTO.setId(21);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(2);
-            } else if (i <= 36) {
-                classInfoDTO.setClass_code(i - 30);
-                classInfoDTO.setId(22);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(2);
-            } else if (i == 37) {
+            if (i == 1) {
                 classInfoDTO.setClass_code(1);
-                classInfoDTO.setId(23);
+                classInfoDTO.setId(i);
                 classInfoDTO.setGeneration_code(1);
                 classInfoDTO.setRegion_code(2);
-            } else if (i == 38) {
+            } else if (i == 2) {
                 classInfoDTO.setClass_code(2);
-                classInfoDTO.setId(24);
+                classInfoDTO.setId(i);
                 classInfoDTO.setGeneration_code(1);
                 classInfoDTO.setRegion_code(2);
-            } else if (i <= 58) {
+            } else if (i <= 82) {
                 classInfoDTO.setClass_code(1);
-                classInfoDTO.setId(i-14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 78) {
-                classInfoDTO.setClass_code(2);
-                classInfoDTO.setId(i-14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 98) {
-                classInfoDTO.setClass_code(3);
-                classInfoDTO.setId(i-14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 118) {
-                classInfoDTO.setClass_code(4);
-                classInfoDTO.setId(i-14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 138) {
-                classInfoDTO.setClass_code(5);
-                classInfoDTO.setId(i-14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 158) {
-                classInfoDTO.setClass_code(6);
-                classInfoDTO.setId(i-14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 178) {
-                classInfoDTO.setClass_code(7);
-                classInfoDTO.setId(i-14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 198) {
-                classInfoDTO.setClass_code(8);
-                classInfoDTO.setId(i-14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 218) {
-                classInfoDTO.setClass_code(9);
-                classInfoDTO.setId(i-14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i <= 238) {
-                classInfoDTO.setClass_code(10);
-                classInfoDTO.setId(i-14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(1);
-            } else if (i<=278) {
-                classInfoDTO.setClass_code(1);
-                classInfoDTO.setId(i-14);
-                classInfoDTO.setGeneration_code(1);
-                classInfoDTO.setRegion_code(1);
-            } else if (i<=318) {
-                classInfoDTO.setClass_code(2);
-                classInfoDTO.setId(i - 14);
-                classInfoDTO.setGeneration_code(1);
-                classInfoDTO.setRegion_code(1);
-            } else if (i<=338) {
-                classInfoDTO.setClass_code(1);
-                classInfoDTO.setId(i - 14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(2);
-            } else if (i <= 358) {
-                classInfoDTO.setClass_code(2);
-                classInfoDTO.setId(i - 14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(2);
-            } else if (i <= 378) {
-                classInfoDTO.setClass_code(3);
-                classInfoDTO.setId(i - 14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(2);
-            } else if (i <= 398) {
-                classInfoDTO.setClass_code(4);
-                classInfoDTO.setId(i - 14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(2);
-            } else if (i <= 418) {
-                classInfoDTO.setClass_code(5);
-                classInfoDTO.setId(i - 14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(2);
-            } else if (i <= 438) {
-                classInfoDTO.setClass_code(6);
-                classInfoDTO.setId(i - 14);
-                classInfoDTO.setGeneration_code(2);
-                classInfoDTO.setRegion_code(2);
-            } else if (i<=516) {
-                classInfoDTO.setClass_code(1);
-                classInfoDTO.setId(i - 14);
+                classInfoDTO.setId(i);
                 classInfoDTO.setGeneration_code(1);
                 classInfoDTO.setRegion_code(2);
-            } else if (i<=578) {
+            } else{
                 classInfoDTO.setClass_code(2);
-                classInfoDTO.setId(i - 14);
+                classInfoDTO.setId(i);
                 classInfoDTO.setGeneration_code(1);
-                classInfoDTO.setRegion_code(2);
-            } else {
-                classInfoDTO.setClass_code(20);
-                classInfoDTO.setId(i - 14);
-                classInfoDTO.setGeneration_code(2);
                 classInfoDTO.setRegion_code(2);
             }
 
@@ -485,28 +325,8 @@ public class DataLoader implements CommandLineRunner {
         );
 
         // 북 더미 생산
-        for (int i = 1; i <= 12; i++) {
-            if (i <= 10) {
-                for (int j = 1; j <= 30; j++) {
-                    BookDTO bookDTO = new BookDTO();
-                    List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
-                    String book = bookAuthor.get(0);
-                    String author = bookAuthor.get(1);
-
-                    bookDTO.setBorrowState(false);
-                    bookDTO.setId(1);
-                    bookDTO.setClass_code(i);
-                    bookDTO.setRegion_code(1);
-                    bookDTO.setGeneration_code(1);
-                    bookDTO.setBookName(book);
-                    bookDTO.setAuthor(author);
-                    bookDTO.setPublisher("싸피출판사");
-                    bookDTO.setClass_num(1);
-
-                    BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
-                    bookRepository.save(bookEntity);
-                }
-            } else if (i == 11) {
+        for (int i = 1; i <= 2; i++) {
+            if (i == 1) {
                 for (int j = 1; j <= 30; j++) {
                     BookDTO bookDTO = new BookDTO();
                     List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
@@ -528,129 +348,24 @@ public class DataLoader implements CommandLineRunner {
                 }
             } else {
                 for (int j = 1; j <= 30; j++) {
-                    if (j<=6) {
-                        BookDTO bookDTO = new BookDTO();
-                        List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
-                        String book = bookAuthor.get(0);
-                        String author = bookAuthor.get(1);
+                    BookDTO bookDTO = new BookDTO();
+                    List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
+                    String book = bookAuthor.get(0);
+                    String author = bookAuthor.get(1);
 
-                        bookDTO.setBorrowState(false);
-                        bookDTO.setId(1);
-                        bookDTO.setClass_code(2);
-                        bookDTO.setRegion_code(2);
-                        bookDTO.setGeneration_code(1);
-                        bookDTO.setBookName(book);
-                        bookDTO.setAuthor(author);
-                        bookDTO.setPublisher("싸피출판사");
-                        bookDTO.setClass_num(1);
+                    bookDTO.setBorrowState(false);
+                    bookDTO.setId(1);
+                    bookDTO.setClass_code(2);
+                    bookDTO.setRegion_code(2);
+                    bookDTO.setGeneration_code(1);
+                    bookDTO.setBookName(book);
+                    bookDTO.setAuthor(author);
+                    bookDTO.setPublisher("싸피출판사");
+                    bookDTO.setClass_num(1);
 
-                        BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
-                        bookRepository.save(bookEntity);
-
-                    } else if (j<=12){
-                        BookDTO bookDTO = new BookDTO();
-                        List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
-                        String book = bookAuthor.get(0);
-                        String author = bookAuthor.get(1);
-
-                        bookDTO.setBorrowDate(1591513808494L);
-                        bookDTO.setReturnDate(1591563808494L);
-
-                        bookDTO.setBorrowState(true);
-                        bookDTO.setId(509);
-                        bookDTO.setClass_code(2);
-                        bookDTO.setRegion_code(2);
-                        bookDTO.setGeneration_code(1);
-                        bookDTO.setBookName(book);
-                        bookDTO.setAuthor(author);
-                        bookDTO.setPublisher("싸피출판사");
-                        bookDTO.setClass_num(1);
-
-                        BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
-                        bookRepository.save(bookEntity);
-
-                    } else if (j<=18){
-                        BookDTO bookDTO = new BookDTO();
-                        List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
-                        String book = bookAuthor.get(0);
-                        String author = bookAuthor.get(1);
-
-                        bookDTO.setBorrowDate(1591513808494L);
-                        bookDTO.setReturnDate(1791563808494L);
-
-                        bookDTO.setBorrowState(true);
-                        bookDTO.setId(509);
-                        bookDTO.setClass_code(2);
-                        bookDTO.setRegion_code(2);
-                        bookDTO.setGeneration_code(1);
-                        bookDTO.setBookName(book);
-                        bookDTO.setAuthor(author);
-                        bookDTO.setPublisher("싸피출판사");
-                        bookDTO.setClass_num(1);
-
-                        BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
-                        bookRepository.save(bookEntity);
-
-                    } else if (j<=24){
-                        BookDTO bookDTO = new BookDTO();
-                        List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
-                        String book = bookAuthor.get(0);
-                        String author = bookAuthor.get(1);
-
-                        bookDTO.setBorrowDate(1591513808494L);
-                        bookDTO.setReturnDate(1591563808494L);
-
-                        bookDTO.setBorrowState(true);
-                        bookDTO.setId(1);
-                        bookDTO.setClass_code(2);
-                        bookDTO.setRegion_code(2);
-                        bookDTO.setGeneration_code(1);
-                        bookDTO.setBookName(book);
-                        bookDTO.setAuthor(author);
-                        bookDTO.setPublisher("싸피출판사");
-                        bookDTO.setClass_num(1);
-
-                        BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
-                        bookRepository.save(bookEntity);
-
-                    } else {
-                        BookDTO bookDTO = new BookDTO();
-                        List<String> bookAuthor = bookAuthorList.get((j - 1) % 10);
-                        String book = bookAuthor.get(0);
-                        String author = bookAuthor.get(1);
-
-                        bookDTO.setBorrowDate(1591513808494L);
-                        bookDTO.setReturnDate(1791563808494L);
-
-                        bookDTO.setBorrowState(true);
-                        bookDTO.setId(1);
-                        bookDTO.setClass_code(2);
-                        bookDTO.setRegion_code(2);
-                        bookDTO.setGeneration_code(1);
-                        bookDTO.setBookName(book);
-                        bookDTO.setAuthor(author);
-                        bookDTO.setPublisher("싸피출판사");
-                        bookDTO.setClass_num(1);
-
-                        BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
-                        bookRepository.save(bookEntity);
-                    }
+                    BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
+                    bookRepository.save(bookEntity);
                 }
-//                BookDTO bookDTO = new BookDTO();
-//
-//                bookDTO.setBorrowState(false);
-//                bookDTO.setId(1);
-//                bookDTO.setClass_code(2);
-//                bookDTO.setRegion_code(2);
-//                bookDTO.setGeneration_code(1);
-//                bookDTO.setBookName("다른종류의 미대출 도서 확인용");
-//                bookDTO.setAuthor("장진욱");
-//                bookDTO.setPublisher("싸피출판사");
-//                bookDTO.setClass_num(1);
-//
-//                BookEntity bookEntity = BookEntity.toBookEntity(bookDTO);
-//                bookRepository.save(bookEntity);
-
             }
         }
 
