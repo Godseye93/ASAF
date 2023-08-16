@@ -275,6 +275,12 @@
         android:label="SignNext"
         tools:layout="@layout/fragment_sign_next" >
         <action
+            android:id="@+id/action_signNextFragment_to_SignDrawFragment"
+            app:destination="@+id/signDrawFragment"
+            app:popUpTo="@id/supportFragment"
+            app:popUpToInclusive="true"/>
+
+        <action
             android:id="@+id/action_signNextFragment_to_signFragment"
             app:destination="@id/signFragment"
             app:popUpTo="@id/signDrawFragment"

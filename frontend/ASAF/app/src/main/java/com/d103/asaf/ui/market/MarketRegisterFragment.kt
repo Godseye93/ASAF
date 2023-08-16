@@ -131,6 +131,8 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
 
     fun init() {
 
+        Log.d(TAG, "init:${ApplicationClass.sharedPreferences.getString("profile_image")}  ${ApplicationClass.sharedPreferences.getInt("id")}")
+
         // 뒤로 가기 버튼
         binding.fragmentMarketRegisterBackButton.setOnClickListener {
             (requireActivity() as MainActivity).showStudentBottomNaviagtionBarFromFragment()
@@ -163,6 +165,7 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
             }
             else{
                 Log.d(TAG, "프로필: ${ApplicationClass.sharedPreferences.getString("profile_image")} ")
+                Log.d(TAG, "프로필 2: ${sharedViewModel.userImage}")
                 viewModel.marketInfo = Market(System.currentTimeMillis(),
                     binding.fragmentMarketRegisterTitleEdittext.text.toString(),
                     binding.marketDetailEdittext.text.toString(),
@@ -171,10 +174,9 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
                     userName!!
                 )
 
-                (viewModel.post())
-                (requireActivity() as MainActivity).showStudentBottomNaviagtionBarFromFragment()
+                viewModel.post()
                 findNavController().navigateUp()
-
+                (requireActivity() as MainActivity).showStudentBottomNaviagtionBarFromFragment()
 
             }
 
