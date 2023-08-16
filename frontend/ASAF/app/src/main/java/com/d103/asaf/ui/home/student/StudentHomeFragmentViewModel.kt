@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.d103.asaf.common.config.ApplicationClass
+import com.d103.asaf.common.model.dto.DocSeat
 import com.d103.asaf.common.util.RetrofitUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,9 +16,9 @@ class StudentHomeFragmentViewModel : ViewModel(){
     var regionValue = MutableLiveData<String>()
     var classCodeValue = MutableLiveData<Int>()
     var curMySeat = MutableLiveData<Int>()
+    var id = 0
 
     suspend fun addClassInfo(email: String) {
-        var id = 0
         try {
             val response = withContext(Dispatchers.IO) { RetrofitUtil.memberService.getUserInfo(email)}
 
@@ -43,6 +44,7 @@ class StudentHomeFragmentViewModel : ViewModel(){
                     ApplicationClass.sharedPreferences.addUserInfo(
                         nthValue.value!!,regionValue.value!!, classCodeValue.value!!
                     )
+                    loadMySeat(classCodeValue.value!!, classInfoResponse.body()!![0].regionCode, nthValue.value!!, id)
                 } else {
                 }
             } else {
@@ -53,17 +55,18 @@ class StudentHomeFragmentViewModel : ViewModel(){
         }
     }
     // 개별자리가져오기
-//    suspend fun loadMySeat() {
-//        try {
-//            // 개별 자리 가져오기
-//            //val response = withContext(Dispatchers.IO) { RetrofitUtil.opService.getUserInfo(email)}
-//            if (response.isSuccessful) {
-//                curMySeat = response.body()
-//            } else {
-//                // 서버 통신 실패
-//            }
-//        } catch (e: Exception) {
-//
-//        }
-//    }
+    private suspend fun loadMySeat(ccode: Int, rcode: Int, gcode: Int, uid: Int) {
+        try {
+            // 개별 자리 가져오기
+            val response = withContext(Dispatchers.IO) { RetrofitUtil.opService.getSeat(ccode, rcode, gcode, uid)}
+            if (response.isSuccessful) {
+                curMySeat.postValue(response.body()?.seatNum ?: 0)
+            } else {
+                // 서버 통신 실패
+                Log.d(TAG, "loadMySeat: 개별 자리 네트워크 에러 $response")
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "loadMySeat: 개별 자리 에러")
+        }
+    }
 }
