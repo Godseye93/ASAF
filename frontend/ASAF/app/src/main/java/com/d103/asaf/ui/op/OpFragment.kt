@@ -41,6 +41,7 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
         parentViewModel = viewModel
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.signProgress.collect {
+                Log.d("서명진행률", "onViewCreated: ${viewModel.signs.value.size} ${viewModel.students.value.size}")
                 attendedPercent.value = if(viewModel.students.value.size != 0) {
                     (viewModel.signs.value.size/viewModel.students.value.size) * 100f
                 } else 0f
