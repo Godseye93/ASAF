@@ -34,10 +34,11 @@ public class DataLoader implements CommandLineRunner {
     private final ClassInfoRepository classInfoRepository;
     private final SeatRepository seatRepository;
     private final LockerRepository lockerRepository;
+    private final PostRepository postRepository;
 
 
 
-    public DataLoader(MemberRepository memberRepository, RegionRepository regionRepository, GenerationRepository generationRepository, ClassRepository classRepository, BusRepository busRepository, BookRepository bookRepository, ClassInfoRepository classInfoRepository, SeatRepository seatRepository, LockerRepository lockerRepository) {
+    public DataLoader(MemberRepository memberRepository, RegionRepository regionRepository, GenerationRepository generationRepository, ClassRepository classRepository, BusRepository busRepository, BookRepository bookRepository, ClassInfoRepository classInfoRepository, SeatRepository seatRepository, LockerRepository lockerRepository, PostRepository postRepository) {
         this.memberRepository = memberRepository;
         this.regionRepository = regionRepository;
         this.generationRepository = generationRepository;
@@ -47,6 +48,7 @@ public class DataLoader implements CommandLineRunner {
         this.classInfoRepository = classInfoRepository;
         this.seatRepository = seatRepository;
         this.lockerRepository = lockerRepository;
+        this.postRepository = postRepository;
     }
 
     @Override
@@ -421,6 +423,17 @@ public class DataLoader implements CommandLineRunner {
 
             SeatEntity seatEntity = SeatEntity.toSeatEntity(seatDTO);
             seatRepository.save(seatEntity);
-        }
+        };
+
+        // 중고거래 더미데이터
+        PostDTO postDTO = new PostDTO();
+        postDTO.setId(1);
+        postDTO.setRegister_time(1691057640);
+        postDTO.setTitle("<공지> 중고거래 사용 안내");
+        postDTO.setContent("비매너 및 욕설을 금지합니다.");
+        postDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/정수빈.png");
+        postDTO.setName("정수빈");
+        PostEntity postEntity = PostEntity.toPostEntity(postDTO);
+        postRepository.save(postEntity);
     }
 }

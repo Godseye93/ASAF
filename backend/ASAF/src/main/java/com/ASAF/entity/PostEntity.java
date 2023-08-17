@@ -1,6 +1,8 @@
 // PostEntity.java
 package com.ASAF.entity;
 
+import com.ASAF.dto.ClassDTO;
+import com.ASAF.dto.PostDTO;
 import lombok.Data;
 import lombok.ToString;
 
@@ -36,4 +38,15 @@ public class PostEntity {
 
     @OneToMany(mappedBy = "post")
     private List<ImageEntity> images;
+
+    public  static  PostEntity toPostEntity(PostDTO postDTO) {
+        PostEntity postEntity = new PostEntity();
+        postEntity.setId(postDTO.getId());
+        postEntity.setRegister_time(postDTO.getRegister_time());
+        postEntity.setTitle(postDTO.getTitle());
+        postEntity.setContent(postDTO.getContent());
+        postEntity.setProfile_image(postDTO.getProfile_image());
+        postEntity.setName(postDTO.getName());
+        return postEntity;
+    }
 }
