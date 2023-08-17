@@ -90,6 +90,8 @@ class OpFragmentViewModel(): ViewModel() {
     private val _signUrls = MutableStateFlow(mutableListOf<String>())
     val signUrls = _signUrls
 
+    var attendedPercent = MutableStateFlow(0f)
+
     init{
         // 반 정보를 가장먼저 세팅해야함
         loadFirst() // loadCollect, loadRemote, loadCommon 등 초기화 함수 모두 포함
@@ -112,11 +114,6 @@ class OpFragmentViewModel(): ViewModel() {
                 fetchSeats()
                 fetchLockers()
                 fetchSigns()
-                signProgress.emit(
-                    if(_students.value.size != 0){
-                        (_signs.value.size/_students.value.size) * 100f
-                    } else 0f
-                )
                 // 이후 작업은 모두 완료된 후 실행
                 // loadSeats()
                 // loadLockers()
@@ -138,6 +135,12 @@ class OpFragmentViewModel(): ViewModel() {
         }
         if (studentResponse.isSuccessful) {
             _students.value = studentResponse.body() ?: mutableListOf()
+
+            if(_students.value.size != 0){
+                signProgress.value = (_signs.value.size.toFloat()/_students.value.size) * 100f
+            } else {
+                signProgress.value = 0f
+            }
         } else {
             Log.d(TAG, "학생 가져오기 네트워크 오류")
         }
@@ -181,6 +184,11 @@ class OpFragmentViewModel(): ViewModel() {
         }
         if (signResponse.isSuccessful) {
             _signs.value = signResponse.body() ?: mutableListOf<DocSign>()
+            if(_students.value.size != 0){
+                signProgress.value = (_signs.value.size.toFloat()/_students.value.size) * 100f
+            } else {
+                signProgress.value = 0f
+            }
             Log.d(TAG, "fetchSigns: ${_signs.value}")
             loadSignUrls()
         } else {
