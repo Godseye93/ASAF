@@ -19,7 +19,7 @@
  [기능 명세서](https://docs.google.com/spreadsheets/d/1YXWEoj4FwIA5q2wiOGrWThPSlwKs1TSfE4VgIX8EKCw/edit#gid=0)
 
  ## ERD
- [ERD](ERD.png)
+ ![ERD](ERD.png)
 
  ## 배포 정보 
 
