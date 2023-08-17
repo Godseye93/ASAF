@@ -43,6 +43,7 @@
  [배포 정보](exec/1번 문서.md)
 
  ## 프로젝트 트리
+ ```
  ├─.idea
 ├─backend
 │  ├─.idea
@@ -202,5 +203,5 @@
         │                      └─asaf
         └─gradle
             └─wrapper
-
+```
 
