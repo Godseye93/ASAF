@@ -42,8 +42,7 @@ public class SignService {
         String fileName = signDTO.getMonth() + "_" + file.getOriginalFilename();
         String filePath = UPLOAD_DIR + signDTO.getName() + "_" + fileName;
         String realPath = real_DIR + signDTO.getName() + "_" + fileName;
-//        File dest = new File(filePath);
-        File dest = new File(realPath);
+        File dest = new File(filePath);
         FileCopyUtils.copy(file.getBytes(), dest);
 
 

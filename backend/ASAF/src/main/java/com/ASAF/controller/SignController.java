@@ -69,6 +69,7 @@ public class SignController {
                                          @RequestParam("month") String month) throws ChangeSetPersister.NotFoundException {
         System.out.println("통신 확인");
         List<SignDTO> signs = signService.getSignsByCodes(class_code, region_code, generation_code, month);
+        System.out.println(signs.get(0).toString());
         // 이름순으로 정렬
         signs = signs.stream()
                 .sorted(Comparator.comparing(SignDTO::getName))
