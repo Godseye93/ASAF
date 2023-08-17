@@ -63,4 +63,7 @@ interface MemberService {
 
     @DELETE("member/{memberId}")
     fun removeMember(@Path("memberId") memberId: Int): Call<Void>
+
+    @GET("member/{memberId}")
+    suspend fun getMemberInfoWithId(@Path("memberId") memberId : Int) : Response<Member>
 }

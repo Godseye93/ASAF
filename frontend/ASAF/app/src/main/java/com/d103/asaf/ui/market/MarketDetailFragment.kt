@@ -1,5 +1,6 @@
 package com.d103.asaf.ui.market
 
+import android.app.Dialog
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -17,6 +20,7 @@ import com.d103.asaf.SharedViewModel
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.config.BaseFragment
 import com.d103.asaf.common.model.dto.MarketImage
+import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentMarketDetailBinding
 import java.text.SimpleDateFormat
@@ -72,7 +76,7 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
 //        binding.fragmentMarketDetailRecyclerview.adapter = adapter
 //        adapter.notifyDataSetChanged()
         viewModel.getMarketDetail(sharedViewModel.selectedMarketId)
-
+        viewModel.getUserInfo(sharedViewModel.selectedMarketId)
         binding.fragmentMarketDetailBackButton.setOnClickListener {
             findNavController().navigateUp()
 
@@ -118,8 +122,28 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
 
 
             binding.fragmentMarketDetailUserName.text = it.name
-
+            binding.fragmentMarketDetailProfile.setOnClickListener {
+                viewModel.marketUserInfo.value?.let { it1 -> showImageDialog(it1) }
+            }
         }
+    }
+    private fun showImageDialog(user: Member) {
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.dialog_market_userinfo)
+        val imageSplit = user.profileImage.split("/")
+        val path =  "http://i9d103.p.ssafy.io" + "/" + imageSplit[4] + "/" + imageSplit[5] + "/" + imageSplit[6]
+        val imageView = dialog.findViewById<ImageView>(R.id.fragment_student_home_cardView_front_image)
+        val userName = dialog.findViewById<TextView>(R.id.fragment_student_home_cardView_front_cardView1_front_name)
+        val phoneNumber = dialog.findViewById<TextView>(R.id.fragment_student_home_cardView_front_cardView1_front_phoneNum)
+
+        Glide.with(requireActivity())
+            .load(path)
+            .into(imageView)
+        userName.text = user.memberName
+        phoneNumber.text = user.phoneNumber.toString()
+
+
+        dialog.show()
     }
 
     companion object {
