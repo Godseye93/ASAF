@@ -428,7 +428,7 @@ public class DataLoader implements CommandLineRunner {
         // 중고거래 더미데이터
         PostDTO postDTO = new PostDTO();
         postDTO.setId(1);
-        postDTO.setRegister_time(1591563808494);
+        postDTO.setRegister_time(1591563808494L);
         postDTO.setTitle("[공지] 중고거래 서비스 사용 안내");
         postDTO.setContent("1. 프로필 이미지를 클릭하면 대상의 정보를 볼 수 있습니다. \n\n2. 게시글 등록하면 수정이 불가합니다.\n\n3. 모두가 함께 사용하는 공간인 만큼 매너있게 사용합니다!! :D");
         postDTO.setProfile_image("/home/ubuntu/statics/images/profile_images/정수빈.png");
