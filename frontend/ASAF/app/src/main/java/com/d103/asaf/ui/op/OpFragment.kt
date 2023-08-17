@@ -35,16 +35,18 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
 
     private val viewModel: OpFragmentViewModel by viewModels()
     private val handler = Handler(Looper.getMainLooper())
-    private var attendedPercent = MutableStateFlow(0f)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parentViewModel = viewModel
+
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.signProgress.collect {
                 Log.d("서명진행률", "onViewCreated: ${viewModel.signs.value.size} ${viewModel.students.value.size}")
-                attendedPercent.value = if(viewModel.students.value.size != 0) {
-                    (viewModel.signs.value.size/viewModel.students.value.size) * 100f
-                } else 0f
+                if(viewModel.students.value.size != 0) {
+                    viewModel.attendedPercent.value =  (viewModel.signs.value.size.toFloat()/viewModel.students.value.size) * 100f
+                } else {
+                    viewModel.attendedPercent.value = 0f
+                }
             }
         }
 
@@ -53,7 +55,8 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
         initClass()
         initClickListener()
         lifecycleScope.launch {
-            attendedPercent.collect {
+            viewModel.attendedPercent.collect {
+                Log.d("서명진행률", "onViewCreated: 불림 $it")
                 progressBarUpdate()
             }
         }
@@ -99,8 +102,8 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
             binding.fragmentOpDropdownMonth.visibility = View.VISIBLE
             binding.fragmentOpImageviewArcprogressbar.visibility = View.VISIBLE
             // 서명 진행률 주입
-            attendedPercent.value = if(viewModel.students.value.size != 0) {
-                (viewModel.signs.value.size/viewModel.students.value.size) * 100f
+            viewModel.attendedPercent.value = if(viewModel.students.value.size != 0) {
+                (viewModel.signs.value.size.toFloat()/viewModel.students.value.size) * 100f
             } else 0f
 
             childFragmentManager.beginTransaction()
@@ -176,10 +179,10 @@ class OpFragment : BaseFragment<FragmentOpBinding>(FragmentOpBinding::bind, R.la
         val section = DonutSection(
             name = "signPercent",
             color = Color.BLUE,
-            amount = attendedPercent.value
+            amount = viewModel.attendedPercent.value
         )
         binding.fragmentOpImageviewArcprogressbar.arcProgressBar.submitData(listOf(section))
-        binding.fragmentOpImageviewArcprogressbar.progressRate.text = "${attendedPercent.value}%"
+        binding.fragmentOpImageviewArcprogressbar.progressRate.text = "${viewModel.attendedPercent.value}%"
     }
 
 

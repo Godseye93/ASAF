@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
+import com.airbnb.lottie.LottieAnimationView
+import com.bumptech.glide.Glide
 import com.d103.asaf.R
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.databinding.FragmentBusBinding
@@ -73,15 +75,17 @@ class BusFragment : Fragment() {
 
         // Get the FrameLayout that will hold the MapFragment
         val mapContainer = view.findViewById<FrameLayout>(R.id.map_view)
-
+        val splashAnim: LottieAnimationView = binding.ongoing
         // Create a new instance of MapFragment
-        val mapFragment = MapFragment()
+//        val mapFragment = MapFragment()
+//
+//        // Replace the FrameLayout with MapFragment
+//        childFragmentManager.beginTransaction()
+//            .replace(R.id.map_view, mapFragment)
+//            .commit()
 
-        // Replace the FrameLayout with MapFragment
-        childFragmentManager.beginTransaction()
-            .replace(R.id.map_view, mapFragment)
-            .commit()
-
+        splashAnim.setAnimation(R.raw.construction)
+        splashAnim.playAnimation() // 애니메이션 재생
 
         binding.fragmentBusMapSeoulBtn.setOnClickListener {
             // 서울 버튼 클릭 시 서울에 마커 추가 로직 실행

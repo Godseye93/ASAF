@@ -35,4 +35,6 @@ class MarketFragmentViewModel : ViewModel() {
     }
 
 
+
+
 }

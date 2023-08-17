@@ -38,10 +38,12 @@ class NotiMessageAdapter (var context : Context,var fragment: StudentNotiFragmen
 
         fun bind(data : NotiMessage){
 //            Log.d("이미지", "${"${ApplicationClass.API_URL}member/${data.senderImage.split("/")[6].split(".")[0]}.com/profile-image"} ")
-//            Glide
-//                .with(context)
-//                .load( "${API_URL}member/ssafypro0001@ssafy.com/profile-image")
-//                .into( binding.senderProfileImage)
+          val imageSplit = data.senderImage.split("/")!!
+            val path =  "http://i9d103.p.ssafy.io" + "/" + imageSplit[4] + "/" + imageSplit[5] + "/" + imageSplit[6]
+            Glide
+                .with(context)
+                .load( path)
+                .into( binding.senderProfileImage)
             binding.notiTitle.text = data.title
             binding.senderName.text = data.sender
             val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분", Locale.getDefault())

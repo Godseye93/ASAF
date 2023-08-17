@@ -6,12 +6,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.d103.asaf.common.config.ApplicationClass
 
 import com.d103.asaf.common.model.dto.MarketDetail
 import com.d103.asaf.common.model.dto.MarketImage
+import com.d103.asaf.common.model.dto.Member
 import com.d103.asaf.common.util.RetrofitUtil
 import com.google.android.datatransport.runtime.firebase.transport.LogEventDropped
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MarketDetailFragmentViweModel : ViewModel() {
 
@@ -27,6 +31,11 @@ class MarketDetailFragmentViweModel : ViewModel() {
         get() = _marketImageList
 
 
+
+
+    private val _marketUserInfo = MutableLiveData<Member>()
+    val marketUserInfo : LiveData<Member>
+        get() = _marketUserInfo
 
     fun getMarketDetail(id : Int){
         viewModelScope.launch {
@@ -49,6 +58,16 @@ class MarketDetailFragmentViweModel : ViewModel() {
                         Log.d("삭제", "delete: 삭제 실패")
                     }
                 }
+            }
+        }
+    }
+
+    fun getUserInfo(userId : Int){
+        viewModelScope.launch {
+            val response = RetrofitUtil.memberService.getMemberInfoWithId(userId)
+            if(response.isSuccessful){
+                val responseBody = response.body()
+                _marketUserInfo.value = responseBody!!
             }
         }
     }

@@ -197,6 +197,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
         seatViews = Array(25) { index -> binding.root.findViewById<ImageView>(resources.getIdentifier("stu_home_back_stu${index + 1}", "id", requireActivity().packageName))}
 
         viewModel.curMySeat.observe(viewLifecycleOwner) {
+            for(i in 0..24) seatViews[i].setImageResource(R.drawable.baseline_person_4_24)
             seatViews[viewModel.curMySeat.value ?: 0].setImageResource(R.drawable.baseline_person_4_24_red)
         }
 
@@ -240,7 +241,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
         with(binding) {
 
             fragmentStudentHomeCardViewFrontCardView1FrontName.text = ApplicationClass.sharedPreferences.getString("memberName")
-            fragmentStudentHomeCardViewFrontCardView1FrontNum.text = ApplicationClass.sharedPreferences.getInt("student_number").toString()
+            fragmentStudentHomeCardViewFrontCardView1FrontNum.text = "0${ApplicationClass.sharedPreferences.getInt("student_number")}"
 
             // ViewModel에서 값을 가져와서 textView에 갱신
 //            stuHomeFragmentViewModel.nthValue.observe(viewLifecycleOwner) { nthValue ->
@@ -423,7 +424,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
 
         // 원하는 내용으로 수정
         nameTextView.text = ApplicationClass.sharedPreferences.getString("memberName")
-        numberTextView.text = ApplicationClass.sharedPreferences.getInt("student_number").toString()
+        numberTextView.text = "0${ApplicationClass.sharedPreferences.getInt("student_number")}"
 //        imageImageView.setImageResource(R.drawable.new_image)
         val imageUrl = "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image"
         Glide.with(this)
