@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.d103.asaf.R
 import com.d103.asaf.common.config.ApplicationClass
 import com.d103.asaf.common.model.dto.DocSeat
 import com.d103.asaf.common.util.RetrofitUtil
@@ -62,7 +63,7 @@ class StudentHomeFragmentViewModel : ViewModel(){
             val response = withContext(Dispatchers.IO) { RetrofitUtil.opService.getSeat(ccode, rcode, gcode, uid)}
             if (response.isSuccessful) {
                 curMySeat.postValue(response.body()?.seatNum ?: 0)
-                Log.d(TAG, "loadMySeat: $curMySeat")
+                Log.d(TAG, "loadMySeat: ${curMySeat.value}")
             } else {
                 // 서버 통신 실패
                 Log.d(TAG, "loadMySeat: 개별 자리 네트워크 에러 $response")
