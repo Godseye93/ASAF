@@ -369,54 +369,58 @@ public class DataLoader implements CommandLineRunner {
             }
         }
 
-        List<String> seatNames = Arrays.asList(
-                "차선호", "김희웅", "이영준", "김제준", "최영태",
-                "최혜원", "김은하", "박성욱", "오희주", "이현섭",
-                "장성운", "최희주", "김준성", "최재원", "박현우",
-                "장진욱", "권민재", "김형진", "김도연", "김진영");
-
-        for (int i = 439; i <= 458; i++) {
-            String name = seatNames.get(i-439);
-            SeatDTO seatDTO = new SeatDTO();
-            seatDTO.setSeat_num(i-439);
-            seatDTO.setName(name);
-            seatDTO.setClass_num(i+14);
-            seatDTO.setClass_code(1);
-            seatDTO.setRegion_code(2);
-            seatDTO.setGeneration_code(1);
-            seatDTO.setId(i);
-
-            SeatEntity seatEntity = SeatEntity.toSeatEntity(seatDTO);
-            seatRepository.save(seatEntity);
-        }
-
-        List<String> lockerNames = Arrays.asList(
+        List<String> realNames = Arrays.asList(
                 "차선호", "김희웅", "이영준", "김제준", "최영태", "최혜원",
                 "김은하", "박성욱", "오희주", "이현섭", "장성운", "최희주",
                 "김준성", "최재원", "박현우", "장진욱", "권민재", "김형진",
                 "김도연", "김진영", "이현근", "황하음", "정예원", "손준배",
-                "정선재", "권민우", "심은진", "서지호", "김수찬",	"강승현",
                 "김주용", "황신운", "박준후", "정진욱", "전수림", "김수민",
+                "이우철", "유영서", "서동현", "김선영", "박종욱",
+                "서은진", "이서현", "방진성", "이연지", "정예진",
+                "정선재", "권민우", "심은진", "서지호", "김수찬",	"강승현",
                 "김민수", "김유정", "진희솜", "박단비", "박민아", "정재욱",
                 "김정환", "김근우", "천병찬", "채경호", "김상진", "김슬기",
                 "신지훈", "성연석", "송민철", "신제형", "이정훈", "하수빈",
-                "이우철", "유영서", "서동현", "김선영",	"박종욱",
-                "서은진", "이서현", "방진성", "이연지", "정예진"
+                "남예원", "한동영", "황수영", "신은경", "천승민", "진재윤",
+                "김유리", "노가영", "가은경", "장호연", "옥용재", "김영준",
+                "김태경", "하지은", "최지원", "강민규"
         );
 
-        for (int i = 439; i <= 502; i++) {
-            String name = lockerNames.get(i-439);
+        for (int i = 1; i <= 80; i++) {
+            String name = realNames.get(i-1);
             LockerDTO lockerDTO = new LockerDTO();
-            lockerDTO.setLocker_num(i-439);
+            lockerDTO.setLocker_num(i);
             lockerDTO.setName(name);
-            lockerDTO.setClass_num(i+14);
+            lockerDTO.setClass_num(i+2);
             lockerDTO.setClass_code(1);
             lockerDTO.setRegion_code(2);
             lockerDTO.setGeneration_code(1);
-            lockerDTO.setId(i);
+            lockerDTO.setId(i+2);
 
             LockerEntity lockerEntity = LockerEntity.toLockerEntity(lockerDTO);
             lockerRepository.save(lockerEntity);
+        }
+
+        List<String> exampleNames = Arrays.asList(
+                "차선호", "김희웅", "이영준", "김제준", "최영태", "최혜원",
+                "김은하", "박성욱", "오희주", "이현섭", "장성운", "최희주",
+                "김준성", "최재원", "박현우", "장진욱", "권민재", "김형진",
+                "김도연", "김진영"
+        );
+
+        for (int i = 1; i <= 20; i++) {
+            String name = realNames.get(i-1);
+            SeatDTO seatDTO = new SeatDTO();
+            seatDTO.setSeat_num(i);
+            seatDTO.setName(name);
+            seatDTO.setClass_num(i+2);
+            seatDTO.setClass_code(1);
+            seatDTO.setRegion_code(2);
+            seatDTO.setGeneration_code(1);
+            seatDTO.setId(i+2);
+
+            SeatEntity seatEntity = SeatEntity.toSeatEntity(seatDTO);
+            seatRepository.save(seatEntity);
         }
     }
 }
