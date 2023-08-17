@@ -1,7 +1,7 @@
 # 어쩌따 싸피 READEME
 
 ## 프로젝트 소개
-    ![아이콘](asaf_real_logo.png)
+![아이콘](asaf_real_logo.png)
 
     싸피생들과 프로님들의 편리한 싸피 생활을 돕기 위한 목적으로 만들어진 모바일 어플리케이션
     
@@ -18,17 +18,17 @@
 
 ## 사용 기술
 
-    ### Andriod
+### Andriod
 
-    ### Spring Boot
+### Spring Boot
     
-    ### FCM
+### FCM
 
-    ### NFC
+### NFC
 
-    ### Beacon
+### Beacon
 
-    ### QR
+### QR
 
 
 ## 기능 명세서
