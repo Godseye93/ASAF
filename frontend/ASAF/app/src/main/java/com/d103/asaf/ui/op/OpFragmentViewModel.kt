@@ -247,6 +247,7 @@ class OpFragmentViewModel(): ViewModel() {
     }
 
     fun callRealSeats() {
+        Log.d(TAG, "callRealSeats: 불림")
         viewModelScope.launch {
             val seatResponse = withContext(Dispatchers.IO) {
                 Log.d(TAG, "현재클래스: ${curClass.value}")
@@ -256,6 +257,7 @@ class OpFragmentViewModel(): ViewModel() {
                 _docSeat.value = seatResponse.body() ?: MutableList(_students.value.size) { index ->
                     DocSeat(name = _students.value[index].memberName)
                 }
+                Log.d(TAG, "callRealSeats: ${_docSeat.value}")
             } else {
                 Log.d(TAG, " 자리 가져오기 네트워크 오류")
             }

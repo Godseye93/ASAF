@@ -118,9 +118,7 @@ class SeatFragment() :
             seatComplete.setOnClickListener {
                 lifecycleScope.launch {
                     RetrofitUtil.opService.postSeats(viewModel.setSeats(position, seatNum))
-                    completeRemote()
-                    // 변경 후 변경된 정보 가져와서 UI업데이트
-                    viewModel.callRealSeats()
+                    // completeRemote()
                 }
             }
 
@@ -440,7 +438,8 @@ class SeatFragment() :
                 RetrofitUtil.opService.postSeats(viewModel.docSeat.value.subList(0, seatNum))
             }
             if (response.isSuccessful) {
-
+                // 변경 후 변경된 정보 가져와서 UI업데이트
+                viewModel.callRealSeats()
             } else {
                 Toast.makeText(context, "자리 업데이트 네트워크 오류", Toast.LENGTH_SHORT).show()
             }
