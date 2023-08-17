@@ -117,7 +117,12 @@ class SeatFragment() :
             // position 정보를 seatNum 크기 만큼만 보내기 서버에서 n건을 수정해야함
             seatComplete.setOnClickListener {
                 lifecycleScope.launch {
-                    RetrofitUtil.opService.postSeats(viewModel.setSeats(position, seatNum))
+                    try {
+                        RetrofitUtil.opService.postSeats(viewModel.setSeats(position, seatNum))
+                    }
+                    catch (e:Exception) {
+                        Toast.makeText(requireActivity(),"네트워크 연결 없음",Toast.LENGTH_SHORT).show()
+                    }
                     // completeRemote()
                 }
             }
