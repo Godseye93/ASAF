@@ -231,15 +231,10 @@ ETC<br>
 >## **미리보기**
 
 <img src="Screenshot_20230817_220001_ASAF.jpg" alt="drawing" width="200"/>
-<img src="Screenshot_20230817_220019_ASAF.jpg" alt="drawing" width="200"/>
 <img src="Screenshot_20230817_220030_ASAF-3.jpg" alt="drawing" width="200"/>
 <img src="Screenshot_20230817_220043_ASAF.jpg" alt="drawing" width="200"/>
- <img src="Screenshot_20230817_220049_ASAF.jpg" alt="drawing" width="200"/> 
- <img src="Screenshot_20230817_220535_ASAF.jpg" alt="drawing" width="200"/> 
- <img src="Screenshot_20230817_220537_ASAF.jpg" alt="drawing" width="200"/> 
- <img src="Screenshot_20230817_220552_ASAF.jpg" alt="drawing" width="200"/> 
- <img src="Screenshot_20230817_220555_ASAF.jpg" alt="drawing" width="200"/> 
- <img src="Screenshot_20230817_220634_ASAF.jpg" alt="drawing" width="200"/> 
- <img src="Screenshot_20230817_220648_ASAF.jpg" alt="drawing" width="200"/> 
- <img src="Screenshot_20230817_220733_ASAF.jpg" alt="drawing" width="200"/> 
- <img src="Screenshot_20230817_220741_ASAF.jpg" alt="drawing" width="200"/>
+<br>
+<img src="Screenshot_20230817_220634_ASAF.jpg" alt="drawing" width="200"/> 
+<img src="Screenshot_20230817_220552_ASAF.jpg" alt="drawing" width="200"/> 
+<img src="Screenshot_20230817_220648_ASAF.jpg" alt="drawing" width="200"/> 
+
