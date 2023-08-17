@@ -48,6 +48,10 @@ Tool<br>
 <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
 <img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
+
+ETC<br>
+<img src="image.png" alt="drawing" width="50"/>
+<img src="image-1.png" alt="drawing" width="100"/>
 <br><br>
 
 ## 기능 명세서
@@ -224,3 +228,18 @@ Tool<br>
             └─wrapper
 ```
 
+>## **미리보기**
+
+<img src="Screenshot_20230817_220001_ASAF.jpg" alt="drawing" width="200"/>
+<img src="Screenshot_20230817_220019_ASAF.jpg" alt="drawing" width="200"/>
+<img src="Screenshot_20230817_220030_ASAF-3.jpg" alt="drawing" width="200"/>
+<img src="Screenshot_20230817_220043_ASAF.jpg" alt="drawing" width="200"/>
+ <img src="Screenshot_20230817_220049_ASAF.jpg" alt="drawing" width="200"/> 
+ <img src="Screenshot_20230817_220535_ASAF.jpg" alt="drawing" width="200"/> 
+ <img src="Screenshot_20230817_220537_ASAF.jpg" alt="drawing" width="200"/> 
+ <img src="Screenshot_20230817_220552_ASAF.jpg" alt="drawing" width="200"/> 
+ <img src="Screenshot_20230817_220555_ASAF.jpg" alt="drawing" width="200"/> 
+ <img src="Screenshot_20230817_220634_ASAF.jpg" alt="drawing" width="200"/> 
+ <img src="Screenshot_20230817_220648_ASAF.jpg" alt="drawing" width="200"/> 
+ <img src="Screenshot_20230817_220733_ASAF.jpg" alt="drawing" width="200"/> 
+ <img src="Screenshot_20230817_220741_ASAF.jpg" alt="drawing" width="200"/>
