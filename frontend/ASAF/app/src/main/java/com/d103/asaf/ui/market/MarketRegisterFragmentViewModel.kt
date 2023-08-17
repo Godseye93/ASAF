@@ -34,6 +34,7 @@ class MarketRegisterFragmentViewModel : ViewModel() {
               val response = RetrofitUtil.marketService.post(createMarketRequestBody(marketInfo), photoIamgeFileList)
                if(response.isSuccessful){
                    Log.d(TAG, "post: ${response.body()} ")
+
                }
               else{
                    Log.d(TAG, "post: ${response}")

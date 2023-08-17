@@ -38,6 +38,7 @@ import com.d103.asaf.common.model.dto.Market
 import com.d103.asaf.common.model.dto.MarketImage
 import com.d103.asaf.common.util.RetrofitUtil
 import com.d103.asaf.databinding.FragmentMarketRegisterBinding
+import com.google.gson.Gson
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import kotlinx.coroutines.CoroutineScope
@@ -47,6 +48,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -177,9 +179,19 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
                     userName!!
                 )
 
-                viewModel.post()
-                findNavController().navigateUp()
-                (requireActivity() as MainActivity).showStudentBottomNaviagtionBarFromFragment()
+//                viewModel.post()
+                CoroutineScope(Dispatchers.Main).launch {
+                    val response = RetrofitUtil.marketService.post(createMarketRequestBody(viewModel.marketInfo), viewModel.photoIamgeFileList)
+                    if(response.isSuccessful){
+                        Log.d(TAG, "post: ${response.body()} ")
+                        findNavController().navigateUp()
+                        (requireActivity() as MainActivity).showStudentBottomNaviagtionBarFromFragment()
+                    }
+                    else{
+                        Log.d(TAG, "post: ${response}")
+                    }
+                }
+
 
             }
 
@@ -189,6 +201,10 @@ class MarketRegisterFragment : BaseFragment<FragmentMarketRegisterBinding>(Fragm
 
 
 
+    }
+    fun createMarketRequestBody(market: Market): RequestBody {
+        val json = Gson().toJson(market)
+        return json.toRequestBody("application/json".toMediaTypeOrNull())
     }
     override fun onImageClick(position: Int) {
         val item = viewModel.photoRegisterList[position]
