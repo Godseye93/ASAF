@@ -240,7 +240,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
         with(binding) {
 
             fragmentStudentHomeCardViewFrontCardView1FrontName.text = ApplicationClass.sharedPreferences.getString("memberName")
-            fragmentStudentHomeCardViewFrontCardView1FrontNum.text = ApplicationClass.sharedPreferences.getInt("student_number").toString()
+            fragmentStudentHomeCardViewFrontCardView1FrontNum.text = "0${ApplicationClass.sharedPreferences.getInt("student_number")}"
 
             // ViewModel에서 값을 가져와서 textView에 갱신
 //            stuHomeFragmentViewModel.nthValue.observe(viewLifecycleOwner) { nthValue ->
@@ -423,7 +423,7 @@ class StudentHomeFragment  : BaseFragment<FragmentStudentHomeBinding>(FragmentSt
 
         // 원하는 내용으로 수정
         nameTextView.text = ApplicationClass.sharedPreferences.getString("memberName")
-        numberTextView.text = ApplicationClass.sharedPreferences.getInt("student_number").toString()
+        numberTextView.text = "0${ApplicationClass.sharedPreferences.getInt("student_number")}"
 //        imageImageView.setImageResource(R.drawable.new_image)
         val imageUrl = "${ApplicationClass.API_URL}member/${ApplicationClass.sharedPreferences.getString("memberEmail")}/profile-image"
         Glide.with(this)
