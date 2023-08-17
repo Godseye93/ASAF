@@ -1,12 +1,12 @@
 # 어쩌따 싸피 READEME
 
-## 프로젝트 소개
+> ## 프로젝트 소개
 ![아이콘](asaf_real_logo.png)
 
     싸피생들과 프로님들의 편리한 싸피 생활을 돕기 위한 목적으로 만들어진 모바일 어플리케이션
     
 
-## 팀원 소개
+> ## 팀원 소개
 
     - 팀장 : 김준성
     - 팀원 : 박현우
@@ -16,20 +16,27 @@
     - 팀원 : 김형진
 
 
-## 사용 기술
+>## **사용된 기술**
+Frontend<br>
+<img src="https://img.shields.io/badge/android-3DDC84?style=for-the-badge&logo=android&logoColor=white">
+<img src="https://img.shields.io/badge/nfc-002E5F?style=for-the-badge&logo=nfc&logoColor=white">
+<img src="https://img.shields.io/badge/ibeacon-3D7EBB?style=for-the-badge&logo=ibeacon&logoColor=white">
 
-### Andriod
+Backend<br>
+<img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+<img src="https://img.shields.io/badge/hibernate-59666C?style=for-the-badge&logo=hibernate&logoColor=white">
+<img src="https://img.shields.io/badge/postgresql-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
 
-### Spring Boot
-    
-### FCM
+Infra<br>
+<img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white">
+<img src="https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
+<img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
 
-### NFC
-
-### Beacon
-
-### QR
-
+Tool<br>
+<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+<img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+<img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
+<br><br>
 
 ## 기능 명세서
 
