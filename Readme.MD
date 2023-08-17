@@ -16,7 +16,7 @@
 
 ## 기능 명세서
 
- [기능 명세서] (https://docs.google.com/spreadsheets/d/1YXWEoj4FwIA5q2wiOGrWThPSlwKs1TSfE4VgIX8EKCw/edit#gid=0)
+ [기능 명세서](https://docs.google.com/spreadsheets/d/1YXWEoj4FwIA5q2wiOGrWThPSlwKs1TSfE4VgIX8EKCw/edit#gid=0)
 
  ## ERD
  [ERD](ERD.png)
