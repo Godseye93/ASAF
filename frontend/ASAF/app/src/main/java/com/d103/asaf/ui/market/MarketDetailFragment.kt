@@ -70,13 +70,11 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
     }
 
     fun init(){
-
         //adpater 설정
 //        adapter =  MarketDetailAdapter(mutableListOf<MarketImage>(), requireContext())
 //        binding.fragmentMarketDetailRecyclerview.adapter = adapter
 //        adapter.notifyDataSetChanged()
         viewModel.getMarketDetail(sharedViewModel.selectedMarketId)
-        viewModel.getUserInfo(sharedViewModel.selectedMarketId)
         binding.fragmentMarketDetailBackButton.setOnClickListener {
             findNavController().navigateUp()
 
@@ -108,7 +106,9 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
             }
 
 
-
+            viewModel.marketUserInfo.observe(viewLifecycleOwner){
+                viewModel.marketUserInfo.value?.let { it1 -> showImageDialog(it1) }
+            }
             binding.fragmentMarketDetailContent.text = it.content
             binding.fragmentMarketDetailRegisterTime.text = convertLongToDate(it.registerTime)
             binding.fragmentMarketDetailTitleView.text = it.title
@@ -123,7 +123,7 @@ class MarketDetailFragment : BaseFragment<FragmentMarketDetailBinding>(FragmentM
 
             binding.fragmentMarketDetailUserName.text = it.name
             binding.fragmentMarketDetailProfile.setOnClickListener {
-                viewModel.marketUserInfo.value?.let { it1 -> showImageDialog(it1) }
+                viewModel.getUserInfo(viewModel.marketDetail.value!!.userid)
             }
         }
     }
